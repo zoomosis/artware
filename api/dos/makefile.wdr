@@ -1,0 +1,47 @@
+#############################################################################
+##                         MsgAPI "generic makefile"                       ##
+#############################################################################
+
+# If the LIB-making stuff doesn't work with NDMAKE and TLIB, take your
+# MAKE.INI and edit out the ".RESPONSE_LIB:" line.
+
+#
+# Turbo C, TC++
+#
+
+LIBIT=wlib
+FLAGS=-ml -ol+rsf -wo -s -wx -fh -zp1 -bt=DOS
+#FLAGS=-ml -d2 -odf -wo -wx -fh -zp1 -bt=DOS
+                                           
+LIBNAME=wcdr.lib
+
+# .c files can be found in parent dir..
+
+.c   : ..\
+.asm : ..\
+
+# Compile .c to .obj with wcc
+
+.c.obj : .autodepend
+    wcc $(FLAGS) $[*
+
+# assemble .asm files with TASM
+
+.asm.obj :
+    wasm $[*
+
+
+$(LIBNAME): 1stchar.obj   msgapi.obj    api_sdm.obj   api_sq.obj   &
+            cvtdate.obj   date2bin.obj  dosdate.obj   fexist.obj   &
+            months.obj    parsenn.obj   qksort.obj    strftim.obj  &
+            stristr.obj   trail.obj     weekday.obj   flush.obj    &
+            canlock.obj   flusha.obj    api_jam.obj   jamcrc32.obj &
+            api_hmb.obj   common.obj    sqsdm.obj     strlist.obj  &
+            ffind.obj     ffinda.obj
+
+ $(LIBIT) $(LIBNAME) -+1stchar -+msgapi -+api_sdm -+api_sq -+api_jam -+cvtdate
+ $(LIBIT) $(LIBNAME) -+date2bin -+dosdate -+fexist -+stristr -+trail -+weekday
+ $(LIBIT) $(LIBNAME) -+flush -+flusha -+months -+parsenn -+qksort -+strftim
+ $(LIBIT) $(LIBNAME) -+jamcrc32 -+api_hmb -+canlock -+common -+sqsdm -+strlist
+ $(LIBIT) $(LIBNAME) -+ffind -+ffinda
+
