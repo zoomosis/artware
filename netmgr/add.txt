@@ -1,0 +1,74 @@
+// =========================================================
+
+void parseaddress(char *address)
+{
+   static n=0;
+
+   if (n>(tMAXAKAS-1))
+      {
+      sprintf(msg, "Too many AKA's defined! Skipping %s", address);
+      Message(msg, -1, 0, YES);
+      return;
+      }
+
+   sscanf(address, "%hu:%hu/%hu.%hu", &cfg.usr.address[n].zone, &cfg.usr.address[n].net, &cfg.usr.address[n].node, &cfg.usr.address[n].point);
+   n++;
+}
+
+
+// ---------------------------------------------
+
+void akaforce(char *s)
+{
+   AKAFORCE *thisone;
+   char *a, *b;
+   NETADDR adr = {0,0,0,0};
+   int n;
+   static AKAFORCE *last = NULL;
+
+   if(
+       (a=strtok(s, " \t\r\n")) == NULL ||
+       (b=strtok(NULL, " \t\r\n")) == NULL
+     )
+      {
+      sprintf(msg, "Error in AKAFORCE statement (line %d)!", globalline);
+      Message(msg, -1, 0, YES);
+      return;
+      }
+
+   thisone = mem_calloc(1, sizeof(AKAFORCE));
+   if( filladdress(&thisone->mask, a) == -1 ||
+       filladdress(&adr, b) == -1 )
+     {
+     mem_free(thisone);
+     return;
+     }
+
+   for(n=0; n<24; n++)
+      {
+      if(addrcmp(&cfg.usr.address[n], &adr)==0)
+         {
+         thisone->aka = n;
+         break;
+         }
+      }
+
+   if(n == 24)
+     {
+     sprintf(msg, "Unknown AKA in AKAFORCE statement (line %d)!", globalline);
+     Message(msg, -1, 0, YES);
+     mem_free(thisone);
+     return;
+     }
+
+   if(cfg.akaforce == 0)
+      cfg.akaforce = thisone;
+   else
+      last->next = thisone;
+
+   last = thisone;
+
+}
+
+// ==============================================================
+
