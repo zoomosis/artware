@@ -1,0 +1,83 @@
+@@@ categorie 0, area selection screen
+ALT-S         : Scan all areas for new mail
+ALT-P         : Personal mailscan in all areas
+                When a message is found:
+                ALT-R : Reply
+                ALT-N : Reply in other area
+                etc.
+<ESC>         : Interrupt scan
+ALT-J         : Jump to OS/2
+ALT-X         : Exit timEd
+<ENTER>       : Enter highlighted area
+<right arrow> : Enter highlighted area
+ALT-L         : Enter area in L)ist mode
+F1            : Help
+
+Speedsearch: typing characters will cause timEd to look for the first
+AREATAG starting with those characters. <ESC> or a 'movement key' clears
+the string. CTRL-L looks for a next match for the string.
+@@@ categorie 1, message reading screen
+ALT-E, E, ins : Enter message     ALT-H, H      : Edit 'Hello' info
+ALT-R, R      : Reply to message  ALT-I, I      : Msg & Area info
+ALT-T, T      : Reply, fast       <ESC>, ALT-A  : Quit area
+ALT-N, N      : Reply other area  right, left   : Next, prev. msg
+ALT-O, O      : Reply 'followup'  <enter>       : Next message
+ALT-C, C      : Change message    <space>       : next page or msg
+ALT-D, D, del : Delete message    up, down      : scroll msg text 
+ALT-W, W      : Write to file     page-up, down : prev., next page
+ALT-P, P      : Print msg         <HOME>        : Top of message  
+ALT-M, M      : Move/Copy/Forw    <END>         : Bottom of msg   
+ALT-V, K      : Toggle kludges    ctrl <END>    : Last message    
+ALT-L, L      : List headers      ctrl <HOME>   : first message   
+ALT-B, B      : Broad list        ctrl <RIGHT>  : goto reply      
+ALT-F, F      : Find message      ctrl <LEFT>   : goto original   
+ALT-X         : Exit timEd        ctrl +        : next reply      
+ALT-U, U      : Area maintenance  alt <RIGHT>   : next reply      
+ALT-J, J      : Jump to OS/2      CTRL-U        : Unreceive msg   
+'+'           : Nxt area new mail CTRL-F        : Generate freq   
+'-'           : Prev area nw mail CTRL-A        : Change address  
+F1            : Help              CTRL-N        : Change name                                   
+<number>      : Goto msg #        CTRL-H        : Change header                                 
+@@@ categorie 2, messagelist screen
+<ENTER>, <right> : Goto highlighted msg
+up, down         : Move up, down in list
+page up, down    : Move page up, down in list
+home, end        : First, last msg in area
+<SPACE>          : Toggle mark of highlighted msg
++                : Mark range of msgs
+ALT+             : Mark all msgs
+-                : Unmark range of msgs
+ALT-             : Unmark all msgs
+ALT-D, D, <del>  : Delete marked msgs
+ALT-M, M         : Move marked msgs
+ALT-C, C         : Copy marked message
+ALT-W, W         : Write marked msgs to file
+ALt-S, S         : Switch between broad/normal list
+ALT-J, J         : Jump to OS/2
+<ESC>            : Return to msg reading screen
+F1               : Help
+@@@ categorie 3, find screen
+ALT-R         : clear all search strings.
+ALT-S         : save current search arguments
+ctrl <ENTER>  : start search
+                When a match is found:
+                ALT-R : Reply to msg
+                ALT-N : Reply other area
+                etc.
+                Right arrow : search for next match.
+<ESC>         : Interrupt search
+
+Give up to 10 strings to search for. It will be an 'OR' search, if any
+of the strings is found in the indicated location(s), the message will
+be shown.
+You can use <TAB> and <SHIFT-TAB> to move around between the boxes.
+@@@ categorie 4, file attach selectie
+<ENTER>, <SPACE> : Toggle mark on file
++                : Mark all files
+-                : Unmark all files
+ctrl <ENTER>     : Accept selection
+<ESC>            : Go back to subject editing
+@@@ categorie 5, fake to end
+(c) 1993 Gerard van Essen (2:281/527)
+
+
