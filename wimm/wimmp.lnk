@@ -1,0 +1,13 @@
+system os2v2
+name wimmp.exe
+option eliminate
+option cache
+option map
+
+#debug all
+option verbose
+
+library \tc\api\os2api
+
+file wimm.obj, xfile.obj, xmalloc.obj, lastread.obj, readcf2.obj, scrnutil.obj, video.obj
+ 
