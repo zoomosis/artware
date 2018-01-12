@@ -1,0 +1,122 @@
+ // upgrade.txt
+
+ Upgrading from timEd 1.01
+ -------------------------
+
+ Upgrading is pretty simple:
+
+
+ þ Make a backup of your old configs and .exe's
+
+ þ Replace the old timed(p).exe with the new executable.
+
+ þ Replace the old timed.hlp with the new one.
+
+ þ Add the files TIMKEYS.CFG, READMAPS.DAT and WRITMAPS.DAT to the timEd
+   directory.
+
+ þ If you use a Version 7 nodelist, add this to timEd.cfg:
+
+   V7NodeFlagBit 16 CM
+
+ þ Also add the following (if you own a color screen)
+
+   color_poptitle     30
+   color_findaccent   14
+   color_msgbaraccent 30
+   color_asaccent     14
+   color_ashighaccent 30
+
+   (Of course, if you made a nice colour scheme of your own, this may look
+   terrible :-) But it's a start.
+
+ þ You are now ready to start the new version 1.10! There are, however,
+   some things that make timEd behave differently compared to older
+   versions. Some hints can be found below, but you must read the entire
+   whatsnew file to know all the details.
+
+
+ Some things to keep in mind with v1.10
+ --------------------------------------
+
+ - There is a new header editing screen. You _must_ (_must_) do attaches
+   and requests using ALT-A and ALT-R.
+   You must NOT write these in the subject line anymore. The subject line
+   is for the subject of the message (in other words: to tell what the
+   message is about), and should not be abused anymore to add filenames! :-)
+
+   This takes some getting used to, but entering attaches/requests in the
+   subject line will not work correctly in many cases! There's no checking
+   done. Use ALT-A/ALT-R, that's what it's there for!
+
+
+ - If you write messages to internet through an 'UUCP gate':
+
+   * Please add the UUCPADDRESS and UUCPNAME keywords to timEd.cfg.
+   * Keep in mind that timEd hides the TO: line you used to enter and see
+     in the body (containing the destination internet address) from you. At
+     first, this looks like it's not correct. In reality (on disk) it is
+     actually there and things will work fine. If you want to change the
+     internet address, just change it in the header! TimEd will take care
+     of all conversions..
+
+
+ - Due to the charset support, timEd will by default only write out
+   messages with standard ASCII characters (unless, of course, you
+   configured timEd to use a special charset for output). Characters with a
+   code > 127 (usually called 'extended ASCII' or 'high ASCII' are remapped
+   to standard ASCII.
+
+           ÚÄÄÄÄÄÄÄ¿              +-------+
+   So this:ÀÄÄÄÄÄÄÄÙ will become: +-------+
+
+   If you don't want to have anything to do with CHARSETS, but you do want
+   to be able to have 'high ASCII' in your messages, add this to timEd.cfg:
+
+   DefaultOutput IBMPC
+
+
+-  The (static) helpfile system cannot cope with the new features. What is
+   included is a helpfile that list most of the functions, using the key
+   assignments used by the default (supplied) timkeys.cfg.
+
+   A future version of timEd will allow you to make your own helpfiles (or
+   adapt the standard files).
+
+   What you can do as a temporary fix, is to add a small macro:
+
+   F1  READrunexternal "list.exe" enter "c:\timed\myhelp.txt" enter
+
+   You now have a macro that runs 'list.exe' with 'c:\timed\myhelp.txt' as
+   command line parameter when you press F1 (don't forget to remove any old
+   assignment to the key F1). In other words: when you press F1, list will
+   show 'myhelp.txt' to you. This way, you can actually make your own
+   helpfile.
+
+   You could even spawn an editor (instead of a viewer) and dynamically
+   edit your helpfile while running timEd :-)
+
+
+-  The 32 bit DOS version uses a so called 'DOS extender'. The extender
+   used is the well-known DOS4GW extender made by Rational Systems. You
+   need at least a 386 processor to run it.
+
+   Quite a few programs already use this extender (GIGO, Squishmail,
+   Fastlist), so you may already have it on your system. You need the
+   runtime, DOS4GW.EXE, in order to run timEd's 32 bit DOS version.
+
+   If you don't have it on your system: look around on BBS's nearby because
+   they most likely have it. If you can't find it, you can at least find it
+   on my system (2:281/527) and Evin Mulron's system (1:138/211) as
+   DOS4GW.ZIP.
+
+   A DOS extender uses the protected mode of the Intel processors to offer
+   a large memory pool that can be easily accessed by an application. For
+   some services (like disk access) it switched back to the real mode to
+   use plain DOS for these services. This doesn't really sound too simple,
+   and that's true :-)  If the 32 bit version doesn't run on your system,
+   try the 16 bit DOS version. DOS extended applications are known to not
+   run at all, or not too well in certain environments.
+
+
+ // end upgrade.txt
