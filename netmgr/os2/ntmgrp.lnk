@@ -1,0 +1,19 @@
+system os2v2
+name ..\netmgrp.exe
+option eliminate
+option cache
+option newfiles
+option stack=32k
+option map
+option description 'NetMgr, netmail manager for JAM, Squish, *.MSG and Hudson'
+
+#debug all
+option verbose
+
+library \tc\api\os2api
+
+file  netmgr.obj, register.obj, config.obj, wrap.obj,
+      txtbuild.obj, version7.obj, fdnode.obj, gigo.obj, binkpack.obj,
+      command.obj, xfile.obj, lastread.obj, akamatch.obj, external.obj,
+      mem.obj
+ 
