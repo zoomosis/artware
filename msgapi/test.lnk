@@ -1,0 +1,5 @@
+system NT
+
+library d:\tc\api\ntapi.lib
+
+file test.obj
