@@ -1,0 +1,103 @@
+#############################################################################
+##                         MsgAPI OS/2 makefile                            ##
+#############################################################################
+
+# If the LIB-making stuff doesn't work with NDMAKE and TLIB, take your
+# MAKE.INI and edit out the ".RESPONSE_LIB:" line.
+
+#
+# Turbo C, TC++
+#
+
+MODEL=l
+PREFIX=tc
+COMP=bcc
+LIBIT=tlib
+FLAGS=-c -d -k- -C -v- -H -Od -vi- -w-par -Id:\bcos2\include
+LIB_TRAIL=
+
+
+
+LIBNAME=api_os2.lib
+
+$(LIBNAME):     1stchar.obj     msgapi.obj      api_sdm.obj     api_sq.obj   \
+                sqasm.obj       cvtdate.obj     date2bin.obj    dosdate.obj  \
+                fexist.obj      flush.obj       api_hmb.obj\
+                months.obj      parsenn.obj     qksort.obj      strftim.obj  \
+                stristr.obj     strocpy.obj     trail.obj       weekday.obj  \
+                canlock.obj     api_jam.obj     jamcrc32.obj \
+
+        $(LIBIT) $(LIBNAME) -+1stchar -+msgapi -+api_sdm -+api_sq -+sqasm -+cvtdate -+date2bin -+dosdate -+fexist $(LIB_TRAIL)
+        $(LIBIT) $(LIBNAME) -+ api_hmb -+ api_jam -+flush -+months -+parsenn -+qksort -+strftim -+stristr -+strocpy -+trail -+weekday -+canlock $(LIB_TRAIL)
+        $(LIBIT) $(LIBNAME) -+jamcrc32  $(LIB_TRAIL)
+
+1stchar.obj: 1stchar.c
+        $(COMP) $(FLAGS) 1stchar.c
+
+msgapi.obj: msgapi.c
+        $(COMP) $(FLAGS) msgapi.c
+
+api_sdm.obj: api_sdm.c
+        $(COMP) $(FLAGS) api_sdm.c
+
+api_sq.obj: api_sq.c
+        $(COMP) $(FLAGS) api_sq.c
+
+api_hmb.obj: api_hmb.c
+        $(COMP) $(FLAGS) api_hmb.c
+
+api_jam.obj: api_jam.c
+        $(COMP) $(FLAGS) api_jam.c
+
+jamcrc32.obj: jamcrc32.c
+        $(COMP) $(FLAGS) jamcrc32.c
+
+sqasm.obj: sqasm.c
+        $(COMP) $(FLAGS) sqasm.c
+
+cvtdate.obj: cvtdate.c
+        $(COMP) $(FLAGS) cvtdate.c
+
+date2bin.obj: date2bin.c
+        $(COMP) $(FLAGS) date2bin.c
+
+dosdate.obj: dosdate.c
+        $(COMP) $(FLAGS) dosdate.c
+
+fexist.obj: fexist.c
+        $(COMP) $(FLAGS) fexist.c
+
+ffind.obj: ffind.c
+        $(COMP) $(FLAGS) ffind.c
+
+flush.obj: flush.c
+        $(COMP) $(FLAGS) flush.c
+
+months.obj: months.c
+        $(COMP) $(FLAGS) months.c
+
+parsenn.obj: parsenn.c
+        $(COMP) $(FLAGS) parsenn.c
+
+qksort.obj: qksort.c
+        $(COMP) $(FLAGS) qksort.c
+
+strftim.obj: strftim.c
+        $(COMP) $(FLAGS) strftim.c
+
+stristr.obj: stristr.c
+        $(COMP) $(FLAGS) stristr.c
+
+strocpy.obj: strocpy.c
+        $(COMP) $(FLAGS) strocpy.c
+
+trail.obj: trail.c
+        $(COMP) $(FLAGS) trail.c
+
+weekday.obj: weekday.c
+        $(COMP) $(FLAGS) weekday.c
+
+canlock.obj: canlock.c
+        $(COMP) $(FLAGS) canlock.c
+
+
