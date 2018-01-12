@@ -1,0 +1,17 @@
+
+*  Updated to msgbase code, that also supports Squish 1.10 features. This
+   includes an unlimited number of messages in one single area. The
+   scanning function was rewritten for this. In most cases it should be
+   faster than older versions, BTW.
+
+*  Lines would be written to the logfile twice.
+
+*  Errorlevels:
+   254 : error.
+   1   : found personal mail
+   0   : no personal mail found
+
+*  When WIMM skips a passthru area, it will not write this info to the
+   screen anymore (Hi Craig! :-).
+
+
