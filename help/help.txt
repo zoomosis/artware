@@ -1,0 +1,113 @@
+@@@ categorie 0, area selection screen
+@ = <ALT>    ^ = <ctrl>
+
+@S     : Scan all UNSCANNED areas for new mail
+@T     : (Re-)Scan ALL areas for new mail
+@P {+} : Personal mailscan in all areas
+         When a message is found:
+         ALT-R : Reply etc.
+<esc>  : Interrupt scan
+@J     : Jump to OS (Shell)
+@X     : Exit timEd
+right  : Enter highlighted area
+enter  : Enter highlighted area
+@L     : Enter area in L)ist mode
+<space>: Tag highlighted area.
+@M     : Select 'view' on the arealist (all, new, tagged etc).
+@W     : Write selection of tagged areas to disk.
+@R     : Read selection of tagged areas from disk.
+
+Speedsearch: typing characters will cause timEd to look for the first
+AREATAG starting with those characters. A 'movement key' clears
+the string. ^L looks for a next match for the string.
+@@@ categorie 1, message reading screen
+@E, E, ins : Enter message        @F, F         : Find message
+@R, R      : Reply to message     ^A, ^N        : Change address, name
+@T, T      : Reply, fast          ^F            : Generate freq
+@N, N      : Reply other area     @V, K         : Toggle kludges
+@O, O      : Reply 'followup'     @X            : Exit timEd
+@C, C      : Change message       @U, U         : User menu
+^H         : Change header        @J, J         : Jump to OS (Shell)
+@S, S      : Change attributes    '+', '-'      : Nxt/prev area new mail
+@D, D, del : Delete message       ^up/^down     : Next/prev marked msg
+@P, P      : Print msg            <number>      : Goto msg #
+@W, W      : Write to file        right, left   : Next, prev. msg
+^U         : Unreceive msg        enter         : next msg
+^B         : Bounce reply         ^end, ^home   : Last, first message
+@M, M      : Move/Copy/Forward    ^right, ^left : goto reply, original
+space      : Mark message         @+/@right     : next reply (JAM)
+@L, L      : List headers         esc, @A       : Quit area
+@B, B      : Broad list           ^enter        : Set bookmark
+@H, H      : Edit 'Hello' info    TAB           : Return to Bookmark
+@I, I      : Msg & Area info      F10           : Lookup orig address
+F2         : Find keyword in msg  Sh-F10        : Lookup TO: name
+^E         : Run external prog    F9            : Lookup FROM: name
+@@@ categorie 2, messagelist screen
+@ = <ALT>    ^ = <ctrl>
+
+enter, right  : Goto highlighted msg
+up, down      : Move up, down in list
+page up, down : Move page up, down in list
+home, end     : First, last msg in area
+space         : Toggle mark of highlighted msg
+<tab>         : Show full header of highlighted msg
++             : Mark range of msgs
+@+            : Mark all msgs
+-             : Unmark range of msgs
+@-            : Unmark all msgs
+@D, D, del    : Delete marked msgs
+@M, M         : Move marked msgs
+@C, C         : Copy marked message
+@W, W         : Write marked msgs to file
+@S, S         : Switch between broad/normal list
+@J, J         : Jump to OS (Shell)
+esc           : Return to msg reading screen
+F1            : Help
+@@@ categorie 3, find screen
+@ = <ALT>    ^ = <ctrl>
+
+@R     : clear all search strings
+@S     : save current search arguments
+@D     : save current profile as default
+@O     : edit 'global' search options
+^enter : start search
+ins    : add search argument
+enter  : edit search argument
+del    : delete search argument
+
+When a match is found, you can use 'normal' keys like ALT-R, R to
+reply and ALT-N for a reply in another area etc.
+
+When match is found and while scanning:
+
+right/left : continue searching forward/backward.
+'+', '-'   : skip rest of area and go on scanning next/prev area.
+esc        : Interrupt search
+
+See docs for 'and' and 'or' searches.
+@@@ categorie 4, file attach selectie
+<ENTER>, <SPACE> : Toggle mark on file
++                : Mark all files
+-                : Unmark all files
+ctrl <ENTER>     : Accept selection
+<ESC>            : Go back to subject editing
+@@@ categorie 5, internal editor
+@ = <ALT>    ^ = <ctrl>
+
+^right      : jump word right        @S  : Save Message
+^left       : jump word left         F10 : Save msg, with menu
+^home       : Top of message         esc : Abort message
+^end        : End of message         @J  : Jump to OS (Shell)
+^page up    : Top of screen          @I  : Import file
+^page down  : Bottom of screen       F2  : Save text to timsaf.~!~
+^del        : Delete to end of line  @H  : Toggle HCR display
+^T          : Delete word right      @L  : Mark block border
+^backspace  : Delete word left       @U  : Unmark block
+^Y          : Erase line             @M  : Move block
+^U          : Unerase line           @C  : Copy block
+@E          : Edit header of msg     @D  : Delete block
+F1          : Help                   ^W  : Write block to file
+^E          : Run external prog      @W  : Write text to file
+F4          : Duplicate line         @Z  : Zap all quotes till end
+@@@ categorie 6, fake to end
+(c) 1994 Gerard van Essen (2:281/527)
