@@ -1,0 +1,17 @@
+system dos
+name ..\netmgr.exe
+option eliminate
+option cache
+option stack=5k
+option map
+
+#debug all
+option verbose
+
+library \tc\api\wcdr.lib
+
+file  netmgr.obj, register.obj, config.obj, mem.obj, wrap.obj,
+      txtbuild.obj, version7.obj, fdnode.obj, gigo.obj, binkpack.obj,
+      command.obj, akamatch.obj, lastread.obj, xfile.obj, external.obj,
+      exec.obj, checkpat.obj, spawn.obj
+ 
