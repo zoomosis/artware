@@ -1,0 +1,49 @@
+#############################################################################
+##                         MsgAPI "generic makefile"                       ##
+#############################################################################
+
+# If the LIB-making stuff doesn't work with NDMAKE and TLIB, take your
+# MAKE.INI and edit out the ".RESPONSE_LIB:" line.
+
+#
+# Turbo C, TC++
+#
+
+#FLAGS=-ml -ol+rsf -s -wx -fh -bt=DOS -zp1 -id:\tc\msgapi;d:\timed\utils;d:\tc\exec;d:\database\cbt
+FLAGS=-ml -d2 -odf -wo -wx -fh -bt=DOS -zp1 -id:\tc\msgapi;d:\timed\utils;d:\tc\exec;d:\database\cbt
+
+.c   : ..\
+.c   : ..\utils
+.c   : d:\tc\exec
+
+.asm : ..\
+.asm : d:\tc\exec
+
+# Compile .c to .obj with wcc
+
+.c.obj : .AUTODEPEND
+    wcc $(FLAGS) $[*
+
+# assemble .asm files with TASM
+
+.asm.obj :
+#    e:\borlandc\bin\tasm /t/mx $[*
+    d:\borlandc\bin\tasm /zi/t/mx $[*
+
+
+..\timed.exe: areatags.obj ATTACH.obj bmg.obj CHECKCC.obj choose.obj &
+ cleanidx.obj clock.obj CONFIG.obj COPYMSG.obj DIRLIST.obj EDIT.obj &
+ errorrpt.obj FIND.obj getbody.obj GETFMT.obj nodelist.obj &
+ getmsg.obj globals.obj header.obj help.obj idlekey.obj input.obj &
+ list.obj lock.obj maint.obj marklist.obj mem.obj message.obj &
+ nodeglue.obj PICKONE.obj print.obj tasker.obj exec.obj checkpat.obj spawn.obj &
+ quotos2.obj READAREA.obj register.obj repedit.obj REPLY.obj request.obj &
+ SELECT.obj shel2dos.obj SHOWHDR.obj SHOWINFO.obj SHOWMAIL.obj &
+ timed.obj tosslog.obj TXTBUILD.obj unrec.obj printer.obj &
+ working.obj wrap.obj xfile.obj video.obj scrnutil.obj picklist.obj &
+ markchn.obj trapflag.obj macro.obj charset.obj filter.obj &
+ v7.obj fd.obj nodelist.obj nodebrow.obj fido.obj ffind.obj ffinda.obj &
+ private.obj
+
+ d:\timed\dos\wlink @timdos
+
