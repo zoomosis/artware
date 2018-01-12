@@ -1,0 +1,19 @@
+AKAFORCE
+ 
+     You can force akamatching by using the AKAFORCE keyword.
+     
+
+     Format: 
+
+     AKAFORCE <mask> <address to use> 
+     
+     example: 
+ 
+     AKAFORCE 50:*/*.* 49:500/1 
+ 
+     This means: always use 49:500/1 as address when mail is
+     sent to any zone 50 address. This forcing will then
+     always be active (regardless of your 'AKAMATCHING'
+     setting), and will take precedence over 'automatic'
+     akamatching. 
+
