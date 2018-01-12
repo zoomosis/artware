@@ -1,0 +1,1 @@
+void showinfo(MMSG *curmsg, AREA *area, MSG *areahandle);
