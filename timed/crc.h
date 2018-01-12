@@ -1,0 +1,117 @@
+
+// CRC values for keywords in timEd.cfg
+
+#define crcAREASBBS    0x6b2d2476L
+#define crcSQUISHCFG   0x8f4b32eeL
+#define crcFASTECHOCFG 0x49020778L
+#define crcGECHOCFG    0xb1c99db4L
+#define crcIMAILCFG    0xf5b1e6b4L
+#define crcXMAILCFG    0x45a0d701L
+#define crcFMAILCFG    0x2c91f418L
+#define crcWTRGATECFG  0x67b6b26aL
+#define crcSOUP2SQCFG  0x08990652L
+
+#define crcADDRESS        0xcdf46e64L
+#define crcFREQATTRIBUTES 0x36979178L
+#define crcAKAFORCE       0x5bfcac2aL
+#define crcSTARTUP_SCAN   0xef5af063L
+#define crcSTARTUP_MODE   0xbc230466L
+#define crcUUCPADDRESS    0xdff2f098L
+
+#define crcNODELIST           0x434aa02aL 
+#define crcFDNODELIST         0xd53832d9L
+#define crcFIDOUSER           0x7094b855L 
+#define crcECHOLOG            0xb041aa23L
+#define crcJAMLOG             0x0aca7512L
+#define crcHUDSONPATH         0x137f0cefL
+#define crcEDITOR             0xc3f6c9c3L
+#define crcWRITENAME          0x87abd289L
+#define crcPRINTER            0x4df67808L 
+#define crcLASTREAD           0xce9ce964L
+#define crcNETMAIL_SEMAPHORE  0x8d5baef2L
+#define crcAREALISTSORT       0x1099499aL
+#define crcUUCPNAME           0x0edbe083L
+#define crcCFMFILE            0xf55c3e54L
+#define crcLOCALFILES         0x936fb851L
+
+#define crcDEFAULTOUTPUT      0x76735116L
+#define crcCONVERTOUTPUT      0x5b77a593L
+#define crcASSUMECHARSET      0x3639482eL
+#define crcDEFAULTINPUT       0xaa31cf25L
+#define crcLEVELONEOUTPUT     0xb39e5b5fL
+
+#define crcEXESIGN            0x8cc184aaL
+#define crcEXECRYPT           0x7f88e826L
+#define crcEXECRYPTSIGN       0x99e7ac42L
+#define crcEXESPELL           0x55462830L
+
+#define crcSHOWKLUDGES            0x762bc065L
+#define crcJUMPY_EDIT             0x3b43d7c5L 
+#define crcARCMAILATTACH          0x875d0d15L
+#define crcEMPTY_TEARLINE         0x8a445d20L
+#define crcCONFIRM_DELETE         0x4ce8b694L
+#define crcCONFIRM_EXIT           0xa3592a71L 
+#define crcCONFIRM_EDIT_EXIT      0xfff5b6e8L
+#define crcSHOW_EDIT_HCR          0x461c9dadL
+#define crcCCVERBOSE              0xd9432ba7L 
+#define crcPERSONAL_SKIP_RECEIVED 0xa7605facL 
+#define crcINTLFORCE              0x5ece3fe4L  
+#define crcLOWLEVELKB             0xf34392ceL
+#define crcNETMAIL_TEARLINE       0x882115fcL
+#define crcMOVE_NOTES             0x3ed55ed3L 
+#define crcSWAP_ON_EDIT           0xbad06f6dL
+#define crcSWAP_ON_SHELL          0x62a47c96L 
+#define crcEND_OF_AREA_MENU       0xfe5b70c1L
+#define crcCLOCK                  0xb6d083ddL
+#define crcAKAMATCHING            0x530cd283L
+#define crcREADNETAREAS           0xd58e312aL
+#define crcREADLOCALAREAS         0x544be79fL
+#define crcENTERMARKS             0xf9b34218L
+#define crcJAMZGTBIT              0x8e5f1c02L
+#define crcJAMGETLAST             0xa03ce2b3L
+#define crcEDITSAVEMENU           0x1eaf110dL
+#define crcSPELLCHECK_DEFAULT     0x6932cae6L
+#define crcV7MODEMTYPEBIT         0x87564badL
+#define crcV7MODEMTYPEVALUE       0x793c2a81L
+#define crcV7NODEFLAGBIT          0x326bdd3aL
+#define crcINTERNET_EMPTY_LINE    0x2275d970L
+#define crcNOSPACE_PASSWORD       0x76ec16eeL
+#define crcREPLYTOCFM             0x1aebf517L
+#define crcRESPECTPRIVATE         0x451710c7L
+
+#define crcCOLOR_ASBAR         0x96d8c9b9L
+#define crcCOLOR_ASFRAME       0x3d923ef2L
+#define crcCOLOR_ASTEXT        0x56b90e19L 
+#define crcCOLOR_ASHIGH        0x9c374d8bL
+#define crcCOLOR_ASACCENT      0x38e35a91L
+#define crcCOLOR_ASHIGHACCENT  0x6bba4da1L
+#define crcCOLOR_ASSPECIAL     0x1588ea0cL
+#define crcCOLOR_MSGHEADER     0xb31a828cL
+#define crcCOLOR_MSGDATA       0x2e4d1874L  
+#define crcCOLOR_MSGLINKS      0xbbbe5571L 
+#define crcCOLOR_MSGATTRIBS    0xd567baaeL
+#define crcCOLOR_MSGDATE       0x2920dc6dL 
+#define crcCOLOR_MSGLINE       0x52aa5fe1L 
+#define crcCOLOR_MSGQUOTE      0x014d3f9dL  
+#define crcCOLOR_MSGTEXT       0xb8354cd0L  
+#define crcCOLOR_MSGKLUDGE     0x5600b5deL
+#define crcCOLOR_MSGORIGIN     0x03997c53L 
+#define crcCOLOR_MSGBAR        0x14fb2cbbL
+#define crcCOLOR_MSGBARACCENT  0x182f0f77L
+#define crcCOLOR_MSGSPECIAL    0xadb7a5a1L
+#define crcCOLOR_ENTRY         0x2fbda7e3L  
+#define crcCOLOR_EDITHCR       0x62b47309L
+#define crcCOLOR_EDITCURNORMAL 0x1800a5e4L 
+#define crcCOLOR_EDITCURQUOTE  0xe2657911L 
+#define crcCOLOR_EDITBLOCK     0x24b94571L 
+#define crcCOLOR_EDITCURBLOCK  0x0a0f25c7L
+#define crcCOLOR_POPFRAME      0x86d728c7L 
+#define crcCOLOR_POPTEXT       0x18e838acL
+#define crcCOLOR_POPTITLE      0x18196c61L
+#define crcCOLOR_FINDACTIVE    0x27d45858L
+#define crcCOLOR_FINDPASSIVE   0x145140c4L
+#define crcCOLOR_FINDTEXT      0x63a8243cL
+#define crcCOLOR_FINDDATA      0xf5d07098L
+#define crcCOLOR_FINDHIGH      0xa92667aeL
+#define crcCOLOR_FINDACCENT    0x0bab76b1L
+
