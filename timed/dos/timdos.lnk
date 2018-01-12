@@ -1,0 +1,52 @@
+system DOS
+name ..\timed.exe
+option eliminate
+option stack=6k
+option cache
+option map
+
+#debug all
+
+option verbose
+option dynamic
+
+#option distribute
+#option noindirect
+#option area=20k
+
+library \database\cbt\cbdos.lib
+
+#
+# NON-Overlay stuff:
+#
+
+file
+
+  video.obj, scrnutil.obj, SHOWHDR.obj, clock.obj, jamcrc32.obj, msgapi.obj,
+  lock.obj, REPLY.obj, SHOWMAIL.obj, timed.obj, tosslog.obj, TXTBUILD.obj,
+  trail.obj, cvtdate.obj, date2bin.obj, dosdate.obj, stristr.obj, months.obj,
+  GETFMT.obj, getmsg.obj, globals.obj, header.obj, idlekey.obj, input.obj,
+  weekday.obj, print.obj, trapflag.obj, charset.obj, ffind.obj, ffinda.obj,
+  marklist.obj, mem.obj, quotos2.obj, READAREA.obj, tasker.obj, wrap.obj
+
+#
+# Overlay stuff:
+#
+
+begin
+
+autosection
+
+file   fd.obj, v7.obj, nodebrow.obj, fido.obj, nodelist.obj,
+  macro.obj, 1stchar.obj, api_sdm.obj, api_sq.obj, fexist.obj, parsenn.obj,
+  qksort.obj, strftim.obj, flush.obj, canlock.obj, flusha.obj, register.obj,
+  api_jam.obj, api_hmb.obj, strlist.obj, common.obj, sqsdm.obj, filter.obj,
+  SHOWINFO.obj, unrec.obj, working.obj, xfile.obj, PICKONE.obj, PICKLIST.obj,
+  CONFIG.obj, COPYMSG.obj, DIRLIST.obj, EDIT.obj, errorrpt.obj,
+  choose.obj, cleanidx.obj, spawn.obj, checkpat.obj, exec.obj, markchn.obj,
+  FIND.obj, getbody.obj, help.obj, list.obj, maint.obj, nodeglue.obj,
+  printer.obj,  repedit.obj, request.obj, shel2dos.obj, private.obj,
+  SELECT.obj, message.obj, areatags.obj, ATTACH.obj, bmg.obj, CHECKCC.obj
+
+end
+
