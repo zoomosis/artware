@@ -1,0 +1,9 @@
+
+*  Fixed a problem where WIMM would complain that areas were empty while in
+   fact they were not (or that it could not open an area or message). This
+   would occur after WIMM scanned a few areas that were indeed empty (and
+   forgot to close a file on every occasion, running out of file handles in
+   the process).
+
+*  Fixed a bug in the config parsing routines.
+
