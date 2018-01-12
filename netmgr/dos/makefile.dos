@@ -1,0 +1,33 @@
+#############################################################################
+##                         MsgAPI "generic makefile"                       ##
+#############################################################################
+
+# If the LIB-making stuff doesn't work with NDMAKE and TLIB, take your
+# MAKE.INI and edit out the ".RESPONSE_LIB:" line.
+
+#
+# Turbo C, TC++
+#
+
+FLAGS=-ml -ol+rsf -wo -s -wx -fh -zp1 -bt=DOS -id:\tc\msgapi;d:\tc\exec
+
+#FLAGS=-ml -od -d2 -wo -wx -fh -zp1 -bt=DOS -id:\tc\msgapi;d:\tc\exec
+
+.c : ..\
+.c : \tc\exec\
+
+.asm : \tc\exec\
+
+.c.obj : .AUTODEPEND
+   wcc $(FLAGS) $[*
+
+.asm.obj :
+    d:\borlandc\bin\tasm /zi/t/mx $[*
+
+
+..\netmgr.exe: netmgr.obj register.obj config.obj mem.obj wrap.obj &
+   txtbuild.obj version7.obj fdnode.obj gigo.obj binkpack.obj command.obj &
+   akamatch.obj lastread.obj xfile.obj external.obj exec.obj checkpat.obj &
+   spawn.obj
+   wlink @ntmgr
+
