@@ -1,0 +1,21 @@
+This option is interesting if you have more than 1 address. If
+you set the 'AKAmatching' keyword in timEd.cfg to 'Yes', timEd
+will try to find the most appropriate address to use when
+writing a message.
+
+Say, for example, that you have two addresses: 2:281/527 and
+60:100/112.
+
+If you write a messages to 2:500/133, you probably want to use
+your 2:281/527 address.
+If you write a message to 60:100/1, you probably want to use
+your 60:100/112 address.
+
+In this case, timEd would try to find the address (AKA) that
+'matches' the destination address best.
+
+It first looks for a matching zone, and if more than one match
+is found, it'll try to find an address where both 'zone' and
+'net' match. If there is still more than one match after that,
+it will just take the first match.
+
