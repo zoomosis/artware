@@ -1,0 +1,96 @@
+18 feb '94
+----------
+
+The bottom line: it's not really the quality I wanted to achieve in order
+to let anyone else see the source. But waiting for that to happen may take
+a while. I can't keep you 'hanging' any longer.
+
+With this you can see what we were talking about, anyway.
+
+
+General
+-------
+
+Sorry, the code is still not clean. It'll gives tons of warnings about:
+* mixing signed and unsigned chars
+* conversion might loose significant digits.
+
+I originally compiled without those warnings. So I never saw them. And now
+I don't really look forward to fixing all of them. And it works already :-)
+
+
+Reading message body in multiple passes is not supported. I never use it,
+so it is not (entirely?) implemented. For Hudson, it is not trivial to
+implement, BTW. (WRITING in multiple passes IS supported. I use that a lot :-)
+
+MOPEN_WRITE is not supported.
+
+There is a new 'open mode': MOPEN_RDHDR to only read a header. This
+basically includes TO:, FROM: and SUBJECT. It is used for FAST access to
+header info for the timEd L)ist mode.
+
+MOPEN_RW is partially supported: you can only read/write a header, and even
+that only partially. That part includes some attributes and the reply
+links. So you CAN use it to rewrite reply links, for example, or set the
+received bit.
+But since the original SDM code doesn't really support this all too well
+either, nobody can blame me :-)
+
+The MsgOpenMsg functions do all the work. They calc kludge (and buffer the
+kludges in mem) and body length etc. And they buffer the XMSG structure
+(converted and ready) in mem. Lots of work for Hudson. So only use
+MOPEN_READ if you really want to read the thing :-)
+
+ALWAYS lock before writing anything. Or bad things might happen. I am going
+to strip the API_SQ code that deals with writing in unlocked mode in the
+future (saves some size), as I never use it anyway (JAM code, for example
+REQUIRES locking before writing).
+
+I like to use 'goto' to jump to ONE error exit if any error occurs. In that
+single exit, all memory allocated is released, or open files are closed or
+whatever. If 'goto' is religious thing for you, we strongly disagree :-) In
+that case I would like to see a goto-less alternative that is as clean as
+this.
+
+Never expect that message bodies are NULL terminated. Always put your own
+NULL just after it (alloc one byte more).
+
+For safety, *always* alloc one byte more (even if the previous point
+doesn't bother you). I'm not sure if you get into trouble without it. It
+used to be like that, maybe not anymore, but..
+
+
+Hudson specifics.
+-----------------
+
+The length calculated for Hudson messages is usually not correct. It gives
+you the message length INCLUDING the 'Pascal string length bytes'. If you
+reserve that amount of memory (like the API expects you to do), it can read
+the message body in 1 pass and remove the length bytes in memory, which is
+faster, of course..
+If you want to write the body out again, do an strlen on the thing to get
+it right, otherwise you may write some trailing junk out to disk.
+
+The part that writes the Hudson message text is terrible. But it works. I
+think :-) Some day I'll rewrite it, maybe to check if mem is available to
+expand the Pascal string in memory, and write in 1 pass in that case. And
+to make the code look good :-)
+
+The API code actually writes the echomail.bbs/netmail.bbs files. It needs
+to know the 'record number' (position 'n' in the indexes and header files)
+and that info is only available inside the API, not to the 'high level'
+application.
+
+
+JAM specifics.
+--------------
+
+Dunno.
+
+Oh, yes, gives some nice compiler warnings, plus some about the TM
+structure and stuff. I think JAMtm (or whateevr) is exactly the same as
+'struct tm', haven't checked though.. When I used Borland time functions,
+the generated time was not correct. Haven't checked out the exact cause
+yet.
+
+
