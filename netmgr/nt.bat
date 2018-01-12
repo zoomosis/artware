@@ -1,0 +1,4 @@
+cd nt
+wmake
+cd ..
+
