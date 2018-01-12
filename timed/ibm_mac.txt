@@ -1,0 +1,161 @@
+;
+; This file is a charset conversion module in text form.
+;
+; This module Converts IBM extended characters to MAC characters.
+;
+; Format: ID, version, level,
+;         from charset, to charset,
+;         128 entries: first & second byte
+;	  "END"
+; Lines beginning with a ";" or a ";" after the entries are comments
+;
+; Unkown characters are mapped to the "?" character.
+;
+; cedilla = ,   ; dieresis = ..       ; acute = '
+; grave = `     ; circumflex = ^      ; ring = o
+; tilde = ~     ; caron = v 
+; All of these are above the character, apart from the cedilla which is below.
+;
+; \ is the escape character: \0 means decimal zero,
+; \dnnn where nnn is a decimal number is the ordinal value of the character
+; \xnn where nn is a hexadecimal number
+; e.g.: \d32 is the ASCII space character
+; Two \\ is the character "\" itself.
+;
+0		; ID number
+0		; version number
+;
+2		; level number
+;
+IBMPC		; from set
+MAC		; to set
+;
+\0 \x82		; C with cedilla
+\0 \x9F		; u dieresis
+\0 \x8E		; e acute
+\0 \x89		; a circumflex
+\0 \x8A		; a dieresis
+\0 \x88		; a grave
+\0 \x8C		; a ring
+\0 \x8D		; c cedilla
+\0 \x90		; e circumflex
+\0 \x91		; e dieresis
+\0 \x8F		; e grave
+\0 \x95		; i dieresis
+\0 \x94		; i circumflex
+\0 \x93		; i grave
+\0 \x80		; A dieresis
+\0 \x81		; A ring
+\0 \x83		; E acute
+\0 \xBE		; ae
+\0 \xAE		; AE
+\0 \x99		; o circumflex
+\0 \x9A		; o dieresis
+\0 \x97		; o acute
+\0 \x9E		; u circumflex
+\0 \x9D		; u grave
+\0 \xD8		; y dieresis
+\0 \x85		; O dieresis
+\0 \x9F		; U dieresis
+\0 \xA2		; cent
+\0 \xA3		; pound sterling
+\0 \xB4		; yen
+P t		; Pt
+\0 \xC4		; florin
+\0 \x87		; a acute
+\0 \x93		; i grave
+\0 \x98		; o grave
+\0 \x9D		; u grave
+\0 \x96		; n tilde
+\0 \x84		; N tilde
+\0 \xBB		; ord feminine
+\0 \xBC		; ord masculine
+\0 \xC0		; question downwards
+\0 -		; 
+\0 \xC2		; logical not
+. 5		; half fraction
+\x1 ?		; quarter fraction
+\0 \xC1		; exclam downwards
+\0 \xC7		; guillemot left
+\0 \xC8		; guillemot right
+\0 #		;
+\0 #		;
+\0 #		;
+\0 |		;
+\0 |		;
+\0 |		;
+\0 |		;
+\0 +		;
+\0 +		;
+\0 |		;
+\0 |		;
+\0 +		;
+\0 +		;
+\0 +		;
+\0 +		;
+\0 +		;
+\0 +		;
+\0 -		;
+\0 -		;
+\0 |		;
+\0 -		;
+\0 +		;
+\0 |		;
+\0 |		;
+\0 +		;
+\0 +		;
+\0 =		;
+\0 =		;
+\0 |		;
+\0 =		;
+\0 +		;
+\0 =		;
+\0 -		;
+\0 =		;
+\0 -		;
+\0 +		;
+\0 +		;
+\0 +		;
+\0 +		;
+\0 |		;
+\0 +		;
+\0 +		;
+\0 +		;
+\0 #		;
+\0 n		;
+\0 |		;
+\0 |		;
+\0 ~		;
+\0 a		; alpha
+\0 \xA7		; german double s (misused as Beta)
+\x1 ?		; Gamma
+\0 \xB9		; pi
+\0 \xB7		; Sigma (summation)
+\x1 ?		; sigma
+\0 \xB5		; mu
+\x1 ?		; gamma
+\x1 ?		; Phi
+\x1 ?		; Theta
+\0 \xBD		; Omega
+\0 \xB6		; delta
+\0 \xB0		; infinity
+\0 \xBF		; o slash
+\x1 ?		; element
+\x1 ?		; intersection
+= =		; equivalence
+\0 \xB1		; plusminus
+\0 \xB3		; greater equals
+\0 \xB2		; smaller equals
+\x1 ?		; integral top
+\x1 ?		; integral bottom
+\0 \xD6		; divide
+\0 \xC5		; approx.
+\0 \xA1		; ring / degree
+\0 .		; centered dot
+\0 \xD0		; en dash
+\0 \xC3		; radical
+^ n		; to the n'th power
+^ 2		; to the second power
+\0 \xA5		;
+\0 \d32		; space
+END
