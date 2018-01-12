@@ -1,0 +1,7 @@
+This directory contains files related to ASUS's products:
+  BIOS     BIOS image and EISA CFG files
+  Drivers  Drivers & utilities for add-on cards and onboard devices
+  Info     ASUS product information and news archive
+  TechInfo Technical bulletin
+  Tools    DOS tools for decompress and view files
+
