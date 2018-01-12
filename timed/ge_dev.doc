@@ -1,0 +1,241 @@
+
+
+
+
+
+                                   GEDEV 1.10
+
+
+
+
+
+
+
+                              GEcho Developers Kit
+
+                                 for GEcho 1.10
+
+
+
+
+
+
+                             Last updates: 27-Aug-94
+
+
+
+                 Documentation written by Gerard J. van der Land
+                 Copyright (C) 1992-1994 Gerard J. van der Land
+                               All rights reserved
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Gerard J. van der Land
+     Cannenburg 23
+     3772 BH Barneveld
+     Netherlands
+
+     FidoNet: 2:2802/110
+     SIGnet 27:4331/109
+
+     Fax/BBS: +31-3420-21792 (USRobotics HST V.32terbo V.FC V.34 28.8K FAX)
+
+     Contents
+
+     The GEcho 1.10 Developers Kit is distributed in GEDEV110.ZIP, which
+     should contain the following six files:
+
+     GE_DEV.DOC     The file you're reading now
+     GESTRUCT.H     GEcho 1.10 system data files definitions for ANSI C
+     GESTRUCT.INC   GEcho 1.10 system data files definitions for Pascal
+     GE_DEMO.C      Demonstration source code for ANSI C
+     GE_DEMO.PAS    Demonstration source code for Borland Pascal
+     FILE_ID.DIZ    Description In ZIP file
+
+
+     The GE environment variable
+
+     GEcho and GSETUP will first try to open SETUP.GE in the current
+     directory. If that fails, they will use the path name pointed to by
+     the "GE" environment variable. Notice that this variable can also
+     contain a text color to be used by the software. I know some people
+     may think that's stupid, but that's the way it is and I'm not going to
+     change it. :-) To obtain only the path name, you should stop scanning
+     as soon as you find a space.
+
+     The directory where SETUP.GE was found is considered to be the "system
+     path", where a few other system files are stored too.
+
+
+     The system files
+
+     GEcho's system files are designed to allow me to add new fields
+     without breaking all existing third-party utilities.
+
+
+     SETUP.GE      The system configuration file, contains addresses,
+                   pathnames, filenames, etc.
+
+                   Your software should check that:
+
+                   - the file size is not smaller than the size of the
+                     SETUP_GE structure.
+
+                   - the system file revision level (sysrev) equals
+                     GE_THISREV.
+
+     AREAFILE.GE   The area database, contains information about the
+                   areas: name, comment, format, board or path, purge
+                   information, connections, etc. The file consists of a
+                   header and area records.
+
+                   Your software should read the header (AreaHdr) and
+                   check that AreaHdr.hdrsize and AreaHdr.recsize are not
+                   smaller than the size of the AREAFILE_HDR resp.
+                   AREAFILE_GE structure.
+
+                   The area records themselves consist of two parts.
+
+                   The first part contains the AREAFILE_GE structure. The
+                   size of the first part is AreaHdr.recsize. This may be
+                   larger, but not smaller than the size of the
+                   AREAFILE_GE structure.
+
+                   The second part consists of AreaHdr.maxconnections
+                   records of the CONNECTION structure. The size of the
+                   second part (connectionsize) is:
+
+                     AreaHdr.maxconnections * sizeof(CONNECTION)
+
+                   The total size of both parts (arearecsize) is:
+
+                     AreaHdr.recsize + connectionsize
+
+                   To read the first part of an area record, you must
+                   first do a file seek to the following position:
+
+                     AreaHdr.hdrsize + recordnumber * arearecsize
+
+                   or use the file offset in an AREAFILE_GEX record.
+                   You can then read up to AreaHdr.recsize bytes.
+
+                   To read the second part (the connections list), you
+                   must add AreaHdr.recsize to the position of the first
+                   part, and do a file seek to that location. You can then
+                   read up to AreaHdr.maxconnections records.
+
+                   GEcho itself will get both parts with one read command
+                   of arearecsize bytes. "GSETUP Pack" is used to adjust
+                   the area database to the arearecsize used by the
+                   current version. However, your software may *not* get
+                   both parts with one read command, otherwise it may no
+                   longer work when I add new fields in a future version.
+
+                   The records are not necessarily sorted in any
+                   particular order, but "GSETUP Pack" will sort them
+                   alphabetically by area name.
+
+                   Area numbers 1-200 are reserved for Hudson, and
+                   201-6700 for *.MSG, JAM and passthru areas.
+
+     AREAFILE.GEX  The area database index file, contains CRC-32's on the
+                   area names, the area number and the file offsets of the
+                   area records. The entries are normally sorted
+                   alphabetically by area name. An exception occurs when
+                   areas were requested from an uplink and automatically
+                   added by GEcho's AreaMgr.
+
+
+     NODEFILE.GE   The node database, contains information about the
+                   nodes: address, name of the sysops, which compression
+                   programs they prefer, etc. The file consists of a
+                   header and node records.
+
+                   Your software should read the header (NodeHdr) and
+                   check that NodeHdr.hdrsize and NodeHdr.recsize are not
+                   smaller than the size of the NODEFILE_HDR resp.
+                   NODEFILE_GE structure.
+
+                   To read a node record, you must first do a file seek to
+                   the following position:
+
+                     NodeHdr.hdrsize + counter * NodeHdr.recsize
+
+                   or use the file offset in an NODEFILE_GEX record.
+                   You can then read up to NodeHdr.recsize bytes.
+
+                   The records are not necessarily sorted in any
+                   particular order, but "GSETUP Pack" will sort them by
+                   node number.
+
+
+     NODEFILE.GEX  The node database index file, contains the node address
+                   and the file offsets of the node records. The entries
+                   are normally sorted by node number. An exception occurs
+                   when GEcho adds new nodes that connect to a "public
+                   area".
+
+
+     PACKFILE.GE   This file contains information about how to route
+                   netmail messages, packed with GEcho Pack. The Via
+                   entries are sorted by priority and node number.
+
+
+     ECHODUPE.GE   This file contains CRC-32's of imported and exported
+                   echomail messages, which enables GEcho to detect
+                   duplicates. The number of entries in this file can be
+                   changed in GSETUP. The CRC-32 is calculated on the
+                   first 164 bytes of the message header in .MSG format
+                   (that includes From, To, Subject and DateTime, zero
+                   padded) and the area name (variable length).
+
+     FTSCPROD.GE   This file contains the names of programs that have a
+                   FTSC assigned product code (0-255) and their capability
+                   (Type 2.0, 2.1 or 2+).
+
+
+     GE_DOC.GEX    This files contains an array of 32-bit integers, which
+                   are file offsets of various topics in GECHO.DOC. This
+                   is used by GSETUP's context sensitive on-line help
+                   system (F1).
+
+
+     JAM_CONV.GE   This file is created by GSETUP Convert, and contains
+                   conversion information that is used by MBUTIL Convert.
+                   GSETUP will first *.MSG and then Hudson areas, both in
+                   ascending order of size.
+
+     MBUTIL.RNX    This file is created by MBUTIL Pack in the directory of
+                   each *.MSG area if the -Rnx switch used while
+                   renumbering. It can be used to convert old to new
+                   message numbers, for example to update lastread
+                   pointers.
+
+
+     Notes
+
+     - The current structure contains a number of "old" fields (such as
+       board numbers and AKAs) that are no longer by GEcho, but that are
+       still updated for backwards compatibility, if possible.
+
+     - The Borland Pascal demonstration source code uses the StrPas
+       function of the Strings unit for the conversion from NUL-terminated
+       to Pascal strings. To support this, the arrays of char that store
+       the NUL-terminated strings are now zero-based. All other arrays are
+       now zero-based too, like they are in the ANSI C structure. The
+       special "Arr" types for frequently used strings have been renamed to
+       "Str".
