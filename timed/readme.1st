@@ -1,0 +1,73 @@
+Readme file for timEd v1.10 gamma 1.
+------------------------------------
+
+* This is a gammaTEST version FOR REGISTERED USERS ONLY!
+                              ==========================
+
+It needs a registration key to run. For Shareware evaluation of timEd, grab
+a copy of timEd v1.01, that will run fine without a key.
+
+
+* The file TIM110.G1 included in this package is a PASSWORD PROTECTED
+  ZIPFILE. The password needed to extract the files is mentioned later in
+  this README file.
+  I have to take this childish action, because otherwise nobody seems to
+  read the readme files.
+
+
+Important notes for this version:
+
+
+- This is NOT an official release, but a gamma version. Although the beta's
+  were quite stable, there are undoubtedly several undiscovered bugs! Many,
+  many things have changed (internally) and there's a lot of new code,
+  including low-level message base code.
+
+  If you cannot handle this situation, don't use this gamma!!
+
+
+- The documentation is not updated yet. New things and changes are mentioned
+  in the whatsnew file. If you need updated docs, wait for the official
+  release of timEd 1.10.
+  For now, use the docs included with timEd v1.01 and the whatsnew file
+  included with this gamma.
+
+
+- READ THE WHATSNEW FILE CAREFULLY!
+  ---------------------------------
+  Some things work differently now. Without reading the whatsnew file they
+  may appear to be not working anymore, but they just work differently!
+
+
+- No new features will be added to timEd v1.10. From now on, I will only fix
+  bugs found in this gamma version, in order to make the official 1.10
+  release as bug-free as I can.
+  For me, quality is more important than quantity.
+
+
+- If you find bugs, please give me a clear report of the problem, including
+  version numbers of the programs you are using, the message base format
+  used, etc. In order to fix bugs, I need to reproduce the reported problem
+  over here. Give me all the info I need to do that.
+
+  Please report problems in the ARTWARE echomail area. Everybody can see the
+  reports then, and people do not have to report problems that are already
+  reported and/or fixed.
+  This prevents me from having to answer the same question over and over
+  again through netmail!
+  Be smart and use ARTWARE! You will do me (and several other users) a big
+  favour!
+
+  ARTWARE is available on the Dutch and American backbone, AND from several
+  other sites worldwide. Use the support echo!
+
+
+- The password needed to unzip the file TIM110.G1 included in this package
+  is: shredder
+  The password is case-sensitive!
+
+  With the DOS version of PKUNZIP (you need PKUNZIP 2.04!), you can unzip
+  with the following command line:
+  pkunzip -sshredder tim110.g1
+
+
