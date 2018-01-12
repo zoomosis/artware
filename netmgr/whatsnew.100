@@ -1,0 +1,918 @@
+gamma 4
+-------
+
+* The AKAFORCE statement in netmgr.cfg was broken (didn't work at all).
+  Problem reported by Francois Blais.
+
+* Searching for a string (not a substring with ~) in the subject line
+  in an Xmask would not always work correctly.
+  Problem reported by Peter Karlsson.
+
+* NetMgr's config file wasn't opened in a file sharing mode.
+  Problem reported by Vicki Fletcher.
+
+* The 'PackMail' action would replace the 'subject' line in file request
+  messages with the name(s) of the requested file(s), even for JAM messages
+  with a 'real' subject line.
+  Problem reported by Francois Blais.
+
+* For messages with file attaches or requests, the 'subject' line would
+  sometimes be empty for bounce messages. This is now fixed.
+  Problem reported by Pepijn Hendriks.
+
+
+beta 8
+------
+
+* There were two clashes with tokens used to represent attributes.
+  The JAM zonegating bit is now : %
+  The locked status is now      : $
+
+* The variables (like %from, %to and so on) can also used in files used for
+  the 'AddNote' action.
+
+* Productcode in mailpackets now set to 0xFE instead of 0x00
+
+* The -q command line switch produced junk in the logfile.
+
+* NetMgr would open _every_ area as a netmail area, which is not correct
+  when doing an EchoCopy/Move. Mails created with EchoCopy/Move could
+  therfore give trouble.
+
+* When using the -@ or -# pseudo attributes, the debug output would show
+  incorrect information.
+
+* Doing a copy/move on messages without any kludges resulted in a
+  protection violation.
+
+* MoveMail lost names of attaches/requests from the subject line.
+
+* Action FILE in the DOS version gave problems, that could range from not
+  writing the output correctly to crashing the computer.
+
+* You can now use the variables (%from, %to etc) in Action Display. This
+  also fixes a problem that gamma 2 had when you specified % tokens in a
+  display action.
+
+* When scanning for a certain keyword on the subject line, it was not
+  possible to scan for filename for attaches and requests. In areas other
+  than JAM, this information is actually stored in the subject line, so
+  scanning should be possible (but it didn't work because NetMgr stores
+  this information separately).
+
+  NetMgr will now also scan the list of attached/requested files when
+  looking for a certain string in the subject.
+  So doing this...
+
+  Mask Allfix, *, *, *, ~TIC, +a
+  Action Delete
+
+  .. should now do what it's told (delete file attach messages that come
+  from allfix and show the word 'TIC" in the subject, or in other words:
+  that have a TIC file attachd).
+
+
+* Some other cosmetical things.
+
+
+beta 7
+------
+
+* Don't remember what happened here :-)
+
+
+beta 6
+------
+
+* The 'dest' keyword in XMASKs didn't work (at all).
+
+* NetMgr stripped the already existing trailing VIA lines when packing mail
+  (it just added it's own :-)
+
+* NetMgr now also allows the OR construction for attributes. So something
+  like this is now also possible:
+
+  XMASK
+      From Gerard van Essen
+      Orig 2:281/527.0
+      Attr +c OR +a+l OR +f-c
+  END
+
+  This mask will match for messages that are flavoured crash, or are
+  flavoured 'attach' and 'local', or flavoured 'request' but NOT crash.
+
+  Please note that this construction is not valid for the attributes that
+  need to search the nodelist (# and @). You can specify these attributes
+  like this, but they are checked once, separately from the other
+  attributes.
+  So you cannot specify:
+
+  Attr +c-@ OR -c+@
+
+  or something similar. You can only specify these attributes once and they
+  will then be carried over to all other attribute masks. In other words,
+  specifying this:
+
+  Attr +c-@ OR +l
+
+  will actually be expanded to:
+
+  Attr +c-@ OR +l-@
+
+
+beta 5
+------
+
+* Added the ability to run external programs from NetMgr.
+
+  The action to use for this is RUNEXTERNAL.
+  Format:
+
+  RUNEXTERNAL <program to use> <parameters>.
+
+  In the <paramaters> part, you can make use of several 'variables', whose
+  value depends on the contents of the header of the message that triggered
+  the action. The following variables are available:
+
+  from       - Name in the 'from' field of current message.
+  to         -             'to'
+  subject    -             'subject'
+  orig       - Origination address of current message (like 2:281/527).
+  dest       - Destination address of current message (like 2:281/527).
+  areadir    - Directory or base name of current area, board number if
+               Hudson. This is in the format that is also used in
+               NetMgr.cfg, so $<path+basename> for a Squish area,
+               !<path+basename> for a JAM area etc.
+  msgno      - Message number of current message ('relative' number for
+               Squish and Hudson)
+  realmsgno  - Real message number, for Squish (UMSGID) and Hudson (real
+               number in Hudson base, not the relative number in the area).
+               For JAM and *.MSG, this is always equal to msgno.
+  file       - Name of the file that contains the body of the message.
+  newfile    - Name of a new file to create if you want to replace the body
+               of the message with new text.
+  repfile    - Name of the file that should be created if you want to send
+               a message back to the sender of the message. (See below).
+  attach     - Files attached to this message (list of files).
+  request    - Files requested in this message (list of files [!passwords]).
+
+  (But then on one line, evidently).
+
+  Before running the external program, NetMgr will write the body of the
+  message to a file. This file (and other files) will be created in the
+  directory where NetMgr found it's config file. The path+name of this file
+  is available through the variable [file]. It will be:
+  "<path to config file>\netmsg.msg".
+
+  NetMgr will then run the external program, and check for the existence of
+  two files:
+
+  þ  "<path to config file>\netmsg.new" : if this file exists, NetMgr will
+     replace the body of the message with the contents of this file. The
+     path+name of this variable is available through the variable
+     [newfile].
+
+  þ  "<path to config file>\netmsg.rep": if this file exists, NetMgr will
+     send a message back to the sender of the message that triggered this
+     action.
+     What is actually done, is an XEMPTYBOUNCE action. For this action, the
+     netmsg.rep file is used as the body (where the variables like [from],
+     [to] etc. can be used), but where the first line of this .rep file is
+     used as the 'mask' for the reply header.
+     Because it actually _is_ an XEMPTYBOUNCE, it also follows the same
+     conventions as the XEMPTYBOUNCE action, so it initializes the fields
+     with a standard reply header, which makes it possible to use a simple
+     '*, *, *, *, *, *' mask (see XEMPTYBOUNCE action for more info).
+     The path+name of this variable is available through the variable
+     [repfile].
+
+  An example:
+
+  Action RUNEXTERNAL pgp.exe +batchmode -sta -u art -o [newfile] -z pass [file]
+
+  could expand to:
+
+  'pgp.exe +batchmode -sta -u art -o c:\net\netmsg.new -z pass
+                                                            c:\netmgr\net.msg'
+
+  This would run PGP on the message, and sign the text. The body of the
+  message will be replaced with a signed version of the text.
+
+  An example of usage of a .rep file could be:
+
+  Action RUNEXTERNAL reply.cmd [repfile]
+
+  And the contents of 'reply.cmd' could be:
+
+  @echo off
+  echo Automatic Reply, @myaka, *, *, Response to your message, * >> %1
+  echo Hello %%ffrom! >> %1
+  echo. >> %1
+  echo This is an automatic reply! >> %1
+  echo. >> %1
+  echo Greetings! >> %1
+
+  This would create a netmsg.rep file, and NetMgr would send back a small
+  message to the sender of the original message.
+
+
+* Several actions have a similar counterpart, that can place the resulting
+  message in another area.
+  The actions concerned are: the Bounce and XBounce 'family', Forward and
+  MakeMsg. In order to place the resulting message in another area, add
+  'IN' to the action name (to make BOUNCEIN, XBOUNCEIN, XEMPTYBOUNCEIN,
+  FORWARDIN etc), and add the path/name of the area to put the message in.
+
+  Some examples:
+
+  Action XBOUNCEIN $d:\msg\net bounce.txt The Bouncer, @myaka, *, *, *, +l
+
+  This will create a bounce message in the Squish area d:\msg\net.
+
+  Action FORWARDIN !c:\msgbase\netmail *, *, Pietje Puk, 2:2/2.0, *, +l
+
+  This will forward a message to 'Pietje Puk (2:2/0)' in the JAM style area
+  c:\msgbase\netmail.
+
+
+
+beta 4
+------
+
+* When deleting messages in *.MSG areas, NetMgr will attempt to correct the
+  lastread pointer so that it keeps pointing to an existing ('old')
+  message.
+
+
+* For *.MSG areas, you can now specify the optional 'renum' keyword when
+  you define the area using the 'ScanDir' keyword.. After scanning the
+  area, NetMgr will then renumber the area (and adjust the lastread pointer
+  when necessary).
+
+  Example of such a definition:
+
+  ScanDir c:\fd\netmail renum
+
+
+* TimEd will now by default add an INTL kludge to all newly generated
+  netmail (bounce, makemsg).
+
+
+* With the action 'FILE', NetMgr would 'eat' characters if a certain line
+  was longer than 79 characters and didn't contain any spaces. This is now
+  fixed.
+
+
+* New keyword: INTLFORCE
+  If you add this to your NetMgr.cfg, timEd will _force_ an INTL kludge on
+  any netmail it somehow writes (this includes messages touched through a
+  REWRITE, COPY/MOVE etc).
+
+
+* Fixed a problem for UUCPREWRITE on messages generated by Maximus (which
+  have a trailing ^A in their kludges).
+
+
+* For the Actions 'Forward' and 'MakeMsg' the header (that is: from, to,
+  subject, destination address, origination address and attributes) will
+  be initialized with the contents of the original message.
+
+  Putting a '*' in fields of the Masks for the Forward and MakeMsg actions
+  will, as a result, produce the contents of the original message.
+
+  An example:
+
+  Action Forward *, *, Kasper Kwant, 2:500/144.0, *, +l+c
+
+  A message like this:
+
+  From: Gerard, 2:281/527
+  To  : SysOp,  1:138/211
+  Subj: Test!
+  Attr: -
+  ----------------------------------
+
+  Will produce a message like this:
+
+
+  From: Gerard, 2:281/527
+  To  : Kasper Kwant, 2:500/144
+  Subj: Test!
+  Attr: Loc, Cra
+  ----------------------------------
+  * Forwarded by NetMgr+ 1.00.g2
+
+  Original message:
+  From:
+  To  :           <--- header of original message.
+  Subj:
+  ----------------
+  Bla, bla        <--- body of original message.
+
+
+* {+} The BOUNCE, HDRBOUNCE and EMPTYBOUNCE Actions have 'extended'
+  counterparts: XBOUNCE, XHDRBOUNCE and XEMPTYBOUNCE.
+
+  The format:
+  XBOUNCE <textfile for bouncetext> <full mask to use>
+
+  The first parameter is the textfile to add at the top of the bounce
+  message.
+  The second parameter is the mask to use for the bounce message. You can
+  specify a "*" for the fields you want the default to be used.
+
+  By default, NetMgr generates a full 'reply header' with the to: and from:
+  names and addresses reversed (compared to the original message) and the
+  same attributes and subject.
+
+  For example, for this message:
+
+  From: Gerard, 1:1/1
+  To  : SysOp,  1:138/211
+  Subj: Test!
+  Attr: Pvt Cra
+  ----------------------------------
+
+  The standard reply header is:
+
+  From: SysOp,  1:138/211
+  To  : Gerard, 1:1/1
+  Subj: Test!
+  Attr: Pvt Cra
+  ----------------------------------
+
+  And that will be the result if you specify a mask like:
+
+  Action XBounce c:\txt\bounce.txt *, *, *, *, *, *
+
+  However, if you make it:
+
+  Action XBounce c:\txt\bounce.txt The Bodyguard, 2:281/527.0, *, *, *, +l
+
+  The result would be:
+
+  From: The Bodyguard,  2:281/527
+  To  : Gerard,         1:1/1
+  Subj: Test!
+  Attr: Loc
+  ----------------------------------
+
+  The extended bounce actions are only available to registered users.
+
+
+* {+} The BOUNCE and XBOUNCE actions can now use variables in the textfiles
+  that can be inserted at the top of the message.
+
+  For a BOUNCE action like...
+
+  Action Bounce 2:281/527.0 c:\txt\bounce.txt
+
+  .. this is the file c:\txt\bounce.txt.
+
+  These variables will be expanded using the contents of the message-header
+  of the message you are bouncing. This gives you the opportunity to make
+  the messages a bit more 'personal'.
+
+  In the file, the use of the following variables is now allowed:
+
+  %to    :    The full name of the person that the the original message was
+              addressed to.
+
+  %fto   :    As %to, but only the first name of that person.
+
+  %from  :    The full name of the person who wrote the original message.
+
+  %ffrom :    As %from, but only the first name of that person.
+
+  %subj  :    Subject of the original message.
+
+  %orig  :    Address of the sender of the message (like
+              2:281/527)
+
+  %dest  :    Address of the recipient of the message
+              (like 2:281/527)
+
+  %time  :    Time the message was written (like 01:25)
+  %year  :    The year the message was written (like 1993)
+  %mon   :    The month the message was written (like jan,
+              feb etc)
+  %day   :    The day of the month msg was written (a
+              number)
+  %dow   :    The 'day of week' msg was written (like mon,
+              tue, wed etc)
+
+  So, the contents of the bounce file could be:
+
+  -=-
+
+  Hello %ffrom!
+
+  You sent a message to %to (%dest), dated %mon %day, %year.
+  The subject was: "%subj".
+
+  -=-
+
+  These variables can only be used by registered users of NetMgr.
+
+
+* PackMail and MoveMail will now add FMPT/TOPT kludges at the very start of
+  the kludges, instead of at the end. This seems to prevent problems at
+  Frodo systems that didn't correctly recognize file attaches addressed to
+  points in some cases.
+
+
+* New Action: DeleteAttach
+
+  This action will not only delete the message, but it will also look at
+  any attached files. When the 'Truncate when sent' flag is present on the
+  message, the file(s) will be truncated. When the 'Kill file when sent'
+  flag is present, the attached file(s) will be deleted.
+
+
+* New Action: ChangePathMove <new path>
+
+  This works exactly like 'ChangePath', but it also moves the attached
+  file(s) to the new directory.
+
+
+* Added the possibility to post files in a message from the command line.
+
+  In order to do this, use the POST command on the commandline.
+
+  To do a post, you first need to define an XMASK with DefineXMask in
+  NetMgr.cfg. In that mask, specify "from", "to", "subject", and "orig" for
+  echomail messages. For netmail messages, you need to add "dest" as well.
+  Adding 'attr' is allowed, but not required. If you don't specify any
+  attributes, NetMgr will default to (only) the 'local' attribute.
+
+  When generating the message, NetMgr will use the info in this XMASK to
+  generate the header for the message.
+
+  On the command line, you specify which xmask to use, what file to use as
+  body, the area to post in, and whether or not the area is an echomail
+  area. To do this, the following command line options are available:
+
+  -x : specify XMASK to use
+  -a : specify area to use (use leading !, # or $ to indicate msgbase format)
+  -e : specified area is an echomail area
+  -f : ASCII file to use as body for the message
+
+  Full example:
+
+  Provided the following XMASK is defined in NetMgr.cfg:
+
+  DefineXmask netpost
+
+     from    Gerard van Essen
+     to      NetMgr User
+     subject Answer to your query
+     orig    2:281/527.0
+     dest    2:2/0.0
+
+  End
+
+  The following command line...
+
+  NetMgr POST -xnetpost -a$c:\fd\netmail -fc:\txt\canned.rep
+
+  ... would generate a new netmail message in the Squish style area
+  'c:\fd\netmail', with the header specified (i.e.: to 'NetMgr User', from
+  'Gerard van Essen' etc), and with the textfile 'c:\txt\canned.rep' as
+  the body.
+
+  NetMgr will start up, read the config, open the area, post the message,
+  and then exit immediately (without scanning the netmail area as is
+  normally done).
+
+
+  Provided the following XMASK is defined in NetMgr.cfg:
+
+  DefineXmask rules
+
+     from    Moderator
+     to      All
+     subject The monthly rules
+     orig    2:281/527.0
+
+  End
+
+  The following command line...
+
+  NetMgr POST -xrules -a!c:\echo\artware -fc:\txt\artware.rul -e
+
+  ... would generate a new echomail message in the JAM style area
+  'c:\echo\artware', with the header specified (i.e.: to 'All', from
+  'Moderator' etc), and with the textfile 'c:\txt\artware.rul' as the body.
+
+
+* Added some outbound management capabilities, usable from the command
+  line. You can use one of the following commands on the command line:
+
+  þ POLL   : create a poll packet for a certain node.
+  þ GET    : create a filerequest for a certain node.
+  þ UPDATE : create an update request for a certain node.
+  þ SEND   : create a file attach for a certain node.
+  þ CHANGE : change mail status for mail waiting for a certain node.
+
+  To support this, the following command line options are used:
+
+  -s  : Status (also called 'flavour') of request/attach.
+  -n  : New status for mail (used for 'CHANGE').
+  -p  : Password to use for file request.
+  -#  : Node address of node to request files from / send files to.
+  -f  : File to send/request.
+
+  The 'POLL'   command needs: -# and -s.
+  The 'GET'    command needs: -#, -f and -s (optional: -p).
+  The 'UPDATE' command needs: -#, -f and -s (optional: -p).
+  The 'SEND'   command needs: -#, -f and -s.
+  The 'CHANGE' command needs: -#, -s and -n.
+
+  For the '-s' and '-n' options, the following flavours can be used:
+  normal, crash, imm, hold, dir.
+
+  Examples:
+
+  NetMgr POLL -#2:281/527 -scrash
+
+  Poll node 2:281/527, crash status.
+
+
+  NetMgr GET -#2:500/133 -fnewfiles -shold -psecret
+
+  Request from node 2:500/133, with 'hold' status, the file 'NEWFILES' and
+  use 'secret' as password for this request.
+
+
+  NetMgr SEND -fc:\autoexec.bat -simm -#1:138/211
+
+  Attach the file c:\autoexec.bat, with 'immediate' status, to 1:138/211.
+
+
+  NetMgr CHANGE -snormal -ncrash -#2:281/527.5
+
+  Change the flavour of all mail destined for 2:281/527.5 flavoured
+  'normal' to a new flavour of 'crash'.
+
+
+  For any of the above to work, you need to have the 'OutBound' keyword
+  defined in NetMgr.cfg.
+
+
+* NetMgr now has AKAmatching capabilities, that can be used in several
+  places.
+
+  In order to let NetMgr do this, add all the addresses you might want to
+  use to NetMgr.cfg (multiple 'homeaddress' statements are now allowed).
+  By default, NetMgr can do the matching for you without any further info.
+
+  This option is interesting if you have more than 1 address.
+  NetMgr can then be ordered to find the most appropriate address to use
+  when writing a message.
+
+  Say, for example, that you have two addresses: 2:281/527 and
+  60:100/112.
+
+  If you write a messages to 2:500/133, you probably want to use
+  your 2:281/527 address.
+  If you write a message to 60:100/1, you probably want to use
+  your 60:100/112 address.
+
+  In this case, NetMgr would try to find the address (AKA) that 'matches'
+  the destination address best.
+
+  It first looks for a matching zone, and if more than one match
+  is found, it'll try to find an address where both 'zone' and
+  'net' match. If there is still more than one match after that,
+  it will just take the first match.
+
+  If you want to make exceptions to these matching rules, or if you want to
+  do AKAmatching _within_ a certain net, you can force NetMgr to use
+  certain AKA by using the AKAFORCE keyword in NetMgr.cfg:
+
+  Format:
+
+  AKAFORCE <mask> <address to use>
+
+  example:
+
+  AKAFORCE 50:*/*.* 49:500/1
+
+  This means: always use 49:500/1 as address when mail is sent to any zone
+  50 address. This forcing will take precedence over 'automatic'
+  akamatching.
+
+  Where does it work?
+
+  First of all, NetMgr can now pick the correct AKA to use when generating
+  a new message using one of the BOUNCE, XBOUNCE, MakeMsg or Forward
+  actions.
+
+  In order to let NetMgr pick an appropriate address, use '@myaka' instead
+  of a 4D address. For example:
+
+  Action Bounce @myaka c:\txt\bounce.txt
+
+  Or:
+
+  Action Xbounce c:\txt\bounce.txt The Bouncer, @myaka, *, *, Go away!, *
+
+  You can also use the AKA matching with REWRITE. This is probably only
+  useful when you are currently using NetMgr already to do AKAmatching with
+  several masks. You may now be able to do it with one mask/action:
+
+  Mask Gerard van Essen, *, *, *, *, +l
+  Action Rewrite *, @myaka, *, *, *, *
+
+
+  Finally, you can also use it for the PackMail and MoveMail actions, for
+  the origination address:
+
+  Action PackMail @myaka *
+
+  This will pack all mail directly to their destination, and use a matching
+  AKA in the packet header as origination address. Please note that this
+  (obviously!) does not have any effect on the addresses used within the
+  packed messages! Only the packet header is affected by this!
+
+
+beta 3
+------
+
+*  Switched to Watcom for the DOS version.
+
+*  Switched to heavily modified message base code (as was also introduced
+   in timEd 1.10).
+
+*  Added some new attributes to be used:
+
+   2 = XX2 : officially unused/reserved
+   b = ARQ : is return receipt
+   g = CFM : confirm receipt request
+   h = LOK : message is locked
+   z = ZGT : JAM, zonegate bit
+   x = FAX : message is a FAX cover
+
+*  Fixed trap that occurred when echocopying empty messages.
+
+*  Immediate flavour (used by at least Xenia and McMail) is now supported
+   for Binkley style outbound mail packing.
+
+*  For JAM areas, NetMgr can now write NETMAIL/ECHOMAIL.JAM. Add the
+   keyword 'JAMLOG' to NetMgr.cfg and give the directory to put the files
+   in.
+   Example:
+
+   JamLog c:\fd\msgbase\
+
+
+*  Added eXtended Mask (XMASK) capabilities.
+
+   XMASKs allow you to specify many more criteria than a standard mask.
+   However, they also take a bit more room than a standard mask. They can
+   be used together with standard masks (even mixed within the same config).
+
+   To define an extended mask, use the XMASK keyword. An XMASK definition
+   always starts with this keyword, and always ends with a line with only
+   'End' on it. Between these two lines, search criteria are defined.
+
+   An example:
+
+   Xmask
+     from   Gerard van Essen
+   End
+
+   This defines an XMASK, that looks for messages that are FROM: 'Gerard
+   van Essen'.
+
+   You can specify more than one criterium. For a message to be a match, it
+   must satisfy _all_ requirements that are defined. So, if you have:
+
+   Xmask
+     from   Gerard van Essen
+     to     pietje puk
+   End
+
+   A message is only a match when it is from 'Gerard van Essen' _and_ to
+   'pietje puk'.
+
+   The following keywords can be used in an XMASK:
+
+   from      - who the message is from
+   to        - who the message is to
+   subject   - the subject of the message
+   attr      - attributes of a message (like +a-p etc, like a standard mask)
+   kludge    - a search text to be found in the kludges of a message
+   body      - a search text to be found in the body of a message
+
+   bodybytes <n> - how many bytes of the message body must be searched to find
+                   the string(s) specified to find in the body.
+   bodylines <n> - how many lines of the body to search (or actually
+                   paragraphs, separated by a CR (ASCII 13, '\r').
+
+   orig      - origination address of the message (like 2:281/527.0 - always 4D)
+   dest      - destination address of the message (like 2:281/527.0 - always 4D)
+ 
+   olderwritten <n>   - 'Date written' of the message must be older than n days.
+   olderprocessed <n> - 'Date processed' of the message must be older than n
+                         days (JAM, Squish, SDM).
+   olderread <n>      - 'Date msg read by recipient' of the message must be
+                         older than n days (JAM only).
+
+
+   When searching for a string (from, to, subject, body, kludges), you can
+   also enclose a string in either single or double quotes. This gives you
+   the opportunity to search for trailing and/or leading spaces.
+
+   Even when quotes are used, the ~ (substring) and ! (NOT search) tokens
+   are still supported, just like in normal MASKs. These tokens must be
+   entered inside the quote, so "~gerard" will look for the substring
+   'gerard' to be present anywhere.
+
+   Specifying a certain keyword more than once, gives you an AND search. As
+   mentioned before, _all_ requirements that are defined must be met. So
+   specifying:
+
+   Xmask
+     body "gerard"
+     body "timed"
+   End
+
+   .. will look for messages that have 'gerard' AND 'timed' in the body.
+   However, you can also do an OR search, by specifying more than one
+   element on the same line, enclosed in quotes and separated by the OR
+   keyword, like this:
+
+   Xmask
+     body "gerard" OR "timed"
+   End
+
+   This will look for messages that have 'gerard' in the body, OR that have
+   'timed' in the body.
+
+   You can also do a similar thing with addresses:
+
+   Xmask
+     orig 2:*/*.* OR 1:*/*.*
+   End
+
+   This will look for message originating from either zone 2 or zone 1.
+   You can also do an AND search with addresses:
+
+   Xmask
+     orig 2:*/*.*
+     orig !2:281/527.*
+   End
+
+   This will look for messages originating from zone 2, and NOT from node
+   2:281/527 or any of its points.
+
+   Finally, for from, to, subject, kludges, body, orig and dest, you can
+   also specify a filename as input. The filename must be preceded by a
+   '<', like this:
+
+   to  <c:\data\names.txt
+
+   The file itself should consist of a number of lines, all with one
+   string/addrress to look for. If any of the strings/addresses are found,
+   this will be considered a match.
+   In the case of names.txt, the file could look like this:
+
+   -=-
+   Areafix
+   Areamgr
+   SQafix
+   -=-
+
+   Any message addressed to 'Areafix', OR 'Areamgr' OR 'SQafix' will be a
+   match.
+   Leading and trailing spaces on a line in the file will be stripped.
+   Quotes are not allowed. However, use of the '~' and '!' tokens _is_
+   allowed.
+
+
+   One or more XMASKs must be combined with one or more actions, just like
+   a standard MASK:
+
+   XMASK
+     from  Gerard van Essen
+   End
+   Action Delete
+
+
+   You can also define an XMASK, give it a name, and use it later on in the
+   .cfg file. To define an XMASK, use the 'DefineXmask' keyword:
+
+   DefineXmask <mask name>
+     ...
+     <mask criteria>
+     ...
+   End
+
+   Like this:
+
+   DefineXmask personal
+      to "Gerard van Essen" OR "gerard van.essen" OR "art" OR "Geer art"
+   End
+
+   Later on, you can then use the XMASK named personal again:
+
+   XMASK personal
+   Action Move $c:\mail\personal
+
+   Pfffffffff....  I think this more or less explains the new XMASK
+   capabilities.
+
+
+beta 2
+------
+
+*  EchoCopy/Move now check for an already existing Origin/Tearline and
+   strip it off before adding a new and correct Origin line.
+
+*  Using multiple actions for one Mask in Squish areas with a 'max msgs'
+   limit set could cause trouble. If the first action added a message to
+   the area ('bounce' for example), NetMgr would lose it's orientation (due
+   to the 'sliding' message numbers) and perform subsequent actions on the
+   wrong message. This was particularly good fun for 'Action Delete' and
+   similar..
+
+*  The 'zone' entries in a message packet header were not correctly filled
+   (PackMail, MoveMail).
+
+*  NetMgr wouldn't correctly detect a move/copy to the same area. That is
+   now properly catched.
+
+*  Action Packmail and MoveMail can now have a packet password. Add this as
+   an extra parameter (optional), like this:
+
+   Action PackMail 2:281/527.0 2:281/500.0 secret
+
+   NetMgr will now use 'secret' as password for the packet for 281/500.
+
+*  Debug mode would not correctly show the number of the mask that matched
+   (was always number 0).
+
+*  Cosmetic change VIA lines (pointnumber will be stripped if 0).
+
+
+beta 1
+------
+
+*  Binkley mailpacking had mixed up 'truncate file when sent' and 'delete
+   file when sent' actions. The file would be truncated when it should be
+   deleted and v.v.
+
+*  In mailpackets generated by NetMgr, the date generated would be
+   incorrect (NetMgr lived 80 years in the past :-).
+
+*  NetMgr would accept '*' as origination address in several actions
+   (Packmail, MoveMail, Bounce actions, EchoCopy/Move). This is not
+   supported and can lead to problems. NetMgr will now check for this while
+   reading the config.
+
+*  NetMgr would not recognize certain attributes (like 'file request') in
+   Hudson areas.
+
+*  More than one EchoCopy action for the same mask would result in addition
+   of multiple tearline/origin combinations.
+
+*  AddNote and Bounce will not add dashes ('--') and empty lines around
+   your text (that is added at the top of the message) anymore. If you want
+   it, add it to your own text. If you don't want it, you now finally got
+   rid of it :-)
+
+*  New Action: Display <line to display>
+
+   This one will display a line of text on the screen and in the logfile.
+   You can use this to add details about certain actions to the logfile.
+   Example:
+
+   Mask *, *, Pietje Puk, *, *, *
+   Action Display Deleted message to Pietje Puk!
+   Action Delete
+
+   Whenever this action is executed, the line 'Deleted message to Pietje
+   Puk!' will be shown on the screen and added to the logfile. Leading and
+   trailing spaces are not touched, the line is displayed exactly as found
+   in the config (The first space, between 'Display' and 'Deleted' in this
+   case, *does* of course get stripped..).
+
+   Please note that some actions prevent NetMgr from looking for more
+   actions to perform. Delete is one of them: after a message is deleted,
+   there is nothing that can be done with that message anymore and NetMgr
+   stops scanning for more actions. (Echo-)move is another example.
+
+   Of course, 'Display' is something that *can* be done even after a
+   message is deleted, it is an exception to this. But I have not changed
+   NetMgr logic yet, keep that in mind.
+
+   So this:
+
+   Mask *, *, Pietje Puk, *, *, *
+   Action Delete
+   Action Display Deleted message to Pietje Puk!
+
+   Doesn't work, because NetMgr will never get to the 'Display' action.
+
+
