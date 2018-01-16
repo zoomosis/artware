@@ -9,9 +9,9 @@
 # Turbo C, TC++
 #
 
-#FLAGS=-5r -mf -sg -s -bm -ol+rs -wx -fh -zp1 -bt=OS2 -id:\tc\api;d:\timed\utils;d:\database\cbt
+#FLAGS=-5r -mf -sg -s -bm -ol+rs -wx -zp1 -bt=OS2 -id:\tc\api;d:\timed\utils;d:\database\cbt
 
-FLAGS=-mf -bm -sg -od -d2 -wx -fh -bt=OS2 -zp1 -id:\tc\api;d:\timed\utils;d:\database\cbt
+FLAGS=-zq -mf -bm -sg -od -d2 -wx -bt=OS2 -zp1 -ix:\api;x:\timed\utils;x:\database\cbt
 
 .c : ..\
 .c : ..\utils
