@@ -1,19 +1,19 @@
 system DOS4G
-name d:\timed\tim386.exe
+name x:\timed\tim386.exe
 option newfiles
 option eliminate
 option stack=5k
 option cache
 option map
 option description 'timEd FidoNet <tm> message editor'
-option stub=d:\timed\wstub.exe
+option stub=x:\timed\wstub.exe
 
 #debug all
 
 option verbose
 
-library \tc\api\386api
-library \database\cbt\cb386
+library x:\api\386api
+#library x:\database\cbt\cb386
 
 file  areatags.obj,ATTACH.obj,bmg.obj,CHECKCC.obj,choose.obj,
  getmsg.obj,globals.obj,header.obj,help.obj,key386.obj,input.obj,
@@ -26,5 +26,5 @@ file  areatags.obj,ATTACH.obj,bmg.obj,CHECKCC.obj,choose.obj,
  timed.obj,tosslog.obj,TXTBUILD.obj,unrec.obj,markchn.obj,
  working.obj,wrap.obj,xfile.obj,video.obj,scrnutil.obj,picklist.obj,macro.obj,
  charset.obj, filter.obj, fd.obj, v7.obj, nodelist.obj,
- nodebrow.obj, task386.obj
+ nodebrow.obj, task386.obj, private.obj
 
