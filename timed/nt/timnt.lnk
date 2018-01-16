@@ -12,8 +12,8 @@ debug all
 option verbose
 
 #libpath d:\watcom\lib386\os2
-library \tc\api\ntapi
-library \database\cbt\cbnt
+library x:\api\ntapi
+#library x:\database\cbt\cbnt
 #library d:\watcom\lib386\os2\clib3r.lib
 
 file  areatags.obj,ATTACH.obj,bmg.obj,CHECKCC.obj,choose.obj,
