@@ -7,7 +7,7 @@
 #include <share.h>
 
 #include "includes.h"
-#include <cbtree.h>
+#include "cbtreex.h"
 
 typedef struct
 {
