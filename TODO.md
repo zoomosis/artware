@@ -1,2 +1,3 @@
 - Patch old Y2K bugs
 - Fix Windows NT startup bug
+- Merge patches from UNIX version
