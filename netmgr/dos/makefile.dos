@@ -9,20 +9,20 @@
 # Turbo C, TC++
 #
 
-FLAGS=-ml -ol+rsf -wo -s -wx -fh -zp1 -bt=DOS -id:\tc\msgapi;d:\tc\exec
-
 #FLAGS=-ml -od -d2 -wo -wx -fh -zp1 -bt=DOS -id:\tc\msgapi;d:\tc\exec
 
-.c : ..\
-.c : \tc\exec\
+FLAGS=-zq -ml -ol+rsf -wo -s -wx -zp1 -bt=DOS -ix:\api;x:\exec
 
-.asm : \tc\exec\
+.c : ..\
+.c : x:\exec\
+
+.asm : x:\exec\
 
 .c.obj : .AUTODEPEND
    wcc $(FLAGS) $[*
 
 .asm.obj :
-    d:\borlandc\bin\tasm /zi/t/mx $[*
+    c:\bc\bin\tasm /zi/t/mx $[*
 
 
 ..\netmgr.exe: netmgr.obj register.obj config.obj mem.obj wrap.obj &

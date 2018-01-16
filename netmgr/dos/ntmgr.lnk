@@ -8,7 +8,7 @@ option map
 #debug all
 option verbose
 
-library \tc\api\wcdr.lib
+library x:\api\dos\wcdr.lib
 
 file  netmgr.obj, register.obj, config.obj, mem.obj, wrap.obj,
       txtbuild.obj, version7.obj, fdnode.obj, gigo.obj, binkpack.obj,
