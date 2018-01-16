@@ -10,7 +10,7 @@
 #
 
 LIBIT=wlib.exe
-LIBNAME=d:\tc\api\ntapi.lib
+LIBNAME=x:\api\ntapi.lib
 
 FLAGS=-d2 -mf -od -wx -bm -fh -zp1 -bt=NT
 #FLAGS=-5r -s -sg -mf -ol+rs -wx -bm -fh -zp1 -bt=NT
