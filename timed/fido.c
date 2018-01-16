@@ -5,8 +5,8 @@
 #include <share.h>
 
 #include "includes.h"
-#include <cbtree.h>
 
+#include "cbtreex.h"
 
 int fidolist;
 long reclength = -1;
