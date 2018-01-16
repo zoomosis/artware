@@ -1,3 +1,2 @@
-- timEd DOS & DOS4GW makefiles
 - Patch old Y2K bugs
 - Fix Windows NT startup bug
