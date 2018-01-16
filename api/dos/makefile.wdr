@@ -10,8 +10,8 @@
 #
 
 LIBIT=wlib
-FLAGS=-ml -ol+rsf -wo -s -wx -fh -zp1 -bt=DOS
 #FLAGS=-ml -d2 -odf -wo -wx -fh -zp1 -bt=DOS
+FLAGS=-zq -ml -ol+rsf -wo -s -wx -zp1 -bt=DOS
                                            
 LIBNAME=wcdr.lib
 
