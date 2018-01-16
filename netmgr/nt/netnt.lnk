@@ -9,7 +9,7 @@ option description 'NetMgr, netmail manager for JAM, Squish, *.MSG and Hudson'
 debug all
 option verbose
 
-library \tc\msgapi\ntapi
+library \api\ntapi
 
 file  netmgr.obj, register.obj, config.obj, wrap.obj,
       txtbuild.obj, version7.obj, fdnode.obj, gigo.obj, binkpack.obj,
