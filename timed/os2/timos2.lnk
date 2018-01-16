@@ -1,5 +1,5 @@
 system os2v2
-name d:\timed\timedp.exe
+name x:\timed\timedp.exe
 option newfiles
 option eliminate
 option stack=32k
@@ -14,8 +14,8 @@ debug all
 option verbose
 
 #libpath d:\watcom\lib386\os2
-library \tc\api\os2api
-library \database\cbt\cbos2
+library x:\api\os2api
+#library \database\cbt\cbos2
 #library d:\watcom\lib386\os2\clib3r.lib
 
 file  areatags.obj,ATTACH.obj,bmg.obj,CHECKCC.obj,choose.obj,
