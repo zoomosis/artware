@@ -8,12 +8,12 @@
 
 #include "includes.h"
 
-#include <cbtree.h>
+#include "cbtreex.h"
 #include "nodelist.h"
 
 
 void       show_node_details(ADDRLIST *current, int curline);
-ADDRLIST * GetLoad(Cbtree *cbt);
+ADDRLIST * GetLoad(NODEHANDLE *nhandle);
 ADDRLIST * GetAddrCopy(ADDRLIST *in);
 ADDRLIST * NodeLookup(char *name, int sysop, int prompt);
 void       FreeNodesList(ADDRLIST *first);
