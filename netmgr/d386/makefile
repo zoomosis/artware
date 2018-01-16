@@ -9,10 +9,7 @@
 # Turbo C, TC++
 #
 
-
-#FLAGS=-5r -mf -ol+rs -s -wx -fh -zp1 -bt=NT -ic:\tc\msgapi
-
-FLAGS=-mf -od -d2 -wx -fh -bt=DOS4G -zp1 -ic:\tc\msgapi
+FLAGS=-zq -mf -od -d2 -wx -bt=DOS4G -zp1 -ix:\api
 
 .c : ..\
 
