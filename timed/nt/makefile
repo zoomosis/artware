@@ -11,7 +11,7 @@
 
 #FLAGS=-5r -mf -s -ol+rs -wx -fh -zp1 -bt=NT -ic:\tc\msgapi;c:\timed\utils;c:\database\cbt
 
-FLAGS=-mf-od -d2 -wx -fh -bt=NT -zp1 -id:\tc\msgapi;d:\timed\utils;d:\database\cbt
+FLAGS=-zq -mf -od -d2 -wx -bt=NT -zp1 -ix:\api;x:\timed\utils;x:\database\cbt
 
 .c : ..\
 .c : ..\utils
