@@ -956,7 +956,7 @@ sword near _SdmRescanArea(MSG *mh)
 
 #endif
 
-#if defined(__MSDOS__) || defined(__DOS__)
+#if defined(__MSDOS__) || defined(__DOS__) || defined(__DOS4GW__)
 
 sword near _SdmRescanArea(MSG *mh)
 {

@@ -10,22 +10,22 @@
 #
 
 LIBIT=wlib.exe
-LIBNAME=d:\tc\api\386api.lib
+LIBNAME=x:\api\386api.lib
 
-#FLAGS=-d2 -mf -od -wx -fh -zp1 -bt=DOS4G
-FLAGS=-5r -s -mf -ol+rs -wx -bm -fh -zp1 -bt=DOS4G
+#FLAGS=-d2 -mf -od -wx -zp1 -bt=DOS4G
 
-.asm.obj :
-    d:\borlandc\bin\tasm /t/mx /d__FLAT__ $[*
+FLAGS=-zq -5r -s -mf -ol+rs -wx -bm -zp1 -bt=DOS4G -D__DOS4GW__=1
 
 .c : ..\
+.asm : ..\
 
 .c.obj : .AUTODEPEND
    wcc386 $(FLAGS) $[*
 
 # assemble .asm files with TASM
 
-
+.asm.obj :
+    c:\bc\bin\tasm /t/mx /d__FLAT__ $[*
 
 $(LIBNAME): 1stchar.obj msgapi.obj cvtdate.obj date2bin.obj dosdate.obj &
  fexist.obj flush.obj months.obj parsenn.obj qksort.obj strftim.obj &
