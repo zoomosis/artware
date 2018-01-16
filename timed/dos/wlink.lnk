@@ -12,4 +12,4 @@ system begin 386
     op stub=wstub.exe
     format os2 le
 end
-@%watcom%\binb\wlsystem.lnk
+@%watcom%\binw\wlsystem.lnk
