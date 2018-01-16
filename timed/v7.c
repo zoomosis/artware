@@ -7,7 +7,7 @@
 #include <share.h>
 
 #include "includes.h"
-#include <cbtree.h>
+#include "cbtreex.h"
 
 /* This table has been modified to minimize searches */
 char unwrk[] = " EANROSTILCHBDMUGPKYWFVJXZQ-'0123456789";
