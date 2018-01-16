@@ -10,9 +10,9 @@
 #
 
 
-#FLAGS=-5r -mf -ol+rs -s -wx -fh -zp1 -bt=NT -ic:\tc\msgapi
+#FLAGS=-5r -mf -ol+rs -s -wx -zp1 -bt=NT -ic:\tc\msgapi
 
-FLAGS=-mf -od -d2 -wx -fh -bt=NT -zp1 -ix:\api
+FLAGS=-zq -mf -od -d2 -wx -bt=NT -zp1 -ix:\api
 
 .c : ..\
 

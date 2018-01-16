@@ -9,10 +9,9 @@
 # Turbo C, TC++
 #
 
-
-FLAGS=-5r -mf -sg -bm -ol+rs -s -wx -fh -zp1 -bt=OS2 -ix:\api
-
 #FLAGS=-mf -bm -sg -od -d2 -wx -fh -bt=OS2 -zp1 -id:\tc\msgapi
+
+FLAGS=-zq -5r -mf -sg -bm -ol+rs -s -wx -zp1 -bt=OS2 -ix:\api
 
 .c : ..\
 
