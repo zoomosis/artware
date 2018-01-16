@@ -1,2 +1,0 @@
-wmake
-wlink @timos2
