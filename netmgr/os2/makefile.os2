@@ -10,14 +10,14 @@
 #
 
 
-FLAGS=-5r -mf -sg -bm -ol+rs -s -wx -fh -zp1 -bt=OS2 -id:\tc\msgapi
+FLAGS=-5r -mf -sg -bm -ol+rs -s -wx -fh -zp1 -bt=OS2 -ix:\api
 
 #FLAGS=-mf -bm -sg -od -d2 -wx -fh -bt=OS2 -zp1 -id:\tc\msgapi
 
 .c : ..\
 
 .c.obj : .AUTODEPEND
-   c:\watcom\binw\wcc386 $(FLAGS) $[*
+   wcc386 $(FLAGS) $[*
 
 ..\netmgrp.exe: netmgr.obj register.obj config.obj wrap.obj &
    txtbuild.obj version7.obj fdnode.obj gigo.obj binkpack.obj command.obj &

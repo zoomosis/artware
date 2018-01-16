@@ -10,7 +10,7 @@
 #
 
 LIBIT=wlib.exe
-LIBNAME=d:\tc\api\os2api.lib
+LIBNAME=x:\api\os2api.lib
 
 #FLAGS=-d2 -mf -od -wx -bm -fh -zp1 -bt=OS2
 FLAGS=-5r -s -sg -mf -ol+rs -wx -bm -fh -zp1 -bt=OS2
