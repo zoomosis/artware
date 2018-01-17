@@ -22,7 +22,7 @@ unsigned char   pos, ll;
 
 
 
-LINE *fastFormattext(char *txt, int llen)
+LINE *fastFormatText(char *txt, int llen)
 {
    LINE  *first,
          *last;
