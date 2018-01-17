@@ -18,6 +18,8 @@
 
 #ifdef __NT__
 
+#define WIN32_LEAN_AND_MEAN
+
    #include <windows.h>
  
 #endif
@@ -459,7 +461,7 @@ void biprinteol(int x, int y, int attr1, int attr2, unsigned char *line, char se
 
    #ifdef __OS2__
 
-     VioWrtNCell(&cell, (int) (maxx-len-y), x, y+len, 0);
+     VioWrtNCell((PBYTE) &cell, (int) (maxx-len-y), x, y+len, 0);
 
    #else    // NT
 
@@ -818,7 +820,7 @@ finito:
 
    VioWrtCharStrAtt(line, len, x, y, (PBYTE) &attr, 0);
 
-   VioWrtNCell(&cell, (int) maxx-len-y, x, y+len, 0);
+   VioWrtNCell((PBYTE)&cell, (int) maxx-len-y, x, y+len, 0);
  
  #elif defined(__NT__)
 
@@ -957,7 +959,7 @@ finito:
 
    VioWrtCharStrAtt(line, len, x, y, (PBYTE) &attr, 0);
 
-   VioWrtNCell(&cell, (int) maxx-len-y, x, y+len, 0);
+   VioWrtNCell((PBYTE)&cell, (int) maxx-len-y, x, y+len, 0);
 
  #elif defined (__NT__)
 
@@ -1070,7 +1072,7 @@ void printc(int x, int y, int attr, unsigned char token)
   #else
    USHORT cell = token | (attr<<8);
 
-   VioWrtNCell(&cell, 1, x, y, 0);
+   VioWrtNCell((PBYTE)&cell, 1, x, y, 0);
   #endif
 
 }
@@ -1103,7 +1105,7 @@ void cls(void)
 
       USHORT cell = 0x0720;
 
-      VioScrollUp(0,0,-1,-1,-1,&cell,0);
+      VioScrollUp(0,0,-1,-1,-1,(PBYTE)&cell,0);
 
    #elif defined(__NT__)
 
@@ -1191,7 +1193,7 @@ void clsw(unsigned char colour)
 //      USHORT cell = 0x0720;
       USHORT cell = 0x0020 | (colour << 8);
 
-      VioScrollUp(0,0,-1,-1,-1,&cell,0);
+      VioScrollUp(0,0,-1,-1,-1,(PBYTE)&cell,0);
 
    #elif defined(__NT__)
 
@@ -1323,7 +1325,7 @@ loop:
 
 /*    BYTE Cell[2] = {'*', 0x07); */
 
-   VioScrollUp(y1,x1,y2,x2,-1,&cell,0);
+   VioScrollUp(y1,x1,y2,x2,-1,(PBYTE)&cell,0);
 
    #elif defined (__NT__)
    COORD      coord;

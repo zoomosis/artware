@@ -77,6 +77,7 @@ typedef struct _saved_screen
 
 #ifdef __NT__
 
+#define WIN32_LEAN_AND_MEAN
    #include <windows.h>
    extern HANDLE ScreenHandle;
    USHORT VioWrtCellStr (PCH pchCellString, USHORT cbCellString, USHORT usRow, USHORT usColumn, USHORT hvio);
@@ -196,7 +197,7 @@ void savescreen()
 
    #else
 //   gettext(1,1,maxx,maxy,scrptr->thisscreen);
-   VioReadCellStr(scrptr->thisscreen, &len, 0, 0, 0);
+   VioReadCellStr((PBYTE) scrptr->thisscreen, &len, 0, 0, 0);
    #endif
 
    if(!scrnstack) scrnstack = scrptr;
@@ -231,7 +232,7 @@ void putscreen()
 
    #else
 //   puttext(1,1,maxx,maxy,temp->thisscreen);
-   VioWrtCellStr(temp->thisscreen, maxx*maxy*2, 0, 0, 0);
+   VioWrtCellStr((PBYTE) temp->thisscreen, maxx*maxy*2, 0, 0, 0);
    #endif
 
    free(temp->thisscreen);
@@ -270,7 +271,7 @@ void bios_scroll_up(int count, int sr, int sc, int er, int ec, int attr)
      #else
 
      USHORT cell = 32 | (attr<<8);
-     VioScrollUp(sr, sc, er, ec, count, &cell, 0);
+     VioScrollUp(sr, sc, er, ec, count, (PBYTE) &cell, 0);
 
      #endif
 
@@ -477,8 +478,8 @@ loop_vert:
 
    cell = lines[5] | (color<<8);
 
-   VioScrollDn(x1+1, y1, x2-1, y1, x2-x1-1, &cell, 0);
-   VioScrollDn(x1+1, y2, x2-1, y2, x2-x1-1, &cell, 0);
+   VioScrollDn(x1+1, y1, x2-1, y1, x2-x1-1, (PBYTE)&cell, 0);
+   VioScrollDn(x1+1, y2, x2-1, y2, x2-x1-1, (PBYTE)&cell, 0);
 
    #endif
 
@@ -591,8 +592,15 @@ void xgettext(unsigned short x1, unsigned short y1, unsigned short x2, unsigned 
 
    #else
    int i;
-   int regellen = (x2-x1+1)*2;
+#ifdef __OS2__
+   USHORT regellen;
+#else
+   int regellen;
+#endif
+
    char *fromwhere;
+
+   regellen = (x2-x1+1)*2;
 
    for(i=y1-1; i<y2; i++)
      {

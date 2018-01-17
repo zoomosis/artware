@@ -46,7 +46,8 @@ void   checklines   (LINE *first);
 
 int  MakeHeader    (MSG *areahandle, MMSG *curmsg, int reply, AREA *area, UMSGID reply_to_id, char *subject, MMSG *newmmsg);
 int  EditHeader    (MSG *areahandle, MMSG *curmsg, int address, int aka, int domatch, AREA *area);
-int  SetAttributes (MMSG *curmsg, int netmail, int fullscreen);
+int  SetAttributes (MMSG *curmsg, word base, int fullscreen);
+
 void statusbar     (char *s);
 int  matchaka      (MIS *mis);
 void show_help     (int cat);

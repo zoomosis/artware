@@ -12,7 +12,7 @@
 
 // ===============================
 
-#if defined(__WATCOMC__) && defined(__DOS__)
+#if defined(__WATCOMC__) && defined(__DOS__) && !defined(__FLAT__)
 
 dword coreleft(void)
 {

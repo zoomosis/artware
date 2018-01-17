@@ -112,7 +112,7 @@ void FilterMemory(MMSG *curmsg, int realbody)
      }
 
    if(curmsg->txt)
-      CheckLines(curmsg->txt);
+      checklines(curmsg->txt);
 
    if(origin) mem_free(origin);
 
