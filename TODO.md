@@ -7,6 +7,9 @@
 
 - Double-check Y2K patches and test where possible
 
+- Test Hudson code. Probably need to use old Y2K-patched timEd to verify
+  data integrity. (Can do this on SDM, Squish & JAM, too.)
+
 - Fix OS/2 startup crash where screen is wider than 127 columns
 
 - Merge any recent patches or bug fixes from the UNIX version
