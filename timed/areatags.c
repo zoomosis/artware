@@ -86,7 +86,7 @@ int ChooseTagset(void)
      setlist[i] = mem_strdup(temp);
      }
 
-   choice = picklist(setlist, NULL, NULL, 5, 10, 20, 79);
+   choice = picklist(setlist, NULL, 5, 10, 20, 79);
 
    free_picklist(setlist);
 
