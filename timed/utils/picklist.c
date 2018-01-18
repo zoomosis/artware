@@ -1,7 +1,10 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <malloc.h>
 
+#include "..\includes.h"
+#include "..\idlekey.h"
 #include "video.h"
 #include "scrnutil.h"
 
@@ -89,7 +92,7 @@ int picklist(char **choices, char **help, int y1, int x1, int y2, int x2)
        biprint(y1+1+l-start, x1+1, col, colhl, choices[l], ' ');
        }
 
-     switch(key=get_idle_key(1))
+     switch(key=get_idle_key(1, GLOBALSCOPE))
         {
         case 336:      /* down */
           cur++;
