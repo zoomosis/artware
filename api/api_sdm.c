@@ -1533,7 +1533,7 @@ char * MIS2SDM(MSGH *msgh, MIS *mis, struct _omsg *sdmhdr, char *kludges)
    timestamp = JAMsysLocalTime(&mis->msgwritten);
    sprintf(sdmhdr->date, "%02d %s %02d  %02d:%02d:%02d",
        timestamp->tm_mday, months_ab[timestamp->tm_mon],
-       timestamp->tm_year, timestamp->tm_hour,
+       timestamp->tm_year % 100, timestamp->tm_hour,
        timestamp->tm_min, timestamp->tm_sec);
 
    Files2Subject(mis, sdmhdr->subj);
