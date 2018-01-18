@@ -1,15 +1,19 @@
 - timEd: #pragma pack(__push, 1) for structures requiring it
+  (partly done)
+
+- NetMgr: Remaining Y2K patches
+
+- Update README.md with latest news and build instructions
+
+- timEd & NetMgr: Double-check Y2K patches and test where possible
+
+- timEd: Test Hudson code. Probably need to use old Y2K-patched timEd to
+  verify data integrity. (Can do this on SDM, Squish & JAM, too.)
+
+- timEd: Fix OS/2 startup crash where screen is wider than 127 columns
+
+- timEd: Merge any recent patches or bug fixes from the UNIX version
 
 - timEd: Fix: Popup windows in NT build erroneously close when a keyboard
   modifier key is pressed (very minor bug)
 
-- NetMgr: Remaining Y2K patches
-
-- Double-check Y2K patches and test where possible
-
-- Test Hudson code. Probably need to use old Y2K-patched timEd to verify
-  data integrity. (Can do this on SDM, Squish & JAM, too.)
-
-- Fix OS/2 startup crash where screen is wider than 127 columns
-
-- Merge any recent patches or bug fixes from the UNIX version
