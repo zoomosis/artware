@@ -1,3 +1,5 @@
+#ifndef __TPROTOS_H__
+#define __TPROTOS_H__
 
 int check_attach (MIS *mis, char *mask, int copyfiles);
 void     writefa(MIS *mis, MSG *areahandle, AREA *area, int exceptfirst);
@@ -53,13 +55,6 @@ int  matchaka      (MIS *mis);
 void show_help     (int cat);
 int  addrcmp       (NETADDR *one, NETADDR *two);
 
-int  get_idle_key   (char allowstuff, int scope);
-void stuffkey       (int key);
-void kbflush        (void);
-void check_enhanced (void);
-int  xkbhit         (void);
-void MacroStart     (sword i);
-
 int   getstring(int row, int col, char *answer, int len, int maxlen, char *legalset, word colour, word exitcol);
 dword MsgList(MSG *areahandle, AREA *area, dword curno, char wide);
 
@@ -74,7 +69,8 @@ int check_node(MIS *mis, int aka, int prompt);
 
 int  pickone(char **choices, int y1, int x1, int y2, int x2);
 void free_picklist(char **choices);
-int picklist(char **choices, char **help, char *title, int y1, int x1, int y2, int x2);
+//int picklist(char **choices, char **help, char *title, int y1, int x1, int y2, int x2);
+int picklist(char **choices, char **help, int y1, int x1, int y2, int x2);
 
 
 void PrintMessage(MMSG *curmsg, AREA *area, MSG *areahandle, int hardcopy, int tagged, int what);
@@ -294,8 +290,4 @@ int   BePrivate(AREA * area);
 int   CurrentIsNotLast(AREA *area, MSG *areahandle);
 dword GetNextPrivate(AREA *area, MSG *areahandle);
 
-
-
-
-
-
+#endif

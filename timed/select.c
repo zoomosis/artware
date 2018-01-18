@@ -1,4 +1,5 @@
 #include "includes.h"
+#include "idlekey.h"
 #include <jam.h>
 
 //#define __NOHMB__
@@ -1387,7 +1388,7 @@ int SetView(void)
 {
    int choice;
 
-   choice = picklist(views, NULL, NULL, maxy/2-2, 26, maxy, maxx);
+   choice = picklist(views, NULL, maxy/2-2, 26, maxy, maxx);
 
    if(choice == -1)
      return -1;
