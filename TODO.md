@@ -1,3 +1,9 @@
-- Verify all Y2K patches
-- Fix support for Alt keys in NT version. Ctrl and Fn keys already work.
-- Merge any patches or bug fixes from the UNIX version
+- timEd: #pragma pack(__push, 1) for structures requiring it
+
+- NetMgr: Y2K patches
+
+- Double-check Y2K patches and test where possible
+
+- Fix OS/2 startup crash where screen is wider than 127 columns
+
+- Merge any recent patches or bug fixes from the UNIX version
