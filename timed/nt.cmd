@@ -1,3 +1,3 @@
-cd os2
+cd nt
 wmake %1
 cd ..

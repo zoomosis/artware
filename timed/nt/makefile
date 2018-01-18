@@ -1,36 +1,38 @@
-#############################################################################
-##                         MsgAPI "generic makefile"                       ##
-#############################################################################
+# timEd makefile for 32-bit Windows NT build using Watcom
 
-# If the LIB-making stuff doesn't work with NDMAKE and TLIB, take your
-# MAKE.INI and edit out the ".RESPONSE_LIB:" line.
+TARGET=..\timednt.exe
 
-#
-# Turbo C, TC++
-#
+CC=wcl386
+#CFLAGS=-5r -mf -s -ol+rs -wx -fh -zp1 -bt=NT -I..\api -Iutils -Ix:\database\cbt
+CFLAGS=-zq -mf -od -d2 -wx -bt=nt -l=nt -zp1 -I..\..\api -I..\utils
+#COPT=-oneatx
+LIB=wlib
+LFLAGS=-q
+SRC_DIR=..
+MSGAPI=..\..\api\ntapi.lib
 
-#FLAGS=-5r -mf -s -ol+rs -wx -fh -zp1 -bt=NT -ic:\tc\msgapi;c:\timed\utils;c:\database\cbt
-
-FLAGS=-zq -mf -od -d2 -wx -bt=NT -zp1 -ix:\api;x:\timed\utils;x:\database\cbt
-
-.c : ..\
-.c : ..\utils
-
-.c.obj : .AUTODEPEND
-   wcc386 $(FLAGS) $[*
-
-..\timednt.exe : areatags.obj ATTACH.obj bmg.obj CHECKCC.obj choose.obj &
-  SELECT.obj shel2dos.obj SHOWHDR.obj SHOWINFO.obj SHOWMAIL.obj &
+OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
+  select.obj shel2dos.obj showhdr.obj showinfo.obj showmail.obj &
   getmsg.obj globals.obj header.obj help.obj idlekey.obj input.obj &
   list.obj lock.obj maint.obj marklist.obj mem.obj message.obj &
-  cleanidx.obj clock.obj CONFIG.obj COPYMSG.obj DIRLIST.obj EDIT.obj &
-  PICKONE.obj register.obj print.obj printer.obj &
-  quotos2.obj READAREA.obj repedit.obj REPLY.obj request.obj &
-  errorrpt.obj fido.obj FIND.obj getbody.obj GETFMT.obj &
-  timed.obj tosslog.obj TXTBUILD.obj unrec.obj nodeglue.obj &
+  cleanidx.obj clock.obj config.obj copymsg.obj dirlist.obj edit.obj &
+  pickone.obj register.obj print.obj printer.obj &
+  quotos2.obj readarea.obj repedit.obj reply.obj request.obj &
+  errorrpt.obj fido.obj find.obj getbody.obj getfmt.obj &
+  timed.obj tosslog.obj txtbuild.obj unrec.obj nodeglue.obj &
   working.obj wrap.obj xfile.obj video.obj scrnutil.obj picklist.obj &
   markchn.obj macro.obj charset.obj filter.obj v7.obj fd.obj &
   nodelist.obj nodebrow.obj private.obj
 
-  wlink @timnt
+{$(SRC_DIR)}.c.obj:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
+{$(SRC_DIR)\utils}.c.obj:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fe=$@ $(OBJS) $(MSGAPI)
+
+clean:  
+	del *.obj
+	del $(TARGET)
