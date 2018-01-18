@@ -1,36 +1,36 @@
-#############################################################################
-##                         MsgAPI "generic makefile"                       ##
-#############################################################################
+# timEd makefile for 32-bit OS/2 build using Watcom
 
-# If the LIB-making stuff doesn't work with NDMAKE and TLIB, take your
-# MAKE.INI and edit out the ".RESPONSE_LIB:" line.
+TARGET=..\timedp.exe
 
-#
-# Turbo C, TC++
-#
+CC=wcl386
+#CFLAGS=-5r -mf -sg -s -bm -ol+rs -wx -zp1 -bt=OS2 -id:\tc\api;d:\timed\utils;d:\database\cbt
+CFLAGS=-zq -mf -bm -sg -od -d2 -wx -bt=os2 -l=os2v2 -zp1 -I..\..\api -I..\utils
+#COPT=-oneatx
+SRC_DIR=..
+MSGAPI=..\..\api\os2api.lib
 
-#FLAGS=-5r -mf -sg -s -bm -ol+rs -wx -zp1 -bt=OS2 -id:\tc\api;d:\timed\utils;d:\database\cbt
-
-FLAGS=-zq -mf -bm -sg -od -d2 -wx -bt=OS2 -zp1 -ix:\api;x:\timed\utils;x:\database\cbt
-
-.c : ..\
-.c : ..\utils
-
-.c.obj : .AUTODEPEND
-   wcc386 $(FLAGS) $[*
-
-..\timedp.exe : areatags.obj ATTACH.obj bmg.obj CHECKCC.obj choose.obj &
-  SELECT.obj shel2dos.obj SHOWHDR.obj SHOWINFO.obj SHOWMAIL.obj &
+OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
+  select.obj shel2dos.obj showhdr.obj showinfo.obj showmail.obj &
   getmsg.obj globals.obj header.obj help.obj idlekey.obj input.obj &
   list.obj lock.obj maint.obj marklist.obj mem.obj message.obj &
-  cleanidx.obj clock.obj CONFIG.obj COPYMSG.obj DIRLIST.obj EDIT.obj &
-  PICKONE.obj register.obj print.obj printer.obj &
-  quotos2.obj READAREA.obj repedit.obj REPLY.obj request.obj &
-  errorrpt.obj fido.obj FIND.obj getbody.obj GETFMT.obj &
-  timed.obj tosslog.obj TXTBUILD.obj unrec.obj nodeglue.obj &
+  cleanidx.obj clock.obj config.obj copymsg.obj dirlist.obj edit.obj &
+  pickone.obj register.obj print.obj printer.obj &
+  quotos2.obj readarea.obj repedit.obj reply.obj request.obj &
+  errorrpt.obj fido.obj find.obj getbody.obj getfmt.obj &
+  timed.obj tosslog.obj txtbuild.obj unrec.obj nodeglue.obj &
   working.obj wrap.obj xfile.obj video.obj scrnutil.obj picklist.obj &
   markchn.obj macro.obj charset.obj filter.obj v7.obj fd.obj &
   nodelist.obj nodebrow.obj private.obj
+  
+{$(SRC_DIR)}.c.obj:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
-  wlink @timos2
+{$(SRC_DIR)\utils}.c.obj:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fe=$@ $(OBJS) $(MSGAPI)
+
+clean:  
+	del *.obj
+	del $(TARGET)
