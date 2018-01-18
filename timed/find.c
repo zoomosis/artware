@@ -1,4 +1,5 @@
 #include "includes.h"
+#include "idlekey.h"
 
 // Defines for SCOPE
 
@@ -1100,7 +1101,7 @@ void GlobalOptions(void)
                 passive = initbox(topline, 21, topline+5, 59, cfg.col[Cfindpassive], cfg.col[Cfindtext], S_VERT, YES, -1);
                 drawbox(passive);
 
-                action = picklist(Actions, NULL, NULL, topline-1, 31, maxy-1, 79);
+                action = picklist(Actions, NULL, topline-1, 31, maxy-1, 79);
                 if(action != -1)
                   {
                   // Clear action bits
