@@ -7,8 +7,16 @@ SRC_DIR=..
 CFLAGS+= -d2 -hw
 !endif
 
+# default to OS/2 build
+
 !ifndef OS
 OS=OS2
+!endif
+
+# NT is a synonym for WIN
+
+!ifeq OS NT
+OS=WIN
 !endif
 
 !ifeq OS WIN
