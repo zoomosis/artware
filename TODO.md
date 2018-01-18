@@ -1,3 +1,3 @@
-- Patch old Y2K bugs
-- Fix Windows NT startup bug
-- Merge patches from UNIX version
+- Verify all Y2K patches
+- Fix support for Alt keys in NT version. Ctrl and Fn keys already work.
+- Merge any patches or bug fixes from the UNIX version
