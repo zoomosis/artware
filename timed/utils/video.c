@@ -54,23 +54,7 @@
 #endif
 
 
-void cls(void);
-void clsw(unsigned char colour);
-void video_init(void);
-int  setlines(char lines);
-void print(int x, int y, int attr, unsigned char *line);
-void biprint(int x, int y, int attr1, int attr2, unsigned char *line, char sep);
-void biprinteol(int x, int y, int attr1, int attr2, unsigned char *line, char sep);
-void vprint(int x, int y, int col, char *fmt, ...);
-void vbiprint(int x, int y, int col1, int col2, char sep, char *fmt, ...);
-void printn(int x, int y, int attr, unsigned char *line, int len);
-void tabprint(int x, int y, int attr, unsigned char *line, int tabsize);
-void printc(int x, int y, int attr, unsigned char token);
-void printeol(int x, int y, int attr, unsigned char *line);
-void printeoln(int x, int y, int attr, unsigned char *line, int len);
-void MoveXY(int col, int row);
-size_t HLstrlen(char *s);
-
+#include "video.h"
 
 void ClsWith(int attr, unsigned char token);
 void ClsRectWith(int x1, int y1, int x2, int y2, int attr, unsigned char token);
@@ -106,8 +90,8 @@ USHORT scrnsize;
 
 #endif
 
-unsigned short maxx;       /* number of columns */
-unsigned short maxy;       /* number of rows */
+int maxx;       /* number of columns */
+int maxy;       /* number of rows */
 int desqview;
 
 #ifndef __OS2__
