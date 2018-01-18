@@ -248,7 +248,7 @@ char *MakeT(dword t, int type)
 
      case DATE_FULL:
        sprintf(temp, "%s %s %2.2i '%2.2i, %2.2i:%2.2i:%2.2i",
-          weekday_ab[tm->tm_wday], months_ab[tm->tm_mon], tm->tm_mday, tm->tm_year, tm->tm_hour, tm->tm_min, tm->tm_sec);
+          weekday_ab[tm->tm_wday], months_ab[tm->tm_mon], tm->tm_mday, tm->tm_year % 100, tm->tm_hour, tm->tm_min, tm->tm_sec);
        break;
 
      case DATE_HDR:

@@ -1200,7 +1200,7 @@ char *expand(char *line, MIS *mis, MIS *newmis)
 
         else if(strncmpi(lineptr, "year", 4)==0)    /* %year */
            {
-           sprintf(tempaddress, "19%2.2i", t->tm_year);
+           sprintf(tempaddress, "%4.4i", t->tm_year + 1900);
            memcpy(tempptr, tempaddress, strlen(tempaddress));
            lineptr += 4;
            tempptr += strlen(tempaddress);
