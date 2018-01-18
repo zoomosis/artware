@@ -30,6 +30,7 @@ unsigned long coreleft(void);
 
 /* Internal structure for API_SDM, abused here to get info... */
 
+#pragma pack(__push, 1)
 
 struct _sdmdata
 {
@@ -43,6 +44,8 @@ struct _sdmdata
 
   word msgs_open;
 };
+
+#pragma pack(__pop)
 
 typedef struct
 {
