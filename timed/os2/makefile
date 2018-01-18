@@ -3,8 +3,7 @@
 TARGET=..\timedp.exe
 
 CC=wcl386
-#CFLAGS=-5r -mf -sg -s -bm -ol+rs -wx -zp1 -bt=OS2 -id:\tc\api;d:\timed\utils;d:\database\cbt
-CFLAGS=-zq -mf -bm -sg -od -d2 -wx -bt=os2 -l=os2v2 -zp1 -k32k -I..\..\api -I..\utils
+CFLAGS=-zq -bm -sg -d2 -wx -bt=os2 -l=os2v2 -k32k -I..\..\api -I..\utils
 #COPT=-oneatx
 SRC_DIR=..
 MSGAPI=..\..\api\os2api.lib
@@ -14,11 +13,11 @@ OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
   getmsg.obj globals.obj header.obj help.obj idlekey.obj input.obj &
   list.obj lock.obj maint.obj marklist.obj mem.obj message.obj &
   cleanidx.obj clock.obj config.obj copymsg.obj dirlist.obj edit.obj &
-  pickone.obj print.obj printer.obj quotos2.obj readarea.obj repedit.obj &
-  reply.obj request.obj errorrpt.obj fido.obj find.obj getbody.obj getfmt.obj &
-  timed.obj tosslog.obj txtbuild.obj unrec.obj nodeglue.obj &
-  working.obj wrap.obj xfile.obj video.obj scrnutil.obj picklist.obj &
-  markchn.obj macro.obj charset.obj filter.obj v7.obj fd.obj &
+  pickone.obj print.obj printer.obj quotos2.obj readarea.obj &
+  repedit.obj reply.obj request.obj errorrpt.obj fido.obj find.obj &
+  getbody.obj getfmt.obj timed.obj tosslog.obj txtbuild.obj unrec.obj &
+  nodeglue.obj working.obj wrap.obj xfile.obj video.obj scrnutil.obj &
+  picklist.obj markchn.obj macro.obj charset.obj filter.obj v7.obj fd.obj &
   nodelist.obj nodebrow.obj private.obj
   
 {$(SRC_DIR)}.c.obj:

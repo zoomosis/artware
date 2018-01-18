@@ -3,11 +3,8 @@
 TARGET=..\timednt.exe
 
 CC=wcl386
-#CFLAGS=-5r -mf -s -ol+rs -wx -fh -zp1 -bt=NT -I..\api -Iutils -Ix:\database\cbt
-CFLAGS=-zq -mf -od -d2 -wx -bt=nt -l=nt -k32k -I..\..\api -I..\utils
+CFLAGS=-zq -bm -sg -d2 -wx -bt=nt -l=nt -k32k -I..\..\api -I..\utils
 #COPT=-oneatx
-LIB=wlib
-LFLAGS=-q
 SRC_DIR=..
 MSGAPI=..\..\api\ntapi.lib
 
