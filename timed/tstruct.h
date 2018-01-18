@@ -268,7 +268,6 @@ typedef struct _outfilelist
 typedef struct
 {
    NAME     name[tMAXNAMES];   /* Name of the user               */
-   char     *registered;       /* Pointer to char that = 1 if reg'ed */
    NETADDR  address[tMAXAKAS]; /* Addresses                      */
    NETADDR  uucpaddress;       /* Address of UUCP gate           */
    char     uucpname[36];      /* Username to use for gated msgs */

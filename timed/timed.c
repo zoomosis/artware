@@ -67,7 +67,6 @@ void main(int argc, char *argv[])
    memset(&GlobalKeys, '\0', 256 * sizeof(sword));
    memset(&ListKeys, '\0', 256 * sizeof(sword));
 
-   cfg.usr.registered = mem_calloc(1, sizeof(char));
    cfg.col[Cpopframe] = 112;
    cfg.col[Cpoptitle] = 112;
    cfg.col[Cpoptext] = 112;
