@@ -33,7 +33,7 @@ int c_break(void)
 #endif
 
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
    struct _minf   minf;
    AREA *thisarea=NULL, *lastarea;
@@ -234,7 +234,7 @@ void main(int argc, char *argv[])
 
    kbflush();
 
-   exit(erlvl);
+   return erlvl;
 }
 
 
