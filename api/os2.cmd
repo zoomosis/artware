@@ -1,3 +1,3 @@
 cd os2
-wmake -f makefile.w2
+wmake %1
 cd ..

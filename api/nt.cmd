@@ -1,3 +1,3 @@
 cd nt
-wmake -f makefile
+wmake %1
 cd ..

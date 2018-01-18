@@ -1,10 +1,10 @@
-# MSGAPI makefile for 32-bit Windows NT build using Watcom
+# MSGAPI makefile for 32-bit OS/2 build using Watcom
 
-TARGET=..\ntapi.lib
+TARGET=..\os2api.lib
 
 CC=wcl386
-#CFLAGS=-5r -s -sg -mf -ol+rs -wx -bm -zp1 -bt=NT
-CFLAGS=-zq -d2 -mf -od -wx -bm -zp1 -bt=NT
+#CFLAGS=-d2 -mf -od -wx -bm -zp1 -bt=OS2
+CFLAGS=-zq -5r -s -sg -mf -ol+rs -wx -bm -zp1 -bt=OS2
 #COPT=-oneatx
 LIB=wlib
 LFLAGS=-q

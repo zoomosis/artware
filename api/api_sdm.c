@@ -1368,11 +1368,11 @@ void SDM2MIS(struct _omsg *sdmhdr, MIS *mis)
   memcpy(mis->ftsc_date, sdmhdr->date, 20);
 
   Get_Binary_Date(&tempdate, &sdmhdr->date_written, sdmhdr->date);
-  DosDate_to_TmDate(&tempdate, &tmdate);
+  DosDate_to_TmDate((union stamp_combo *) &tempdate, &tmdate);
   mis->msgwritten = JAMsysMkTime(&tmdate);
 
   Get_Binary_Date(&tempdate, &sdmhdr->date_arrived, sdmhdr->date);
-  DosDate_to_TmDate(&tempdate, &tmdate);
+  DosDate_to_TmDate((union stamp_combo *) &tempdate, &tmdate);
   mis->msgprocessed = JAMsysMkTime(&tmdate);
 
   mis->replyto    = sdmhdr->reply;
@@ -1518,7 +1518,7 @@ char * MIS2SDM(MSGH *msgh, MIS *mis, struct _omsg *sdmhdr, char *kludges)
    sdmhdr->times = mis->timesread;
 
    tmdate = JAMsysLocalTime((dword *)&mis->msgwritten);
-   TmDate_to_DosDate(tmdate, &sdmhdr->date_written);
+   TmDate_to_DosDate(tmdate, (union stamp_combo *) &sdmhdr->date_written);
 
    if((dword) mis->msgprocessed != 0L)
       tmdate = JAMsysLocalTime((dword *)&mis->msgprocessed);
@@ -1527,7 +1527,7 @@ char * MIS2SDM(MSGH *msgh, MIS *mis, struct _omsg *sdmhdr, char *kludges)
       curtime = (dword) JAMsysTime(NULL);
       tmdate = JAMsysLocalTime(&curtime); // We need something here for Squish..
       }
-   TmDate_to_DosDate(tmdate, &sdmhdr->date_arrived);
+   TmDate_to_DosDate(tmdate, (union stamp_combo *) &sdmhdr->date_arrived);
 
    timestamp = JAMsysLocalTime(&mis->msgwritten);
    sprintf(sdmhdr->date, "%02d %s %02d  %02d:%02d:%02d",

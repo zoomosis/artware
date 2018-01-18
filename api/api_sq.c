@@ -2519,7 +2519,7 @@ void MIS2SQ(MIS *mis, XMSG *xmsg)
       xmsg->replies[i] = mis->replies[i];
 
    tmdate = JAMsysLocalTime((dword *)&mis->msgwritten);
-   TmDate_to_DosDate(tmdate, &xmsg->date_written);
+   TmDate_to_DosDate(tmdate, (union stamp_combo *) &xmsg->date_written);
 
    if((dword) mis->msgprocessed != 0L)
       tmdate = JAMsysLocalTime((dword *)&mis->msgprocessed);
@@ -2528,7 +2528,7 @@ void MIS2SQ(MIS *mis, XMSG *xmsg)
       curtime = (dword) JAMsysTime(NULL);
       tmdate = JAMsysLocalTime(&curtime); // We need something here for Squish..
       }
-   TmDate_to_DosDate(tmdate, &xmsg->date_arrived);
+   TmDate_to_DosDate(tmdate, (union stamp_combo *) &xmsg->date_arrived);
 
    timestamp = JAMsysLocalTime(&mis->msgwritten);
    sprintf(xmsg->ftsc_date, "%02d %s %02d  %02d:%02d:%02d",
@@ -2583,10 +2583,10 @@ void SQ2MIS(MSGH *msgh, XMSG *xmsg, MIS *mis)
   mis->msgno    = SquishMsgnToUid(sq, msgh->relnum);
   mis->origbase = sq->type;
 
-  DosDate_to_TmDate(&xmsg->date_written, &tmdate);
+  DosDate_to_TmDate((union stamp_combo *) &xmsg->date_written, &tmdate);
   mis->msgwritten = JAMsysMkTime(&tmdate);
 
-  DosDate_to_TmDate(&xmsg->date_arrived, &tmdate);
+  DosDate_to_TmDate((union stamp_combo *) &xmsg->date_arrived, &tmdate);
   mis->msgprocessed = JAMsysMkTime(&tmdate);
 
   // Now we have to fiddle with file attaches and requests..

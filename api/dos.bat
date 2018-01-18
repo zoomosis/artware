@@ -1,3 +1,3 @@
 cd dos
-wmake -f makefile.wdr
+wmake %1
 cd ..

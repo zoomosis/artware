@@ -1,3 +1,3 @@
 cd d386
-wmake -f makefile.d3
+wmake %1
 cd ..
