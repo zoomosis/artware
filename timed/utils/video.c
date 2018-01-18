@@ -47,7 +47,7 @@
 
 #ifdef __NT__
 
-   HANDLE ScreenHandle = ERROR_INVALID_HANDLE;
+   HANDLE ScreenHandle = (HANDLE) ERROR_INVALID_HANDLE;
    USHORT VioWrtCellStr (PCH pchCellString, USHORT cbCellString, USHORT usRow, USHORT usColumn, USHORT hvio);
    void _settextcursor(word type);
 
@@ -207,21 +207,27 @@ scrnsize = maxx * maxy;
 
   CONSOLE_SCREEN_BUFFER_INFO ScreenInfo;
 
-  if(ScreenHandle == ERROR_INVALID_HANDLE)
+  if(ScreenHandle == (HANDLE) ERROR_INVALID_HANDLE)
     {
-    if( (ScreenHandle = GetStdHandle(STD_OUTPUT_HANDLE)) == ERROR_INVALID_HANDLE)
-      return;
+      if( (ScreenHandle = GetStdHandle(STD_OUTPUT_HANDLE)) == (HANDLE) ERROR_INVALID_HANDLE)
+	  {
+	      fprintf(stderr, "Error: Can't get screen handle with GetStdHandle().\n");
+              return;
+	  }
     }
 
   if(GetConsoleScreenBufferInfo(ScreenHandle, &ScreenInfo) == FALSE)
+  {
+    fprintf(stderr, "Error: Can't get screen buffer info with GetConsoleScreenBufferInfo().\n");
     return;
+  }
 
-  memcpy(&OrigScreenInfo, &ScreenInfo, sizeof(CONSOLE_SCREEN_BUFFER_INFO));
+  memcpy(&OrigScreenInfo, &ScreenInfo, sizeof OrigScreenInfo);
 
   maxx = ScreenInfo.dwSize.X;
   maxy = ScreenInfo.dwSize.Y;
   scrnsize = maxx * maxy;
-
+  
 // ============================= DOS Extended stuff ====================
 
 #else
@@ -433,7 +439,6 @@ void biprinteol(int x, int y, int attr1, int attr2, unsigned char *line, char se
    #if defined (__OS2__) || defined(__NT__)
    char tmpline[300];
    word len;
-   USHORT cell = 32 | (attr1<<8);
 
    // slamlenbiline, see function above..
 
@@ -680,7 +685,7 @@ end:
    static WORD vattrs[133];
    WORD *q;
 	COORD dwCursorPosition;
-   unsigned long dwWritten;
+   ULONG dwWritten;
    int i;
    BOOL fResult = TRUE;
 
@@ -1094,7 +1099,7 @@ void cls(void)
    #elif defined(__NT__)
 
       COORD coord;
-      dword dwWritten;
+      ULONG dwWritten;
 
       coord.X = 0;
       coord.Y = 0;
@@ -1182,7 +1187,7 @@ void clsw(unsigned char colour)
    #elif defined(__NT__)
 
       COORD coord;
-      dword dwWritten;
+      ULONG dwWritten;
 
       coord.X = 0;
       coord.Y = 0;
@@ -1313,7 +1318,7 @@ loop:
 
    #elif defined (__NT__)
    COORD      coord;
-   dword      dwWritten;
+   ULONG      dwWritten;
    int        i;
 
    coord.X = x1;
