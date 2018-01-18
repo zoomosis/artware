@@ -1,6 +1,5 @@
 system os2v2
 name x:\timed\timedp.exe
-option newfiles
 option eliminate
 option stack=32k
 option cache
