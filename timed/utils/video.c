@@ -7,6 +7,8 @@
 #include <conio.h>
 #include <stdlib.h>
 
+#include "video.h"
+
 #ifdef __OS2__
 
     #define INCL_SUB
@@ -39,22 +41,12 @@
 #endif
 
 
-#ifdef __OS2__
-
-   void _settextcursor(word type);
-
-#endif
-
 #ifdef __NT__
 
    HANDLE ScreenHandle = (HANDLE) ERROR_INVALID_HANDLE;
    USHORT VioWrtCellStr (PCH pchCellString, USHORT cbCellString, USHORT usRow, USHORT usColumn, USHORT hvio);
-   void _settextcursor(word type);
 
 #endif
-
-
-#include "video.h"
 
 void ClsWith(int attr, unsigned char token);
 void ClsRectWith(int x1, int y1, int x2, int y2, int attr, unsigned char token);
@@ -436,6 +428,9 @@ void biprint(int x, int y, int attr1, int attr2, unsigned char *line, char sep)
 
 void biprinteol(int x, int y, int attr1, int attr2, unsigned char *line, char sep)
 {
+#ifdef __OS2__
+   USHORT cell = 32 | (attr1<<8);
+#endif
    #if defined (__OS2__) || defined(__NT__)
    char tmpline[300];
    word len;
@@ -1210,7 +1205,7 @@ void clsw(unsigned char colour)
 
 //   unsigned short *where = screen;
 //   int howmuch = scrnsize;
-   unsigned short cell = 0x0020 | (colour << 8);
+//   unsigned short cell = 0x0020 | (colour << 8);
 
 //   while(howmuch--)
 //     *where++ = cell;
@@ -1533,7 +1528,7 @@ int setlines(char lines)
 #ifdef __WATCOMC__
 
 #ifdef __OS2__
-void _settextcursor(word type)
+void _settextcursor(short type)
 {
    VIOCURSORINFO ci;
 
@@ -1552,7 +1547,7 @@ void _settextcursor(word type)
 
 #elif defined(__NT__)
 
-void _settextcursor(word type)
+void _settextcursor(short type)
 {
    CONSOLE_CURSOR_INFO ci;
 
@@ -1569,7 +1564,7 @@ void _settextcursor(word type)
 #else
 
 #ifndef __FLAT__
-void _settextcursor(word type)
+void _settextcursor(short type)
 {
    union REGS regs;
 
