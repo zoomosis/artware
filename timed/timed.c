@@ -50,6 +50,8 @@ int main(int argc, char *argv[])
    atexit(killclock);
    signal(SIGBREAK, donothing);
    signal(SIGINT, donothing);
+#elif defined(__NT__)
+   /* don't disable Ctrl+C or Ctrl+Break in NT version */
 #else
    #ifndef __386__
    ins09();
