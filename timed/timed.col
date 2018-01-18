@@ -1,31 +1,34 @@
 ; color-config created by TIMCOLOR v1.12
-color_asbar         112
-color_asframe       11
+color_asbar         7
+color_asframe       9
 color_astext        7
-color_ashigh        113
+color_ashigh        31
 color_asspecial     14
+
 color_msgheader     7
-color_msgdate       3
+color_msgdate       7
 color_msgattribs    15
-color_msglinks      12
-color_msgdata       2
-color_msgline       1
-color_msgquote      14
+color_msglinks      15
+color_msgdata       7
+color_msgline       9
+color_msgquote      11
 color_msgtext       7
-color_msgbar        112
-color_msgorigin     15
-color_msgkludge     3
-color_msgspecial    12
-color_popframe      126
-color_poptext       112
-color_entry         30
+color_msgbar        31
+color_msgorigin     10
+color_msgkludge     9
+color_msgspecial    15
+
+color_popframe      27
+color_poptext       23
+
+color_entry         79
 color_editcurnormal 15
-color_editcurquote  14
-color_editcurblock  126
-color_editblock     113
-color_edithcr       8
-color_findactive    11
-color_findpassive   1
+color_editcurquote  11
+color_editcurblock  79
+color_editblock     79
+color_edithcr       79
+color_findactive    14
+color_findpassive   9
 color_findtext      7
-color_finddata      3
-color_findhigh      113
+color_finddata      14
+color_findhigh      31
