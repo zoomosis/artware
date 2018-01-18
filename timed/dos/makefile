@@ -18,7 +18,7 @@ OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
  getmsg.obj globals.obj header.obj help.obj idlekey.obj input.obj &
  list.obj lock.obj maint.obj marklist.obj mem.obj message.obj &
  nodeglue.obj pickone.obj print.obj tasker.obj exec.obj checkpat.obj spawn.obj &
- quotos2.obj readarea.obj register.obj repedit.obj reply.obj request.obj &
+ quotos2.obj readarea.obj repedit.obj reply.obj request.obj &
  select.obj shel2dos.obj showhdr.obj showinfo.obj showmail.obj &
  timed.obj tosslog.obj txtbuild.obj unrec.obj printer.obj &
  working.obj wrap.obj xfile.obj video.obj scrnutil.obj picklist.obj &

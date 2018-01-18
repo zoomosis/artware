@@ -15,13 +15,12 @@ OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
   getmsg.obj globals.obj header.obj help.obj key386.obj input.obj &
   list.obj lock.obj maint.obj marklist.obj mem.obj message.obj &
   cleanidx.obj clock.obj config.obj copymsg.obj dirlist.obj edit.obj &
-  pickone.obj register.obj print.obj printer.obj &
-  quotos2.obj readarea.obj repedit.obj reply.obj request.obj &
-  errorrpt.obj fido.obj find.obj getbody.obj getfmt.obj &
-  timed.obj tosslog.obj txtbuild.obj unrec.obj nodeglue.obj &
-  working.obj wrap.obj xfile.obj video.obj scrnutil.obj picklist.obj &
-  markchn.obj macro.obj charset.obj filter.obj v7.obj fd.obj &
-  nodelist.obj nodebrow.obj task386.obj private.obj
+  pickone.obj print.obj printer.obj quotos2.obj readarea.obj &
+  repedit.obj reply.obj request.obj errorrpt.obj fido.obj find.obj &
+  getbody.obj getfmt.obj timed.obj tosslog.obj txtbuild.obj unrec.obj &
+  nodeglue.obj working.obj wrap.obj xfile.obj video.obj scrnutil.obj &
+  picklist.obj markchn.obj macro.obj charset.obj filter.obj v7.obj &
+  fd.obj nodelist.obj nodebrow.obj task386.obj private.obj
   
 {$(SRC_DIR)}.c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<

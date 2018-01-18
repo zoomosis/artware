@@ -39,7 +39,6 @@ void main(int argc, char *argv[])
    AREA *thisarea=NULL, *lastarea;
    BOX *intro, *copyright, *configstatus;
    int erlvl, readret=ESC;
-   int keyread=0;
    char temp[100];
 
 
@@ -132,27 +131,10 @@ void main(int argc, char *argv[])
    if(cfg.homedir[strlen(cfg.homedir)-1] == '\\')
       cfg.homedir[strlen(cfg.homedir)-1] = '\0';
 
-   #ifndef __SENTER__
-      keyread = read_key();
-   #else
-      keyread = 1;
-   #endif
-
-//   if( (keyread = read_key()) == 0)
-//     {
-//     cls();
-//     _settextcursor(0x0607);
-//     MoveXY(1,6);
-//     print(3,0,7,"* This is a gamma version, only for registered users!");
-//     exit(254);
-//     }
-
    readconfig();
 
    if(ReadKeyFile() != 0)
      Message("Can't read keyboard definition file!", -1, 254, YES);
-
-   if(keyread) check_registration();
 
    if(cfg.usr.status & LOWLEVELKB)  // Only needed for low level routines.
       check_enhanced();
@@ -167,21 +149,8 @@ void main(int argc, char *argv[])
    ReadTagFile(0);      // Read in default tag set
 
 
-   if(TIMREGISTERED)
-      {
-      sprintf(msg, " Registered to %s. ", cfg.usr.name[0].name);
-      print(6, 40 - (strlen(msg)/2), 113, msg);
-      }
-   else
-      {
-//      cls();
-//      print(3,0,7,"This gamma version is only for registered users!");
-//      _settextcursor(0x0607);
-//      MoveXY(1,6);
-//      exit(254);
-      // See also exit errorlevel !!!!!!!!!!! ++++ !!!!!
-      print(6, 23, 113, " Unregistered evaluation version. ");
-      }
+   sprintf(msg, " Registered to %s. ", cfg.usr.name[0].name);
+   print(6, 40 - (strlen(msg)/2), 113, msg);
 
    if ((pause==1) || (!(TIMREGISTERED)) )
        {
