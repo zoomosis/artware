@@ -4,7 +4,7 @@ TARGET=..\tim386.exe
 
 CC=wcl386
 #CFLAGS=-mf -od -d2 -wx -fh -bt=DOS4G -zp1 -id:\tc\api;d:\timed\utils;d:\database\cbt
-CFLAGS=-zq -5r -mf -ol+rs -s -wx -zp1 -bt=dos4g -l=dos4g -I..\..\api -I..\utils
+CFLAGS=-zq -5r -mf -ol+rs -s -wx -zp1 -k32k -bt=dos4g -l=dos4g -I..\..\api -I..\utils
 #COPT=-oneatx
 CDEFS=-D__DOS__=1
 SRC_DIR=..

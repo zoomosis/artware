@@ -4,7 +4,7 @@ TARGET=..\timed.exe
 
 CC=wcl
 #CFLAGS=-ml -ol+rsf -s -wx -fh -bt=DOS -zp1 -id:\tc\msgapi;d:\timed\utils;d:\tc\exec;d:\database\cbt
-CFLAGS=-zq -ml -d2 -odf -wo -wx -bt=DOS -zp1 -I..\..\api -I..\utils -I..\..\exec
+CFLAGS=-zq -ml -d2 -odf -wo -wx -bt=DOS -zp1 -k8k -I..\..\api -I..\utils -I..\..\exec
 #COPT=-oneatx
 CDEFS=-D__DOS__=1
 ASM=c:\bc\bin\tasm.exe

@@ -4,7 +4,7 @@ TARGET=..\timednt.exe
 
 CC=wcl386
 #CFLAGS=-5r -mf -s -ol+rs -wx -fh -zp1 -bt=NT -I..\api -Iutils -Ix:\database\cbt
-CFLAGS=-zq -mf -od -d2 -wx -bt=nt -l=nt -zp1 -I..\..\api -I..\utils
+CFLAGS=-zq -mf -od -d2 -wx -bt=nt -l=nt -zp1 -k32k -I..\..\api -I..\utils
 #COPT=-oneatx
 LIB=wlib
 LFLAGS=-q

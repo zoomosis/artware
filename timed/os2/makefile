@@ -4,7 +4,7 @@ TARGET=..\timedp.exe
 
 CC=wcl386
 #CFLAGS=-5r -mf -sg -s -bm -ol+rs -wx -zp1 -bt=OS2 -id:\tc\api;d:\timed\utils;d:\database\cbt
-CFLAGS=-zq -mf -bm -sg -od -d2 -wx -bt=os2 -l=os2v2 -zp1 -I..\..\api -I..\utils
+CFLAGS=-zq -mf -bm -sg -od -d2 -wx -bt=os2 -l=os2v2 -zp1 -k32k -I..\..\api -I..\utils
 #COPT=-oneatx
 SRC_DIR=..
 MSGAPI=..\..\api\os2api.lib
