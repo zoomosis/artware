@@ -7,7 +7,7 @@ CC=wcl
 CFLAGS=-zq -ml -ol+rsf -wo -s -wx -zp1 -bt=DOS
 #COPT=-oneatx
 ASM=wasm
-AFLAGS=
+AFLAGS=-zq
 LIB=wlib
 LFLAGS=-q
 SRC_DIR=..
