@@ -50,6 +50,8 @@ typedef struct _msgh MSGH;
 typedef dword UMSGID;
 typedef struct _netaddr NETADDR;
 
+#pragma pack(__push, 1)
+
 struct _minf
 {
   word req_version;
@@ -63,6 +65,7 @@ struct _minf
   char hudsonpath[120]; /* Path to Hudson base files, no trailing backslash   */
 };
 
+#pragma pack(__pop)
 
 /* The network address structure.  The z/n/n/p fields are always             *
  * maintained in parallel to the 'ascii' field, which is simply an ASCII     *
@@ -70,6 +73,8 @@ struct _minf
  * be used for other purposes (such as internet addresses), so the           *
  * contents of this field are implementation-defined, but for most cases,    *
  * should be in the format "1:123/456.7" for Fido addresses.                 */
+
+#pragma pack(__push, 1)
 
 struct _netaddr
 {
@@ -79,9 +84,12 @@ struct _netaddr
   word point;
 };
 
+#pragma pack(__pop)
 
 // ==================================
 
+
+#pragma pack(__push, 1)
 
 typedef struct _stringlist
 {
@@ -91,6 +99,8 @@ typedef struct _stringlist
    struct _stringlist *next;
 
 } STRINGLIST;
+
+#pragma pack(__pop)
 
 
   /* Bitmasks for 'attr1' */
@@ -144,6 +154,8 @@ typedef struct _stringlist
   #define aFAX     0x00000800L   // FAX: FAX attached (FLAG)
 
 
+#pragma pack(__push, 1)
+
 typedef struct
 {
   dword attr1;
@@ -190,6 +202,8 @@ typedef struct
 
 } MIS;    // Message Information Structure
 
+#pragma pack(__pop)
+
 
 // ==================================
 
@@ -198,6 +212,8 @@ typedef struct
  * required by calls to all other message functions.  This structure        *
  * must always be accessed through the API functions, and never             *
  * modified directly.                                                       */
+
+#pragma pack(__push, 1)
 
 struct _msgapi
 {
@@ -249,6 +265,8 @@ struct _msgapi
 
   void /*far*/ *apidata;
 };
+
+#pragma pack(__pop)
 
 
 /* This is a 'dummy' message handle.  The other message handlers (contained *
@@ -416,6 +434,8 @@ void CopyMIS(MIS *in, MIS *out);
 **  Structure to contain date/time information
 */
 
+#pragma pack(__push, 1)
+
 typedef struct JAMtm
     {
     int     tm_sec,                    /* Seconds 0..59                     */
@@ -429,6 +449,7 @@ typedef struct JAMtm
             tm_isdst;                  /* Daylight savings time (not used)  */
     } JAMTM;
 
+#pragma pack(__pop)
 
 dword   JAMsysTime     (dword * pTime);
 dword   JAMsysMkTime   (JAMTM * pTm);
