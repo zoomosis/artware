@@ -1267,7 +1267,6 @@ void near Init_JAMheader(MSG *sq)
 
 void near SQ2JAM(MIS *mis, char *ctxt, MSG *sq, word mode, byte **SubFieldPtr)
 {
-   struct tm tmdate;
    char temp[300];
    word position;
    char *kludgeptr, *endptr;

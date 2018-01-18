@@ -44,6 +44,8 @@ sword near _SdmRescanArea(MSG *mh);
 sword near _Grab_Clen(MSGH *msgh);
 void WriteToFd(byte *str);
 void near Get_Binary_Date(struct _stamp *todate,struct _stamp *fromdate,byte *asciidate);
+int ReadHdrKludges(MSGH *msgh);
+int SDMCalcTrailing(MSGH *msgh);
 
 // End protos, added by Gve in this file instead of api_sdmp.h
 
@@ -210,7 +212,7 @@ sword  SdmCloseArea(MSG *mh)
 MSGH * SdmOpenMsg(MSG *mh, word mode, dword msgnum)
 {
   byte msgname[PATHLEN];
-  int handle, retval;
+  int handle;
   int filemode, sharemode=SH_DENYNO;
   word mn, owrite=FALSE;
   size_t newnumber;
@@ -963,7 +965,7 @@ sword near _SdmRescanArea(MSG *mh)
 //  #ifndef __WATCOMC__
 //  struct ffblk myffblk;
 //  #else
-  struct find_t myffblk;
+//  struct find_t myffblk;
 //  #define findfirst(a, b, c) _dos_findfirst(a, c, b)
 //  #define findnext  _dos_findnext
 //  #endif
@@ -1041,7 +1043,6 @@ sword near _SdmRescanArea(MSG *mh)
 sword near _SdmRescanArea(MSG *mh)
 {
   struct find_t fileinfo;
-  unsigned rc;
   byte temp[_MAX_PATH] = "";
   word mn, thismsg;
 
