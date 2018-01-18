@@ -1424,6 +1424,7 @@ void HMB2MIS(MIS *mis, HMB_MSGHDR *hmbhdr, MSG *sq)
     if(hmbhdr->post_date[0] != 0 && hmbhdr->post_time[0] != 0)
        {
        sscanf(hmbhdr->post_date+1, "%2hd-%2hd-%2hd", &m, &d, &y);
+       /* TODO: Y2K probably needs sliding window code here */
        TM.tm_year = y;
        TM.tm_mon  = m-1;
        TM.tm_mday = d;
@@ -1724,7 +1725,7 @@ void MIS2HMB(MSG *sq, struct _msgh *msgh, MIS *mis, HMB_MSGHDR *hmbhdr, byte *kl
 
   sprintf(temp, "%02d-%02d-%02d", jamtm->tm_mon+1,
                                   jamtm->tm_mday,
-                                  jamtm->tm_year);
+                                  jamtm->tm_year % 100);
 
   hmbhdr->post_date[0] = (byte) 8;
   memcpy(hmbhdr->post_date+1, temp, 8);
@@ -2071,7 +2072,7 @@ unsigned short xt, xd;
    tmnow = *localtime(&tnow);
 
 #ifndef __WATCOMC__
-   ft.ft_year  = tmnow.tm_year - 80;
+   ft.ft_year  = tmnow.tm_year - 80;  /* TODO: Y2K bug? */
    ft.ft_month = tmnow.tm_mon + 1;
    ft.ft_day   = tmnow.tm_mday;
    ft.ft_hour  = tmnow.tm_hour;
