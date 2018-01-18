@@ -6,11 +6,9 @@
 
 */
 
+#include <stdlib.h>
 
 /* Prototypes... */
-
-void _settextcursor(unsigned short type);
-
 
 void cls(void);
 void clsw(unsigned char colour);
@@ -60,5 +58,5 @@ size_t HLstrlen(char *s);
 #define F_WHITE      15
 */
 
-extern short maxx;
-extern short maxy;
+extern int maxx;
+extern int maxy;
