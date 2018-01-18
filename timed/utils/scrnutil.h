@@ -1,3 +1,5 @@
+#ifndef __SCRNUTIL_H__
+#define __SCRNUTIL_H__
 
 #ifdef __OS2__
 //   #define far
@@ -42,3 +44,4 @@ void restoreblock(int x, int y, int w, int h, char * b);
 void saveblock(int x1, int y1, int x2, int y2, char * b);
 void titlewin(BOX *win, int where, char *s, int hlcol);
 
+#endif
