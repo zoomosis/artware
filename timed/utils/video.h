@@ -29,6 +29,7 @@ void ClsWith(int attr, unsigned char token);
 void ClsRectWith(int x1, int y1, int x2, int y2, int attr, unsigned char token);
 void MoveXY(int col, int row);
 size_t HLstrlen(char *s);
+void _settextcursor(word type);
 
 /* Some color defines.. */
 /*
