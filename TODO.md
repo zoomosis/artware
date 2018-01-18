@@ -1,6 +1,8 @@
 - timEd: #pragma pack(__push, 1) for structures requiring it
   (partly done)
 
+- timEd, NetMgr: Fix missing prototypes & warnings
+
 - NetMgr: Remaining Y2K patches
 
 - Update README.md with latest news and build instructions
