@@ -1,4 +1,9 @@
-#include "includes.h"
+#ifdef __NT__
+
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
+#endif
 
 #ifndef __OS2__
   #include <bios.h>
@@ -26,11 +31,110 @@ static int enhanced = 0;
 static int curmacro = 0;
 static int macropos = 0;
 
-int  get_idle_key(char allowstuff, int scope);
-void stuffkey(int key);
-void kbflush(void);
-void check_enhanced(void);
-int xkbhit(void);
+#include "includes.h"
+#include "idlekey.h"
+
+
+#ifdef __NT__
+
+/*
+ *  Important: The following code will break in unpredictable ways if
+ *  structure alignment isn't set to Watcom's default.
+ *
+ *  So don't use wcl386 -zp1 !!!
+ *
+ *  - ozzmosis 2018-01-19
+ */
+
+#include "video.h"
+
+static HANDLE HInput = INVALID_HANDLE_VALUE;
+
+static unsigned long key_hit = 0xFFFFFFFFUL;
+
+static int nt_kbhit(void)
+{
+    int iKey = 0;
+    INPUT_RECORD irBuffer;
+    DWORD pcRead;
+
+    if (key_hit != 0xFFFFFFFFUL)
+    {
+        return (int)key_hit;
+    }
+
+    memset(&irBuffer, 0, sizeof irBuffer);
+
+	if (HInput == INVALID_HANDLE_VALUE)
+	{
+        HInput = GetStdHandle(STD_INPUT_HANDLE);
+	}
+	
+	if (HInput == INVALID_HANDLE_VALUE)
+	{
+		fprintf(stderr, "Error: Unable to get input handle with GetStdHandle()\n");
+		return 0;
+	}
+	
+    if (WaitForSingleObject(HInput, 0L) == 0)
+    {
+        ReadConsoleInput(HInput, &irBuffer, 1, &pcRead);
+
+        if (irBuffer.EventType == KEY_EVENT && irBuffer.Event.KeyEvent.bKeyDown != 0 && irBuffer.Event.KeyEvent.wRepeatCount <= 1)
+        {
+            WORD vk, vs, uc;
+            BOOL fShift, fAlt, fCtrl;
+
+            vk = irBuffer.Event.KeyEvent.wVirtualKeyCode;
+            vs = irBuffer.Event.KeyEvent.wVirtualScanCode;
+            uc = irBuffer.Event.KeyEvent.uChar.AsciiChar;
+
+            fShift = (irBuffer.Event.KeyEvent.dwControlKeyState & SHIFT_PRESSED);
+            fAlt = (irBuffer.Event.KeyEvent.dwControlKeyState & (RIGHT_ALT_PRESSED + LEFT_ALT_PRESSED));
+            fCtrl = (irBuffer.Event.KeyEvent.dwControlKeyState & (RIGHT_CTRL_PRESSED + LEFT_CTRL_PRESSED));
+
+			if (fCtrl)
+			{
+				iKey = uc;
+			}
+			else if (fAlt)
+			{
+				iKey = 256 + vs;
+			}
+			else if (uc == 0)
+            {
+				/* function & arrow keys */
+                iKey = 256 + vs;
+			}
+			else
+			{
+				iKey = uc;
+			}
+        }
+    }
+
+    if (iKey != 0)
+    {
+        key_hit = iKey;
+    }
+
+    return (int)iKey;
+}
+
+static int nt_getch(void)
+{
+    int iKey;
+	
+    while (key_hit == 0xFFFFFFFFUL)
+    {
+        nt_kbhit();
+    }
+    iKey = key_hit;
+    key_hit = 0xFFFFFFFFUL;
+    return (int)iKey;
+}
+
+#endif
 
 #if defined(__WATCOMC__) && !defined(__OS2__)
 
@@ -259,9 +363,15 @@ int get_idle_key(char allowstuff, int scope)
    else        // Not low level keyboard routines...
    #endif  // !FLAT
      {
+#ifdef __NT__
+     i = nt_getch();
+#else
      i = getch();
      if(i == 0)
+	 {
         i = 256 + getch();
+     }
+#endif
      }
 
    #endif
@@ -333,7 +443,9 @@ void kbflush(void)
 
 int xkbhit(void)
 {
-   #ifndef __OS2__
+#ifdef __NT__
+   return nt_kbhit();
+#elif !defined(__OS2__)
 
    #ifndef __FLAT__
    #ifdef __WATCOMC__
