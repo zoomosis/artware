@@ -15,8 +15,10 @@ int showclock = 0;
 #ifndef __FLAT__
    char myname[25] = "timEd " VERSION "";
 #else
-   #ifdef __OS2__
+   #if defined(__OS2__)
    char myname[25] = "timEd/2 " VERSION "";
+   #elif defined(__NT__)
+   char myname[25] = "timEd/NT " VERSION "";
    #else
    char myname[25] = "timEd/386 " VERSION "";
    #endif
