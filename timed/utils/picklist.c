@@ -84,9 +84,9 @@ int picklist(char **choices, char **help, int y1, int x1, int y2, int x2)
           {
           MoveXY(x1+2, y1+2+l-start);
           if(help != NULL) // print help at bottom..
-             biprinteol(maxy-1, 0, COLSTATTEXT, COLSTATHL, help[l]);
+             biprinteol(maxy-1, 0, COLSTATTEXT, COLSTATHL, help[l], ' ');
           }
-       biprint(y1+1+l-start, x1+1, col, colhl, choices[l]);
+       biprint(y1+1+l-start, x1+1, col, colhl, choices[l], ' ');
        }
 
      switch(key=get_idle_key(1))
