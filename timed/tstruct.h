@@ -1,7 +1,7 @@
 
 //#define __SENTER__ 1
 
-#define VERSION   "1.11.ng1"
+#define VERSION   "1.11.ng1+"
 
 #define LOCALCHARSET "IBMPC"
 
