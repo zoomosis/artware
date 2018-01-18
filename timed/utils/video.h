@@ -30,12 +30,10 @@ void ClsRectWith(int x1, int y1, int x2, int y2, int attr, unsigned char token);
 void MoveXY(int col, int row);
 size_t HLstrlen(char *s);
 
-#ifdef __WATCOMC__
 #if defined(__DOS__) && defined(__FLAT__)
 #include <graph.h>
 #else
 void _settextcursor(short type);
-#endif
 #endif
 
 /* Some color defines.. */
