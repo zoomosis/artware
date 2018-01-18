@@ -17,3 +17,12 @@
 - timEd: Fix: Popup windows in NT build erroneously close when a keyboard
   modifier key is pressed (very minor bug)
 
+- Use relative paths in makefiles (where possible)
+
+- Rebuild WIMM
+
+- Rebuild JAMINFO (requires Borland C++ for DOS & OS/2)
+
+- When code is declared "stable", run GNU Indent over it all and clean up
+  things a bit
+
