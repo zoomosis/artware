@@ -1,5 +1,7 @@
 - timEd: #pragma pack(__push, 1) for structures requiring it
 
+- timEd: Fix: Popup windows in NT build erroneously close when a keyboard modifier key is pressed
+
 - NetMgr: Y2K patches
 
 - Double-check Y2K patches and test where possible
