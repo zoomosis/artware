@@ -16,6 +16,8 @@
 
 - timEd: Merge any recent patches or bug fixes from the UNIX version
 
+- timEd: Fix: Text cursor won't turn off
+
 - timEd: Fix: Popup windows in NT build erroneously close when a keyboard
   modifier key is pressed (very minor bug)
 
