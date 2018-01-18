@@ -63,7 +63,7 @@ int maint_menu(AREA *area)
      }
 
    if(itemno > 0)
-     action = picklist(optlist, NULL, NULL, 5, maxx/2 - (longest/2) - 1, 23, maxx-1);
+     action = picklist(optlist, NULL, 5, maxx/2 - (longest/2) - 1, 23, maxx-1);
    else
      action = -1;
 
