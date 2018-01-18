@@ -131,7 +131,7 @@ union KEY
    ARRKEY arrkey;
 };
 
-#define TIMREGISTERED *(cfg.usr.registered) != 0
+#define TIMREGISTERED 1
 
 // ====================================================
 
