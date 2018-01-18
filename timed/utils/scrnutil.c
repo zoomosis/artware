@@ -184,13 +184,12 @@ void savescreen()
 
 {
    SCRNLIST *scrptr, *temp = scrnstack;
-   unsigned int len = maxx*maxy*2;
+   unsigned short len = maxx*maxy*2;
 
 #ifdef __NT__
    /* brute force bug fix */
    /* TODO: investigate further */
    return;
-#endif 
    
    if (screen == NULL)
    {
@@ -198,6 +197,7 @@ void savescreen()
 	   /* TODO: why is screen == NULL in the NT build? */
 	   return;
    }
+#endif 
    
    scrptr = mem_calloc(1, sizeof(SCRNLIST));
 
