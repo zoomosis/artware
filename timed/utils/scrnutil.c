@@ -100,7 +100,9 @@ void drawbox(BOX *data)
 
    if (data->save==YES)    /* Should the screen "underneath" be saved? */
       {
-      data->blockptr=mem_malloc( (data->x2-data->x1+1) * (data->y2-data->y1+1) * sizeof(unsigned short) );
+      /* ozzmosis 2018-01-18 hack fix, replace "sizeof(unsigned short)" with "4" */
+      /* TODO: investigate further */
+      data->blockptr=mem_malloc( (data->x2-data->x1+1) * (data->y2-data->y1+1) * 4);
       saveblock(data->y1, data->x1, data->y2, data->x2, data->blockptr);
       }
 
@@ -182,8 +184,21 @@ void savescreen()
 
 {
    SCRNLIST *scrptr, *temp = scrnstack;
-   unsigned short len = maxx*maxy*2;
+   unsigned int len = maxx*maxy*2;
 
+#ifdef __NT__
+   /* brute force bug fix */
+   /* TODO: investigate further */
+   return;
+#endif 
+   
+   if (screen == NULL)
+   {
+	   /* bugfix 2018-01-18 ozzmosis */
+	   /* TODO: why is screen == NULL in the NT build? */
+	   return;
+   }
+   
    scrptr = mem_calloc(1, sizeof(SCRNLIST));
 
    scrptr->thisscreen = mem_malloc(len);      /* Get the mem */
@@ -196,8 +211,12 @@ void savescreen()
           len); /* Save it */
 
    #else
-//   gettext(1,1,maxx,maxy,scrptr->thisscreen);
+
+   /* OS2 */
+   
+   //   gettext(1,1,maxx,maxy,scrptr->thisscreen);
    VioReadCellStr((PBYTE) scrptr->thisscreen, &len, 0, 0, 0);
+
    #endif
 
    if(!scrnstack) scrnstack = scrptr;
@@ -532,10 +551,10 @@ void xputtext(unsigned short x1, unsigned short y1, unsigned short x2, unsigned 
    coordsize.Y = y2-y1+1;
    coordloc.X  = 0;
    coordloc.Y  = 0;
-   writerect.Top    = y1;
-   writerect.Bottom = y2;
-   writerect.Right  = x2;
-   writerect.Left   = x1;
+   writerect.Top    = y1 - 1;
+   writerect.Bottom = y2 - 1;
+   writerect.Right  = x2 - 1;
+   writerect.Left   = x1 - 1;
 
    result = WriteConsoleOutput(ScreenHandle, (CHAR_INFO *)s, coordsize, coordloc, &writerect);
    if(result == FALSE)
@@ -581,10 +600,10 @@ void xgettext(unsigned short x1, unsigned short y1, unsigned short x2, unsigned 
    coordsize.Y = y2-y1+1;
    coordloc.X  = 0;
    coordloc.Y  = 0;
-   readrect.Top    = y1;
-   readrect.Bottom = y2;
-   readrect.Right  = x2;
-   readrect.Left   = x1;
+   readrect.Top    = y1 - 1;
+   readrect.Bottom = y2 - 1;
+   readrect.Right  = x2 - 1;
+   readrect.Left   = x1 - 1;
    result = ReadConsoleOutput(ScreenHandle, (CHAR_INFO *)s, coordsize, coordloc, &readrect);
 
    if(result == FALSE)
