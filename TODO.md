@@ -7,6 +7,8 @@
   posting new messages. Stranger still, the DOS version uses a time five hours
   in advance! Workaround in both cases is to set TZ=0.
 
+- timEd: Add more %vars to reply.c (%mmon already added)
+
 - timEd & NetMgr: Double-check Y2K patches and test where possible
 
 - timEd: Test Hudson code. Probably need to use old Y2K-patched timEd to
