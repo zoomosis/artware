@@ -26,7 +26,7 @@ OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
 {$(SRC_DIR)\utils}.c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
-$(TARGET): $(OBJS)
+$(TARGET): $(OBJS) $(MSGAPI)
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fe=$@ $(OBJS) $(MSGAPI)
 
 clean:  

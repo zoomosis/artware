@@ -40,7 +40,7 @@ OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
 {$(SRC_DIR)\..\exec}.asm.obj:
 	$(ASM) $(AFLAGS) -c $<
 
-$(TARGET): $(OBJS)
+$(TARGET): $(OBJS) $(MSGAPI)
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fe=$@ $(OBJS) $(MSGAPI)
 
 clean:  
