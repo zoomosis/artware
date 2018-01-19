@@ -3,10 +3,9 @@
 
 - Update README.md with latest news and build instructions
 
-- timEd: Investigate timezone bug. Windows & OS/2 version (and others?)
-  seem to want to use UTC time when posting new messages. Stranger still,
-  the DOS version wants to use a time five hours in advance! Workaround in
-  both cases is to set TZ=0.
+- timEd: Investigate timezone bug. Windows & OS/2 version use UTC time when
+  posting new messages. Stranger still, the DOS version uses a time five hours
+  in advance! Workaround in both cases is to set TZ=0.
 
 - timEd & NetMgr: Double-check Y2K patches and test where possible
 
