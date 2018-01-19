@@ -1,4 +1,3 @@
 cd nt
-wmake
+wmake %1
 cd ..
-

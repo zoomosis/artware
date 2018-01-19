@@ -1,4 +1,3 @@
 cd d386
-wmake
+wmake %1
 cd ..
-
