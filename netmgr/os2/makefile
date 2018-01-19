@@ -8,7 +8,7 @@ CFLAGS=-zq -bm -sg -d2 -wx -bt=os2 -l=os2v2 -k32k -I..\..\api
 SRC_DIR=..
 MSGAPI=..\..\api\os2api.lib
 
-OBJS=netmgr.obj register.obj config.obj wrap.obj txtbuild.obj &
+OBJS=netmgr.obj config.obj wrap.obj txtbuild.obj &
 	version7.obj fdnode.obj gigo.obj binkpack.obj command.obj &
 	xfile.obj lastread.obj akamatch.obj external.obj mem.obj
 

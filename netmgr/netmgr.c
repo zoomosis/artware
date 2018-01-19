@@ -19,7 +19,6 @@
 
 #include "nstruct.h"
 #include "wrap.h"
-#include "register.h"
 #include "txtbuild.h"
 #include "lastread.h"
 #include "akamatch.h"
@@ -227,7 +226,6 @@ void main(int argc, char *argv[])
    struct _minf   minf;
    char drive[MAXDRIVE], dir[MAXDIR];
    AREALIST *maskarea;
-   #define EXPIRE 844142412L
 
    setvbuf(stdout, NULL, _IONBF, 0);
 
@@ -256,26 +254,12 @@ void main(int argc, char *argv[])
 
    GetConfig(cfgname);
 
-   if(read_key() == 1)
-      check_registration();
+   /* Always registered */
 
-   if(REGISTERED)
-      printf("\nRegistered to: \"%s\"\n\n", cfg.registername);
-   else
-      {
-      printf("\nUnregistered evaluation version! If you like this program, please register!\n");
-//      if(begin > EXPIRE)
-//        {
-//        printf("\nThis gamma version has expired!\nPlease contact Gerard van Essen (2:280/408) for an update!\n");
-//        exit(254);
-//        }
-//      else
-//        {
-//        printf("For unregistered users, this version will expire Oct 1, 1996 ");
-//        printf("(%d days from now)\n\n", (int) ((EXPIRE - begin)/(60L*60L*24L)));
-//        }
-      sleep(2);
-      }
+   cfg.registered = 1;
+
+   if (*cfg.registername)
+       printf("\nRegistered to: \"%s\"\n\n", cfg.registername);
 
    if(debug) dumpconfig();
 
