@@ -784,7 +784,7 @@ char * date2ascii(dword d)
 
 
   sprintf(buf, "%02u %-3.3s %02u  %02u:%02u:%02u   ",
-          jtm->tm_mday, months_ab[jtm->tm_mon], jtm->tm_year,
+          jtm->tm_mday, months_ab[jtm->tm_mon], jtm->tm_year % 100,
           jtm->tm_hour, jtm->tm_min, jtm->tm_sec);
   buf[19] = 0;
 

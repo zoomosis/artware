@@ -3779,7 +3779,7 @@ char *MakeT(dword t)
 
    memset(temp, '\0', sizeof(temp));
    sprintf(temp, "%s %s %2.2i '%2.2i, %2.2i:%2.2i:%2.2i",
-      weekday_ab[tm->tm_wday], months_ab[tm->tm_mon], tm->tm_mday, tm->tm_year, tm->tm_hour, tm->tm_min, tm->tm_sec);
+      weekday_ab[tm->tm_wday], months_ab[tm->tm_mon], tm->tm_mday, tm->tm_year % 100, tm->tm_hour, tm->tm_min, tm->tm_sec);
 
    return temp;
 }
@@ -4111,7 +4111,7 @@ char * ExpandMacros(char *s)
 
         else if(strncmpi(lineptr, "year", 4)==0)    /* %year */
            {
-           sprintf(tempaddress, "19%2.2i", t->tm_year);
+           sprintf(tempaddress, "%4.4i", t->tm_year + 1900);
            memcpy(tempptr, tempaddress, strlen(tempaddress));
            lineptr += 4;
            tempptr += strlen(tempaddress);
