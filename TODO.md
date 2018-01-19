@@ -1,12 +1,6 @@
 - timEd: #pragma pack(__push, 1) for structures requiring it
   (partly done)
 
-- NetMgr: Fix missing prototypes & warnings
-
-- NetMgr: Fix so it's always "registered"
-
-- NetMgr: Remaining Y2K patches
-
 - Update README.md with latest news and build instructions
 
 - timEd & NetMgr: Double-check Y2K patches and test where possible
@@ -18,12 +12,10 @@
 
 - timEd: Merge any recent patches or bug fixes from the UNIX version
 
-- timEd: Fix: Text cursor won't turn off
+- timEd: Fix: Text cursor won't turn off in Windows NT version
 
 - timEd: Fix: Popup windows in NT build erroneously close when a keyboard
-  modifier key is pressed (very minor bug)
-
-- Use relative paths in makefiles (where possible)
+  modifier key (eg. Ctrl, Alt, Shift) is pressed (very minor bug!)
 
 - Rebuild WIMM
 
@@ -31,4 +23,3 @@
 
 - When code is declared "stable", run GNU Indent over it all and clean up
   things a bit
-
