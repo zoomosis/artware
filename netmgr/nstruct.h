@@ -1,6 +1,4 @@
-#define VERSION "1.00"
-
-// #define VERSION "1.00.b8"
+#define VERSION "1.00.ng1.y2k+"
 
 // Registration junk
 
