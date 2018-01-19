@@ -43,6 +43,7 @@ void akaforce(char *s);
 
 void AddSearchName(NAMELIST **root, char *s);
 void AddSearchAttr(ATTRLIST **root, char *s, XMASK *xmask);
+void AddSearchAddress(ADDRLIST **root, char *s);
 
 ADDRLIST * AddToAddressList(ADDRLIST *root, char *address, int and);
 NAMELIST * AddToNameList(NAMELIST *root, char *name, int and);
@@ -208,7 +209,7 @@ void Analyse(char *line)
 void addmask(int what, char *value)
 {
    static MASKLIST *current = NULL;
-   static curno = 1;    // Counter for MASK number..
+   static int curno = 1;    // Counter for MASK number..
    char *thisaction;
    char temp[120], temp2[120];
    int fake;
@@ -1546,7 +1547,7 @@ void AddFile(NAMELIST **nameroot, ADDRLIST **addrroot, char *s)
 
 void parseaddress(char *address)
 {
-   static n=0;
+   static int n=0;
 
    if(address == NULL) return;
 

@@ -24,6 +24,7 @@ extern XMASKLIST   *firstxmask;
 
 
 int MaskMatch(NETADDR *adr, NETADDR *mask);
+int addrcmp(NETADDR *one, NETADDR *two);
 
 
 /* Check TO: address and all AKA's to pick the most appropriate one.. */

@@ -35,6 +35,8 @@ int        CheckParms(char *needed);
 char     * fancy_status(char status);
 void       AppendFlo(char *from, char *to);
 void       AppendPacket(char *from, char *to);
+void PostMessage(void);
+void ChangeStatus(void);
 
 char BaseName[120] = "";
 

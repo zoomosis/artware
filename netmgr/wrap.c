@@ -13,8 +13,8 @@ char * pascal near nextline(void);
 
 LINE  *current;
 
-char  lastsep,
-      *curptr;
+int lastsep;
+char *curptr;
 
 char  buf[140];
 char  *s = buf;

@@ -46,6 +46,7 @@ extern XMASKLIST   *firstxmask;
 
 char *BuildCommandLine(char *charptr, char *curfile, char *newfile, char *repfile, char *curareadir);
 int runexternal(char *prog, char *args, char *curareadir);
+void SumAttachesRequests(MIS *mis, char *temp, int maxlen, int what);
 
 // ==============================================================
 
@@ -168,7 +169,6 @@ int runaprog(char *prog, char *parms)
   char *curdir = NULL;
   int retval=0;
   unsigned drive, total;
-  char temp[200];
 
   curdir = getcwd(NULL, MAXPATH);
   #ifndef __WATCOMC__
@@ -183,9 +183,11 @@ int runaprog(char *prog, char *parms)
   #ifndef __FLAT__
   retval = do_exec(prog, parms, USE_ALL|HIDE_FILE|CHECK_NET, 0xFFFF, environ);
   #else
-  sprintf(temp, "%s %s", prog, parms);
-  retval = system(temp);
-//  retval = spawnlp(P_WAIT, prog, prog, parms, NULL);
+  {
+    char temp[200];
+    sprintf(temp, "%s %s", prog, parms);
+    retval = system(temp);
+  }
   #endif
 
   #ifndef __WATCOMC__

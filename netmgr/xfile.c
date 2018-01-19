@@ -138,7 +138,7 @@ void xclose(XFILE *f)
 char *xgetline(XFILE *f)
 {
       char *s = f->nextChar, *p, *charptr;
-      int n, copylen;
+      int n;
 
 
 /*      for (p = s; *p != 0; ++p)
