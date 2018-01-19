@@ -144,12 +144,6 @@ void edit_hello_strings(AREA *area)
         (confirm("Data changed. Save? [y/N]") == 0) )
     return;
 
-   if(!(TIMREGISTERED))
-     {
-     Message("Permanently saving is only possible in registered versions.", -1, 0, YES);
-     return;
-     }
-
    if( (data=fopen(datafile, "w")) != NULL )
       {
       if(area->base & MSGTYPE_HMB) // For Hudson we add it here..

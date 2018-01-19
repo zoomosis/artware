@@ -1928,13 +1928,6 @@ void SaveCurrent(char *areatag)
    SEARCHARG *thisone, *lastmain;
    dword crc;
 
-
-   if(!TIMREGISTERED)
-     {
-     Message("Saving search profiles is only for registered users!", -1, 0, YES);
-     return;
-     }
-
    strncpy(temp, areatag, 119);
    strupr(temp);
    crc = JAMsysCrc32(temp, strlen(temp), -1L);
