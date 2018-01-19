@@ -1,4 +1,0 @@
-cd nt
-wmake
-cd ..
-
