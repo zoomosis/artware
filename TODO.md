@@ -3,6 +3,10 @@
 
 - Update README.md with latest news and build instructions
 
+- timEd: Investigate timezone bug. Windows & OS/2 version (and others?)
+  seem to want to use UTC time when posting new messages. Workaround is
+  to set TZ=0.
+
 - timEd & NetMgr: Double-check Y2K patches and test where possible
 
 - timEd: Test Hudson code. Probably need to use old Y2K-patched timEd to
