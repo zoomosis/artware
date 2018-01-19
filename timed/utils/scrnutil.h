@@ -19,6 +19,8 @@ typedef int YesNo;
 #define NO  0
 
 
+#pragma pack(__push, 1)
+
 typedef struct
    {
    int   x1, y1, x2, y2;         /* Corners */
@@ -29,6 +31,7 @@ typedef struct
    YesNo save;
    }  BOX;
 
+#pragma pack(__pop)
 
 BOX *initbox(int x1, int y1, int x2, int y2, int border, int inside, int bstyle, YesNo save, char fill);
 void drawbox(BOX *data);
