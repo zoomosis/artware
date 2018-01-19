@@ -11,7 +11,7 @@ void working(int y, int x, int col);
 
 void working(int y, int x, int col)
 {
-   static char n=0;
+   static int n=0;
 
    printc(y,x,col,wchars[n]);
 

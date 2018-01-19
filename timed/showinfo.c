@@ -94,10 +94,10 @@ void showinfo(MMSG *curmsg, AREA *area, MSG *areahandle)
 
    print(17,9,cfg.col[Cpoptext],temp);
 
-   vprint(18,9,cfg.col[Cpoptext], "AKA  : %hu:%hu/%hu.%hu", cfg.usr.address[area->aka].zone,
-                                       cfg.usr.address[area->aka].net,
-                                       cfg.usr.address[area->aka].node,
-                                       cfg.usr.address[area->aka].point);
+   vprint(18,9,cfg.col[Cpoptext], "AKA  : %hu:%hu/%hu.%hu", cfg.usr.address[(int) area->aka].zone,
+                                       cfg.usr.address[(int) area->aka].net,
+                                       cfg.usr.address[(int) area->aka].node,
+                                       cfg.usr.address[(int) area->aka].point);
 
    vprint(19, 9, cfg.col[Cpoptext], "Chars: %s (write), %s (read)", area->cswrite, area->csread);
 

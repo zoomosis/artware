@@ -439,7 +439,7 @@ void writerequest(REQLIST *first, AREA *area, MSG *areahandle, MMSG *origmsg)
    if(check_node(&curmsg->mis, 0, 0) != 1)
       strcpy(curmsg->mis.to, "SysOp");
 
-   curmsg->mis.origfido = cfg.usr.address[toarea->aka];  /* Fill this all */
+   curmsg->mis.origfido = cfg.usr.address[(int) toarea->aka];  /* Fill this all */
 
    curmsg->mis.destfido = origmsg->mis.origfido;
    matchaka(&curmsg->mis);

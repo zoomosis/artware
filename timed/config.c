@@ -635,7 +635,7 @@ void check_aka(AREA *current, char *rest)
    char *charptr, *aka;
    char temp[80];
    NETADDR tempaddr;
-   char n;
+   int n;
 
 
    if(rest == NULL) return;
@@ -1912,7 +1912,7 @@ void ReadGEchoCFG(void)
    result = read(SetupGE, sys, sizeof(SETUP_GE));
    close(SetupGE);
 
-   if (result == -1)
+   if (result == (word) -1)
    {
       Message("Error reading SETUP.GE", -1, 0, YES);
       mem_free(sys);
@@ -3452,7 +3452,7 @@ int near AreaCompare(AREA *one, AREA *two)
           break;
 
        case 'A':              // AKA
-          if( (ret=addrcmp(&cfg.usr.address[one->aka], &cfg.usr.address[two->aka])) != 0)
+          if( (ret=addrcmp(&cfg.usr.address[(int) one->aka], &cfg.usr.address[(int) two->aka])) != 0)
             return ret;
           break;
 

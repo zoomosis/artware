@@ -902,7 +902,7 @@ int show_thismsg(MSG *areahandle, AREA *area, UMSGID uid)
 
    while( (command != ESC)  &&
           (command != NEXT) &&
-          (command <= 0) )
+          (command == 0) )
           {
           if( (persmsg = GetFmtMsg(curno, areahandle, area)) == NULL)
              {
@@ -1290,8 +1290,7 @@ void Analyse_HMB_Index(void)
           else
              {
              HMBareas[board].last = HMBareas[board].high-1;
-             if((HMBareas[board].last < 0   ) ||
-                (HMBareas[board].last == -1L) )
+             if((HMBareas[board].last == -1L) )
                   HMBareas[board].last = 0;
              }
           }

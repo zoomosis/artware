@@ -1206,7 +1206,7 @@ void FDupper(char *in)
 
   while(*in)
     {
-    *in = _MyUprTab[*in];
+    *in = _MyUprTab[(int) *in];
     in++;
     }
 

@@ -50,7 +50,7 @@ void bmgCompile(pat, arg, ignore, whole)
     memset(arg->delta, patlen, 256);
 
     for (i = 0; i < patlen; ++i)
-        arg->delta[arg->pat[i]] = patlen - i - 1;
+        arg->delta[(int) arg->pat[i]] = patlen - i - 1;
 
     if (ignore) /*  tweak upper case if ignore on  */
         for (i = 0; i < patlen; ++i)
@@ -91,7 +91,7 @@ char *bmgSearch(buffer, buflen, arg, howstrict)
 
     for (;;)
         {
-        while (((inc = arg->delta[buffer[k]]) != 0) &&
+        while (((inc = arg->delta[(int) buffer[k]]) != 0) &&
             ((k += inc) < buflen))
             ;
         if (k >= buflen)

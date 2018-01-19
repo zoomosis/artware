@@ -15,8 +15,8 @@ void AppendAtEnd(MMSG *curmsg, char *keyword, STRINGLIST *l);
 
 LINE  *current;
 
-char  lastsep,
-      *curptr;
+int  lastsep;
+char *curptr;
 
 char  buf[140];
 char  *s = buf;
