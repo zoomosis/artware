@@ -582,7 +582,7 @@ void  EditSearchArgument(SEARCHARG * first)
    BOX *elbox;
    int topline = maxy/2-8;
 
-   elbox = initbox(topline, 21, topline+14, 57, cfg.col[Cfindactive], cfg.col[Cfindtext], S_VERT, YES, ' ');
+   elbox = initbox(topline, 21, topline+14, 57, cfg.col[Cfindactive], cfg.col[Cfindtext], SINGLE, YES, ' ');
    drawbox(elbox);
 
    print(topline+1, 22, cfg.col[Cfindtext], " String:                Options:");
@@ -804,7 +804,7 @@ void EditElement(SEARCHARG *el, int curline, int topline)
 
    if(ret != ESC)
       {
-      elbox = initbox(topline, 21, topline+14, 57, cfg.col[Cfindpassive], cfg.col[Cfindtext], S_VERT, YES, -1);
+      elbox = initbox(topline, 21, topline+14, 57, cfg.col[Cfindpassive], cfg.col[Cfindtext], SINGLE, YES, -1);
       drawbox(elbox);
       GetOptions(el, topline);
       delbox(elbox);
@@ -851,7 +851,7 @@ void GetOptions(SEARCHARG *thisone, int topline)
    int curpos=0;
 
 
-   obox = initbox(topline+2, 27, topline+12, 53, cfg.col[Cfindactive], cfg.col[Cfindtext], S_VERT, YES, -1);
+   obox = initbox(topline+2, 27, topline+12, 53, cfg.col[Cfindactive], cfg.col[Cfindtext], SINGLE, YES, -1);
    drawbox(obox);
 
    while(1)
@@ -1026,7 +1026,7 @@ void GlobalOptions(void)
    int curpos=0;
    int topline = maxy/2 -3;
 
-   obox = initbox(topline, 21, topline+5, 59, cfg.col[Cfindactive], cfg.col[Cfindtext], S_VERT, YES, ' ');
+   obox = initbox(topline, 21, topline+5, 59, cfg.col[Cfindactive], cfg.col[Cfindtext], SINGLE, YES, ' ');
    drawbox(obox);
 
    while(1)
@@ -1097,7 +1097,7 @@ void GlobalOptions(void)
                 break;
 
              case 3:
-                passive = initbox(topline, 21, topline+5, 59, cfg.col[Cfindpassive], cfg.col[Cfindtext], S_VERT, YES, -1);
+                passive = initbox(topline, 21, topline+5, 59, cfg.col[Cfindpassive], cfg.col[Cfindtext], SINGLE, YES, -1);
                 drawbox(passive);
 
                 action = picklist(Actions, NULL, topline-1, 31, maxy-1, 79);
@@ -1181,7 +1181,7 @@ void DoSearch(MSG *starthandle, AREA *startarea, long startlast)
 
    MakeBMGTables();
 
-   statusbox = initbox(maxy/2-5, 24, maxy/2+5, 56, cfg.col[Cfindactive], cfg.col[Cfindtext], S_VERT, NO, ' ');
+   statusbox = initbox(maxy/2-5, 24, maxy/2+5, 56, cfg.col[Cfindactive], cfg.col[Cfindtext], SINGLE, NO, ' ');
    drawbox(statusbox);
    titlewin(statusbox, TCENTER, " Searching.. ", 0);
    boxwrite(statusbox, 0, 1, "Current area :");

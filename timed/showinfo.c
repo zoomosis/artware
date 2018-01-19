@@ -22,9 +22,9 @@ void showinfo(MMSG *curmsg, AREA *area, MSG *areahandle)
 
 
    #ifndef __OS2__
-   infobox = initbox(0,7,24,73,cfg.col[Cpopframe],cfg.col[Cpoptext],S_VERT,YES,' ');
+   infobox = initbox(0,7,24,73,cfg.col[Cpopframe],cfg.col[Cpoptext],SINGLE,YES,' ');
    #else
-   infobox = initbox(0,7,20,73,cfg.col[Cpopframe],cfg.col[Cpoptext],S_VERT,YES,' ');
+   infobox = initbox(0,7,20,73,cfg.col[Cpopframe],cfg.col[Cpoptext],SINGLE,YES,' ');
    #endif
    drawbox(infobox);
 
@@ -315,7 +315,7 @@ void ShowFileInfo(MMSG *curmsg)
                 70,
                 cfg.col[Cfindactive],
                 cfg.col[Cfindtext],
-                S_VERT,
+                SINGLE,
                 YES,
                 ' ');
   drawbox(box);

@@ -996,7 +996,7 @@ void PaintHeaderFrame(void)
 {
   BOX *box;
 
-  box = initbox(0, 0, maxy-2, 79, cfg.col[Cfindpassive], cfg.col[Cfindtext], S_VERT, NO, ' ');
+  box = initbox(0, 0, maxy-2, 79, cfg.col[Cfindpassive], cfg.col[Cfindtext], SINGLE, NO, ' ');
   drawbox(box);
   delbox(box);
 
@@ -1485,7 +1485,7 @@ void EditAttach(MMSG *curmsg, word type)
 //             break;
 
          case 338:        /* Insert */
-             getnamebox = initbox(9, 2, 14, 77, cfg.col[Cfindactive], cfg.col[Cfindtext], S_VERT, YES, ' ');
+             getnamebox = initbox(9, 2, 14, 77, cfg.col[Cfindactive], cfg.col[Cfindtext], SINGLE, YES, ' ');
              drawbox(getnamebox);
              boxwrite(getnamebox,0,1,"Filename or mask to attach:");
              memset(mask, '\0', sizeof(mask));
@@ -1522,7 +1522,7 @@ void EditAttach(MMSG *curmsg, word type)
                curelement = curelement->next;
                }
 
-             getnamebox = initbox(9, 2, 14, 77, cfg.col[Cfindactive], cfg.col[Cfindtext], S_VERT, YES, ' ');
+             getnamebox = initbox(9, 2, 14, 77, cfg.col[Cfindactive], cfg.col[Cfindtext], SINGLE, YES, ' ');
              drawbox(getnamebox);
              boxwrite(getnamebox,0,1,"Filename or mask to attach:");
              strncpy(mask, curelement->s, 71);
@@ -1698,7 +1698,7 @@ int EditOneRequest(char * filename, char * password)
   int retval;
 
 
-  getnamebox = initbox(10, 5, 15, 75, cfg.col[Cfindactive], cfg.col[Cfindtext], S_VERT, YES, ' ');
+  getnamebox = initbox(10, 5, 15, 75, cfg.col[Cfindactive], cfg.col[Cfindtext], SINGLE, YES, ' ');
   drawbox(getnamebox);
   boxwrite(getnamebox,1,1,"Filename to request:");
   boxwrite(getnamebox,2,1,"Password to use:");

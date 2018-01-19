@@ -24,7 +24,7 @@ void SaveTags(void)
      strcpy(desc, GetDesc(choice));
 
      savebox=initbox(maxy/2-2, maxx/2-30, maxy/2+2, maxx/2+30,
-                          cfg.col[Cpopframe], cfg.col[Cpoptext], S_HOR, YES, ' ');
+                          cfg.col[Cpopframe], cfg.col[Cpoptext], SINGLE, YES, ' ');
 
      drawbox(savebox);
      titlewin(savebox, TLEFT, " Description", 0);

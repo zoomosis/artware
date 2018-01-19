@@ -2306,7 +2306,7 @@ void WriteToFile(int raw, int block, AREA *area, MSG *areahandle, MMSG *curmsg)
 
   if(stat(WhatToOpen, &mystat) != -1)
     {
-    inputbox = initbox(10,15,18,65,cfg.col[Cpopframe],cfg.col[Cpoptext],S_HOR,YES,' ');
+    inputbox = initbox(10,15,18,65,cfg.col[Cpopframe],cfg.col[Cpoptext],SINGLE,YES,' ');
     drawbox(inputbox);
     boxwrite(inputbox,1,4,"File already exists! Append?");
     boxwrite(inputbox,3,4,"[Y]es : Append to file (or press <ENTER>)");

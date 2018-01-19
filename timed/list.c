@@ -908,7 +908,7 @@ void details(AREA *area, MSG *areahandle, int num, int start)
    if(pos > (maxy-6))
       pos = maxy - 6;
 
-   hdrbox = initbox(pos, 0, pos+5, 79, cfg.col[Cpopframe], cfg.col[Cpoptext], S_HOR, YES, ' ');
+   hdrbox = initbox(pos, 0, pos+5, 79, cfg.col[Cpopframe], cfg.col[Cpoptext], SINGLE, YES, ' ');
    drawbox(hdrbox);
    titlewin(hdrbox, TCENTER, " Detail view ", 0);
 

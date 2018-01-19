@@ -401,18 +401,10 @@ void drawrect(int x1, int y1, int x2, int y2, int style, int color)
 
    /* First we check out the borderstyle... */
 
-   if (style==SINGLE)
-      strcpy(lines, "⁄ø¿Ÿƒ≥");
-
-   else if (style==S_VERT)
-      strcpy(lines, "’∏‘æÕ≥");
-
-   else if (style==DOUBLE)
+   if (style==DOUBLE)
       strcpy(lines, "…ª»ºÕ∫");
-
-   else if (style==S_HOR)
-      strcpy(lines, "÷∑”Ωƒ∫");
-
+   else
+      strcpy(lines, "⁄ø¿Ÿƒ≥");
 
    #ifndef __WATCOMC__
 
@@ -513,15 +505,14 @@ loop_vert:
 void titlewin(BOX *win, int where, char *s, int hlcol)
 {
    char fmt[6];
-//   char tmp[132];
    char x;
 
    if(hlcol == 0) hlcol = win->ColBorder;
 
-   if( (win->borderstyle==SINGLE) || (win->borderstyle==S_HOR) )
+   if(win->borderstyle == SINGLE)
       strcpy(fmt, "¥%s√");
    else
-      strcpy(fmt, "µ%s∆");
+      strcpy(fmt, "π%sÃ");
 
    switch(where)
      {

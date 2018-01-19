@@ -494,7 +494,7 @@ void ScanAreas(AREA *first, int personal, int unscanned)
         }
      }
 
-	msgbox=initbox(11,9,15,69,cfg.col[Cpopframe],cfg.col[Cpoptext],S_HOR,YES,' ');
+	msgbox=initbox(11,9,15,69,cfg.col[Cpopframe],cfg.col[Cpoptext],SINGLE,YES,' ');
 	drawbox(msgbox);
    titlewin(msgbox, TLEFT, " Scanning.. ", 0);
 

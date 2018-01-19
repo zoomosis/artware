@@ -29,7 +29,7 @@ int pickone(char **choices, int y1, int x1, int y2, int x2)
    x2 = (maxlen < (x2-x1-1)) ? x1 + maxlen + 1 : x2;
 
 
-   pickbox = initbox(y1, x1, y2, x2, cfg.col[Casframe], cfg.col[Castext], S_VERT, YES, ' ');
+   pickbox = initbox(y1, x1, y2, x2, cfg.col[Casframe], cfg.col[Castext], SINGLE, YES, ' ');
    drawbox(pickbox);
 
    while(1)

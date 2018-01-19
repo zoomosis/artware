@@ -218,7 +218,7 @@ int showfiles(FILELIST *list, char tagging)
 
    rows = list->curnum > maxlines-4 ? maxlines-4 : list->curnum;
 
-   filebox = initbox(1,0,rows+2,26,cfg.col[Casframe],cfg.col[Castext],S_VERT,YES,' ');
+   filebox = initbox(1,0,rows+2,26,cfg.col[Casframe],cfg.col[Castext],SINGLE,YES,' ');
    drawbox(filebox);
 
    while(1)    /* Exit is w/ return statement that gives command back */

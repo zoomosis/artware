@@ -9,8 +9,6 @@
 
 #define SINGLE 0
 #define DOUBLE 1
-#define S_HOR  2
-#define S_VERT 3
 
 #define TLEFT   0
 #define TRIGHT  1

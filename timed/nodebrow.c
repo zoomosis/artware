@@ -178,7 +178,7 @@ ADDRLIST * NodeLookup(char *name, int sysop, int prompt)
        if((top + i + 2) > (maxy-1))
          top--;
        if(top < 0) top = 0;
-       nodebox = initbox(top, 0, top+i+1, 79, cfg.col[Casframe], cfg.col[Castext], S_VERT, YES, ' ');
+       nodebox = initbox(top, 0, top+i+1, 79, cfg.col[Casframe], cfg.col[Castext], SINGLE, YES, ' ');
        clockoff();
        drawbox(nodebox);
        biprinteol(maxy-1,0,cfg.col[Cmsgbar],cfg.col[Cmsgbaraccent]," Use ~TAB~ for details, cursor keys and page-up/down to move, ~enter~ to accept",'~');
@@ -316,7 +316,7 @@ void show_node_details(ADDRLIST *current, int curline)
    if(top>maxy-6)
       top=maxy-6;
 
-   details = initbox(top, 0, top+4, 79, cfg.col[Cpopframe], cfg.col[Cpoptext], S_HOR, YES, ' ');
+   details = initbox(top, 0, top+4, 79, cfg.col[Cpopframe], cfg.col[Cpoptext], SINGLE, YES, ' ');
    drawbox(details);
    MoveXY(2, top+1);
    sprintf(temp, " %-65.65s %6lu BPS ", current->system, current->baud);

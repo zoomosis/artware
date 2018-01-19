@@ -598,7 +598,7 @@ int ShowEditMenu(MMSG *curmsg, int escallowed)
 
    top  = maxy/2 - 4;
    left = maxx/2 - 11;
-   editmenu = initbox(top, left, top+6, left+19, cfg.col[Casframe], cfg.col[Castext], S_VERT, YES, ' ');
+   editmenu = initbox(top, left, top+6, left+19, cfg.col[Casframe], cfg.col[Castext], SINGLE, YES, ' ');
    drawbox(editmenu);
 
    do
