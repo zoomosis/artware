@@ -140,7 +140,7 @@ int runexternal(AREA *area, MSG **areahandle, MMSG *curmsg, long lastorhigh, dwo
   char * prog  = NULL,
        * parms = NULL;
   int clockstate, oldlines = maxy;
-#ifndef __DOS__
+#if !defined(__DOS__) && !defined(__NT__)
   char temp[200];
 #endif
 
@@ -428,7 +428,7 @@ int runaprog(char *prog, char *parms, int waitforkey)
   int retval=0;
   unsigned drive, total;
   int clockstate, oldlines = maxy;
-#ifndef __DOS__
+#if !defined(__DOS__) && !defined(__NT__)
   char temp[200];
 #endif
 
