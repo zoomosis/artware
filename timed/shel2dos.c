@@ -140,7 +140,9 @@ int runexternal(AREA *area, MSG **areahandle, MMSG *curmsg, long lastorhigh, dwo
   char * prog  = NULL,
        * parms = NULL;
   int clockstate, oldlines = maxy;
+#ifndef __DOS__
   char temp[200];
+#endif
 
   curdir = getcwd(NULL, MAXPATH);
   #ifndef __WATCOMC__
@@ -184,8 +186,11 @@ int runexternal(AREA *area, MSG **areahandle, MMSG *curmsg, long lastorhigh, dwo
   retval = do_exec(prog, parms, USE_ALL|HIDE_FILE|CHECK_NET, (cfg.usr.status&SWAPSHELL) ? 0xFFFF : 0x0000, environ);
   ins09();
   #else
-  sprintf(temp, "%s %s", prog, parms);
-  system(temp);
+  {
+	char temp[200];
+    sprintf(temp, "%s %s", prog, parms);
+    system(temp);
+  }
   #endif
 
   if(prog) mem_free(prog);
@@ -423,7 +428,9 @@ int runaprog(char *prog, char *parms, int waitforkey)
   int retval=0;
   unsigned drive, total;
   int clockstate, oldlines = maxy;
+#ifndef __DOS__
   char temp[200];
+#endif
 
   curdir = getcwd(NULL, MAXPATH);
   #ifndef __WATCOMC__
@@ -453,8 +460,11 @@ int runaprog(char *prog, char *parms, int waitforkey)
   retval = do_exec(prog, parms, USE_ALL|HIDE_FILE|CHECK_NET, (cfg.usr.status&SWAPSHELL) ? 0xFFFF : 0x0000, environ);
   ins09();
   #else
-  sprintf(temp, "%s %s", prog, parms);
-  retval = system(temp);
+  {
+	char temp[200];
+    sprintf(temp, "%s %s", prog, parms);
+    retval = system(temp);
+  }
   #endif
 
   video_init();
