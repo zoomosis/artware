@@ -190,9 +190,6 @@ void get_custom_info(AREA *area)
    char datafile[100], origfile[100];
    FILE *data, *orig;
 
-   char *charptr, name[36];
-   word ascvals4=0L;
-
    memset(custom.hello,       '\0', sizeof(custom.hello      ));
    memset(custom.rephello,    '\0', sizeof(custom.rephello   ));
    memset(custom.followhello, '\0', sizeof(custom.followhello));
@@ -226,24 +223,6 @@ void get_custom_info(AREA *area)
 
    if( (TIMREGISTERED) && ((data=fopen(datafile, "r")) != NULL) )
       {
-      // ================== Now some stuff to do extra checks (reg'ed only)
-
-      #ifndef __SENTER__
-        strcpy(name, cfg.usr.name[0].name);
-        strlwr(name);
-
-        for(charptr=name; *charptr; charptr++)
-           ascvals4 += (unsigned char) (255 - *charptr);
-
-        if(cfg.key.strkey.ascvals4 != ascvals4)
-          {
-          cfg.first->next = NULL;
-          }
-      #endif
-
-      // ================== End of stuff
-
-
       if(area->base & MSGTYPE_HMB)  // For Hudson, origin is here too
          {
          fgets(custom.origin, 99, data);
