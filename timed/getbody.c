@@ -4,6 +4,7 @@ RAWBLOCK * spawn_editor(int checkchange, char *areatag);
 RAWBLOCK * DoReplace(RAWBLOCK *blk, AREA *area, MMSG *curmsg, char *command, int origin, int raw);
 RAWBLOCK * internal_edit(LINE *first, AREA *area, MSG *areahandle, MMSG *curmsg, int startline);
 int        CheckForOutputFile(char *curfile);
+int WriteFmtBody(RAWBLOCK *blk, char *curfile);
 
 //int ExecAnySessionType(PSZ pszTitle, PSZ pszPgmName, PSZ pszInputs);
 
@@ -86,9 +87,6 @@ RAWBLOCK *GetBody(AREA *area,
 RAWBLOCK * spawn_editor(int checkchange, char *areatag)
 {
    char *temp;
-   #ifndef __OS2__
-     char *lastdot;
-   #endif
    static char commandline[120], msgfile[120], filename[120];
 	int lasthard=1, forcehard=0, editret, hadhcr=0;
 	FILE *infile;
@@ -135,6 +133,8 @@ RAWBLOCK * spawn_editor(int checkchange, char *areatag)
 //       editret = ExecAnySessionType("timEd external editor", cfg.usr.editor, msgfile);
        }
    #else
+   {
+     char *lastdot;
    // Batchfile?
    if( (lastdot=strrchr(cfg.usr.editor, '.')) != NULL &&
        ( (strcmpi(lastdot+1, "bat") == 0) || (strcmpi(lastdot+1, "btm") == 0) )
@@ -156,7 +156,7 @@ RAWBLOCK * spawn_editor(int checkchange, char *areatag)
 
 //   if(heapcheck() == -1)
 //     Message("Corrupt heap _after_ spawning editor!", -1, 0, YES);
-
+   }
    #endif
 
    video_init();

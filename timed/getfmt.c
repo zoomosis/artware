@@ -11,7 +11,7 @@ void FixReplies(MMSG *curmsg, MSG *areahandle);
 void checkaddress(MMSG *curmsg, AREA *area);
 void cleanup(char *s);
 void get_JAM_thread(MMSG *curmsg, MSG *areahandle);
-
+void AppendAtEnd(MMSG *curmsg, char *keyword, STRINGLIST *l);
 
 LINE  *current;
 

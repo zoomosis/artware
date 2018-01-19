@@ -82,7 +82,9 @@ void update_clock(int forced)
    time_t now;
    struct tm *mytime;
    char temp[20];
+#ifndef __OS2__
    static time_t lasttime=0;
+#endif
    #ifdef __OS2__
    APIRET rc;
    #endif

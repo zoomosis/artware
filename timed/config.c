@@ -380,7 +380,6 @@ void analyse (char *line, int number)
    char  *keyword;
    dword crc;
    int i;
-   char temp[100];
 
    globalline = number;
 
@@ -574,7 +573,7 @@ void analyse (char *line, int number)
 
 void parseaddress(char *address)
 {
-   static n=0;
+   static int n=0;
 
    if (n>(tMAXAKAS-1))
       {
@@ -592,7 +591,7 @@ void parseaddress(char *address)
 
 void addname(char *name)
 {
-   static n=0;
+   static int n=0;
 
    if(name == NULL) return;
 
@@ -2520,7 +2519,6 @@ void ReadFmailCFG()
    size_t oldcfgsize = sizeof(configType);
    size_t fm12cfgsize = sizeof(FM12configType);
    int isFmail120 = 0;
-   unsigned readsize;
 
    if( (cfgfile=sopen(Fmailcfg, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
       {
@@ -3653,7 +3651,7 @@ char *AllocRemapPath(char *s)
           // Yep, there's a %env% variable.
 
           memset(temp, '\0', sizeof(temp));
-          *end = NULL;
+          *end = '\0';
           memcpy(temp, s, start-s);
 
           if( (envvar=getenv(start+1)) != NULL)
@@ -3670,7 +3668,7 @@ char *AllocRemapPath(char *s)
    // If we get here, there is a $[<env>] string present.
 
    memset(temp, '\0', sizeof(temp));
-   *end = NULL;
+   *end = '\0';
    memcpy(temp, s, start-s);
 
    if( (envvar=getenv(start+2)) != NULL)

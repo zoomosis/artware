@@ -226,8 +226,6 @@ int xkbhit(void)
 {
    #ifndef __OS2__
 
-   union REGPACK regs;
-
    if(cfg.usr.status & LOWLEVELKB)
      return(asmkbhit(enhanced));     // ZF is clear when key available
    else

@@ -1,6 +1,5 @@
 #include "includes.h"
 
-
 #define NORMALCHARS "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-'. !?,*&^@#$%()-_=+[]{}\\\"|';:,.<>/?`~1234567890"
 #define ADDRESSCHARS "0123456789:/.-"
 #define VFNWW ""
@@ -129,7 +128,7 @@ int MakeHeader(MSG *areahandle, MMSG *curmsg, int reply, AREA *area, UMSGID repl
 int EditHeader(MSG *areahandle, MMSG *curmsg, int address, int aka, int domatch, AREA *area)
 {
    char  tempaddress[101], addrcopy[101];
-   int   what=3, ret=0, filecheck=0, alias=0, akamatched=0;
+   int   what=3, ret=0, alias=0, akamatched=0;
    ADDRLIST *found=NULL;
    NETADDR tempnet;
    word special = pUPDATE;
@@ -1155,7 +1154,6 @@ void EditRequest(MMSG *curmsg, word type)
   STRINGLIST *current, *highlighted;
   int i, rows, howmany, colour;
   int curline=0, start=0;
-  BOX *getnamebox;
   int retval;
   char filename[40], password[20];
   MIS *mis = &curmsg->mis;
@@ -1619,7 +1617,6 @@ void RemoveElement(STRINGLIST **start, int elno)
 void SetSpecial(MMSG *curmsg)
 {
   int whatnow = 0;
-  int i;
   int key;
 
   bottom(" Press ~enter~ or ~space~ to toggle status, or ~esc~ to end.");

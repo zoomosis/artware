@@ -387,9 +387,13 @@ void drawrect(int x1, int y1, int x2, int y2, int style, int color)
 {
 
    char  lines[7];
+#ifndef __WATCOMC__
    int ofs = ( (x1 * maxx) + y1) * 2;    /* Start offset, upper left */
+#endif
    char temp[133];
+#ifndef __OS2__
    int l;
+#endif
 
    #ifdef __OS2__
    USHORT  cell;
@@ -566,7 +570,9 @@ void xputtext(unsigned short x1, unsigned short y1, unsigned short x2, unsigned 
    int regellen = (x2-x1+1)*2;
 //   unsigned int ofs;
 //   short *out;
+#ifndef __OS2__
    char * whereto;
+#endif
 
    for(i=y1-1; i<y2; i++)
      {
@@ -617,7 +623,9 @@ void xgettext(unsigned short x1, unsigned short y1, unsigned short x2, unsigned 
    int regellen;
 #endif
 
+#ifndef __OS2__
    char *fromwhere;
+#endif
 
    regellen = (x2-x1+1)*2;
 

@@ -24,7 +24,9 @@
 
 int keybuf[MAXSTUFF];
 static int curkey=0;
+#ifndef __OS2__
 static int enhanced = 0;
+#endif
 
 // Variables to control macro execution.
 
@@ -32,7 +34,6 @@ static int curmacro = 0;
 static int macropos = 0;
 
 #include "includes.h"
-#include "idlekey.h"
 
 
 #ifdef __NT__
@@ -164,42 +165,45 @@ int asmkbhit(int enhanced)
 
 #endif
 
-//#if defined (__WATCOMC__) // && !defined(__FLAT__)
-//
-//extern int asmkbhit(int enhanced);
+#if 0
+#if defined (__WATCOMC__) // && !defined(__FLAT__)
 
-//#pragma aux asmkbhit =  \
-//   " mov ah, 11h      " \
-//   " cmp bx, 1        " \
-//   " je go_on         " \
-//   " mov ah, 1h       " \
-//   " go_on: int 16h   " \
-//   " jz nokey         " \
-//   " mov ax, 1        " \
-//   " jmp goback       " \
-//   " nokey: mov ax, 0 " \
-//   " goback:          " \
-//   parm   [bx]          \
-//   modify [ax bx]       \
-//   value  [ax]          ;
+extern int asmkbhit(int enhanced);
 
-//#else
-//#ifndef __OS2__
-//int asmkbhit(void)
-//{
-//    asm mov ah, 11h
-//    asm cmp enhanced, 1
-//    asm je go_on
-//    asm mov ah, 1h
-//go_on:
-//    asm  int 16h
-//    asm jnz goback
-//    asm mov ax, 0
-//
-//goback:
-//}
-//#endif
-//#endif
+#pragma aux asmkbhit =  \
+   " mov ah, 11h      " \
+   " cmp bx, 1        " \
+   " je go_on         " \
+   " mov ah, 1h       " \
+   " go_on: int 16h   " \
+   " jz nokey         " \
+   " mov ax, 1        " \
+   " jmp goback       " \
+   " nokey: mov ax, 0 " \
+   " goback:          " \
+   parm   [bx]          \
+   modify [ax bx]       \
+   value  [ax]          ;
+
+#else
+#ifndef __OS2__
+int asmkbhit(void)
+{
+    asm mov ah, 11h
+    asm cmp enhanced, 1
+    asm je go_on
+    asm mov ah, 1h
+go_on:
+    asm  int 16h
+    asm jnz goback
+    asm mov ax, 0
+
+goback:
+}
+#endif
+#endif
+
+#endif /* 0 */
 
 // =============================================================
 
@@ -262,12 +266,13 @@ void check_enhanced(void)
 int get_idle_key(char allowstuff, int scope)
 {
    int i;
-   #if !defined(__OS2__)
+   #ifndef __OS2__
+   #ifndef __NT__
    union REGS regs;
+   #endif
    #else
    KBDKEYINFO kbd;
    #endif
-   char tmp[100];
 
    if(allowstuff && (curkey>0))
       return keybuf[--curkey];
@@ -448,25 +453,9 @@ int xkbhit(void)
 #elif !defined(__OS2__)
 
    #ifndef __FLAT__
-   #ifdef __WATCOMC__
-   union REGPACK regs;
-   #else
-   union REGS regs;
-   #endif
 
    if(cfg.usr.status & LOWLEVELKB)
      {
-//     memset(&regs, '\0', sizeof(union REGPACK));
-//     if(enhanced)
-//       regs.h.ah = 0x11;
-//     else
-//       regs.h.ah = 0x01;
-//
-//     intr(0x16, &regs);
-//     if(regs.w.flags & INTR_ZF)
-//       return 0;
-//     else
-//       return 1;
      return(asmkbhit(enhanced));     // ZF is clear when key available
      }
    else

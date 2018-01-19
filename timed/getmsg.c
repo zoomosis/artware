@@ -337,7 +337,6 @@ int ConfirmReceipt(MSG *areahandle, AREA *area, MIS *mis, dword no)
    RAWBLOCK *blk = NULL;
    char *kludges;
    int retval = 0;
-   MIS *tempmis    = NULL;
    MSGH *msghandle = NULL;
 
 

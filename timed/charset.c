@@ -45,7 +45,7 @@ int LoadCharMap(char *name, sword level, int readmap)
          return 0;
        }
 
-     if((strcmpi(ReadRecBuffer[0].from_set, name) == 0) &&
+     if((strcmpi((const char *)ReadRecBuffer[0].from_set, name) == 0) &&
         (ReadRecBuffer[0].level == level) )
         {
         memcpy(&CharRec, &ReadRecBuffer[0], sizeof(CHARREC));
@@ -53,7 +53,7 @@ int LoadCharMap(char *name, sword level, int readmap)
         return 1;
         }
 
-     if((strcmpi(ReadRecBuffer[1].from_set, name) == 0) &&
+     if((strcmpi((const char *)ReadRecBuffer[1].from_set, name) == 0) &&
         (ReadRecBuffer[1].level == level) )
         {
         memcpy(&CharRec, &ReadRecBuffer[1], sizeof(CHARREC));
@@ -109,7 +109,7 @@ int LoadCharMap(char *name, sword level, int readmap)
      {
      if(readmap == 1)
        {
-       if((strcmpi(CharRec.from_set, name) == 0) &&
+       if((strcmpi((const char *)CharRec.from_set, name) == 0) &&
           (CharRec.level == level) )
          {
          found = 1;
@@ -423,7 +423,6 @@ void PickCharMap(void)
    FILE *in;
    char  filename[_MAX_PATH];
    CHARIDENTIFY chid;
-   int found = 0, i;
    STRINGLIST *strlist = NULL, *current;
    int tot=0, l=0, ret;
    char **picklist;
@@ -452,9 +451,9 @@ void PickCharMap(void)
      if(strcmpi(CharRec.to_set, "IBMPC") == 0)
        {
        if(CharRec.level == 1)
-         strlist = AddToStringList(strlist, CharRec.from_set, "1", 0);
+         strlist = AddToStringList(strlist, (char *)CharRec.from_set, "1", 0);
        else
-         strlist = AddToStringList(strlist, CharRec.from_set, "2", 0);
+         strlist = AddToStringList(strlist, (char *)CharRec.from_set, "2", 0);
        }
      }
 

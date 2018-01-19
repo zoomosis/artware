@@ -8,6 +8,7 @@
 #define TAG    0x01
 #define UNTAG  0x02
 
+int PrivateFillStruct(AREA *area, dword curmsgno);
 
 #ifdef __FLAT__
 

@@ -10,9 +10,8 @@ void show_node_details(ADDRLIST *thisone, int curline);
 
 int check_node(MIS *mis, int aka, int prompt)
 {
-   ADDRLIST *first = NULL, *current;
+   ADDRLIST *first = NULL;
    NETADDR tempaddr;
-   int found, i, chosen;
 
    if(mis->to[0] == '\0') return 0;
 

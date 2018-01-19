@@ -208,7 +208,7 @@ int showfiles(FILELIST *list, char tagging)
 {
    BOX *filebox;
 
-   FLIST *curptr, *junk;
+   FLIST *curptr;
    int maxlines=25, rows=0, l=0;
    int curline=0, start=0, highlighted=0, key;
    char temp[81];

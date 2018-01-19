@@ -275,7 +275,7 @@ int GetCommandLine(char **progptr, char **parmsptr, AREA *area, MSG *areahandle,
 
    if(parms[0] == '\0')
      {
-     *parms = NULL;
+     *parms = '\0';
      return 0;
      }
 
@@ -527,7 +527,7 @@ int FileDelete(void)
   ret = getstring(13, 4, filename, 72, 79, "",cfg.col[Centry], cfg.col[Cpoptext]);
   delbox(inputbox);
 
-  if (ret == ESC) return NULL;
+  if (ret == ESC) return 0;
 
   unlink(filename);
 

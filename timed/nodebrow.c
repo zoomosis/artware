@@ -7,7 +7,6 @@
 #include <share.h>
 
 #include "includes.h"
-
 #include "cbtreex.h"
 #include "nodelist.h"
 
@@ -24,12 +23,10 @@ char     * LastNameFirst(char *name, int withcomma);
 
 ADDRLIST * NodeLookup(char *name, int sysop, int prompt)
 {
-   Item item;
    unsigned short status;
-   ADDRLIST *first = NULL, *last, *current, *highlighted;
+   ADDRLIST *first = NULL, *current, *highlighted;
    int i, key, lastnumber;
    int top;
-   char foundname[101];
    int moveback = 0;
    BOX *nodebox = NULL;
    int curpos = 0;
@@ -342,7 +339,6 @@ void show_node_details(ADDRLIST *current, int curline)
 ADDRLIST *GetLoad(NODEHANDLE *nhandle)
 {
   int status, i;
-  Item item;
   ADDRLIST *first, *last;
   ADDRLIST found;
   int retry = 0;

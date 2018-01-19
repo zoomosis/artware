@@ -60,6 +60,7 @@ BITTXT Attr2Text2[] = {
 
 };
 
+void MakeSubject(int x, int y, MIS *mis);
 
 // =============================================================
 

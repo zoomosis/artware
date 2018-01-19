@@ -14,7 +14,7 @@ int ok = 1;
 
 int check_attach(MIS *mis, char *list, int copyfiles)
 {
-   char  *file, filename[MAXPATH], subject[72], temp[80];
+   char  *file, filename[MAXPATH], temp[80];
    char **master = NULL;
    char **thisone;
    struct stat mystat;
@@ -214,7 +214,6 @@ void writefa(MIS *mis, MSG *areahandle, AREA *area, int exceptfirst)
 
 void DoWrite(MIS *mis, MSG *areahandle, AREA *area)
 {
-   MSGH *msghandle;
    char *kludges;
 
    kludges = MakeKludge(NULL, mis, 1);       /* Last==1, always netmail */

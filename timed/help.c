@@ -1,6 +1,5 @@
 #include "includes.h"
 
-
 typedef struct
 {
 

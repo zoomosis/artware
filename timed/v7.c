@@ -79,9 +79,9 @@ int V7close(void)
 
 short int V7search(char *searchitem, int len, ADDRLIST *found)
 {
-  short int status;
   Item item;
-
+  short int status;
+	
   status = cbfind(cbt, searchitem, len, &item);
 
   if(status == ERROR)
@@ -325,20 +325,20 @@ int ReadNodex(long offset, ADDRLIST *current)
       if ((nodex = _fsopen (temp, "rb", SH_DENYNO)) == NULL)    /* open it*/
          {
          Message("Can't open nodex.dat!", -1, 0, YES);
-         return NULL;
+         return 0;
          }
       }
 
     if (fseek (nodex, (long int) offset, SEEK_SET))              /* point at record    */
        {
        Message("Error seeking nodex.dat!", -1, 0, YES);
-       return NULL;
+       return 0;
        }
 
     if (fread ((char *)&vers7, sizeof (struct _vers7), 1, nodex) != 1)
        {
        Message("Error reading nodelist record!", -1, 0, YES);
-       return NULL;
+       return 0;
        }
 
    current->address.zone  = vers7.Zone;

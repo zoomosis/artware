@@ -300,7 +300,7 @@ if (vbase == 0)
 
         desqview = (FP_SEG(screen) != sr.es);
         if(desqview)
-           screen = MK_FP(vbase, r.w.di);
+           screen = MK_FP(vbase, r.w.di);  /* TODO: fix pointer truncation */
 
 //        printf("screen: %p  -  sr.es: %p  -  sr.di: %p  \n", screen, sr.es, r.w.di); getch();
         }

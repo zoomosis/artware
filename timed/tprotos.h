@@ -288,6 +288,28 @@ int   MaySee(MSG *areahandle, dword no);
 int   ScanMaySee(AREA *area, MSG *areahandle);
 int   BePrivate(AREA * area);
 int   CurrentIsNotLast(AREA *area, MSG *areahandle);
+dword GetPrevPrivate(AREA *area, MSG *areahandle);
 dword GetNextPrivate(AREA *area, MSG *areahandle);
+
+/* find.c */
+
+void bottom(char *s);
+
+/* idlekey.c */
+
+int get_idle_key(char allowstuff, int scope);
+void stuffkey(int key);
+void kbflush(void);
+void check_enhanced(void);
+int xkbhit(void);
+void MacroStart(sword i);
+
+/* edit.c */
+
+void WriteToFile(int raw, int block, AREA *area, MSG *areahandle, MMSG *curmsg);
+
+/* version7.c */
+
+char *fancy_str (char *string);
 
 #endif

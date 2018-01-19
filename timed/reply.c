@@ -431,7 +431,6 @@ void MakeQuote(MMSG *curmsg, AREA *area, word replytype, MIS *newmis, char *addt
    char temp[350], *fbuf=NULL, inits[10], msgfile[100];
    int len;
    RAWBLOCK *blk;
-   char *quoteptr;
 
    if(!cfg.usr.internal_edit)
      {
@@ -1825,7 +1824,6 @@ RAWBLOCK * MakeCopy(RAWBLOCK *first)
 
 void RemoveTOline(RAWBLOCK *rawbody, MIS *mis)
 {
-   char temp[120] = "";
    char *eol;
    char *start;
 
