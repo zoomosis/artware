@@ -1423,13 +1423,25 @@ void HMB2MIS(MIS *mis, HMB_MSGHDR *hmbhdr, MSG *sq)
 
     if(hmbhdr->post_date[0] != 0 && hmbhdr->post_time[0] != 0)
        {
-       sscanf(hmbhdr->post_date+1, "%2hd-%2hd-%2hd", &m, &d, &y);
-       /* TODO: Y2K probably needs sliding window code here */
+       sscanf(hmbhdr->post_date+1, "%02d-%02d-%02d", &m, &d, &y);
+
+	   /*
+        *  Y2K fix. The Hudson format can only store two-digit years.
+		*  We'll assume if year is < 80, it's is in the 2000s.
+		*
+		*  - ozzmosis 2018-01-20
+		*/
+	   
+	   if (y < 80)
+	   {
+		   y += 100;
+	   }
+	   
        TM.tm_year = y;
        TM.tm_mon  = m-1;
        TM.tm_mday = d;
 
-       sscanf(hmbhdr->post_time+1, "%2hd:%2hd", &h, &m);
+       sscanf(hmbhdr->post_time+1, "%02d:%02d", &h, &m);
        TM.tm_hour = h;
        TM.tm_min  = m;
 
