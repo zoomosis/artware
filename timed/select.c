@@ -60,7 +60,6 @@ int  quickscan    (AREA *area);
 void analyse_toidx(void);
 void check_toidx(HMB_MSGTOIDX *thisentry, unsigned recno, int idx);
 void Analyse_HMB_Index(void);
-int  extracheck(void);
 int  SetView(void);
 
 
@@ -479,7 +478,6 @@ void ScanAreas(AREA *first, int personal, int unscanned)
 	char  temp[81];
    int   stop = 0;
    HMB_PERSINDEX *this;
-   char what;
 
    if(scannedall == 1 && unscanned)
      return;
@@ -511,24 +509,11 @@ void ScanAreas(AREA *first, int personal, int unscanned)
          firstHMB = NULL;
          sprintf(temp, " Check personal messages..");
          boxwrite(msgbox,1,0,temp);
-         if(extracheck() != 0)  // Hackers at work!!
-            {
-            what = cfg.usr.name[0].name[0];
-            cfg.usr.name[0].name[0] = '\255';
-            }
          analyse_toidx();
-         if(cfg.usr.name[0].name[0] == '\255')
-            cfg.usr.name[0].name[0] = what;
          }
 
       }
    #endif  // NOHMB
-
-   if(personal && (extracheck() != 0) )      // Hackers!!
-     {
-     cfg.usr.name[0].hash = cfg.usr.name[0].crc = time(NULL);
-     }
-
 
 	for (curarea = first; curarea; curarea=curarea->next)
 		{
@@ -1321,33 +1306,6 @@ void Analyse_HMB_Index(void)
 }
 
 #endif   // NOHMB
-
-// Extra check on regkey. Returns 0 if all is well.
-
-int extracheck(void)
-{
-   dword ascvals;
-   char *charptr;
-   char name[40];
-
-   #ifndef __SENTER__
-
-     strcpy(name, cfg.usr.name[0].name);
-     strlwr(name);
-
-     ascvals=0L;
-
-     for(charptr=name; *charptr; charptr++)
-       ascvals += (unsigned char) (*charptr + 27);
-
-     if(cfg.key.strkey.ascvals != ascvals)
-       return 1;
-
-  #endif
-
-  return 0;
-
-}
 
 
 int AreaVisible(AREA *curptr)
