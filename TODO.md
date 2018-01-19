@@ -3,6 +3,8 @@
 
 - NetMgr: Fix missing prototypes & warnings
 
+- NetMgr: Fix so it's always "registered"
+
 - NetMgr: Remaining Y2K patches
 
 - Update README.md with latest news and build instructions
