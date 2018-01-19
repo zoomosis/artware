@@ -1,26 +1,23 @@
-#############################################################################
-##                         MsgAPI "generic makefile"                       ##
-#############################################################################
+# NetMgr makefile for 32-bit Windows NT build using Watcom
 
-# If the LIB-making stuff doesn't work with NDMAKE and TLIB, take your
-# MAKE.INI and edit out the ".RESPONSE_LIB:" line.
+TARGET=..\netmgrnt.exe
 
-#
-# Turbo C, TC++
-#
+CC=wcl386
+CFLAGS=-zq -bm -sg -d2 -wx -bt=nt -l=nt -k32k -I..\..\api
+#COPT=-oneatx
+SRC_DIR=..
+MSGAPI=..\..\api\ntapi.lib
 
+OBJS=netmgr.obj register.obj config.obj wrap.obj txtbuild.obj &
+	version7.obj fdnode.obj gigo.obj binkpack.obj command.obj &
+	xfile.obj lastread.obj akamatch.obj external.obj mem.obj
 
-#FLAGS=-5r -mf -ol+rs -s -wx -zp1 -bt=NT -ic:\tc\msgapi
+{$(SRC_DIR)}.c.obj:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
-FLAGS=-zq -mf -od -d2 -wx -bt=NT -zp1 -ix:\api
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fe=$@ $(OBJS) $(MSGAPI)
 
-.c : ..\
-
-.c.obj : .AUTODEPEND
-   wcc386 $(FLAGS) $[*
-
-..\netmgrnt.exe: netmgr.obj register.obj config.obj wrap.obj &
-   txtbuild.obj version7.obj fdnode.obj gigo.obj binkpack.obj command.obj &
-   xfile.obj lastread.obj akamatch.obj external.obj mem.obj
-   wlink @netnt
-
+clean:  
+	del *.obj
+	del $(TARGET)

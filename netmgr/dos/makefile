@@ -1,33 +1,30 @@
-#############################################################################
-##                         MsgAPI "generic makefile"                       ##
-#############################################################################
+# NetMgr makefile for 16-bit DOS build using Watcom
 
-# If the LIB-making stuff doesn't work with NDMAKE and TLIB, take your
-# MAKE.INI and edit out the ".RESPONSE_LIB:" line.
+TARGET=..\netmgr.exe
 
-#
-# Turbo C, TC++
-#
+CC=wcl
+CFLAGS=-zq -ml -sg -d2 -wx -bt=dos -l=dos -k8k -I..\..\api -I..\..\exec
+#COPT=-oneatx
+SRC_DIR=..
+MSGAPI=..\..\api\dosapi.lib
 
-#FLAGS=-ml -od -d2 -wo -wx -fh -zp1 -bt=DOS -id:\tc\msgapi;d:\tc\exec
+OBJS=netmgr.obj register.obj config.obj mem.obj wrap.obj &
+	txtbuild.obj version7.obj fdnode.obj gigo.obj binkpack.obj command.obj &
+	akamatch.obj lastread.obj xfile.obj external.obj exec.obj checkpat.obj &
+	spawn.obj
 
-FLAGS=-zq -ml -ol+rsf -wo -s -wx -zp1 -bt=DOS -ix:\api;x:\exec
+{$(SRC_DIR)}.c.obj:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
-.c : ..\
-.c : x:\exec\
+{\exec}.c.obj:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
-.asm : x:\exec\
-
-.c.obj : .AUTODEPEND
-   wcc $(FLAGS) $[*
-
-.asm.obj :
+{\exec}.asm.obj:
     c:\bc\bin\tasm /zi/t/mx $[*
 
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fe=$@ $(OBJS) $(MSGAPI)
 
-..\netmgr.exe: netmgr.obj register.obj config.obj mem.obj wrap.obj &
-   txtbuild.obj version7.obj fdnode.obj gigo.obj binkpack.obj command.obj &
-   akamatch.obj lastread.obj xfile.obj external.obj exec.obj checkpat.obj &
-   spawn.obj
-   wlink @ntmgr
-
+clean:  
+	del *.obj
+	del $(TARGET)
