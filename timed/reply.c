@@ -364,6 +364,7 @@ void ChangeMessage(MMSG *curmsg, AREA *area, MSG *areahandle, int bodytoo)
      {
      RemoveFromCtrl(curmsg->ctxt, "FLAGS");
      RemoveFromCtrl(curmsg->ctxt, "MSGID");
+     RemoveFromCtrl(curmsg->ctxt, "TZUTC");
      if(!zonegated)
         RemoveFromCtrl(curmsg->ctxt, "INTL");
      }
@@ -696,8 +697,38 @@ getout:
 
 /* ----------------------------------------------- */
 
+static int tz_my_offset(void)
+{
+    time_t now;
+    struct tm *tm;
+    int gm_minutes;
+    long gm_days;
+    int local_minutes;
+    long local_days;
 
-/* char *MakeKludge(MMSG *curmsg, NETADDR *addr) */
+    tzset();
+
+    now = time(NULL);
+
+    tm = localtime(&now);
+    local_minutes = tm->tm_hour * 60 + tm->tm_min;
+    local_days = (long) tm->tm_year * 366L + (long) tm->tm_yday;
+
+    tm = gmtime(&now);
+    gm_minutes = tm->tm_hour * 60 + tm->tm_min;
+    gm_days = (long) tm->tm_year * 366L + (long) tm->tm_yday;
+
+    if (gm_days < local_days)
+    {   
+        local_minutes += 1440;
+    }
+    else if (gm_days > local_days)
+    {
+        gm_minutes += 1440;
+    }
+
+    return local_minutes - gm_minutes;
+}
 
 char *MakeKludge(MMSG *curmsg, MIS *mis, int netmail)
 {
@@ -729,6 +760,11 @@ char *MakeKludge(MMSG *curmsg, MIS *mis, int netmail)
       strcat(buffer, "\01PID: ");
       strcat(buffer, myname);
       }
+
+    timezone = tz_my_offset();
+	sprintf(temp, "\01TZUTC: %.4li",
+	  (long)(((timezone / 60) * 100) + (timezone % 60)));
+	strcat(buffer, temp);
 
    if(netmail && (cfg.usr.status & INTLFORCE))
       {
