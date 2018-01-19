@@ -21,9 +21,9 @@
 - timEd: Fix: Popup windows in NT build erroneously close when a keyboard
   modifier key (eg. Ctrl, Alt, Shift) is pressed (very minor bug!)
 
-- Rebuild WIMM
+- WIMM: Rebuild
 
-- Rebuild JAMINFO (requires Borland C++ for DOS & OS/2)
+- JAMINFO: Rebuild (requires Borland C++ for DOS & OS/2)
 
 - When code is declared "stable", run GNU Indent over it all and clean up
   things a bit
