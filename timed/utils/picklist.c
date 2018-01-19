@@ -4,7 +4,6 @@
 #include <malloc.h>
 
 #include "..\includes.h"
-#include "..\idlekey.h"
 #include "video.h"
 #include "scrnutil.h"
 
