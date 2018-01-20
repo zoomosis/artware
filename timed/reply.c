@@ -697,39 +697,6 @@ getout:
 
 /* ----------------------------------------------- */
 
-static int tz_my_offset(void)
-{
-    time_t now;
-    struct tm *tm;
-    int gm_minutes;
-    long gm_days;
-    int local_minutes;
-    long local_days;
-
-    tzset();
-
-    now = time(NULL);
-
-    tm = localtime(&now);
-    local_minutes = tm->tm_hour * 60 + tm->tm_min;
-    local_days = (long) tm->tm_year * 366L + (long) tm->tm_yday;
-
-    tm = gmtime(&now);
-    gm_minutes = tm->tm_hour * 60 + tm->tm_min;
-    gm_days = (long) tm->tm_year * 366L + (long) tm->tm_yday;
-
-    if (gm_days < local_days)
-    {   
-        local_minutes += 1440;
-    }
-    else if (gm_days > local_days)
-    {
-        gm_minutes += 1440;
-    }
-
-    return local_minutes - gm_minutes;
-}
-
 char *MakeKludge(MMSG *curmsg, MIS *mis, int netmail)
 {
 /*	static char counter=0; */
@@ -761,9 +728,7 @@ char *MakeKludge(MMSG *curmsg, MIS *mis, int netmail)
       strcat(buffer, myname);
       }
 
-    timezone = tz_my_offset();
-	sprintf(temp, "\01TZUTC: %.4li",
-	  (long)(((timezone / 60) * 100) + (timezone % 60)));
+	sprintf(temp, "\01TZUTC: %02d%02d", (-timezone / 60) / 60, (-timezone / 60) % 60);
 	strcat(buffer, temp);
 
    if(netmail && (cfg.usr.status & INTLFORCE))
