@@ -1,3 +1,6 @@
+#ifndef __VIDEO_H__
+#define __VIDEO_H__
+
 /*
 
                 Direct video writing, based on a C_ECHO
@@ -66,3 +69,5 @@ void _settextcursor(short type);
 
 extern int maxx;
 extern int maxy;
+
+#endif
