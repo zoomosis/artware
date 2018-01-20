@@ -3,10 +3,6 @@
 
 - Update README.md with latest news and build instructions
 
-- timEd: Investigate timezone bug. Windows & OS/2 version use UTC time when
-  posting new messages. Stranger still, the DOS version uses a time five hours
-  in advance! Workaround in both cases is to set TZ=0.
-
 - timEd: Add more %vars to reply.c (%mmon already added)
 
 - timEd & NetMgr: Double-check Y2K patches and test where possible
