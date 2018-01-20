@@ -779,6 +779,7 @@ dword JAMsysTime(dword * pTime)
 */
 dword JAMsysMkTime(JAMTM * pTm)
 {
+#if JUNKCODE
     dword  Days;
     int     Years;
 
@@ -797,6 +798,20 @@ dword JAMsysMkTime(JAMTM * pTm)
     /*Convert to seconds, and add the number of seconds this day*/
     return(((dword) Days * 86400L) + ((dword) pTm->tm_hour * 3600L) +
            ((dword) pTm->tm_min * 60L) + (dword) pTm->tm_sec);
+#else
+	struct tm tm;
+	tm.tm_year = pTm->tm_year;
+	tm.tm_mon = pTm->tm_mon;
+	tm.tm_mday = pTm->tm_mday;
+	tm.tm_hour = pTm->tm_hour;
+	tm.tm_min = pTm->tm_min;
+	tm.tm_sec = pTm->tm_sec;
+	tm.tm_wday = pTm->tm_wday;
+	tm.tm_yday = pTm->tm_yday;
+	tm.tm_isdst = pTm->tm_isdst;
+
+	return mktime(&tm);
+#endif
 }
 
 /*
@@ -813,6 +828,8 @@ dword JAMsysMkTime(JAMTM * pTm)
 JAMTM * JAMsysLocalTime(dword * pt)
 {
     static struct JAMtm   m;
+
+#if JUNKCODE
     sdword                t = *pt;
     int                   LeapDay;
 
@@ -839,6 +856,19 @@ JAMTM * JAMsysLocalTime(dword * pt)
     m.tm_mon--;
 
     m.tm_isdst = -1;
+#else
+	struct tm *tm;
+    tm = localtime((const time_t *) pt);
+	m.tm_year = tm->tm_year;
+	m.tm_mon = tm->tm_mon;
+	m.tm_mday = tm->tm_mday;
+	m.tm_hour = tm->tm_hour;
+	m.tm_min = tm->tm_min;
+	m.tm_sec = tm->tm_sec;
+	m.tm_wday = tm->tm_wday;
+	m.tm_yday = tm->tm_yday;
+	m.tm_isdst = tm->tm_isdst;
+#endif
 
     return(&m);
 }
