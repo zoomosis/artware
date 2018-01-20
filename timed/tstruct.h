@@ -1,5 +1,5 @@
-
-//#define __SENTER__ 1
+#ifndef __TSTRUCT_H__
+#define __TSTRUCT_H__
 
 #define VERSION   "1.11.ng1.y2k+"
 
@@ -1098,3 +1098,4 @@ typedef struct
 #define SARrequest   0x02
 #define SARboth      0x04
 
+#endif
