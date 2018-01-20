@@ -120,7 +120,7 @@ AREA *SelectArea(AREA *first, int pickonly, AREA *area_to_start)
 
 {
 	AREA 	*curptr, *highlighted;
-   short maxlines=maxy;
+   int maxlines=maxy;
    int rows, l, result;
 	static int curline=0, start=0;
    int oldstart, oldcur, doredraw;

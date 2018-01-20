@@ -6,7 +6,7 @@ void UpdateEchotosslog(char *tag);
 void add_tosslog(AREA *area, MSG *areahandle)
 {
    int tosslog;
-   char temp[120], tmpmsg[150];
+   char temp[1024], tmpmsg[1024];
    dword newnumber;
    dword current;
 

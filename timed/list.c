@@ -395,7 +395,7 @@ void readheader(unsigned num, MSG *areahandle, AREA *area, HDRLIST *thisone)
    MIS mis;
    dword no;
    int l;
-   char temp[135], *tilde;
+   char temp[MAX_SCREEN_WIDTH], temp2[80], *tilde;
 
    if(BePrivate(area))
       no = MsgUidToMsgn(areahandle, uidlist[num], UID_EXACT);
@@ -433,7 +433,9 @@ void readheader(unsigned num, MSG *areahandle, AREA *area, HDRLIST *thisone)
         SumAttachesRequests(&mis, mis.subj, 99, SARboth);
         }
 
-      sprintf(temp, "%-133.133s", mis.subj);
+      sprintf(temp2, "%%-%d.%ds", MAX_SCREEN_WIDTH - 2, MAX_SCREEN_WIDTH - 2);
+      sprintf(temp, temp2, mis.subj);
+
 
       // Check for personal message
       for(l=0; (cfg.usr.name[l].name[0] != '\0') && (l<10); l++)

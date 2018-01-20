@@ -18,7 +18,7 @@ LINE  *current;
 int  lastsep;
 char *curptr;
 
-char  buf[140];
+char  buf[MAX_SCREEN_WIDTH];
 char  *s = buf;
 unsigned char   pos, ll;
 

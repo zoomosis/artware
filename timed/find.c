@@ -164,7 +164,7 @@ void   CloseFindDatabase  (void);
 void FindMessage(MSG *areahandle, AREA *area, long last)
 {
    BOX *baseframe;
-   char temp[132];
+   char temp[MAX_SCREEN_WIDTH];
    static char firsttime = 1;
 
    last = MsgMsgnToUid(areahandle, last);
@@ -226,7 +226,7 @@ void ShowSearchOptions(int output)
    char  areas[10],
          msgs[10],
          direction[12];
-   char temp[132];
+   char temp[MAX_SCREEN_WIDTH];
 
    if(base.scope & sALLAREAS)
      strcpy(areas, "All    ");
@@ -293,7 +293,7 @@ int ShowSearchStrings(AREA *curarea)
        curpos  = 0,
        rows,
        colour;
-   char temp[132];
+   char temp[MAX_SCREEN_WIDTH];
    int i;
    BOX *baseframe;
 
@@ -506,7 +506,7 @@ int ShowSearchStrings(AREA *curarea)
 
 char * MakeSearchString(SEARCHARG *thisone)
 {
-   static char temp[132];
+   static char temp[MAX_SCREEN_WIDTH];
    int n=0;
    char tmpstring[40];
 
@@ -577,7 +577,7 @@ void  EditSearchArgument(SEARCHARG * first)
        curpos  = 0,
        rows,
        colour;
-   char temp[132];
+   char temp[MAX_SCREEN_WIDTH];
    int i;
    BOX *elbox;
    int topline = maxy/2-8;
@@ -790,7 +790,7 @@ void EditElement(SEARCHARG *el, int curline, int topline)
 {
    int ret;
    BOX *elbox;
-   char temp[132];
+   char temp[MAX_SCREEN_WIDTH];
 
    sprintf(temp, " %-20.20s   %s  ", el->string, FullOptions(el));
    printn(curline, 22, cfg.col[Cfindtext], temp, 35);

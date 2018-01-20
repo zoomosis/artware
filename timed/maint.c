@@ -6,7 +6,7 @@ int maint_menu(AREA *area)
    sword *macrolist;
    int i, add, action;
    int itemno = 0, longest = 0;
-   char temp[133], format[20];
+   char temp[MAX_SCREEN_WIDTH], format[20];
 
    optlist   = mem_calloc(MAXMENUENTRIES + 1, sizeof(char *));
    macrolist = mem_calloc(MAXMENUENTRIES + 1, sizeof(sword));

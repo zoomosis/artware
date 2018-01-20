@@ -10,8 +10,6 @@
 - timEd: Test Hudson code. Probably need to use old Y2K-patched timEd to
   verify data integrity. (Can do this on SDM, Squish & JAM, too.)
 
-- timEd: Fix NT & OS/2 startup crash where screen is wider than 127 columns
-
 - timEd: Merge any recent patches or bug fixes from the UNIX version
 
 - timEd: Fix: Text cursor won't turn off in Windows NT version

@@ -1371,7 +1371,7 @@ void add_text(char *line)
    char *dupline,
         *charptr;
    int quoted=0;
-   char quote[20], temp[140];
+   char quote[20], temp[MAX_SCREEN_WIDTH];
 
    charptr = dupline = mem_strdup(line);
 

@@ -333,7 +333,7 @@ int ShowOutFiles(char *outstring)
    OUTFLIST *current;
    int count = 1, maxlen=1, i, ret;
    char **flist;
-   char temp[135], format[20];
+   char temp[MAX_SCREEN_WIDTH], format[20];
 
    // How many do we have?
    for(current = cfg.usr.outfiles; current; current = current->next)

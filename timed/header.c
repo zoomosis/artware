@@ -684,7 +684,7 @@ int SetAttributes (MMSG *curmsg, word base, int fullscreen)
 
 void statusbar(char *s)
 {
-/*   char temp[133];
+/*   char temp[MAX_SCREEN_WIDTH];
 
    strcpy(temp, s);
 
@@ -891,7 +891,7 @@ int aliaslist(MIS *mis)
   MACROLIST *thismacro;
   int count = 0, ret, i;
   char **alist;
-  char temp[135];
+  char temp[MAX_SCREEN_WIDTH];
 
 
   for(thismacro=cfg.firstmacro; thismacro; thismacro=thismacro->next)
@@ -929,7 +929,7 @@ int aliaslist(MIS *mis)
 
 void PaintNewHeader(MMSG *curmsg, word type, word special)
 {
-   char temp[133], temp2[80];
+   char temp[MAX_SCREEN_WIDTH], temp2[80];
    MIS *mis = &curmsg->mis;
 
    if(!(special & pUPDATE))

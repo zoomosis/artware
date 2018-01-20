@@ -344,7 +344,7 @@ setlines(origlines);
 void biprint(int x, int y, int attr1, int attr2, unsigned char *line, char sep)
 {
    #if defined (__OS2__) || defined(__NT__)
-   char tmpline[300];
+   char tmpline[MAX_SCREEN_WIDTH];
    word len = 0;
 
    extern word slamlenbiline(unsigned char * d, char * s, short mask1, short mask2, char sep);
@@ -432,7 +432,7 @@ void biprinteol(int x, int y, int attr1, int attr2, unsigned char *line, char se
    USHORT cell = 32 | (attr1<<8);
 #endif
    #if defined (__OS2__) || defined(__NT__)
-   char tmpline[300];
+   char tmpline[MAX_SCREEN_WIDTH];
    word len;
 
    // slamlenbiline, see function above..
@@ -449,7 +449,7 @@ void biprinteol(int x, int y, int attr1, int attr2, unsigned char *line, char se
 
    #else    // NT
 
-     memset(tmpline, 32, 132);
+     memset(tmpline, ' ', MAX_SCREEN_WIDTH);
      printn(x, y+len, attr1, tmpline, (int)(maxx-len-y));
 
    #endif
@@ -677,7 +677,7 @@ end:
 
    #elif defined (__NT__)
 
-   static WORD vattrs[133];
+   static WORD vattrs[MAX_SCREEN_WIDTH];
    WORD *q;
 	COORD dwCursorPosition;
    ULONG dwWritten;
@@ -808,11 +808,11 @@ finito:
  
  #elif defined(__NT__)
 
-   char tmpline[133];
+   char tmpline[MAX_SCREEN_WIDTH];
    int len = strlen(line);
 
+   memset(tmpline, ' ', sizeof tmpline);
    printn(x, y, attr, line, len);
-   memset(tmpline, 32, 132);
    printn(x, y+len, attr, tmpline, (int)(maxx-len-y));
 
 
@@ -947,10 +947,11 @@ finito:
 
  #elif defined (__NT__)
 
-   char tmpline[133];
+   char tmpline[MAX_SCREEN_WIDTH];
+
+   memset(tmpline, ' ', sizeof tmpline);
 
    printn(x, y, attr, line, len);
-   memset(tmpline, 32, 132);
    printn(x, y+len, attr, tmpline, (int)(maxx-len-y));
 
  #else

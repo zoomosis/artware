@@ -293,7 +293,7 @@ void WriteCCs(MSG *areahandle, AREA *area, RAWBLOCK **first, MIS *mis)
 {
    RAWBLOCK *ccinfo = *first, *thismsgstart;
    HDRLIST *thisone;
-   char temp[132];
+   char temp[MAX_SCREEN_WIDTH];
    char info[] = "* Carbon copies sent to: ";
    char *kludges;
    int status;
@@ -490,7 +490,7 @@ void WriteXCs(AREA *area, RAWBLOCK **first, MIS *mis)
 {
    RAWBLOCK *ccinfo = NULL;
    AREALIST *thisone;
-   char temp[132];
+   char temp[MAX_SCREEN_WIDTH];
    char info[] = "* Crossposted in: ";
    char *kludges;
    MSG *thisareahandle;
@@ -609,7 +609,7 @@ void FixEnd(RAWBLOCK **first, AREA *area)
 {
    RAWBLOCK *lastblock;
    char *startorig;
-   char temp[150];
+   char temp[MAX_SCREEN_WIDTH];
 
    lastblock = JoinLastBlocks(*first, 1024);
 

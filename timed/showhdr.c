@@ -68,7 +68,7 @@ void MakeSubject(int x, int y, MIS *mis);
 
 void paint_header(MMSG *curmsg, word type)
 {
-   char  temp[133], temp2[80];
+   char  temp[MAX_SCREEN_WIDTH], temp2[80];
    MIS *mis = &curmsg->mis;
 
    if(maxx > 80)
@@ -135,7 +135,7 @@ void paint_header(MMSG *curmsg, word type)
 
 void paint_header(MMSG *curmsg, word type)
 {
-   char  temp[133], temp2[80];
+   char  temp[MAX_SCREEN_WIDTH], temp2[80];
    MIS *mis = &curmsg->mis;
 
    if(maxx > 80)
@@ -294,7 +294,7 @@ char *attr_to_txt(dword attr1, dword attr2)
 
 void MakeSubject(int x, int y, MIS *mis)
 {
-  char temp[133];
+  char temp[MAX_SCREEN_WIDTH];
   char temp2[50];
 
   if(mis->attached == NULL && mis->requested == NULL)

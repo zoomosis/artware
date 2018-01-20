@@ -70,4 +70,11 @@ void _settextcursor(short type);
 extern int maxx;
 extern int maxy;
 
+#ifdef __DOS__
+/* DOS is memory confined, so let's not waste it, and besides, we probably can't ever get more than 132 columns in DOS anyway */
+#define MAX_SCREEN_WIDTH 250
+#else
+#define MAX_SCREEN_WIDTH 1024
+#endif
+
 #endif

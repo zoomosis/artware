@@ -390,7 +390,7 @@ void drawrect(int x1, int y1, int x2, int y2, int style, int color)
 #ifndef __WATCOMC__
    int ofs = ( (x1 * maxx) + y1) * 2;    /* Start offset, upper left */
 #endif
-   char temp[133];
+   char temp[MAX_SCREEN_WIDTH];
 #ifndef __OS2__
    int l;
 #endif

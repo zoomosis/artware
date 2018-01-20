@@ -18,7 +18,6 @@ typedef int YesNo;
 #define YES 1
 #define NO  0
 
-
 #pragma pack(__push, 1)
 
 typedef struct

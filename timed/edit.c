@@ -19,7 +19,7 @@ static LINE  *first   = NULL,   /* first line of the text    */
              *bbegin  = NULL,   /* Start of 'block'          */
              *bend    = NULL;   /* End of 'block'            */
 
-static char templine[150];     /* 1 line buffer to manipulate throughout */
+static char templine[MAX_SCREEN_WIDTH];     /* 1 line buffer to manipulate throughout */
 
 int ret, insert, curlen, l, c;
 unsigned line;
@@ -2211,11 +2211,11 @@ void zapquotes(void)
 
 void near statusline(void)
 {
-   char temp[140];
+   char temp[MAX_SCREEN_WIDTH];
    size_t addedlen;
 
    memset(temp, ' ', sizeof(temp));
-   temp[139]='\0';
+   temp[MAX_SCREEN_WIDTH - 1]='\0';
 
 #if !defined(__OS2__) && !defined(__NT__) && !defined(__GCC__)
         #ifndef __SENTER__
@@ -2240,7 +2240,7 @@ void near statusline(void)
 
 void MakeTopLine(AREA *area, MMSG *curmsg)
 {
-   char temp[140];
+   char temp[MAX_SCREEN_WIDTH];
    char subject[80];
    char to[36];
 

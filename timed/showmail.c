@@ -11,7 +11,7 @@ void pageup   (void);
 /* These two used for msg display. Global to be used by freq */
 /* function, together with the two functions above           */
 
-static short numlines,
+static int numlines,
              curline;
 
 
@@ -27,7 +27,7 @@ MARK mark;
 
 dword ShowMsg(MMSG *msg, AREA *area, MSG *areahandle, int displaytype)
 {
-	char	temp[133];
+	char	temp[MAX_SCREEN_WIDTH];
 	dword command;
 
 
@@ -88,9 +88,9 @@ dword ShowMsg(MMSG *msg, AREA *area, MSG *areahandle, int displaytype)
 dword showbody(MMSG *curmsg, MSG *areahandle, AREA *area, int displaytype)
 
 {
-   short l;
+   int l;
 	LINE *top, *last, *lptr;
-	char	temp[133];
+	char	temp[MAX_SCREEN_WIDTH];
    int c, linecolor, retval, key;
    LINE *first;
    MSGH *msghandle, *tempmsg;
