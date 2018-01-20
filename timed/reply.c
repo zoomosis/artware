@@ -364,7 +364,6 @@ void ChangeMessage(MMSG *curmsg, AREA *area, MSG *areahandle, int bodytoo)
      {
      RemoveFromCtrl(curmsg->ctxt, "FLAGS");
      RemoveFromCtrl(curmsg->ctxt, "MSGID");
-     RemoveFromCtrl(curmsg->ctxt, "TZUTC");
      if(!zonegated)
         RemoveFromCtrl(curmsg->ctxt, "INTL");
      }
@@ -727,9 +726,6 @@ char *MakeKludge(MMSG *curmsg, MIS *mis, int netmail)
       strcat(buffer, "\01PID: ");
       strcat(buffer, myname);
       }
-
-	sprintf(temp, "\01TZUTC: %02d%02d", (-timezone / 60) / 60, (-timezone / 60) % 60);
-	strcat(buffer, temp);
 
    if(netmail && (cfg.usr.status & INTLFORCE))
       {
