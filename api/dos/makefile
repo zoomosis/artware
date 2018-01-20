@@ -3,8 +3,7 @@
 TARGET=..\dosapi.lib
 
 CC=wcl
-#CFLAGS=-ml -d2 -odf -wo -wx -fh -zp1 -bt=DOS
-CFLAGS=-zq -ml -ol+rsf -wo -s -wx -zp1 -bt=DOS
+CFLAGS=-zq -ml -d2 -wx -zp1 -bt=dos
 #COPT=-oneatx
 ASM=wasm
 AFLAGS=-zq

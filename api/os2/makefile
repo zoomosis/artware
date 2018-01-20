@@ -3,8 +3,7 @@
 TARGET=..\os2api.lib
 
 CC=wcl386
-#CFLAGS=-d2 -mf -od -wx -bm -zp1 -bt=OS2
-CFLAGS=-zq -5r -s -sg -mf -ol+rs -wx -bm -zp1 -bt=OS2
+CFLAGS=-zq -d2 -wx -zp1 -sg -bt=os2
 #COPT=-oneatx
 LIB=wlib
 LFLAGS=-q

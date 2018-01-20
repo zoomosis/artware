@@ -3,8 +3,7 @@
 TARGET=..\ntapi.lib
 
 CC=wcl386
-#CFLAGS=-5r -s -sg -mf -ol+rs -wx -bm -zp1 -bt=NT
-CFLAGS=-zq -d2 -mf -od -wx -bm -zp1 -bt=NT
+CFLAGS=-zq -d2 -wx -zp1 -sg -bm -bt=nt
 #COPT=-oneatx
 LIB=wlib
 LFLAGS=-q

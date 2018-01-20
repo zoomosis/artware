@@ -3,8 +3,7 @@
 TARGET=..\386api.lib
 
 CC=wcl386
-#CFLAGS=-d2 -mf -od -wx -zp1 -bt=DOS4G
-CFLAGS=-zq -5r -s -mf -ol+rs -wx -bm -zp1 -bt=DOS4G -D__DOS4GW__=1
+CFLAGS=-zq -d2 -wx -zp1 -bt=dos4g -D__DOS4GW__=1
 #COPT=-oneatx
 ASM=c:\bc\bin\tasm.exe
 AFLAGS=/t/mx /d__FLAT__ 
