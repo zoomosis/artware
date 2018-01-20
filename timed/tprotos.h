@@ -224,6 +224,7 @@ int  ReadTagFile(int choice);
 // Show extended error information from msgbase code..
 
 void showerror(void);
+void debug(const char *format, ...);
 
 // Clock stuff
 
