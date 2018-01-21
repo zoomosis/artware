@@ -547,18 +547,16 @@ void MakeQuote(MMSG *curmsg, AREA *area, word replytype, MIS *newmis, char *addt
         }
      else if (curline->status & QUOTE)
         {
-//        if((quoteptr = strchr(curline->ls, '>')) != NULL)
-//          {
-//          len = quoteptr - curline->ls;
-//          memcpy(temp, curline->ls, len);
-//          temp[len] = '>';
-//          memcpy(temp+len+1, quoteptr, curline->len-len);
-//          temp[curline->len+1] = '\r';
-//          temp[curline->len+2] = '\0';
-//          }
-//        else
-          sprintf(temp, "%s\r", curline->ls);
-        addit(temp, repfile);
+             char *quoteptr;
+             if ((quoteptr = strchr(curline->ls, '>')) != NULL)
+             {
+                 *quoteptr = 0;
+                 ++quoteptr;
+                 sprintf(temp, "%s>>%s", curline->ls, quoteptr);
+             }
+             else
+                 sprintf(temp, "%s\r", curline->ls);
+             addit(temp, repfile);
         }
      else if ( (len = curline->len) < (maxx-20) )
         {
