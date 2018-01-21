@@ -15,7 +15,7 @@ OBJS=netmgr.obj config.obj wrap.obj txtbuild.obj &
 {$(SRC_DIR)}.c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
-$(TARGET): $(OBJS)
+$(TARGET): $(OBJS) $(MSGAPI)
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fe=$@ $(OBJS) $(MSGAPI)
 
 clean:  

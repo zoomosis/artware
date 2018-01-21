@@ -24,7 +24,7 @@ OBJS=netmgr.obj config.obj mem.obj wrap.obj txtbuild.obj version7.obj &
 {$(SRC_DIR)\..\exec}.asm.obj:
 	$(ASM) $(AFLAGS) -c $<
 
-$(TARGET): $(OBJS)
+$(TARGET): $(OBJS) $(MSGAPI)
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fe=$@ $(OBJS) $(MSGAPI)
 
 clean:  
