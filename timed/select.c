@@ -784,8 +784,8 @@ int fastscan(AREA *curarea, int personal)
    if( (idxbuf = malloc(chunksize)) == NULL )
      return 0;
 
-   sprintf(idxname,  "%s.SQI", curarea->dir);
-   sprintf(lastname, "%s.SQL", curarea->dir);
+   sprintf(idxname,  "%s.sqi", curarea->dir);
+   sprintf(lastname, "%s.sql", curarea->dir);
 
    if ( (index = sopen(idxname, O_RDONLY | O_BINARY, SH_DENYNO)) == -1)
       {

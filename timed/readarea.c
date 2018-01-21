@@ -702,7 +702,7 @@ long get_last_squish(AREA *area)
 	char temp[80];
 
 
-   sprintf(temp, "%s.SQL", area->dir);
+   sprintf(temp, "%s.sql", area->dir);
 
    if ((lrfile = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
       return 0L;
@@ -782,7 +782,7 @@ void put_last_squish(AREA *area, long last)
    unsigned lastpos = cfg.usr.sqoff * sizeof(long);
    long dummy=0;
 
-   sprintf(temp, "%s.SQL", area->dir);
+   sprintf(temp, "%s.sql", area->dir);
 
    if ((lrfile = sopen(temp, O_CREAT|O_RDWR|O_BINARY, SH_DENYWR, S_IREAD|S_IWRITE)) == -1)
 		{

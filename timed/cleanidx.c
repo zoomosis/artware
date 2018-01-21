@@ -11,7 +11,7 @@ void clean_index(AREA *area)
    char idxname[120];
 
 
-   sprintf(idxname,  "%s.SQI", area->dir);
+   sprintf(idxname,  "%s.sqi", area->dir);
 
    if ( (index = sopen(idxname, O_RDWR | O_BINARY, SH_DENYWR)) == -1)
       return;
