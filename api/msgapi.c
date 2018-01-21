@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
+#include <dos.h>
 #include "alc.h"
 #include "prog.h"
 #include "max.h"
@@ -731,7 +732,7 @@ void Flags2Attr(char *s, dword *attr1, dword *attr2)
 /*
 **  JAMsysTime
 **
-**  Calculates the number of seconds that has passed from January 1, 1970
+**  Calculates the number of seconds (in local time) that has passed from January 1, 1970
 **  until the current date and time.
 **
 **      Parameters:   UINT32ptr pTime     - Ptr to buffer where the number
@@ -742,24 +743,23 @@ void Flags2Attr(char *s, dword *attr1, dword *attr2)
 dword JAMsysTime(dword * pTime)
 {
 	dword ti;
-//        struct dosdate_t   d;
-//        struct dostime_t   t;
-//        struct JAMtm  m;
-//        dword        ti;
-//
-//        getdate(&d);
-//        gettime(&t);
-//
-//        m.tm_year = d.da_year - 1900;
-//        m.tm_mon  = d.da_mon - 1;
-//        m.tm_mday = d.da_day;
-//        m.tm_hour = t.ti_hour;
-//        m.tm_min  = t.ti_min;
-//        m.tm_sec  = t.ti_sec;
-//
-//    ti = JAMsysMkTime(&m);
+    struct dosdate_t   d;
+    struct dostime_t   t;
+    struct JAMtm  m;
 
-    ti = (dword) time(NULL);
+    getdate(&d);
+    gettime(&t);
+
+	memset(&m, 0, sizeof m);
+
+    m.tm_year = d.da_year - 1900;
+    m.tm_mon  = d.da_mon - 1;
+    m.tm_mday = d.da_day;
+    m.tm_hour = t.ti_hour;
+    m.tm_min  = t.ti_min;
+    m.tm_sec  = t.ti_sec;
+
+    ti = JAMsysMkTime(&m);
     
     if(pTime)
         *pTime = ti;
@@ -770,7 +770,7 @@ dword JAMsysTime(dword * pTime)
 /*
 **  JAMsysMkTime
 **
-**  Calculates the number of seconds that has passed from January 1, 1970
+**  Calculates the number of seconds (in local time) that has passed from January 1, 1970
 **  until the specified date and time.
 **
 **      Parameters:   JAMTMptr pTm        - Ptr to structure containing time
@@ -779,7 +779,6 @@ dword JAMsysTime(dword * pTime)
 */
 dword JAMsysMkTime(JAMTM * pTm)
 {
-#if JUNKCODE
     dword  Days;
     int     Years;
 
@@ -798,26 +797,12 @@ dword JAMsysMkTime(JAMTM * pTm)
     /*Convert to seconds, and add the number of seconds this day*/
     return(((dword) Days * 86400L) + ((dword) pTm->tm_hour * 3600L) +
            ((dword) pTm->tm_min * 60L) + (dword) pTm->tm_sec);
-#else
-	struct tm tm;
-	tm.tm_year = pTm->tm_year;
-	tm.tm_mon = pTm->tm_mon;
-	tm.tm_mday = pTm->tm_mday;
-	tm.tm_hour = pTm->tm_hour;
-	tm.tm_min = pTm->tm_min;
-	tm.tm_sec = pTm->tm_sec;
-	tm.tm_wday = pTm->tm_wday;
-	tm.tm_yday = pTm->tm_yday;
-	tm.tm_isdst = pTm->tm_isdst;
-
-	return mktime(&tm);
-#endif
 }
 
 /*
 **  JAMsysLocalTime
 **
-**  Converts the specified number of seconds since January 1, 1970, to
+**  Converts the specified number of seconds (in local time) since January 1, 1970, to
 **  the corresponding date and time.
 **
 **      Parameters:   dword * pt        - Number of seconds since Jan 1, 1970
@@ -828,8 +813,6 @@ dword JAMsysMkTime(JAMTM * pTm)
 JAMTM * JAMsysLocalTime(dword * pt)
 {
     static struct JAMtm   m;
-
-#if JUNKCODE
     sdword                t = *pt;
     int                   LeapDay;
 
@@ -856,19 +839,6 @@ JAMTM * JAMsysLocalTime(dword * pt)
     m.tm_mon--;
 
     m.tm_isdst = -1;
-#else
-	struct tm *tm;
-    tm = localtime((const time_t *) pt);
-	m.tm_year = tm->tm_year;
-	m.tm_mon = tm->tm_mon;
-	m.tm_mday = tm->tm_mday;
-	m.tm_hour = tm->tm_hour;
-	m.tm_min = tm->tm_min;
-	m.tm_sec = tm->tm_sec;
-	m.tm_wday = tm->tm_wday;
-	m.tm_yday = tm->tm_yday;
-	m.tm_isdst = tm->tm_isdst;
-#endif
 
     return(&m);
 }
