@@ -23,3 +23,5 @@
 
 - When code is declared "stable", run GNU Indent over it all and clean up
   things a bit
+
+- Check for Y2038 bugs.
