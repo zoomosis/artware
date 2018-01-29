@@ -1,7 +1,7 @@
 #ifndef __TSTRUCT_H__
 #define __TSTRUCT_H__
 
-#define VERSION   "1.11.ng1.y2k+"
+#define VERSION   "1.12+"
 
 #define LOCALCHARSET "IBMPC"
 
