@@ -1,2 +1,0 @@
-
-int canlock(char *path);
