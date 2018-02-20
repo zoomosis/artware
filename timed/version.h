@@ -2,10 +2,10 @@
 #define __VERSION_H__
 
 #define PROGNAME "timEd"
-#define VERSION "1.12"
+#define VERSION "1.12+"
 #define PROGYEAR "2018"
 
-#ifdef DOS
+#ifdef __DOS__
 #ifdef __FLAT__
 #define PROGSUFFIX "/386"
 #else
@@ -13,15 +13,15 @@
 #endif
 #endif
 
-#ifdef OS2
+#ifdef __OS2__
 #define PROGSUFFIX "/2"
 #endif
 
-#ifdef WIN32
-#define PROGSUFFIX "/Win32"
+#ifdef __NT__
+#define PROGSUFFIX "/NT"
 #endif
 
-#ifdef UNIX
+#ifdef __UNIX__
 #if defined(__FreeBSD__)
 #define PROGSUFFIX "/FreeBSD"
 #elif defined(__NetBSD__)

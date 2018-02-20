@@ -1,7 +1,7 @@
 #ifndef __TSTRUCT_H__
 #define __TSTRUCT_H__
 
-#define VERSION   "1.12+"
+#include "version.h"
 
 #define LOCALCHARSET "IBMPC"
 

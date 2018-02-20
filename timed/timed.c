@@ -294,6 +294,30 @@ int write_echolog(void)
    return erlvl;
 }
 
+static void ShowVersion(void)
+{
+    printf("%s\n", myname);
+    
+    printf("Compiled on " __DATE__ " at " __TIME__ "\n\n");
+
+    printf(
+      "Copyright (c) 1992-" PROGYEAR "  Gerard van Essen and others.\n"
+      "This program is free software and distributed under the\n"
+      "GNU General Public License.\n"
+    );
+}
+
+static void ShowLicence(void)
+{
+    printf(
+      "\n"
+      "This program is distributed in the hope that it will be useful,\n"
+      "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+      "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+      "GNU General Public License for more details.\n"
+    );
+}
+
 
 /* Analyse command line */
 
@@ -317,6 +341,12 @@ void readparms (int argc, char *argv[])
 
                 case 'p':                 /* Pause at startup */
                      pause=1;
+                     break;
+
+                case 'v':                 /* Show version & licence */
+                     ShowVersion();
+                     ShowLicence();
+                     exit(0);
                      break;
                 }
             }
