@@ -48,6 +48,7 @@
 
 #endif
 
+#pragma pack(__push, 1)
 
 typedef struct _diskarg
 {
@@ -92,6 +93,7 @@ typedef struct
 
 }  FINDIDX;
 
+#pragma pack(__pop)
 
 static int idxin,
            datin,
