@@ -20,4 +20,8 @@ TODO list for each timEd release:
 
   ./dist.sh
 
+* cp -p dist/*.zip ~/www/dl.ozzmosis.com/timed/
+
+* Add files to files.bbs using file_id.diz descriptions
+
 * rsync zipfiles to remote web server.
