@@ -24,4 +24,6 @@ TODO list for each timEd release:
 
 * Add files to files.bbs using file_id.diz descriptions
 
+* Run "index > index.html"
+
 * rsync zipfiles to remote web server.
