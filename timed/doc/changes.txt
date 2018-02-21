@@ -1,0 +1,1432 @@
+timEd change log
+================
+
+1.12
+----
+
+* Version 1.12 released. This is considered a "refresh" release built
+  using OpenWatcom 1.9 and aside from the removal of V7 nodelist lookup
+  functionality (see below) should be feature-identical to the 1.10 version.
+
+  This version is built from a different code branch from the UNIX version,
+  1.11.
+
+  It is intended the branches will be merged in a future release, adding new
+  features from the UNIX version, and JAM and Hudson support to the UNIX
+  version.
+
+* Numerous Y2K bugs were fixed in the source code, with thanks to Wilfried
+  Brinkmann and Tobias Ernst for their initial work with patching the timEd
+  binaries back in 1999 (ARTFIX07.ZIP).
+
+* Windows NT port. Gerard van Essen began porting timEd to Windows NT in
+  1996 but the code was abandoned and incomplete. In 2018 the Windows NT
+  port was finally completed by Andrew Clarke and is considered to be
+  quite stable and usable.
+
+* Fixes to prevent crashes when screen width is greater than 132 columns.
+
+* timED did not add additional '>'s to quoted messages. Fixed, thanks to
+  Meikel Brandmeyer.
+
+* Added %mmon variable for HELLO, REPHELLO, FOLLOWHELLO strings. It expands
+  to a two-digit month with a leading zero digit (ie. 01-12).
+
+* V7 nodelist lookup is currently disabled.
+
+  The V7 lookup functions requires the Mix C Database Toolchest, a
+  commercial library which cannot be distributed as open source.
+
+  It is still possible to do nodelist lookups on FidoUser or FrontDoor
+  format nodelists.
+
+  Any reference to V7 nodelists in TIMED.DOC is currently erroneous and
+  should be ignored.
+
+  It is hoped to reintroduced this functionality in a later version.
+
+* timEd is now permanently "registered", and will declare itself registered
+  with the name specified in TIMED.CFG.
+
+* timEd's version number and build timestamp can now be viewed by running
+  timEd with the -v parameter:
+
+  TIMED.EXE -v
+
+
+1.11
+----
+
+* On 2000-11-20, timEd became open source, released by Gerard van Essen 
+  under the GNU General Public License.
+
+* timEd is currently maintained by Andrew Clarke, 3:633/267.
+
+* In 2003, Oliver Grimm and Andrew Clarke ported timEd to Linux, and later
+  other UNIX systems. It was known as version 1.11 and provided several new
+  features but lacked others.
+
+
+1.10
+----
+
+* Fixed 'followup' messages for msgs addressed to an internet address
+
+* Details view in list mode showed strange attributes
+
+* List mode tried to show destination netmail address even in echomail
+
+* Using reply/turboreply in a read-only area, during a personal mailscan,
+  with a message that contained an AREA: kludge resulted in a reply to the
+  NEXT personal message, instead of the current one.
+
+* The 16 bit DOS version had problems with high baudrates (like 64000) in a
+  compiled V7 nodelist (FastV7).
+
+
+1.10 beta 11
+------------
+
+* There was an error in the internal cache used for character translation,
+  most evident when 'AssumeCharset' or 'DefaultInput' is used. This would
+  cause the incorrect charset to be used.
+
+* Fixed incorrect addresses shown in 'forward' header.
+
+* Copying/Moving marked message lead to weird character translations.
+
+* TimEd always assumed that a charset that was mentioned in a 'CHARSET' (as
+  opposed to CHRS:) kludge was a level 2 charset, if there was no level
+  mentioned after the charset name. It can now be either level 1 or 2,
+  timEd will first see if a level 1 charset is available for that name, and
+  then if a level 2 charset exists.
+
+* The '386', 'OS2' and 'DOS' keywords can now also be used in timkeys.cfg
+  (and work just like they do in timEd.cfg).
+
+
+
+1.10.g2
+-------
+
+* Added Bruno Olsen (Mountain BBS, 2:236/42) to TIMED.REG as regsite in
+  Danmark.
+
+* When coming from the internal editor, the 'SaveMenu' (where you can
+  toggle options like spellchecking, signing and encrypting of messages)
+  now has the option 'quit this menu'. When you choose that option, you can
+  go back to editing the message.
+  This is not possible when coming from the external editor.
+
+* Improved handling of internet addresses in CC:'s.
+
+* The IBM -> ASCII character map had a small error.
+
+
+1.10 beta 10
+------------
+
+* TimEd sometimes 'ate' TO: lines (for example when more than one of those
+  was present in a message, and then only showed the last one) in messages
+  addressed to internet without showing the found address in the header.
+
+* Minor cosmetic changes to the forward command.
+
+* Minor changes to wordwrapping code.
+
+* Changed behaviour of <TAB> in internal editor in 'overwrite' mode.
+
+* TimEd could choke if a spellchecker (or PGP) produced 'junk', that then
+  had to be converted to a message by timEd.
+
+* There's a new command, called READchangecharset.
+
+  This function will show you a popup window with all charsets available
+  for reading messages. Regardless of the setting of 'DefaultInput' or
+  'AssumeCharset', this will let timEd use a specific charset of your
+  choice. (It will not overrule a CHRS: kludge in a message, though).
+
+  After a charset is selected, timEd will re-read the current message and
+  use the translation you just selected. It can be used on messages that
+  are written using a specific charset, but do not contain a CHRS: kludge.
+  In you didn't use 'AssumeCharset' for that area (or that charset is not
+  correct), you can pick the correct charset with this function.
+
+* New keyword in timEd.cfg:
+
+  LevelOneOutput <charset> [<charset> [<charset>]]
+
+  This indicates that a certain character translation map (as used for the
+  'charset support', FSC-0054) produces level 1 output.
+
+  What this means may not be clear when you haven't read FSC-0054. I'll
+  give a short explanation for those who have, if you haven't, what is
+  written below is probably not clear. It may be better to forget about it
+  then :-)
+
+  Level 2 only concerns itself with translation of charcter codes > 127,
+  while level 1 concerns itself only with translation of characters <= 127.
+
+  However, it is possible that you want to write a message using 'extended
+  characters (so > 127, most likely the IBMPC extended characters), but
+  want to produce a level 1 message as output (for example using the
+  SWEDISH character set).
+
+  In order to remap 'IBM extended characters' you need a level 2 remapping
+  table, and as a result you would get a 'CHRS: <charset> 2' kludge,
+  indicating a level 2 message, even though your remapping table may only
+  output characters <= 127, which is level 1. But you actually want a
+  'CHRS: <charset 1' kludge, so people can use a level 1 character map to
+  properly remap your message!
+
+  The LevelOneOuput keyword gives you the opportunity to use a level 2
+  character map with timEd, but to indicate that the output is actually a
+  level 1 message.
+
+  So if you add 'LevelOneOutput SWEDISH' to timEd.cfg, timEd will use the
+  level 2 SWEDISH character map, but will add a 'CHRS: SWEDISH 1' kludge to
+  the message. Make absolutely sure that output is indeed level 1 (and that
+  level 1 maps, to remap your message back to what it should be, actually
+  exist!).
+
+  You may add more than one name on one line for this keyword, like this:
+
+  LevelOneOutput Swedish AnotherCharset
+
+  You may also add this keyword more than once in timEd.cfg.
+
+
+1.10 beta 9
+-----------
+
+* Fixed a bug in JAM SubField parsing routines.
+
+
+1.10 beta 8
+-----------
+
+* Fixed 'ghost SEEN-BY's' and other trailing junk in Hudson areas.
+
+* After editing a file attach, the filesize of the old file would still be
+  displayed.
+
+* Fixed TRAP that could occur in corrupted JAM areas.
+
+* The right margin for quotes is now a bit higher.
+
+* GEcho 'bad messages' area import corrected.
+
+* In the list mode, highlighted names will still be highlighted, even when
+  the scrollbar moves over a line (using color_ashighaccent).
+
+* The nodelist lookup didn't correctly highlight a found name/address when
+  it was located at the end of the nodelist.
+
+* When moving/copying a message with 'Move_Notes Yes', the TO: line in
+  messages addressed to Internet would be preceded by the '* Moved (from:
+  <areatag>) ...' note, and effectively be lost.
+
+* Before changing a message, the message attributes are first re-read to
+  see if they were changed in the background.
+
+* Added a new keyword: NoSpace_Password <Yes|No>
+
+  This controls whether timEd will add a space between the filename and the
+  password in the subject line for file requests (not applicable for JAM
+  style areas).
+
+  Squishmail (the echomail processor) wants no space between the filename
+  and the password, while most (all?) other implementations _do_.
+
+  The subject line of a file request message for the file 'tim101.zip' with
+  the password 'secret' will look like this:
+
+  Subj: tim101.zip!secret
+
+  with 'NoSpace_Password Yes', and like this:
+
+  Subj: tim101.zip !secret
+
+  with 'NoSpace_Password No' (this is the default).
+
+  If you are not using the Squishmail echomail processor, and unsure what
+  to use, simply leave the keyword out. The default ('No') will be
+  applicable in most cases.
+  If you use the Squishmail echomail processor, use 'NoSpace_Password Yes'.
+
+* Addresses containing a '!' are now also treated as internet addresses
+  (bang path).
+
+* Some other minor stuff (I forgot what exactly :-).
+
+
+1.10 beta 7
+-----------
+
+* Updated on-screen copyright notice at exit of timEd to 1995.
+
+* Fixed 'Error opening !' message when saving a message in a JAM style
+  area, when JamLog nor EchoLog was defined.
+
+* Squish undelete didn't work in empty areas.
+
+* Some problems in 132 column list mode (OS/2 only) fixed.
+
+* Fixed a problem that would lead to crashes in the List mode in corrupted
+  areas.
+
+* Fixed a problem with correct recognition of Via lines in empty netmails.
+
+* The 'import text file' function in the internal editor will now strip
+  the ctrl-z token at the end of a text file on import.
+
+* Some input fields for entering filenames didn't allow high ASCII.
+
+* High ASCII is also allowed for the speedsearch function (Area Selection
+  Screen) now.
+
+* Highlighting in List mode sometimes messed up a bit.
+
+* Frodo nodelist lookup would mess up for entries with a system name longer
+  than 29 chars.
+
+* "Write to file" output for news areas showed the same TO: line in the
+  header twice.
+
+* TimEd could in some cases run out of file handles.
+
+* Small cosmetic problem in display of message header fixed.
+
+* The /386 version didn't properly re-initialize the video system after a
+  shell to DOS.
+
+* TimEd would sometimes strip the last character of a message when saving
+  it.
+
+* Problem with saving messages bigger than 64 kB in Hudson base solved.
+
+* TimEd's internal editor would trap if the TO: field in the message header
+  was too long.
+
+* The 'delete_word_right' function in the internal editor behaved weird
+  when invoked at the end of a line.
+
+* New keyword: EXECRYPTSIGN <progname> <parms>
+
+  This functions like EXECRYPT and EXESIGN, and will be executed if BOTH
+  the options 'encrypt' and 'sign' are toggled on (instead of first running
+  EXECRYPT and then running EXESIGN, like 1.10.g1 does).
+
+  TimEd will have to only run the external program once in this case,
+  instead of twice, saving time.
+
+* New keyword: SpellCheck_Default <Yes|No>
+
+  When this is set to 'yes', timEd will by default check the 'Run
+  Spellchecker' box when editing the header of a new message.
+
+* Every keyword in timEd.cfg can now be prepended with 'OS2', '386' or
+  'DOS'. Keyword prepended with one of those keywords will only be used by
+  the indicated version of timed.
+  For example, you can have:
+
+  OS2 EXESIGN c:\os2progs\sign.cmd
+  DOS EXESIGN c:\dosprogs\sign.bat
+
+  The OS/2 version will  use the first line (so the .CMD file) and ignore
+  the second line. The DOS 16 bit version will use the second line and
+  ignore the first.
+  Similarly, you can use '386' for command only intended for the DOS 32 bit
+  version.
+
+  This gives you the opportunity to use the DOS, OS/2 and 386 versions with
+  the same config file.
+
+* TimEd would crash on macro's consisting of a 1 character long string
+  literal (like: @1 "³").
+
+* TimEd had problems finding a name with high ASCII characters in the FD
+  nodelist.
+
+* Corrected handling of the 'direct' flag when 'ArcMailAttach' was set to
+  'No'.
+
+* The clock 'bleeded' through the ALT-I (ShowInfo) and Nodelist lookup
+  screens.
+
+* New command: READfiltermemory
+
+  This functions exactly like 'READfilterrealbody' but it will only replace
+  the message body in memory. You can then view this new body, and reply to
+  it, forward it or write it to file.
+
+  Whenever you move off that message, this new body will be lost. So moving
+  one message forward and one message backward will make the 'old' body
+  re-appear again.
+
+  Also keep in mind, that several actions (like 'move' and 'copy' for
+  example) actually re-read the original message body from disk for their
+  work. So using 'copy' for a message with a body replaced using
+  'READfiltermemory' will actually copy the _original_ body!
+
+* It is now possible to re-edit requests and attaches after they were
+  entered (while editing a header).
+  While inside the 'edit file attach' or 'edit file request' section of the
+  header, simply press <enter> to re-edit a certain item. (This means
+  'enter' will not move you out of that section anymore, like the 1.10.g1
+  did - use ctrl-enter or <esc> now).
+
+* New keywords: DefaultInput and AssumeCharset.
+
+  These keywords control character translation when READING a message.
+
+  AssumeCharset <charset> <area> gives the default charset to use for a
+  message, when no CHRS: kludge is present in a message. In other words:
+  timEd will act as if 'CHRS: <charset>' is present in the message.
+
+  In some cases/areas/countries, messages are written with a special
+  charset, but this is not signalled to the reader through a CHRS: kludge.
+  As a result, timEd will do no conversion at all on the message
+  (implicitly assuming CHRS: IBMPC), even though that may be applicable.
+
+  These new keywords can _force_ timEd into doing character translation
+  when reading a message, even though there is no CHRS kludge in a message.
+
+  DefaultInput gives the global default for reading messages in any area
+  (just like DefaultOutput does for writing messages).
+
+  Also for this keyword (just like DefaultOutput): Make sure, that you
+  define this *before* any areas are defined in timEd.cfg, otherwise timEd
+  will not use your 'default' for the areas defined in timEd.cfg before
+  this new keyword! So move this keyword up in timEd.cfg 'above' any area
+  definitions.
+
+  AssumeCharset <charset> <area> [<area> ... ]   can give exceptions to
+  'DefaultInput' for certain areas. The syntax is equal to the syntax of
+  'ConvertOutput' (with limited wildcard support).
+
+  Please note, that when a 'CHRS:' kludge is present in a message, this
+  will obviously overrule the 'DefaultInput' or 'AssumeCharset' setup. The
+  writer of the message is supposed to know best what charset was used..
+
+* For import of GEcho and Fastecho configs, timEd now also supports the use
+  of environment variables (in the form: $[<environment variable>]) that
+  these tossers allow you to use.
+
+* New keyword: Internet_Empty_line <Yes | No>
+
+  This controls whether timEd will leave an empty line between the 'TO:' on
+  the first line in the message body, and the rest of the body (for message
+  addressed to an internet address).
+
+  The default for this is "yes". In some (rare) cases the empty line is
+  unwanted, in that case this should be set to 'No'. If you're not sure,
+  make this 'Yes'!
+
+* When copying/moving TAGGED messages, timEd is supposed to make no
+  modifications at all to a message, but in 1.10.g1 character translation
+  was active even in this case. This has been fixed.
+
+* The 'string too long to edit' error message when attempting to edit a
+  string that was longer than the input field on the screen should not
+  appear anymore. The editing function can now scroll and therefore edit
+  strings longer than the actual input field on the screen.
+  The problem was most obvious with a long subject while editing a header
+  and in the 'Edit Hellostring' function with long 'hellostrings'.
+
+
+* There is a check in the 'mark all messages in thread' function now. It is
+  recursive, with a risk of running out of stackspace. There's now a check
+  for this to prevent lockups/crashes on huge threads due to lack of
+  stackspace.
+
+
+  ====================================================
+
+       Changes made before 1.10.g1 was released:
+
+  ====================================================
+
+
+
+1.01 beta 1
+-----------
+
+* Included FDBPACK(P).EXE. This is a tiny program that must be executed
+  from the timEd home directory. It will remove the 'slack' from the
+  database that timEd's 'Find manager' keeps to store the search profiles.
+  If you use the find feature a lot, this util will bring down the size of
+  the FDB.DAT file.
+
+* Updated timEd to read Fastecho 1.42 (beta) config (later released as
+  FE 1.45).
+
+* Fixed memory loss problem with C)hange message.
+
+* When a message was changed, the ASCII date in the message header wasn't
+  'touched', while the binary date _was_. They're now both updated.
+
+* Fiddled with code that supports the ALT-I (import file) function in the
+  internal editor. I could not reproduce the problem that was reported, but
+  maybe this helps..
+
+* Writing messages to file in a display mode with more than 80 columns on
+  screen could in some cases corrupt memory and cause problems.
+
+* Generating a file request (with ctrl-f) in the current area would mess up
+  timEd's orientation: it would think it was already at the last message in
+  that area.
+
+* TimEd now attempts to reset the screenmode after calling an external
+  editor, in case the external editor changed the screenmode.
+
+
+1.01 beta 2
+-----------
+
+* Updated timEd to correctly work with GEcho 1.11, 1.12
+
+* Nonsense date in 'dateprocessed field' in JAM in some cases fixed.
+
+* When writing a message in a Squishbase with a FLAGS kludge, timEd would
+  add a carriage return to the controlinfo.
+
+* In some cases, the search function would give a TRAP (OS/2 only).
+
+* In some cases, when deleting the character at the end of a line just
+  before a marked block, timEd would mess up the screen and/or give a TRAP
+  (OS/2).
+
+* Generating a huge file attach with files from different directories could
+  cause memory corruption.
+
+* TimEd now attempts to check printer status before attempting to write to
+  the printer. I don't think this is full-proof (for DOS int 17, for OS/2
+  DosDevIOCtl cat. 0x05, func. 0x66), tell me what it does on networks etc.
+  I already know it doesn't work in an OS/2 DOS box :-(
+
+* Implemented hidden CC:'s. If a CC: item starts with '#', the name will be
+  hidden from the list of recipients (although a copy of the message will
+  be sent).
+  Example:
+  CC: Gerard van Essen, #Secret Lover, My Wife
+
+  In this case 'Secret Lover' is not mentioned in the list of other
+  recipients, even though he/she will get a copy. (Please note that *I*
+  didn't ask for this option, Reinier did! :-)
+
+* The *.MSG renumbering is now handled internally, instead of calling an
+  external program.
+
+* Deleting items in the search manager could sometimes (when a lot of items
+  were already entered) lead to problems.
+
+* It is now possible to save a default search profile (ALT-D in search
+  manager). When the search manager is first entered, this default profile
+  will be loaded, unless a profile was saved for that particular area (in
+  which case that particular profile is obviously loaded).
+
+  After pressing ALT-R (clear all search strings) in the search manager,
+  timEd will now ask whether the default profile should be reloaded.
+
+* New keyword: JamGetLast <Yes|No>
+
+  Determines whether timEd will get the LAST read or HIGHEST read message
+  from JAM lastread files. Useful for Proboard users (PB doesn't update the
+  lastread pointer, only the highest read pointer, so set it to NO).
+
+* Fixed a problem in the Area Selection Screen: if you deleted a message
+  during the personal mailscan, this would sometimes lead to a crash (when
+  you deleted the only new message in an area and used 'mode ShowNew' or
+  'NewTagged').
+
+* In some places, it is now possible to use 'hotkeys' to make a quick
+  selection. An example is ALT-M in the area selection screen.
+
+* New colour settings:
+
+  COLOR_POPTITLE (try 30)
+
+  This changes the colour of the title of popup boxes. Hardly used (only if
+  you press F1 :-).
+
+  COLOR_FINDACCENT (try 14)
+
+  Accented ('highlighted') characters, what keys to press in the helpline
+  at the bottom of the screen. In the search configuration screen.
+
+  COLOR_MSGBARACCENT (try 30)
+
+  An accented character in the statusbar at the bottom of the screen (msg
+  reading screen, helplines when displaying a picklist).
+
+  COLOR_ASACCENT (try 14)
+
+  In a picklist, an accented character (hotkey). Try ALT-M in the area
+  selection screen for a test.
+
+  COLOR_ASHIGHACCENT (try 30)
+
+  Same as above, but in a highlighted (current) line.
+
+* In the list mode, messages written BY you are also highlighted now. TimEd
+  only highlights the 'fromname' or the 'toname' if applicable, not the
+  entire line like older versions.
+  The exception is 'broad' list in case of a personal message. Because the
+  'toname' is not shown in this case, the entire line is highlighted.
+
+* New 'variables' can be used in hello, rephello (etc) strings:
+
+  - %thisto     - name of person *this message* is addressed to
+  - %thisfto    - first name of person *this message* is addressed to
+  - %thisfrom   - name of person *this message* is from (your name)
+  - %thisffrom  - first name of person *this message* is from (your first name)
+
+  This is useful when writing a reply (for a new message, these are the
+  same as %from, %to etc) and you changed the name of the recipient. This
+  can also come in handy if you always want to sign a message with the name
+  you used in the header, even if this is an alias.
+
+* Address book functionality: when you press <TAB> while editing a TO:
+  field in a message header, a list of all available macro's will pop up
+  and allows you to select one of them.
+
+* You can now put more than one 'writename' statement in timEd.cfg. The
+  first one will be handled just like before, but additional path/filenames
+  can now be shown in a picklist. After choosing ALT-W, press <TAB> in the
+  input field to get a list with all the additional 'writenames' that were
+  defined in timEd.cfg.
+
+* Fixed a problem that could appear when quoting very long kludges.
+
+* Tagsets (loaded and saved from the Area Selection Screen with ALT-R and
+  ALT-W) can now have a description. A list with tagsets and descriptions
+  will now be shown before loading or saving a tagset. Before saving, a
+  description can first be edited.
+  To add descriptions, simply load a tagset and immediately save it again
+  and edit the description..
+
+* The DOS version is now compiled with the Watcom compiler, and makes use
+  of overlays (resulting in _much_ lower memory consumption). I had to
+  remove quite a few Borland specific parts, so expect some problems with
+  it! (I know I do! :-)
+
+
+1.01 beta 3
+-----------
+
+* DOS: overlay organization changed a bit: more memory free now.
+
+* Fixed problem with 'filename selection list' for ALT-W (Write to file).
+
+* Fixed problem with highlighting in List mode.
+
+* Fixed problem that could appear when you pressed crtl-right at the end of
+  the last line on the screen.
+
+* Implemented HC:. This is the same as CC:, but in this case ALL CC:
+  messages will be hidden, and no info about CC:'s will be written at the
+  top of the message at all.
+  This will also be the case if you use CC: but individually hide all
+  recipients with a # as the first character..
+
+* 'JAMGetLast Yes' is now the default, instead of 'NO'. In other words:
+  default behaviour is now the same as it was in timEd 1.01.
+
+* Private nodelist that excluded nodelist flags from the 'raw nodelist'
+  could confuse timEd's nodelist lookup a bit (Frodo nodelist).
+
+* NODEX.DAT was not opened in shared mode.
+
+* Stupid error in wordwrapping routines (that messed up quotes) fixed.
+
+* It is now possible to mark an entire thread of messages with one
+  keypress. The lucky winner of the 'let me be the key' competition is the
+  '*' key.
+
+
+1.10.b1
+-------
+
+* Pushed version number up to 1.10. I'm making too many changes to call it
+  1.02 :-)
+
+* Lots of changes to the message base access code, mainly to support JAM a
+  bit better. The structures passed around simply did not contain enough
+  information to store all the properties of a JAM message. This is now
+  changed, but required many changes (obviously, a message editor edits the
+  (message) stucture all over the place...)
+
+  Beware of problems (!), mainly concerning dates, seenby's and such. It is
+  next to impossible to make this many changes without causing any
+  problems..
+
+* Header editing is rewritten, now allows simultaneous attaches/requests
+  _and_ subject in JAM areas. It takes some getting used to, I guess,
+  because it is quite different from older versions and other programs. It
+  is, however, _required_ in order to support the JAM features.
+
+  It's pretty straightforward, I think. Press ALT-A or ALT-R to enter
+  attaches and/or requests (you _must_ use this, do _not_ enter
+  attaches/requests in the subject line anymore!). Then add or delete
+  attaches/requests with <del> and <ins>. You can get out of the
+  request/attach editing by pressing <esc>, <tab> or <enter>.
+
+  If files are attached or requested in a *.MSG, Squish or Hudson area, the
+  subject can't be edited anymore. (Because those formats do not allow
+  simultaneous attaches/requests and a subject).
+
+* Better support for Internet stuff. Two keywords:
+
+  UucpAddress <address> : Address of your Internet gate.
+  UucpName <name> : name used for the gate (usually 'UUCP' or 'Postmaster').
+
+  TimEd will now detect internet addresses in the TO: field and
+  automatically address the message to the gate, and put a TO: field in the
+  message body. You can enter a string longer than 36 chars in the header
+  as well, timEd will handle it.
+
+  Reading is also improved: the TO: field in the message body will also be
+  detected and the Internet address will show up in the header instead of
+  the body.
+
+  The idea is to never see a TO: field in the body anymore. The internet
+  addresses should always show up in the header and can be edited there.
+  TimEd will write the messages to disk with a TO: line in the body, though.
+
+* New type of area: 'NewsArea'. In such areas, the TO: line is not shown,
+  the 'Organization' is shown instead (if found). No Origins are
+  added/required, and timEd doesn't use the initials of the message writer
+  when quoting, just '>'.
+
+  The type 'MailArea' (for Internet 'mail') is also recognized, but I'm not
+  sure how to implement it exactly yet (so it is a mess now :-)
+
+* Added support for Soup2SQ (by Steven van Loef). Keyword is:
+ 'Soup2SQCFG <path+name of config file>'.
+
+* Redefinable keys and macro's. TimEd will now read a file called
+  'timkeys.cfg' from the timEd directory at startup to get the key
+  bindings. All possible commands are present in the sample timkeys.cfg.
+
+  The format of the timkeys.cfg file is as follows:
+
+  [<section name>]
+
+  <key> <command> [<command>, [<command]]
+  <key> <command> [<command>, [<command]]
+  .
+  .
+
+  [<section name>]
+
+  <key> <command> [<command>, [<command]]
+  <key> <command> [<command>, [<command]]
+  .
+  .
+
+
+  <section name> defines the scope of the key binding or macro. The scope
+  defines where the macro is active.
+  The scope (and the section name) can be
+
+  þ AreaSelection - key/macro active in the area selection screen
+  þ Editor        - key/macro active in the internal editor
+  þ MessageReader - key/macro active in the message reading screen
+  þ List          - key/macro active in the message list mode
+  þ Global        - key/macro active everywhere in the program.
+
+  This means that a key can have a function/macro in the Area Selection
+  screen, and a different one in the internal editor. Also, a key defined
+  in the section 'AreaSelection' will do nothing in the 'List mode' (unless
+  that key is defined in that section as well).
+
+  'Global' is dangerous: it overrules everything. If you would define the
+  'esc' key to produce an 'a' in the global section, it will produce this
+  'a' EVERYWHERE in the program and NEVER work like it is supposed to.
+
+  However, for some keys (most function keys, and ALT-0 to ALT-9 for
+  example) this doesn't make any difference, because they are never used
+  anyway. Maybe it's useful to translate ” to 'oe' everywhere as well, or
+  something like that..
+
+
+  <key>
+  -----
+
+  Key can be any printable character, F1..F12, ins, enter, del, home, end,
+  pageup, pagedown, cursorup, cursordown, cursorleft, cursorright, space,
+  esc, tab, greyminus (the grey '-' key on your numeric keypad).
+
+  Then there are variations of these: Shifted (prepend #, like #F1 for
+  shift-F1), with the CTRL key (prepend ^, like ^F1 for CTRL-F1) and with
+  the ALT-key (prepend @, like @F1 for ALT-F1).
+
+  All 'normal' keys are also available with ctrl (^a .. ^z) or ALT (@a ..
+  @z). And numeric keys with ALT (@0 .. @1).
+
+  That should give enough combinations to choose from. See sample
+  timkeys.cfg to see how easy it is.
+
+  <command>
+  ---------
+
+  This can be any of the functions that timEd can perform, like 'move up',
+  'move down', 'enter a message', 'find', 'delete message' etc.
+  All functions now have a name, usually a name that speaks for itself like
+  'EDITup' to move one line up in the editor, or 'EDITshell' to shell to
+  the OS from within the editor. All commands are shown in the sample
+  timkeys.cfg (except some new ones only mentioned in this whatsnew file).
+
+  The line:
+
+  cursorup  EDITup
+
+  tells timEd to execute the command 'EDITup' whenever the key 'cursorup'
+  is pressed (now that makes sense :-).
+  And:
+
+  @J  EDITshell
+
+  tells timEd to shell to the OS from the internal editor whenever the key
+  combination ALT-J is pressed.
+
+  You can also insert 'literal strings' as a command. Literal text should
+  be enclosed in quotes, like this: "sample text", or this: 'sample text'.
+
+  You can enter quote-characters inside a literal string. If you enclose
+  the string in double quotes, you can enter single quotes inside the
+  string, like this: "literal with a ' quote inside!".
+  Similarly, you can enter double quotes inside the string if you enclose
+  the entire string in single quotes.
+
+  For example:
+
+  F5  "My lipf are fealed"
+
+  Whenever you press F5, timEd will write the string 'My lipf are fealed'.
+
+  It is also possible to enter more than one command for a certain key. For
+  example:
+
+  F2 EDITenter "See you later!" EDITenter EDITenter "Gerard." EDITsave
+
+  Whenever F2 is pressed, timEd will move one line down in the editor, 'See
+  you later' will be printed, timEd will move two lines down, then print
+  'Gerard.' and then the message will be saved.
+
+  Now in most places the defined commands will suffice. However, sometimes
+  a certain action doesn't have a command. When you edit a header, for
+  example, there is no special command to press 'enter' to accept the input
+  of a field and move to the next (there is no command HEADEREDITaccept or
+  anything like that).
+  In such cases you can also give the name of the key (in this case
+  'enter') as a command.
+  Entering a new message/header could be defined as follows:
+
+  @F1 READenter "All" enter "A new message" enter enter
+
+  This would start a new message, write 'All' in the TO: field, press
+  enter, write 'A new message' in the subject field, press enter, and press
+  enter again to get through the attribute editing screen.
+
+  Please note, that this only works if there is no special command. For
+  example, 'ins' in a macro will do nothing when inside the internal
+  editor. (The fact that you may have connected the command
+  'EDITtoggleinsert' to the 'ins' key makes no difference.)
+
+* Drive 'mapping' for the import routines for tossers. Handy for
+  peer-to-peer networks. If the programs on the 'server' for example always
+  use drive C:, and you try to use these programs from another PC where
+  that drive is (network-)drive F:.
+
+  If you use 'DriveReplace C F' all references to drive C: will be
+  changed to references to drive F:.
+
+  Format:
+
+  DriveReplace <olddrive> <newdrive>
+
+  (So: Replace <olddrive> with <newdrive>).
+
+  Please note that this replace is only for the routines that import the
+  tosser configuration, not in other places in the program.
+
+* Many, many smaller things. If they concerned you, you'll see :-)
+
+
+1.10.b2
+-------
+
+* CHARSET support (FSC-0054).
+
+  What is CharSet support? Well, read FSC-0054 and keep in mind that timEd
+  supports it :-) I know I should now give a clear explanation but decided
+  to put it off until I have to write the docs for a full release <g>.
+
+  Due to lack of decent test-material I have my doubts about the
+  implementation, to be honest, but at least there's something. I tried to
+  stick to FSC-0054 as much as possible, and timEd uses the READMAPS.DAT
+  and WRITMAPS.DAT described in that proposal (in the timEd dir).
+
+  READMAPS.DAT contains the remapping tables used to convert 'foreign'
+  character sets to the 'local machine architecture' (IBMPC). So for
+  example from LATIN-1 to IBMPC, or from MAC to IBMPC.
+  Whenever a message containing a CHRS: kludge is encountered, timEd will
+  check the charset mentioned in that kludge. More specifically: it will
+  check whether a remapping table from <that charset> to IBMPC is present.
+  If it is, that table is used to remap the characters found in the message
+  to IBMPC for display.
+
+  WRITMAPS.DAT is similar, but for the opposite. It is used to remap
+  characters from IBMPC to another charset when a message is written to
+  disk.
+
+  Using these standard 'maps' means you can add to, and remove from,
+  these maps yourself. You can use the simple programs found in
+  CHARSET3.ZIP (sample code provided by the author of FSC-0054) to edit
+  these maps.
+
+  I have included sample writ/readmaps.dat in this archive, together with
+  the 'source maps' that were used to generate them. Also included is the
+  MAKEMAPS.EXE (made by Duncan McNutt) from the sample code provided by the
+  authour of FSC-0054). Look in CHRSTUFF.ZIP for this.
+
+  Two new keywords are supposed to control it all:
+
+  þ DefaultOutput IBMPC
+
+  This defines the default CharSet to use for writing messages. If you
+  leave it out, the default is ASCII (that makes sense, but beware that any
+  'high ASCII'characters that you enter will then be lost!).
+  TimEd will not write 'CHRS: ASCII' kludges (that seems kind of silly to
+  me :-), so if you leave out all this stuff, no CHRS kludges will appear
+  in your messages.
+
+  If you want to keep the 'high ASCII' characters in your messages, add
+  'DefaultOutput IBMPC' to your config.
+
+  Make sure, that you define this *before* any areas are defined in
+  timEd.cfg, otherwise timEd will use 'ASCII' for the areas defined in
+  timEd.cfg before this new keyword! So move this keyword up in timEd.cfg
+  'above' any area definitions.
+
+
+  Conversion for reading is always active, but you probably won't notice
+  that anyway (if you're not interested :-).
+
+  þ ConvertOutput LATIN-1 artware *028 artware*
+
+  The above keyword gives an exception to the 'DefaultOutput'. Format is
+
+  ConvertOutput <charset> <area> [<area> [<area>]]
+
+  You give the name of the charset to use, and the areatag(s) of the
+  area(s) to use it for. Limited wildcard support is available, the first
+  or the last character can be a '*'.
+  In the example above, both "basic.028" and "demo.028" will match the
+  '*028', and both "artware" and "artware.closed" will match 'artware*'.
+
+
+* Most reported bugs fixed.
+
+
+* The (DOS) lowlevel keyboard code, that was silently replaced with
+  HighLevel code in .b1 (because some keys like ^up suddenly stopped
+  working) is now LowLevel again :-)
+
+
+* Added the ability to run external programs. The function name is
+  READrunexternal. When executed, timEd will ask for two things: the name of
+  the program to run, and the command line parameters to use for that
+  program.
+
+  The message area will then be closed, the external program run, and the
+  area opened again. This offers the opportunity to run programs that
+  perform actions on the message area (like a maintenance program) that
+  need exclusive access.
+  After the external program ended, timEd will wait for a keypress so you
+  can see what happened.
+
+  When entering the command line parameters, you can use several variables
+  that will be filled in by timEd according to the current area and
+  message. These variables are always between square brackets: '[]'.
+  The following variables can be used:
+
+  from       - Name in the 'from' field of current message.
+  to         -             'to'
+  subject    -             'subject'
+  orig       - Origination address of current message (like 2:281/527).
+  dest       - Destination address of current message (like 2:281/527).
+  areatype   - Type of current area (NETMAIL, ECHOMAIL, LOCAL, NEWS, MAIL).
+  areatag    - Official areatag of current area.
+  format     - Storage format (SQUISH, HMB, JAM, SDM).
+  areadir    - Directory or base name of current area, board number if
+               Hudson.
+  msgno      - Message number of current message ('relative' number for
+               Squish and Hudson)
+  realmsgno  - Real message number, for Squish (UMSGID) and Hudson (real
+               number in Hudson base, not the relative number in the area).
+               For JAM and *.MSG, this is always equal to msgno.
+  file       - Name of the current file to use. Not in use when reading a
+               message (it's for EXESIGN, EXECRYPT and EXESPELL described
+               below).
+  newfile    - Name of a new file to use (this is also for EXECRYPT, EXESIGN
+               and EXESPELL).
+  attach     - Files attached to this message (list of files).
+  request    - Files requested in this message (list of files [!passwords]).
+
+  So the command line parameters "scan -s[areatag]" could be translated to
+  "scan -sARTWARE", and "zfax 4 [attach]" could be translated to 'zfax 4
+  c:\xenia\faxin\xenia001.fax' and so on.
+  If you want to add a literal '[', you should put two of them in the
+  string: '[[in brackets!]'.
+
+
+* Extra commands to write out messages to a file:
+
+  READwritebody     - write the body (so no header) out to file
+  READwriterealbody - write the real body (without tearline/origin) to file.
+  READwriteheader   - write only the header to a file.
+
+  These work just like the standard 'write to file' command. TimEd prompts
+  for a filename to write to first.
+  These new commands are, by default, not assigned to any key (-combination).
+
+* Commands to replace the body of a message with the contents of a file:
+
+  READfiltermsg      - zap the entire message body and replace with a file.
+  READfilterrealbody - zap the real body of a message (so this saves the
+                       tearline / origin) and replace with text from a
+                       file.
+
+  Combining these new capabilities with macro's gives quite a few
+  possibilities. Write the real body out to disk, run an external program
+  on that real body (decrypt with PGP), and replace the body with the
+  resulting textfile. For example... Put it under F2 and there's your PGP
+  decrypt function.
+
+  Or just write to file and run PGP on it to verify a signature. And so on.
+
+  These new commands are, by default, not assigned to any key (-combination).
+
+* The 'maintenance menu' is now user definable. It has now turned into a
+  special user menu to start macro's from. Together with the 'runexternal'
+  command all function that were on the 'maint menu' in older versions are
+  still possible.
+
+  Because this menu is nothing more than a specialized macro launcher, you
+  need to define it in 'timkeys.cfg'. A special section called [menu] is
+  added to define the menu.
+
+  The format in this section is:
+
+  <scope> <description> <command> [<command> [<command>]]
+
+  <scope> can be:
+
+  menusquish - item appears in Squish style areas
+  menujam    - item appears in JAM style areas
+  menuhmb    - item appears in HMB style areas
+  menusdm    - item appears in *.MSG style areas
+  menuall    - item appears in all areas
+
+  <description> gives the description of the action that will be performed
+  when the macro is executed. It is what appears in the 'maint menu' in
+  timEd, like "Pack area", or "Undelete messages". It should be enclosed in
+  single or double quotes.
+
+  You can also highlight a part of the description (one letter most likely)
+  by enclosing it in tildes, like "~P~ack area". The letter 'p' will now be
+  highlighted, and will also act as a 'hotkey' (when that particular key is
+  pressed, the function will be executed).
+  Take care to not add the same highlighted key to the menu twice, or it
+  will not work as intended.
+
+  Finally, <command> [<command>...] gives the actual macro (just like
+  'normal' macro definitions) to be executed when the item is selected.
+
+  Samples:
+
+  [menu]
+
+  menusquish "~P~ack area" READrunexternal "sqpackp" enter "[areadir]" enter
+  menusquish "~U~ndelete message" READsqundelete
+  menujam    "~J~am pack"  READrunexternal "mbutil" enter "pack [areatag]" enter
+  menuhmb    "~H~mb pack"  READrunexternal "hmb" enter "[areadir]" enter
+  menusdm    "~R~enum SDM"  READsdmrenumber
+
+
+* Two new functions are defined to access the commands that were processed
+  internally in the old maint menu:
+
+  - READsqundelete  - Undelete messages in a Squish area.
+  - READsdmrenumber - Renumber a *.MSG area.
+
+
+* The 'special' section in the header editing part is now active. Press
+  ALT-S to access it. Use the cursor keys to move up or down and press
+  <space> or <enter> to toggle a 'mark' for a certain item.
+
+  The commands will be executed after the message it edited. For all three
+  items, new keywords in timEd.cfg are available to define what should
+  actually be executed:
+
+  ExeSpell <progname> <parms>
+  ExeCrypt <progname> <parms>
+  ExeSign  <progname> <parms>
+
+  The parameters can once again contain the 'variables' enclosed in square
+  brackets, that can also be used when executing an external program with
+  READrunexternal. This time, [file] does contain something useful: the
+  name of the file the message will be written to before the external
+  program is executed. (But this time, msgno and realmsgno are unusable -
+  the message does not have a number yet, because it is not yet written).
+
+  Example:
+
+  exesign e:\pgp\pgp -eta [file] -o [file]
+
+
+1.10.b3
+-------
+
+* There is now also a 32 bit extended DOS version (TIM386.EXE). It uses
+  (surprise, surprise) the DOS/4GW DOS extender from Rational Systems.
+  Because many programs use it (GIGO, Squish, Fastlist), the required
+  run-time module (called DOS4GW.EXE) is available just about everywhere,
+  so I have not included it in the package. It's available from my system
+  as DOS4GW.ZIP, though (the latest I know of is v1.97).
+
+
+* Full nodelist browsing is now added. Instead of getting a (limited) list
+  with only matching names, you now get a full screen of names/nodes where
+  you can select a node and/or move around using the cursor keys and
+  page-up/down.
+
+  Browsing works for all supported nodelist formats (V7, Frodo and
+  fidouser.lst). The behaviour concerning the fidouser.lst is changed
+  because of this: it is NOT searched first (as a quicklist) anymore. You
+  can now have only ONE type of nodelist. So use the fidouser.lst only if
+  you do not (want to) have V7 nor a Frodo nodelist.
+
+
+* New keyword in timEd.cfg: EditSaveMenu <Yes|No>
+  If you set this to 'yes', a menu will pop up after you save a message.
+  This allows you to toggle the 'sign', 'encrypt' and 'spellcheck' actions.
+  When you're done, select 'save message'.
+  This is mainly for people using an external editor. People who use the
+  internal editor can use the following:
+
+
+* New command in the editor: 'EDITsavemenu'. This functions like
+  'EDITsave', but it will first show you the menu where you can toggle
+  'sign', 'crypt' and 'spellcheck'.
+
+  By binding this command to a special key combination, you can easily
+  select (from the internal editor) whether you want to save immediately
+  (EDITsave) or want to go through the menu first (EDITsavemenu).
+
+  By default, this command is assigned to the F10 key in the internal
+  editor.
+
+
+* New command in internal editor:
+
+  EDITrunexternal
+
+  This can be used to run an external program. It is very much like the
+  'runexternal' command that is available from the message reading screen.
+  You can use the same variables ([from], [to] etc).
+
+  By default, this command is assigned to the ^E key combination.
+
+
+* Commands to write the text you are editing (or a part of it) to a file:
+
+  EDITwriteraw      - write all text to a file in 'raw' format.
+  EDITwriterawblock - write the currently marked block to a file in raw format.
+  EDITwritefmt      - write all text (formatted, wrapped at column 78).
+  EDITwritefmtblock - write a block (formatted).
+
+  Raw format means that the text is written out as paragraphs, each
+  paragraph ending with a 'hard return' (ASCII 13). This is the preferred
+  format, because it is the format used to transport messages in fidonet
+  mail packets. If you write a (part of a) message to a file in this format
+  and then read it in again with 'import file', it will be exactly the same
+  as it was before you saved it.
+
+  If, in contrast, you use 'EDITwritefmt' to write the message to a file
+  and then import it again, the message will have those ugly 'hard returns'
+  at the end of every line, which is NOT according to FidoNet standards. So
+  only use the 'writefmt' commands if you're not going to import the text
+  again!
+
+  The 'writeraw' commands are assigned to keys in the default timkeys.cfg:
+
+  @W - write entire text to a file.
+  ^W - write block to file.
+
+  There's also a smaple macro's included that uses this command:
+
+  F2 - write entire text to a file called
+
+* Keywords to delete a file:
+
+  EDITfiledelete - delete a file, from internal editor
+  READfiledelete - delete a file, from message reading screen.
+
+  An input box will pop up, where you can enter the name of the file to be
+  deleted. Press <enter> and the file is gone..
+
+  These new commands are, by default, not assigned to any key (-combination).
+
+
+* The 'encrypt', 'sign' and 'spellcheck' commands have some added
+  capabilities. They can now read in a file that is different from the file
+  that was originally written out by timEd.
+  The older version wrote out 'timed.msg' in the timEd dir, and also read in
+  that file again. This new version can write out timed.msg, and then read
+  in another file (timed.new).
+
+  The logic is as follows:
+
+  TimEd writes out the body of the message to a file (the name is available
+  for the EXESPELL, EXECRYPT and EXESIGN commands as the variable [file]).
+
+  It then runs the external program as indicated.
+
+  After that it will check whether a new file in the timEd dir (available
+  as the variable [newfile]) is present. If it is present, and the
+  date/time is the same or newer than the date/time for the original file,
+  this new file will be used as the body. If it is not available, or older
+  than the original file, the original file will be used.
+
+  In practise, this means that you can make a spellchecker or encryption
+  program modify the original file (variable [file]), _or_ you can have it
+  write it's output to another file (variable [newfile]).
+
+
+* Better support for flags in the V7 nodelist.
+
+  The V7 nodelist doesn't, by default, store a lot of information about the
+  'flags' that a node has in the nodelist. Flags like V32, VFC, V34 or NEC
+  are not stored by default.
+
+  However, most nodelist compilers give the user the opportunity to store
+  some user-defined values in the V7 nodelist, based on the presence of
+  certain flags in the raw (St. Louis) nodelist.
+
+  Two values can usually be stored: a value for the 'ModemType' and a value
+  for the 'NodeFlags'.
+
+  ModemType.
+  ==========
+
+  The modemtype value is (obviously) a value to indicate what kind of modem
+  a certain node has. In the nodelist, several flags are present to indicate
+  the type of modem the node uses ('V32B' for a V32bis modem, 'V34' for a
+  V34 modem, 'V42b' if the modem support V42bis compression, etc).
+
+  The 'modemtype' value in the V7 nodelist is one byte (8 bits). There are
+  two ways to use this byte:
+
+  1 - Each bit independently, where each bit signifies a certain flag. When
+      the bit it set (a value of 1 for that bit), a certain flag in the
+      nodelist is present. When the bit is not set, the flag is not
+      present. Because there are 8 bits in a byte, you can store the
+      presence/absence of 8 different flags this way.
+      The good thing is, that several flags can be present at the same
+      time: three different bits may be set at the same time, indicating
+      that three different flags are present.
+
+  2 - All bits taken together as one value (byte). By looking at the entire
+      byte, you can have 256 different values (0 - 255). When the byte has
+      a certain value, a certain flag in the nodelist is set.
+      The advantage of this is, that you could represent up to 255
+      different flags. The disadvantage is that you can only have one flag
+      per node.
+
+  Most (if not all) V7 nodelist compilers support method 1. It is the 'old'
+  method that has been used by Binkley in the past. Some newer compiler
+  (also) support method 2.
+
+  TimEd now has the ability to convert a certain value in the ModemType
+  field of a V7 nodelist back into a nodelist flag (like 'V34'). If you do
+  a nodelist lookup, and press <tab> for details, these flags will be
+  shown.
+
+  Two keywords are possible, to support both methods:
+
+  V7ModemTypeBit - to support method 1.
+  -------------------------------------
+
+  Syntax:  V7ModemTypeBit <bit value> <flag>
+  Example: V7ModemTypeBit 64 V34
+
+  The 'bit value' must be a power of 2 (i.e.: 1, 2, 4, 8, 16, 32, 64 or 128).
+  For each of those values, one of the bits will be set (to indicate one of
+  the flags in the nodelist is present).
+  The above example indicates that if the bit representing the value 64 is
+  set, the V34 flag is present.
+
+  Another example: V7ModemTypeBit 4 VFC
+
+  This would indicate, that if the bit representing the value 4 would be
+  set, that node has the 'VFC' flag in the nodelist.
+
+  This is the same as the 'BitType TypeDef' statements that the FastList
+  nodelist compiler (made by Alberto Pasquale) uses.
+  It is also the same as the 'ModemType' values that the FastV7 nodelist
+  compiler (made by Marius Ellen) uses.
+
+  V7ModemTypeValue - to support method 2.
+  ---------------------------------------
+
+  Syntax:  V7ModemTypeValue <byte value> <flag>
+  Example: V7ModemTypeValue 13 V34
+
+  This would indicate, that if the 'ModemType' field is set to 13, the node
+  has the 'V34' flag in the nodelist.
+  Along the same lines:
+
+  Example: V7ModemTypeValue 9 VFC
+
+  This would indicate that if the modemtype field is set to 9, the node has
+  the VFC flag in the nodelist.
+
+  These values are the same as Fastlist's 'normal' TypeDef statements.
+
+  NodeFlags.
+  ==========
+
+  The NodeFlags value in the V7 nodelist is a 16 bit value. It is present
+  to indicate the nodelist flags a node has (and this could include flags
+  to indicate what type of modem is present...).
+
+  The different bits in the NodeFlags field indicate different flags (just
+  like method 1 for the ModemType value).
+  Some of the bits are pre-defined (like a certain bit to indicate CM
+  (Continuous mail) status, and a bit to indicate a node is a HUB, etc).
+
+  TimEd can now convert these bit values back to flags, using a method very
+  similar to method 1 of the ModemType field.
+  The keyword to use is V7NodeFlagBit.
+
+  Syntax:  V7NodeFlagBit <bit value> <flag>
+  Example: V7NodeFlagBit   16  CM
+
+  This indicates, that if the bit that represents the value 16 is present,
+  the CM flag is present for that node.
+  Another exmaple:
+
+  V7NodeFlagBit   1  HUB
+
+  If the bit representing the value 1 is present, a node is a HUB.
+  Both of the above examples are predefined values. But some nodelist
+  compilers allow a user to define a few bits themselves.
+
+  The FastV7 compiler uses the keyword 'NodeFlag' to allow this. The value
+  of that keyword are the same as the values timEd uses.
+
+  Because the ModemType field consists of 16 bits, and the values have to
+  be a power of 2 again, the possible values are: 1, 2, 4, 8, 16, 32, 64,
+  128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768.
+
+  Predefined values (in the nodelist, not in timEd!) are:
+
+  V7NodeFlagBit 1     HUB
+  V7NodeFlagBit 2     HOST
+  V7NodeFlagBit 4     REGION
+  V7NodeFlagBit 8     ZONE
+  V7NodeFlagBit 16    CM
+  V7NodeFlagBit 4096  POINT
+  V7NodeFlagBit 32678 REDIR
+
+  To get the same functionality as previous versions of timEd, you have to
+  add:
+
+  V7NodeFlagBit 16    CM
+
+
+* The echotoss.log file is now updated every time a new message is created.
+
+
+* There is now a command to highlight lines in the current message that
+  contain a certain keyword.
+
+  The command is READsearchcurmsg.
+
+  If you execute it, timEd will ask for a keyword to look for. All lines
+  containing the keyword will be highlighted, and the part of the message
+  containing the first match will be shown, with the first match centered.
+
+  Default key assignment is F2.
+
+* Reported bugs fixed.
+
+
+1.10.b4
+-------
+
+* Fixed memory leak with 'copy line' action in internal editor (edit.c,
+  line 774).
+
+* Fixed ctrl-f function writing double messages in JAM netmail area.
+
+* Fixed some problems with FD nodelist lookup.
+
+* Fixed memory leak with *.MSG message deleting.
+
+* Increased length of input fields in dialog boxes for file attaches,
+  import file, write file functions.
+
+* Fixed problem with leading spaces in SquishCFG keyword in timEd.cfg
+
+* TimEd will now delete the temporary files used for EXESPELL, EXECRYPT and
+  EXESIGN.
+
+* The ctrl-f (file request) function now also checks the subject line for
+  filenames.
+
+* Fixed 'hotkey clash' ('m' was used twice) in Find -> ALT-O -> Action.
+
+
+1.10.b5
+-------
+
+* Fixed a problem with correct recognition of the CHARSET kludge.
+
+* Fixed a problem with timEd exiting when replying to a personal message in
+  a personal mailscan (some other situations as well).
+
+* The 'variables' that can be used for external programs (like [areatag],
+  [msgno] etc) can now also be used when entering the name of a file to
+  write a message to. This allows you to write messages to files called
+  'artware.msg', or 'artware.100' and so on.
+
+* Fixed a memory leak when entering messages to internet.
+
+* Internet addresses/attaches are now correctly shown when writing a
+  message to file.
+
+
+1.10.g1
+-------
+
+* Fixed a bug in the MSGID generation routine.
+
+* Fixed a memory leak that could occur when generating CC:'s.
+
+* Removed Imail config import routine. It was outdated, and the new Imail
+  versions have the ability to export an area include file for timEd.cfg.
+  If you use _that_, you won't have any problems when a new Imail version
+  is released! There are new Imail releases pretty often, so timEd was
+  always lagging behind. This Imail feature solves that problem once and
+  for all.
+
+* Fixed a bug in the 'write message to file' routines. It would in some
+  cases show incorrect message attributes.
+
+* Fixed a problem with LanServer printer ports (timEd would always indicate
+  the printer was 'not ready', even when it was ready).
