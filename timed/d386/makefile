@@ -30,6 +30,7 @@ OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
 $(TARGET): $(OBJS) $(MSGAPI)
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fe=$@ $(OBJS) $(MSGAPI)
 
-clean:  
+.IGNORE
+clean:
 	del *.obj
 	del $(TARGET)
