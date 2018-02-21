@@ -1,6 +1,8 @@
 timEd 1.12 readme.txt
 =====================
 
+(Last updated 2018-02-21.)
+
 Welcome to timEd 1.12, a reliable and fast message editor for FidoNet,
 written by Gerard van Essen. It supports JAM, Squish, Hudson and *.MSG
 message bases.
