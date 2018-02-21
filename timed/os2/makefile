@@ -3,8 +3,8 @@
 TARGET=..\timedp.exe
 
 CC=wcl386
-CFLAGS=-zq -bm -sg -d2 -wx -bt=os2 -l=os2v2 -k32k -I..\..\api -I..\utils
-#COPT=-oneatx
+CFLAGS=-zq -bm -sg -wx -bt=os2 -l=os2v2 -k32k -I..\..\api -I..\utils
+COPT=-oneatx
 SRC_DIR=..
 MSGAPI=..\..\api\os2api.lib
 
