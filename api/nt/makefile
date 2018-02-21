@@ -20,6 +20,7 @@ OBJS=1stchar.obj msgapi.obj cvtdate.obj date2bin.obj dosdate.obj &
 
 $(TARGET): $(OBJS)
 
-clean:  
+.IGNORE
+clean:
 	del *.obj
 	del $(TARGET)
