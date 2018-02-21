@@ -14,6 +14,10 @@ TODO list for each timEd release:
 
 * Edit README.TXT.
 
+* Edit dist.sh to update zipfile names.
+
 * From UNIX shell, run:
 
   ./dist.sh
+
+* rsync zipfiles to remote web server.
