@@ -27,6 +27,7 @@ OBJS=1stchar.obj msgapi.obj api_sdm.obj api_sq.obj cvtdate.obj &
 
 $(TARGET): $(OBJS)
 
-clean:  
+.IGNORE
+clean:
 	del *.obj
 	del $(TARGET)
