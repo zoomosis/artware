@@ -1,3 +1,5 @@
+#pragma pack(__push, 1)
+
 /********************************************************/
 /* 'C' Structures of FastEcho 1.30, File: FASTECHO.CFG  */
 /* (c)1993 by Tobias Burchhardt, Updated: 11 Sep 1993   */
@@ -408,4 +410,6 @@ typedef struct
 #define EH_TAG_MSG      0x0104
 #define EH_RA200_MSG    0x0105
 #define EH_PB130_MSG    0x0106
+
+#pragma pack(__pop)
 

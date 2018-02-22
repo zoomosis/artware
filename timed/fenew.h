@@ -1,3 +1,5 @@
+#pragma pack(__push, 1)
+
 /********************************************************/
 /* 'C' Structures of FastEcho 1.42á, File: FASTECHO.CFG */
 /* (c)1994 by Tobias Burchhardt, Updated: 27 Nov 1994   */
@@ -467,3 +469,5 @@ word GetBam(byte *bam,word nr)
 #define SetDeActive(nr,area)   FreeBam(Node[nr].areas,area)
 
 #endif
+
+#pragma pack(__pop)

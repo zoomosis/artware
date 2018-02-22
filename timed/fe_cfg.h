@@ -1,3 +1,5 @@
+#pragma pack(__push, 1)
+
 /********************************************************/
 /* 'C' Structures of FastEcho 1.41, File: FASTECHO.CFG  */
 /* (c)1994 by Tobias Burchhardt, Updated: 11 Apr 1994   */
@@ -438,4 +440,6 @@ typedef struct
 /********************************************************/
 /* Routines to access Node.areas, Node.groups           */
 /********************************************************/
+
+#pragma pack(__pop)
 
