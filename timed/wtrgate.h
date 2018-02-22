@@ -1,3 +1,8 @@
+#ifndef __WTRGATE_H__
+#define __WTRGATE_H__
+
+#pragma pack(__push, 1)
+
 // Watergate areabase definitions.
 
 // For area.type
@@ -58,4 +63,6 @@ typedef struct
 
 } WTRAKA;
 
+#pragma pack(__pop)
 
+#endif
