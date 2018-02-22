@@ -1554,7 +1554,7 @@ void _settextcursor(short type)
 
    switch(type)
      {
-     case 0x2000: ci.bVisible = 0; break;
+     case 0x2000: ci.bVisible = 0; ci.dwSize = 20; break;
      case 0x0607: ci.bVisible = 1; ci.dwSize = 20; break;  // normal
      case 0x0407: ci.bVisible = 1; ci.dwSize = 50; break;  // block
      }
