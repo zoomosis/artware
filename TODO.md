@@ -32,5 +32,3 @@
 
 - timEd: Adjust the size of the arealist window so it uses the width of
   the entire screen (currently fixed to 80 columns).
-
-- timEd: Ctrl+End does not work in the Windows NT version.
