@@ -50,7 +50,7 @@ int shell_to_DOS(void)
 
       clrscr();
 
-      sprintf(temp, "%s  (c) 1992-'96  Gerard van Essen (2:281/527)", myname);
+      sprintf(temp, "%s  (c) 1992-" PROGYEAR "  Gerard van Essen and others.", myname);
       print(1,0,7,temp);
 
       print(3,0,7,"OS shell - type 'exit' to return to timEd..");

@@ -15,6 +15,8 @@ timEd change log
 
 * Windows and OS/2 icons are now included.
 
+* Copyright notices now display the correct year.
+
 
 1.12
 ----

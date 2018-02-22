@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
    print(4,maxx-29,3,"Á");
 
    print(1,19,7,myname);
-   print(2,5,7,"(c) 1992-'96  Gerard van Essen (2:281/527)");
+   print(2,5,7,"(c) 1992-" PROGYEAR "  Gerard van Essen and others.");
    print(3,3,7,"Message editor for Squish, *.MSG, JAM & Hudson");
 
    print(4,0,3,"Ã"); print(4,maxx-1,3,"´");
@@ -201,7 +201,7 @@ int main(int argc, char *argv[])
       cls();
       }
 
-   sprintf(temp, "%s  (c) 1992-'96  Gerard van Essen (2:281/527)", myname);
+   sprintf(temp, "%s  (c) 1992-" PROGYEAR "  Gerard van Essen and others.", myname);
    print(1,0,7,temp);
 
    if(TIMREGISTERED)
