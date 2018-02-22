@@ -1,3 +1,6 @@
+#ifndef __FENEW_H__
+#define __FENEW_H__
+
 #pragma pack(__push, 1)
 
 /********************************************************/
@@ -471,3 +474,5 @@ word GetBam(byte *bam,word nr)
 #endif
 
 #pragma pack(__pop)
+
+#endif
