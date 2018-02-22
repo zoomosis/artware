@@ -1,3 +1,7 @@
+#ifndef __FMAIL120_H__
+#define __FMAIL120_H__
+
+#pragma pack(__push, 1)
 
 /*
    FMSTRUCT.H
@@ -11,11 +15,6 @@
 	Strings are NUL terminated arrays of char type.
 	Path names always end on a \ character (followed by NUL).
 */
-
-#ifndef __FMAIL120_H__
-#define __FMAIL120_H__
-
-#pragma pack(__push, 1)
 
 
 /**** Modify the type definitions below if necessary for your compiler ****/
