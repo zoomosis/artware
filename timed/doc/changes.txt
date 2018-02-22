@@ -26,13 +26,16 @@ timEd change log
 
   You may only specify a single nodelist.
 
-  Raw nodelist may also be unacceptably slow on older PCs.
+  Raw nodelist lookups may also be unacceptably slow on older PCs.
 
   If you specify both FidoUser and FidoNodelist in timed.cfg, FidoNodelist
   will be used.
 
 * Fixed a bug introduced in timEd 1.12 where newlines weren't being added
   properly to quoted text.
+
+* Fixed a bug where timEd/NT wouldn't detect an edited message after
+  returning from an external editor.
 
 * Fixed the Windows version where the text cursor was still visible when
   it wasn't supposed to be.
