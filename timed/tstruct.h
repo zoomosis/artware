@@ -235,6 +235,7 @@ typedef struct
    char     nodelist[100];     /* Path to V7 nodelist files      */
    char     fdnodelist[100];   /* Path to FD nodelist files      */
    char     fidouser[100];     /* Path and name for fidouser.lst */
+   char     fidonodelist[100]; /* Path and name for FidoNet nodelist */
    char     localfiles[100];   /* Path to copy local attaches to */
    char     origin[100];       /* Default origin to use          */
    char     signoff[301];      /* Default signoff (greetings..)  */
@@ -301,6 +302,7 @@ typedef struct
 #define   NOSPACEPASSWORD 0x08000000L
 #define   REPLYTOCFM      0x10000000L
 #define   RESPECTPRIVATE  0x20000000L
+#define   AREALISTWRAPAROUND  0x40000000L
 
 
 typedef struct _macrolist

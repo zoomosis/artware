@@ -176,7 +176,7 @@ typedef struct _pathstringtable
 
 } PATHSTRINGTABLE;
 
-#define MAXPATHSTRING 16
+#define MAXPATHSTRING 17
 
 PATHSTRINGTABLE pathstringtable[MAXPATHSTRING] =
 {
@@ -198,7 +198,9 @@ PATHSTRINGTABLE pathstringtable[MAXPATHSTRING] =
 //   {crcEXECRYPT         , cfg.usr.execrypt,   99 },
 //   {crcEXESPELL         , cfg.usr.exespell,   99 },
    {crcDEFAULTOUTPUT    , DefaultOutput,      MAXCHARSETLEN-1 },
-   {crcDEFAULTINPUT     , DefaultInput,       MAXCHARSETLEN-1 }
+   {crcDEFAULTINPUT     , DefaultInput,       MAXCHARSETLEN-1 },
+   {crcFIDONODELIST, cfg.usr.fidonodelist, 99 }
+
 };
 
 
@@ -210,7 +212,7 @@ typedef struct _toggletable
 
 } TOGGLETABLE;
 
-#define MAXTOGGLE 30
+#define MAXTOGGLE 31
 TOGGLETABLE toggletable[MAXTOGGLE] =
 {
 
@@ -243,7 +245,8 @@ TOGGLETABLE toggletable[MAXTOGGLE] =
   {crcINTERNET_EMPTY_LINE   , INTERNETEMPTY  },
   {crcNOSPACE_PASSWORD      , NOSPACEPASSWORD},
   {crcREPLYTOCFM            , REPLYTOCFM     },
-  {crcRESPECTPRIVATE        , RESPECTPRIVATE }
+  {crcRESPECTPRIVATE        , RESPECTPRIVATE },
+  {crcAREALISTWRAPAROUND    , AREALISTWRAPAROUND }
 
 };
 
@@ -301,8 +304,14 @@ COLOURTABLE colourtable[MAXCOLOUR] =
 int            stuff=0, globalline=0;
 PTLIST         *firstpt=NULL;
 
-//CFG cfg;
-//CUSTOM custom;
+
+char *StripCR(char *str)
+{
+    Strip_Trailing(str, '\n');
+    Strip_Trailing(str, '\r');
+    return str;
+}
+
 
 AREA *last = NULL;
 

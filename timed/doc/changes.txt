@@ -13,6 +13,24 @@ timEd change log
   you will need to disable "Enable Ctrl key shortcuts" in the Properties
   window of the shortcut to TIMEDNT.EXE.
 
+* Added config file option "ArealistWraparound" to allow the selection bar
+  to wrap around when scrolling the area list. The default is off. To enable
+  it, put "ArealistWraparound Yes" in TIMED.CFG.
+
+* timEd can now use a raw FidoNet nodelist to do name lookups when writing
+  netmail, using the config file option "FidoNodelist".
+
+  Wildcards can be used in the pathname:
+
+  FidoNodelist c:\nodelist\nodelist.*
+
+  You may only specify a single nodelist.
+
+  Raw nodelist may also be unacceptably slow on older PCs.
+
+  If you specify both FidoUser and FidoNodelist in timed.cfg, FidoNodelist
+  will be used.
+
 * Windows and OS/2 icons are now included.
 
 * Copyright notices now display the correct year.

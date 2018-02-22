@@ -309,7 +309,7 @@ int EditHeader(MSG *areahandle, MMSG *curmsg, int address, int aka, int domatch,
 //                  if( (found==NULL) && (cfg.usr.fdnodelist[0] != '\0') )  /* FD nodelist? */
 //                      found = getFDnode(&tempnet);
 
-                  found = NodeLookup((char *)&tempnet, 0, 0);
+                  found = NodeLookup((char *)&tempnet, 0);
 
                   if(found == NULL)   /* Address not found in nodelist(s) */
                      {

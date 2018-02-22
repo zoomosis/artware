@@ -14,12 +14,14 @@
 void       show_node_details(ADDRLIST *current, int curline);
 ADDRLIST * GetLoad(NODEHANDLE *nhandle);
 ADDRLIST * GetAddrCopy(ADDRLIST *in);
-ADDRLIST * NodeLookup(char *name, int sysop, int prompt);
+ADDRLIST * NodeLookup(char *name, int sysop);
 void       FreeNodesList(ADDRLIST *first);
 int        DoesMatch(char *name, char *foundname);
 char     * LastNameFirst(char *name, int withcomma);
 
 // ==============================================================
+
+#if 0
 
 ADDRLIST * NodeLookup(char *name, int sysop, int prompt)
 {
@@ -298,6 +300,250 @@ ADDRLIST * NodeLookup(char *name, int sysop, int prompt)
 
    return NULL;
 }
+
+#else
+
+ADDRLIST *NodeLookup(char *name, int sysop)
+{
+    ADDRLIST *first = NULL, *current, *highlighted;
+    int moveback = 0;
+    int i, key, lastnumber;
+    int top;
+    BOX *nodebox = NULL;
+    int curpos = 0;
+    int colour;
+    ADDRLIST *retnode = NULL;
+    int clockstate = showclock;
+    int lookupfirstmatch;
+
+    /* If this is 1, we 'walk' through displayed */
+
+    lookupfirstmatch = 0;
+
+    /* list to find first match, so we can highlight it. */
+
+    if (*cfg.usr.fidonodelist != '\0')
+    {
+        first = fido_nodelist_lookup(name);
+    }
+    else if (*cfg.usr.fidouser != '\0')
+    {
+        first = fido_lookup(name);
+    }
+
+    if (first == NULL)
+    {
+        return NULL;
+    }
+
+    while (1)
+    {
+        while (moveback)
+        {
+            moveback--;
+        }
+
+        moveback = 0;
+
+        /* Count 'em */
+
+        i = 0;
+
+        current = first;
+
+        while (current != NULL)
+        {
+            i++;
+            current = current->next;
+        }
+
+        if (i > maxy - 3)
+        {
+            i = maxy - 3;
+        }
+
+        if (nodebox && lastnumber != i)
+        {
+            /* New box different size.. */
+
+            delbox(nodebox);
+            nodebox = NULL;
+        }
+
+        lastnumber = i;
+
+        if (curpos > lastnumber - 1)
+        {
+            curpos = lastnumber - 1;
+        }
+
+        if (!nodebox)
+        {
+            top = maxy / 2 - i / 2 - 1;
+
+            if (top + i + 2 > maxy - 1)
+            {
+                top--;
+            }
+
+            if (top < 0)
+            {
+                top = 0;
+            }
+
+            nodebox = initbox(top, 0, top + i + 1, 79, cfg.col[Casframe],
+              cfg.col[Castext], SINGLE, YES, ' ');
+
+            clockoff();
+            drawbox(nodebox);
+
+            biprinteol(maxy - 1, 0, cfg.col[Cmsgbar],
+              cfg.col[Cmsgbaraccent],
+              " Use ~Tab~ for details, cursor keys and page-up/down to move, ~Enter~ to accept",
+              '~');
+        }
+
+        if (lookupfirstmatch)
+        {
+            /* Highlight first match we found. */
+
+            lookupfirstmatch = 0;
+
+            i = 0;
+            current = first;
+
+            while (current != NULL)
+            {
+                if ((sysop && DoesMatch(name, current->name)) ||
+                    (!sysop && addrcmp((NETADDR *) name, &current->address) == 0))
+                {
+                    curpos = i;
+                    break;
+                }
+
+                i++;
+
+                current = current->next;
+            }
+        }
+
+        i = 0;
+        current = first;
+
+        while (current != NULL && i < maxy - 3)
+        {
+            if (i == curpos)
+            {
+                colour = cfg.col[Cashigh];
+            }
+            else
+            {
+                colour = cfg.col[Castext];
+            }
+
+            if (i == curpos)
+            {
+                highlighted = current;
+                MoveXY(2, top + 2 + i);
+            }
+
+            vprint(top + 1 + i, 1, colour, "%-25.25s  %-30.30s  %-19.19s",
+               current->name, current->system, FormAddress(&current->address));
+
+            i++;
+            current = current->next;
+        }
+
+        key = get_idle_key(1, GLOBALSCOPE);
+
+        switch (key)
+        {
+        case 337:
+            /* page down */
+
+            moveback = 0;
+            curpos = 0;
+            break;
+
+        case 329:
+            /* page up */
+
+            moveback = maxy - 4;
+            curpos = 0;
+            break;
+
+        case 328:
+            /* up */
+
+            if (curpos == 0)
+            {
+                moveback = 1;
+            }
+            else
+            {
+                curpos--;
+            }
+            break;
+
+        case 336:
+            /* down */
+
+            if (curpos >= (lastnumber - 1))
+            {
+                curpos = lastnumber - 1;
+            }
+            else
+            {
+                curpos++;
+            }
+            break;
+
+        case 9:
+            /* tab */
+            show_node_details(highlighted, top + curpos);
+            break;
+
+        case 13:
+            /* enter */
+
+            retnode = GetAddrCopy(highlighted);
+
+            if (first)
+            {
+                FreeNodesList(first);
+            }
+
+            delbox(nodebox);
+
+            if (clockstate == 1)
+            {
+                clockon();
+            }
+
+            return retnode;
+
+        case 27:
+            /* escape */
+
+            if (first)
+            {
+                FreeNodesList(first);
+            }
+
+            delbox(nodebox);
+
+            if (clockstate == 1)
+            {
+                clockon();
+            }
+
+            return NULL;
+        }
+    }
+}
+
+#endif
+
 
 
 // ==============================================================

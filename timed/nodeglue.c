@@ -20,12 +20,12 @@ int check_node(MIS *mis, int aka, int prompt)
    if ( (!isdigit(mis->to[0])) && (mis->to[0] != '.') )
       {
       /* name given, look it up */
-      first = NodeLookup(mis->to, 1, prompt);
+      first = NodeLookup(mis->to, 1);
       }
    else     /* Address given, look up address */
       {
       address_expand(mis->to, &tempaddr, aka);
-      first = NodeLookup((char *)&tempaddr, 0, prompt);
+      first = NodeLookup((char *)&tempaddr, 0);
       }
 
    if(first == NULL) /* No match found */

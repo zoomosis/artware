@@ -21,6 +21,7 @@
 #define crcNODELIST           0x434aa02aL 
 #define crcFDNODELIST         0xd53832d9L
 #define crcFIDOUSER           0x7094b855L 
+#define crcFIDONODELIST       0xb99ce75aL
 #define crcECHOLOG            0xb041aa23L
 #define crcJAMLOG             0x0aca7512L
 #define crcHUDSONPATH         0x137f0cefL
@@ -78,6 +79,7 @@
 #define crcNOSPACE_PASSWORD       0x76ec16eeL
 #define crcREPLYTOCFM             0x1aebf517L
 #define crcRESPECTPRIVATE         0x451710c7L
+#define crcAREALISTWRAPAROUND     0x57f31394L
 
 #define crcCOLOR_ASBAR         0x96d8c9b9L
 #define crcCOLOR_ASFRAME       0x3d923ef2L

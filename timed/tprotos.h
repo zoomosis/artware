@@ -28,7 +28,8 @@ int get_quote_string(char *line, char *quote);
 // Nodelist seraching stuff
 
 ADDRLIST * fido_lookup(char *name);
-ADDRLIST * NodeLookup(char *name, int sysop, int prompt);
+ADDRLIST *fido_nodelist_lookup(char *name);
+ADDRLIST * NodeLookup(char *name, int sysop);
 
 
 void FindMessage (MSG *areahandle, AREA *area, long last);
@@ -312,5 +313,9 @@ void WriteToFile(int raw, int block, AREA *area, MSG *areahandle, MMSG *curmsg);
 /* version7.c */
 
 char *fancy_str (char *string);
+
+/* config.c */
+
+char *StripCR(char *str);
 
 #endif

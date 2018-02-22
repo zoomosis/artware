@@ -280,31 +280,44 @@ AREA *SelectArea(AREA *first, int pickonly, AREA *area_to_start)
          case cASup:      /* up */
             speedsearch(0, NULL, 0, pickonly);
             movedown=0;
-				if (curline)
-					{
-					curline--;
-					if (curline<start)
-						start=curline;
-					}
-				else
-					{
-					curline=numlines-1;
-					start=numlines-rows;
-					}
-				break;
+            if (curline)
+            {
+                curline--;
+
+		if (curline<start)
+		{
+		    start=curline;
+                }
+            }
+            else
+            {
+                if (cfg.usr.status & AREALISTWRAPAROUND)
+		{
+		    curline=numlines-1;
+		    start=numlines-rows;
+                }
+            }
+            break;
 
          case cASdown:      /* down */
             speedsearch(0, NULL, 0, pickonly);
             movedown=1;
-				if (curline<numlines-1)
-					{
-					curline++;
-					if (curline>=start+rows)
-							start++;
-					}
-				else
-					start=curline=0;
-				break;
+            if (curline<numlines-1)
+            {
+                curline++;
+		if (curline>=start+rows)
+		{
+                    start++;
+		}
+            }
+            else
+            {
+                if (cfg.usr.status & AREALISTWRAPAROUND)
+                {
+                    start=curline=0;
+                }
+            }
+            break;
 
          case cAShome:      /* home */
             speedsearch(0, NULL, 0, pickonly);
