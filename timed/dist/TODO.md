@@ -16,6 +16,8 @@ TODO list for each timEd release:
 
 * Update README.TXT.
 
+* Update DOS/D386/NT/OS2 FILE_ID.DIZ files.
+
 * Update dist.sh to reflect new version number in zipfile names.
 
 * From UNIX shell, run:
