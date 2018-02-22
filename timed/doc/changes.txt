@@ -31,6 +31,9 @@ timEd change log
   If you specify both FidoUser and FidoNodelist in timed.cfg, FidoNodelist
   will be used.
 
+* Fixed the Windows version where the text cursor was still visible when
+  it wasn't supposed to be.
+
 * Windows and OS/2 icons are now included.
 
 * Copyright notices now display the correct year.
