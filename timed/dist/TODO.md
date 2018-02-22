@@ -5,18 +5,18 @@ TODO list for each timEd release:
   all clean
   all
 
-* View git log and document any new features in TIMED.TXT and ADVANCED.CFG.
+* View Git log and document any new features in TIMED.TXT and ADVANCED.CFG.
 
   (Re-add Version7 nodelist support to TIMED.CFG and ADVANCED.CFG if
   applicable.)
 
 * Update version number in TIMED.TXT.
 
-* Edit CHANGES.TXT.
+* Update CHANGES.TXT.
 
-* Edit README.TXT.
+* Update README.TXT.
 
-* Edit dist.sh to update zipfile names (version number).
+* Update dist.sh to reflect new version number in zipfile names.
 
 * From UNIX shell, run:
 
