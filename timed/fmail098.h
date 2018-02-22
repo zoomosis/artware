@@ -1,3 +1,7 @@
+#ifndef __FMAIL098_H__
+#define __FMAIL098_H__
+
+#pragma pack(__push, 1)
 
 /*
    FMSTRUCT.H
@@ -11,11 +15,6 @@
    Strings are NUL terminated arrays of char type.
    Path names are \ terminated.
 */
-
-#ifndef __FMAIL098_H__
-#define __FMAIL098_H__
-
-#pragma pack(__push, 1)
 
 /* ********** General structures ********** */
 
