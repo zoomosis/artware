@@ -1,3 +1,6 @@
+#ifndef __FE_CFG_H__
+#define __FE_CFG_H__
+
 #pragma pack(__push, 1)
 
 /********************************************************/
@@ -443,3 +446,4 @@ typedef struct
 
 #pragma pack(__pop)
 
+#endif
