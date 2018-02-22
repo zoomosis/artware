@@ -31,6 +31,9 @@ timEd change log
   If you specify both FidoUser and FidoNodelist in timed.cfg, FidoNodelist
   will be used.
 
+* Fixed a bug introduced in timEd 1.12 where newlines weren't being added
+  properly to quoted text.
+
 * Fixed the Windows version where the text cursor was still visible when
   it wasn't supposed to be.
 

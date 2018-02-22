@@ -552,7 +552,10 @@ void MakeQuote(MMSG *curmsg, AREA *area, word replytype, MIS *newmis, char *addt
              {
                  *quoteptr = 0;
                  ++quoteptr;
-                 sprintf(temp, "%s>>%s", curline->ls, quoteptr);
+                 if (*curline->ls == ' ')
+                     sprintf(temp, "%s>>%s\r", curline->ls, quoteptr);
+                 else
+                     sprintf(temp, " %s>>%s\r", curline->ls, quoteptr);
              }
              else
                  sprintf(temp, "%s\r", curline->ls);
