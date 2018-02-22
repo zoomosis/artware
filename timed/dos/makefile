@@ -4,7 +4,7 @@ TARGET=..\timed.exe
 
 CC=wcl
 CFLAGS=-zq -ml -wx -bt=dos -l=dos -k8k -I..\..\api -I..\utils -I..\..\exec
-COPT=-oneatx
+#COPT=-oneatx
 CDEFS=-D__DOS__=1
 ASM=c:\bc\bin\tasm.exe
 AFLAGS=/zi/t/mx

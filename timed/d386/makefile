@@ -4,7 +4,7 @@ TARGET=..\tim386.exe
 
 CC=wcl386
 CFLAGS=-zq -wx -bt=dos4g -l=dos4g -k32k -I..\..\api -I..\utils
-COPT=-oneatx
+#COPT=-oneatx
 CDEFS=-D__DOS__=1
 SRC_DIR=..
 MSGAPI=..\..\api\386api.lib
