@@ -1,3 +1,8 @@
+#ifndef __GESTRUCT_H__
+#define __GESTRUCT_H__
+
+#pragma pack(__push, 1)
+
 /*
 **  gestruct.h
 **
@@ -574,5 +579,9 @@ typedef struct
    word new_msgnum;
    }
    MBUTIL_RNX;
+
+#pragma pack(__pop)
+
+#endif
 
 /* end of file "gestruct.h" */
