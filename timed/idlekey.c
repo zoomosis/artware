@@ -94,9 +94,31 @@ static int nt_kbhit(void)
             fAlt = (irBuffer.Event.KeyEvent.dwControlKeyState & (RIGHT_ALT_PRESSED + LEFT_ALT_PRESSED));
             fCtrl = (irBuffer.Event.KeyEvent.dwControlKeyState & (RIGHT_CTRL_PRESSED + LEFT_CTRL_PRESSED));
 
+#if 0			
+			printf("uc: %d  vk: %d  vs: %d  fShift: %d  fAlt: %d  fCtrl: %d\n", uc, vk, vs, fShift, fAlt, fCtrl);
+#endif
+
 			if (fCtrl)
 			{
-				iKey = uc;
+				if (uc == 0)
+				{
+					if (vk == 36 && vs == 71)
+					{
+						iKey = 375;  /* Ctrl+Home */
+					}
+					else if (vk == 35 && vs == 79)
+					{
+						iKey = 373;  /* Ctrl+End */
+					}
+					else
+					{
+						iKey = uc;
+					}
+				}
+				else
+				{
+				    iKey = uc;
+				}
 			}
 			else if (fAlt)
 			{
