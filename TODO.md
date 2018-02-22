@@ -1,6 +1,3 @@
-- timEd: #pragma pack(__push, 1) for structures requiring it
-  (partly done)
-
 - Update README.md with latest news and build instructions
 
 - timEd: Add more %vars to reply.c (%mmon already added)
