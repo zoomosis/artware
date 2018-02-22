@@ -4,10 +4,6 @@
 
 - timEd: add DEBUG option to makefiles
 
-- timEd: Add FidoNodelist code (raw nodelist lookup) code from UNIX version
-
-- timEd: Add ArealistWraparound code from UNIX version
-
 - timEd: See SVN log of UNIX for other previously-added features and merge
   into this branch
 
