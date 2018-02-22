@@ -19,7 +19,8 @@ OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
   getbody.obj getfmt.obj timed.obj tosslog.obj txtbuild.obj unrec.obj &
   nodeglue.obj working.obj wrap.obj xfile.obj video.obj scrnutil.obj &
   picklist.obj markchn.obj macro.obj charset.obj filter.obj v7.obj &
-  fd.obj nodelist.obj nodebrow.obj task386.obj private.obj
+  fd.obj nodelist.obj nodebrow.obj task386.obj private.obj &
+  fidonode.obj fidouser.obj patmat.obj
   
 {$(SRC_DIR)}.c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
