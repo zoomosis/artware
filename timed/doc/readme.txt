@@ -1,11 +1,10 @@
-timEd 1.12 readme.txt
+timEd 1.30 readme.txt
 =====================
 
-(Last updated 2018-02-21.)
+(Last updated 2018-02-22.)
 
-Welcome to timEd 1.12, a reliable and fast message editor for FidoNet,
-written by Gerard van Essen. It supports JAM, Squish, Hudson and *.MSG
-message bases.
+Introducing timEd, a reliable and fast message editor for FidoNet, written
+by Gerard van Essen. It supports JAM, Squish, Hudson and *.MSG message bases.
 
 Added to this basis are many useful functions like nodelist browsing,
 redefinable keys and macros, character translation, support for encryption
@@ -14,14 +13,21 @@ and spellchecking and many other things.
 However, timEd is still a fast no-nonsense editor, giving you speed and
 reliablity as it's major 'features'!
 
-Note 1.12 is a "refreshed" version of timEd 1.10.
 
-Version 7 nodelist lookup support has been removed from version 1.12 due to
+Notes on this release
+---------------------
+
+Version 7 nodelist lookup support has been removed since version 1.12 due to
 licensing issues, but otherwise the program is fully-functional.
 
-After many years, a 32-bit Windows NT version of timEd is now available.
+A 32-bit Windows NT version of timEd is now available.
 
-Also, many Y2K bugs have been fixed since the 1.10 release.
+The Windows version is compatible with Microsoft Windows 10, however
+toggling between full screen and windowed mode (with Alt+Enter) may result
+in unusual screen output. This is because timEd expects a fixed screen size
+for the duration of its runtime. This may be fixed in a future version.
+
+Many Y2K bugs have been fixed since the 1.10 release.
 
 Please see CHANGES.TXT for more information.
 

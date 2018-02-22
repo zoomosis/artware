@@ -1,6 +1,21 @@
 timEd change log
 ================
 
+1.30
+----
+
+* TIMKEYS.CFG, READMAPS.DAT and WRITMAPS.DAT were missing from the
+  distribution archives and are now included.
+
+* FastEcho configuration files are read correctly.
+
+* Ctrl+Home and Ctrl+End keys now work in the Windows version. In Windows 10
+  you will need to disable "Enable Ctrl key shortcuts" in the Properties
+  window of the shortcut to TIMEDNT.EXE.
+
+* Windows and OS/2 icons are now included.
+
+
 1.12
 ----
 

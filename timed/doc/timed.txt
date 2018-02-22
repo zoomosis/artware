@@ -28,7 +28,7 @@
               ¿ƒƒø …ÕÕº≥ ∫≥  ”Ÿ  ∫≥ …ÕÕº  ≥ …ÕÕÕ∏ ∫
                  ≥ ∫   ≥ ∫≥ …∏…∏ ∫≥ ∫     ≥ ∫   ≥ ∫
                  ≥ ”ƒƒ∑≥ ∫≥ ∫‘º≥ ∫≥ ”ƒƒƒƒ∑≥ ”ƒƒƒŸ ∫
-                 ‘ÕÕÕÕº‘Õº‘Õº  ‘Õº‘ÕÕÕÕÕÕº‘ÕÕÕÕÕÕÕº  v1.12
+                 ‘ÕÕÕÕº‘Õº‘Õº  ‘Õº‘ÕÕÕÕÕÕº‘ÕÕÕÕÕÕÕº  v1.30
 
              (c) 1992-2018  Gerard van Essen and others
 
@@ -112,7 +112,7 @@
 
 
 
-                                           timEd v1.12 manual - page 2
+                                           timEd v1.30 manual - page 2
 
 
 
@@ -172,7 +172,7 @@
 
 
 
-                                           timEd v1.12 manual - page 3
+                                           timEd v1.30 manual - page 3
 
 
 
@@ -232,7 +232,7 @@
 
 
 
-                                           timEd v1.12 manual - page 4
+                                           timEd v1.30 manual - page 4
 
 
 
@@ -292,7 +292,7 @@
 
 
 
-                                           timEd v1.12 manual - page 5
+                                           timEd v1.30 manual - page 5
 
 
 
@@ -352,7 +352,7 @@
           deleted.
 
 
-                                           timEd v1.12 manual - page 6
+                                           timEd v1.30 manual - page 6
 
 
 
@@ -412,7 +412,7 @@
 
 
 
-                                           timEd v1.12 manual - page 7
+                                           timEd v1.30 manual - page 7
 
 
 
@@ -472,7 +472,7 @@
 
 
 
-                                           timEd v1.12 manual - page 8
+                                           timEd v1.30 manual - page 8
 
 
 
@@ -532,7 +532,7 @@
 
 
 
-                                           timEd v1.12 manual - page 9
+                                           timEd v1.30 manual - page 9
 
 
 
@@ -592,7 +592,7 @@
 
 
 
-                                           timEd v1.12 manual - page 10
+                                           timEd v1.30 manual - page 10
 
 
 
@@ -652,7 +652,7 @@
 
 
 
-                                           timEd v1.12 manual - page 11
+                                           timEd v1.30 manual - page 11
 
 
 
@@ -712,7 +712,7 @@
 
 
 
-                                           timEd v1.12 manual - page 12
+                                           timEd v1.30 manual - page 12
 
 
 
@@ -772,7 +772,7 @@
 
 
 
-                                           timEd v1.12 manual - page 13
+                                           timEd v1.30 manual - page 13
 
 
 
@@ -835,7 +835,7 @@
 
 
 
-                                           timEd v1.12 manual - page 14
+                                           timEd v1.30 manual - page 14
 
 
 
@@ -895,7 +895,7 @@
     ¿ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒŸ
 
 
-                                           timEd v1.12 manual - page 15
+                                           timEd v1.30 manual - page 15
 
 
 
@@ -955,7 +955,7 @@
 
 
 
-                                           timEd v1.12 manual - page 16
+                                           timEd v1.30 manual - page 16
 
 
 
@@ -1015,7 +1015,7 @@
 
 
 
-                                           timEd v1.12 manual - page 17
+                                           timEd v1.30 manual - page 17
 
 
 
@@ -1075,7 +1075,7 @@
 
 
 
-                                           timEd v1.12 manual - page 18
+                                           timEd v1.30 manual - page 18
 
 
 
@@ -1135,7 +1135,7 @@
     already filled in, for you to fill out:
 
 
-                                           timEd v1.12 manual - page 19
+                                           timEd v1.30 manual - page 19
 
 
 
@@ -1195,7 +1195,7 @@
 
 
 
-                                           timEd v1.12 manual - page 20
+                                           timEd v1.30 manual - page 20
 
 
 
@@ -1255,7 +1255,7 @@
     necessary).  This means,  that when you  edit a  message header  in the
 
 
-                                           timEd v1.12 manual - page 21
+                                           timEd v1.30 manual - page 21
 
 
 
@@ -1315,7 +1315,7 @@
     certain keyword in them,  in either the header (the From field, the TO:
 
 
-                                           timEd v1.12 manual - page 22
+                                           timEd v1.30 manual - page 22
 
 
 
@@ -1375,7 +1375,7 @@
 
 
 
-                                           timEd v1.12 manual - page 23
+                                           timEd v1.30 manual - page 23
 
 
 
@@ -1435,7 +1435,7 @@
 
 
 
-                                           timEd v1.12 manual - page 24
+                                           timEd v1.30 manual - page 24
 
 
 
@@ -1495,7 +1495,7 @@
 
 
 
-                                           timEd v1.12 manual - page 25
+                                           timEd v1.30 manual - page 25
 
 
 
@@ -1555,7 +1555,7 @@
     gives you the opportunity to only see and  work on a selection of areas
 
 
-                                           timEd v1.12 manual - page 26
+                                           timEd v1.30 manual - page 26
 
 
 
@@ -1615,7 +1615,7 @@
 
 
 
-                                           timEd v1.12 manual - page 27
+                                           timEd v1.30 manual - page 27
 
 
 
@@ -1675,7 +1675,7 @@
     Squish style  message bases) there  would have been more  numbers after
 
 
-                                           timEd v1.12 manual - page 28
+                                           timEd v1.30 manual - page 28
 
 
 
@@ -1735,7 +1735,7 @@
 
 
 
-                                           timEd v1.12 manual - page 29
+                                           timEd v1.30 manual - page 29
 
 
 
@@ -1795,7 +1795,7 @@
 
 
 
-                                           timEd v1.12 manual - page 30
+                                           timEd v1.30 manual - page 30
 
 
 
@@ -1855,7 +1855,7 @@
     It will first show  you the Area Selection  Screen, where you can  pick
 
 
-                                           timEd v1.12 manual - page 31
+                                           timEd v1.30 manual - page 31
 
 
 
@@ -1915,7 +1915,7 @@
 
 
 
-                                           timEd v1.12 manual - page 32
+                                           timEd v1.30 manual - page 32
 
 
 
@@ -1975,7 +1975,7 @@
     CTRL-<ENTER>.
 
 
-                                           timEd v1.12 manual - page 33
+                                           timEd v1.30 manual - page 33
 
 
 
@@ -2035,7 +2035,7 @@
 
 
 
-                                           timEd v1.12 manual - page 34
+                                           timEd v1.30 manual - page 34
 
 
 
@@ -2095,7 +2095,7 @@
           MSG##.TIM      for Hudson areas (## is the board number).
 
 
-                                           timEd v1.12 manual - page 35
+                                           timEd v1.30 manual - page 35
 
 
 
@@ -2155,7 +2155,7 @@
     your own format. I  think it's a waste of (programming) effort and code
 
 
-                                           timEd v1.12 manual - page 36
+                                           timEd v1.30 manual - page 36
 
 
 
@@ -2215,7 +2215,7 @@
 
 
 
-                                           timEd v1.12 manual - page 37
+                                           timEd v1.30 manual - page 37
 
 
 
@@ -2275,7 +2275,7 @@
 
 
 
-                                           timEd v1.12 manual - page 38
+                                           timEd v1.30 manual - page 38
 
 
 
@@ -2335,7 +2335,7 @@
     'netmgr' to be considered a 'match'.
 
 
-                                           timEd v1.12 manual - page 39
+                                           timEd v1.30 manual - page 39
 
 
 
@@ -2395,7 +2395,7 @@
     <del> to delete an existing item.
 
 
-                                           timEd v1.12 manual - page 40
+                                           timEd v1.30 manual - page 40
 
 
 
@@ -2455,7 +2455,7 @@
 
 
 
-                                           timEd v1.12 manual - page 41
+                                           timEd v1.30 manual - page 41
 
 
 
@@ -2515,7 +2515,7 @@
     It will  search headers, kludges or bodies, all areas, the current area
 
 
-                                           timEd v1.12 manual - page 42
+                                           timEd v1.30 manual - page 42
 
 
 
@@ -2575,7 +2575,7 @@
 
 
 
-                                           timEd v1.12 manual - page 43
+                                           timEd v1.30 manual - page 43
 
 
 
@@ -2635,7 +2635,7 @@
     @D, D, del    :   Delete message
 
 
-                                           timEd v1.12 manual - page 44
+                                           timEd v1.30 manual - page 44
 
 
 
@@ -2695,7 +2695,7 @@
     ALT-W, W         : Write marked msgs to file
 
 
-                                           timEd v1.12 manual - page 45
+                                           timEd v1.30 manual - page 45
 
 
 
@@ -2755,7 +2755,7 @@
     ctrl-U              : Unerase line          ALT-D : Delete block
 
 
-                                           timEd v1.12 manual - page 46
+                                           timEd v1.30 manual - page 46
 
 
 
@@ -2815,7 +2815,7 @@
 
 
 
-                                           timEd v1.12 manual - page 47
+                                           timEd v1.30 manual - page 47
 
 
 
@@ -2875,7 +2875,7 @@
     TimEd will try  to find the exact  string you typed. If it  cannot find
 
 
-                                           timEd v1.12 manual - page 48
+                                           timEd v1.30 manual - page 48
 
 
 
@@ -2935,7 +2935,7 @@
     nodelist.
 
 
-                                           timEd v1.12 manual - page 49
+                                           timEd v1.30 manual - page 49
 
 
 
@@ -2995,7 +2995,7 @@
 
 
 
-                                           timEd v1.12 manual - page 50
+                                           timEd v1.30 manual - page 50
 
 
 
@@ -3055,7 +3055,7 @@
 
 
 
-                                           timEd v1.12 manual - page 51
+                                           timEd v1.30 manual - page 51
 
 
 
@@ -3115,7 +3115,7 @@
           The '<' is chosen as it looks like 'redirection' in DOS :-)
 
 
-                                           timEd v1.12 manual - page 52
+                                           timEd v1.30 manual - page 52
 
 
 
@@ -3175,7 +3175,7 @@
 
 
 
-                                           timEd v1.12 manual - page 53
+                                           timEd v1.30 manual - page 53
 
 
 
@@ -3235,7 +3235,7 @@
 
 
 
-                                           timEd v1.12 manual - page 54
+                                           timEd v1.30 manual - page 54
 
 
 
@@ -3295,7 +3295,7 @@
 
 
 
-                                           timEd v1.12 manual - page 55
+                                           timEd v1.30 manual - page 55
 
 
 
@@ -3355,7 +3355,7 @@
 
 
 
-                                           timEd v1.12 manual - page 56
+                                           timEd v1.30 manual - page 56
 
 
 
@@ -3415,7 +3415,7 @@
 
 
 
-                                           timEd v1.12 manual - page 57
+                                           timEd v1.30 manual - page 57
 
 
 
@@ -3475,7 +3475,7 @@
 
 
 
-                                           timEd v1.12 manual - page 58
+                                           timEd v1.30 manual - page 58
 
 
 
@@ -3535,7 +3535,7 @@
     ctrl-<page down>    :   Go to the bottom of the screen 
 
 
-                                           timEd v1.12 manual - page 59
+                                           timEd v1.30 manual - page 59
 
 
 
@@ -3595,7 +3595,7 @@
     The editor has an option to display the 'hard returns' in the text. 
 
 
-                                           timEd v1.12 manual - page 60
+                                           timEd v1.30 manual - page 60
 
 
 
@@ -3655,7 +3655,7 @@
 
 
 
-                                           timEd v1.12 manual - page 61
+                                           timEd v1.30 manual - page 61
 
 
 
@@ -3715,7 +3715,7 @@
 
 
 
-                                           timEd v1.12 manual - page 62
+                                           timEd v1.30 manual - page 62
 
 
 
@@ -3775,7 +3775,7 @@
 
 
 
-                                           timEd v1.12 manual - page 63
+                                           timEd v1.30 manual - page 63
 
 
 
@@ -3835,7 +3835,7 @@
 
 
 
-                                           timEd v1.12 manual - page 64
+                                           timEd v1.30 manual - page 64
 
 
 
@@ -3895,7 +3895,7 @@
      
 
 
-                                           timEd v1.12 manual - page 65
+                                           timEd v1.30 manual - page 65
 
 
 
@@ -3955,7 +3955,7 @@
                 [!passwords]). 
 
 
-                                           timEd v1.12 manual - page 66
+                                           timEd v1.30 manual - page 66
 
 
 
@@ -4015,7 +4015,7 @@
 
 
 
-                                           timEd v1.12 manual - page 67
+                                           timEd v1.30 manual - page 67
 
 
 
@@ -4075,7 +4075,7 @@
 
 
 
-                                           timEd v1.12 manual - page 68
+                                           timEd v1.30 manual - page 68
 
 
 
@@ -4135,7 +4135,7 @@
                             copy the _original_ body!
 
 
-                                           timEd v1.12 manual - page 69
+                                           timEd v1.30 manual - page 69
 
 
 
@@ -4195,7 +4195,7 @@
 
 
 
-                                           timEd v1.12 manual - page 70
+                                           timEd v1.30 manual - page 70
 
 
 
@@ -4255,7 +4255,7 @@
           flag per node. 
 
 
-                                           timEd v1.12 manual - page 71
+                                           timEd v1.30 manual - page 71
 
 
 
@@ -4315,7 +4315,7 @@
 
 
 
-                                           timEd v1.12 manual - page 72
+                                           timEd v1.30 manual - page 72
 
 
     NodeFlags
@@ -4375,7 +4375,7 @@
 
 
 
-                                           timEd v1.12 manual - page 73
+                                           timEd v1.30 manual - page 73
 
 
 
@@ -4435,7 +4435,7 @@
           in the message.
 
 
-                                           timEd v1.12 manual - page 74
+                                           timEd v1.30 manual - page 74
 
 
 
@@ -4495,7 +4495,7 @@
 
 
 
-                                           timEd v1.12 manual - page 75
+                                           timEd v1.30 manual - page 75
 
 
 
@@ -4555,7 +4555,7 @@
 
 
 
-                                           timEd v1.12 manual - page 76
+                                           timEd v1.30 manual - page 76
 
 
 
@@ -4615,7 +4615,7 @@
 
 
 
-                                           timEd v1.12 manual - page 77
+                                           timEd v1.30 manual - page 77
 
 
 
@@ -4675,7 +4675,7 @@
 
 
 
-                                           timEd v1.12 manual - page 78
+                                           timEd v1.30 manual - page 78
 
 
 
@@ -4735,7 +4735,7 @@
 
 
 
-                                           timEd v1.12 manual - page 79
+                                           timEd v1.30 manual - page 79
 
 
 
@@ -4795,7 +4795,7 @@
     the 'esc' key to produce an 'a' in  the global section, it will produce
 
 
-                                           timEd v1.12 manual - page 80
+                                           timEd v1.30 manual - page 80
 
 
 
@@ -4855,7 +4855,7 @@
     'EDITup' to move one line up in the  editor, or 'EDITshell' to shell to
 
 
-                                           timEd v1.12 manual - page 81
+                                           timEd v1.30 manual - page 81
 
 
 
@@ -4915,7 +4915,7 @@
     key (in  this case 'enter') as a command. Entering a new message/header
 
 
-                                           timEd v1.12 manual - page 82
+                                           timEd v1.30 manual - page 82
 
 
 
@@ -4975,7 +4975,7 @@
 
 
 
-                                           timEd v1.12 manual - page 83
+                                           timEd v1.30 manual - page 83
 
 
 
@@ -5035,7 +5035,7 @@
     implemented.  This takes some time  (you have to  exit and reload timEd
 
 
-                                           timEd v1.12 manual - page 84
+                                           timEd v1.30 manual - page 84
 
 
 
@@ -5095,7 +5095,7 @@
 
 
 
-                                           timEd v1.12 manual - page 85
+                                           timEd v1.30 manual - page 85
 
 
 
@@ -5155,7 +5155,7 @@
           smallest message takes at least 2 Kb.
 
 
-                                           timEd v1.12 manual - page 86
+                                           timEd v1.30 manual - page 86
 
 
 
@@ -5215,7 +5215,7 @@
     this file!
 
 
-                                           timEd v1.12 manual - page 87
+                                           timEd v1.30 manual - page 87
 
 
 
@@ -5275,7 +5275,7 @@
 
 
 
-                                           timEd v1.12 manual - page 88
+                                           timEd v1.30 manual - page 88
 
 
 
@@ -5335,7 +5335,7 @@
 
 
 
-                                           timEd v1.12 manual - page 89
+                                           timEd v1.30 manual - page 89
 
 
 
@@ -5395,7 +5395,7 @@
 
 
 
-                                           timEd v1.12 manual - page 90
+                                           timEd v1.30 manual - page 90
 
 
 
@@ -5455,7 +5455,7 @@
 
 
 
-                                           timEd v1.12 manual - page 91
+                                           timEd v1.30 manual - page 91
 
 
 
@@ -5515,7 +5515,7 @@
           If you write  a message to  2:500/133, you  probably want to  use
 
 
-                                           timEd v1.12 manual - page 92
+                                           timEd v1.30 manual - page 92
 
 
 
@@ -5575,7 +5575,7 @@
 
 
 
-                                           timEd v1.12 manual - page 93
+                                           timEd v1.30 manual - page 93
 
 
 
@@ -5635,7 +5635,7 @@
 
 
 
-                                           timEd v1.12 manual - page 94
+                                           timEd v1.30 manual - page 94
 
 
 
@@ -5695,7 +5695,7 @@
           statements  out (in fact, you  can do that  with a colour monitor
 
 
-                                           timEd v1.12 manual - page 95
+                                           timEd v1.30 manual - page 95
 
 
 
@@ -5755,7 +5755,7 @@
           attach.
 
 
-                                           timEd v1.12 manual - page 96
+                                           timEd v1.30 manual - page 96
 
 
 
@@ -5815,7 +5815,7 @@
 
 
 
-                                           timEd v1.12 manual - page 97
+                                           timEd v1.30 manual - page 97
 
 
 
@@ -5875,7 +5875,7 @@
 
 
 
-                                           timEd v1.12 manual - page 98
+                                           timEd v1.30 manual - page 98
 
 
 
@@ -5935,7 +5935,7 @@
 
 
 
-                                           timEd v1.12 manual - page 99
+                                           timEd v1.30 manual - page 99
 
 
 
@@ -5995,7 +5995,7 @@
      
 
 
-                                           timEd v1.12 manual - page 100
+                                           timEd v1.30 manual - page 100
 
 
 
@@ -6055,7 +6055,7 @@
           Please note,  that when a 'CHRS:' kludge is present in a message,
 
 
-                                           timEd v1.12 manual - page 101
+                                           timEd v1.30 manual - page 101
 
 
 
@@ -6115,7 +6115,7 @@
           <keyword> <description> <areatag> <location> [-Pxxx -Axx  -$ -J -
 
 
-                                           timEd v1.12 manual - page 102
+                                           timEd v1.30 manual - page 102
 
 
 
@@ -6175,7 +6175,7 @@
           well.
 
 
-                                           timEd v1.12 manual - page 103
+                                           timEd v1.30 manual - page 103
 
 
 
@@ -6235,7 +6235,7 @@
           command line parameter).
 
 
-                                           timEd v1.12 manual - page 104
+                                           timEd v1.30 manual - page 104
 
 
 
@@ -6295,7 +6295,7 @@
 
 
 
-                                           timEd v1.12 manual - page 105
+                                           timEd v1.30 manual - page 105
 
 
 
@@ -6355,7 +6355,7 @@
 
 
 
-                                           timEd v1.12 manual - page 106
+                                           timEd v1.30 manual - page 106
 
 
 
@@ -6415,7 +6415,7 @@
           When  looking up  a SysOp-name,  timEd will  try to  locate *all*
 
 
-                                           timEd v1.12 manual - page 107
+                                           timEd v1.30 manual - page 107
 
 
 
@@ -6475,7 +6475,7 @@
 
 
 
-                                           timEd v1.12 manual - page 108
+                                           timEd v1.30 manual - page 108
 
 
 
@@ -6535,7 +6535,7 @@
           %thisfto:   first name of person *this message* is addressed to 
 
 
-                                           timEd v1.12 manual - page 109
+                                           timEd v1.30 manual - page 109
 
 
 
@@ -6594,7 +6594,7 @@
           Fidonet, I have:
 
 
-                                           timEd v1.12 manual - page 110
+                                           timEd v1.30 manual - page 110
 
 
 
@@ -6654,7 +6654,7 @@
 
 
 
-                                           timEd v1.12 manual - page 111
+                                           timEd v1.30 manual - page 111
 
 
 
@@ -6714,7 +6714,7 @@
 
 
 
-                                           timEd v1.12 manual - page 112
+                                           timEd v1.30 manual - page 112
 
 
 
@@ -6774,7 +6774,7 @@
           an inter-zone message zonegated.  The tosser will recognize  this
 
 
-                                           timEd v1.12 manual - page 113
+                                           timEd v1.30 manual - page 113
 
 
 
@@ -6834,7 +6834,7 @@
 
 
 
-                                           timEd v1.12 manual - page 114
+                                           timEd v1.30 manual - page 114
 
 
 
@@ -6894,7 +6894,7 @@
           reported  random lockups  using these  routines, and  other weird
 
 
-                                           timEd v1.12 manual - page 115
+                                           timEd v1.30 manual - page 115
 
 
 
@@ -6954,7 +6954,7 @@
           See EchoArea.
 
 
-                                           timEd v1.12 manual - page 116
+                                           timEd v1.30 manual - page 116
 
 
 
@@ -7014,7 +7014,7 @@
      
 
 
-                                           timEd v1.12 manual - page 117
+                                           timEd v1.30 manual - page 117
 
 
 
@@ -7074,7 +7074,7 @@
 
 
 
-                                           timEd v1.12 manual - page 118
+                                           timEd v1.30 manual - page 118
 
 
 
@@ -7134,7 +7134,7 @@
           messages with the received status. 
 
 
-                                           timEd v1.12 manual - page 119
+                                           timEd v1.30 manual - page 119
 
 
 
@@ -7194,7 +7194,7 @@
 
 
 
-                                           timEd v1.12 manual - page 120
+                                           timEd v1.30 manual - page 120
 
 
 
@@ -7254,7 +7254,7 @@
           Syntax: Soup2SQCFG <path+name of config file>
 
 
-                                           timEd v1.12 manual - page 121
+                                           timEd v1.30 manual - page 121
 
 
 
@@ -7314,7 +7314,7 @@
        
 
 
-                                           timEd v1.12 manual - page 122
+                                           timEd v1.30 manual - page 122
 
 
 
@@ -7374,7 +7374,7 @@
 
 
 
-                                           timEd v1.12 manual - page 123
+                                           timEd v1.30 manual - page 123
 
 
 
@@ -7434,7 +7434,7 @@
 
 
 
-                                           timEd v1.12 manual - page 124
+                                           timEd v1.30 manual - page 124
 
 
 
@@ -7494,7 +7494,7 @@
 
 
 
-                                           timEd v1.12 manual - page 125
+                                           timEd v1.30 manual - page 125
 
 
 
@@ -7554,7 +7554,7 @@
           [areatag], [msgno]  etc) can also be  used when entering the name
 
 
-                                           timEd v1.12 manual - page 126
+                                           timEd v1.30 manual - page 126
 
 
 
@@ -7614,7 +7614,7 @@
 
 
 
-                                           timEd v1.12 manual - page 127
+                                           timEd v1.30 manual - page 127
 
 
 
@@ -7674,7 +7674,7 @@
 
 
 
-                                           timEd v1.12 manual - page 128
+                                           timEd v1.30 manual - page 128
 
 
 
@@ -7734,7 +7734,7 @@
 
 
 
-                                           timEd v1.12 manual - page 129
+                                           timEd v1.30 manual - page 129
 
 
 
@@ -7794,7 +7794,7 @@
     READgoback           -  Go back to area selection screen
 
 
-                                           timEd v1.12 manual - page 130
+                                           timEd v1.30 manual - page 130
 
 
 
@@ -7854,7 +7854,7 @@
 
 
 
-                                           timEd v1.12 manual - page 131
+                                           timEd v1.30 manual - page 131
 
 
 
@@ -7914,7 +7914,7 @@
 
 
 
-                                           timEd v1.12 manual - page 132
+                                           timEd v1.30 manual - page 132
 
 
 
@@ -7974,7 +7974,7 @@
 
 
 
-                                           timEd v1.12 manual - page 133
+                                           timEd v1.30 manual - page 133
 
 
 
@@ -8034,7 +8034,7 @@
     See timEd.prn for more info about the ALT-H function.
 
 
-                                           timEd v1.12 manual - page 134
+                                           timEd v1.30 manual - page 134
 
 
 
@@ -8094,7 +8094,7 @@
 
 
 
-                                           timEd v1.12 manual - page 135
+                                           timEd v1.30 manual - page 135
 
 
 
@@ -8154,7 +8154,7 @@
 
 
 
-                                           timEd v1.12 manual - page 136
+                                           timEd v1.30 manual - page 136
 
 
 
@@ -8198,5 +8198,5 @@
 
 
 
-                                           timEd v1.12 manual - page 137
+                                           timEd v1.30 manual - page 137
 
