@@ -60,7 +60,7 @@ static int nt_kbhit(void)
             fAlt = (irBuffer.Event.KeyEvent.dwControlKeyState & (RIGHT_ALT_PRESSED + LEFT_ALT_PRESSED));
             fCtrl = (irBuffer.Event.KeyEvent.dwControlKeyState & (RIGHT_CTRL_PRESSED + LEFT_CTRL_PRESSED));
 
-#if 0			
+#if 1
 			printf("uc: %d  vk: %d  vs: %d  fShift: %d  fAlt: %d  fCtrl: %d\n", uc, vk, vs, fShift, fAlt, fCtrl);
 #endif
 
