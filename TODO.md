@@ -21,9 +21,6 @@
 - timEd: Fix: Popup windows in NT build erroneously close when a keyboard
   modifier key (eg. Ctrl, Alt, Shift) is pressed (very minor bug!)
 
-- timEd: Fix: Erroneous error messages in OS/2 version when scanning Hudson
-  bases. Presumably a struct alignment issue?
-
 - WIMM: Rebuild
 
 - JAMINFO: Rebuild (requires Borland C++ for DOS & OS/2)
