@@ -33,7 +33,6 @@
 #include <progprot.h>
 
 #include "tstruct.h"
-
 #include "tprotos.h"
 
 #ifdef __DEBUGGING__

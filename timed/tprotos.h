@@ -6,10 +6,6 @@ void     writefa(MIS *mis, MSG *areahandle, AREA *area, int exceptfirst);
 
 int AttemptLock(MSG *areahandle);
 
-void   bmgCompile(char *s, bmgARG *pattern, int ignore_case, int whole);
-char * bmgSearch(char *buffer, int buflen, bmgARG *pattern, char howstrict);
-
-
 void check_cc(AREA *area, MSG *areahandle, MIS *mis, RAWBLOCK **first);
 int  choose_name(void);
 int  choose_address(void);
@@ -25,7 +21,7 @@ void  invalidate_origin(char *msg);
 
 int get_quote_string(char *line, char *quote);
 
-// Nodelist seraching stuff
+// Nodelist searching stuff
 
 ADDRLIST * fido_lookup(char *name);
 ADDRLIST *fido_nodelist_lookup(char *name);
