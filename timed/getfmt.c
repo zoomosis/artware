@@ -780,23 +780,25 @@ void checklines(LINE *first)
          current->prev->status |= TEAR;      /* Set tearline bit          */
          }
 
+#if 1
      /* following the origin, there may be SEEN-BY lines.. */
 
-//     for(current = current->next; current; current = current->next)
-//       {
-//       if( (strncmp(current->ls, "SEEN-BY:", 8)) == 0)
-//           {
-//           current->status &= (NOSPACE|HCR);    /* Clear all bits except TAB */
-//           current->status |= KLUDGE;     /* Set kludge bit            */
-//           }
-//       else if( (current->prev) &&
-//                (current->prev->status & KLUDGE) &&
-//                (!(current->prev->status & HCR)) )
-//                {
-//                current->status &= (NOSPACE|HCR);    /* Clear all bits except TAB */
-//                current->status |= KLUDGE;     /* Set kludge bit            */
-//                }
-//       }
+     for(current = current->next; current; current = current->next)
+       {
+       if( (strncmp(current->ls, "SEEN-BY:", 8)) == 0)
+           {
+           current->status &= (NOSPACE|HCR);    /* Clear all bits except TAB */
+           current->status |= KLUDGE;     /* Set kludge bit            */
+           }
+       else if( (current->prev) &&
+                (current->prev->status & KLUDGE) &&
+                (!(current->prev->status & HCR)) )
+                {
+                current->status &= (NOSPACE|HCR);    /* Clear all bits except TAB */
+                current->status |= KLUDGE;     /* Set kludge bit            */
+                }
+       }
+#endif
      }
    else if(lasttear)
      {
