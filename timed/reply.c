@@ -529,20 +529,22 @@ void MakeQuote(MMSG *curmsg, AREA *area, word replytype, MIS *newmis, char *addt
 
    while(curline)
      {
-     if(curline->status & (ORIGIN|TEAR))   // Invalidate first...
+     if(curline->status & (ORIGIN|TEAR))
        {
-       if(strncmpi(curline->ls, "---", 3) == 0)
-          memset(curline->ls, '_', 3);
-       else if(strncmpi(curline->ls, " * Origin: ", 11) == 0)
-          curline->ls[1] = '-';
+           /* escape the tearline and origin line */
+           if (strncmp(curline->ls, "---", 3) == 0 ||
+             strncmp(curline->ls, " * Origin: ", 11) == 0)
+           {
+               curline->ls[1] = '+';
+           }
        }
 
      if (curline->status & KLUDGE)
         {
         if (cfg.usr.status & SHOWKLUDGES)
            {
-           sprintf(temp, "%s> @%s\r", inits, curline->ls+1);
-           addit(temp, repfile);
+               sprintf(temp, "%s> @%s\r", inits, *curline->ls == 0x01 ? curline->ls + 1 : curline->ls);
+               addit(temp, repfile);
            }
         }
      else if (curline->status & QUOTE)
