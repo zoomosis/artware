@@ -1023,7 +1023,7 @@ void PaintHeaderFrame(void)
   printn(11, 64, cfg.col[Cfindtext], "[ ] Sign", 8);
   printn(12, 64, cfg.col[Cfindtext], "[ ] Spellcheck", 14);
 
-  printn(maxy-4, 0, cfg.col[Cfindpassive],"ฦอออออออออออออออออออออออออออออออออออออฯอออออออออออออออออออออออฯออออออออออออออออต", 80);
+  printn(maxy-4, 0, cfg.col[Cfindpassive],"รฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤมฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด", 80);
   biprint(maxy-3, 2, cfg.col[Cfindtext], cfg.col[Cfindaccent], "~ALT-A~: Attach files                   ~ALT-R~: Request files    ~ALT-S~: Special", '~');
 
 }
