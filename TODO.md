@@ -26,5 +26,9 @@
 
 - Check for Y2038 bugs.
 
-- timEd: Adjust the size of the arealist window so it uses the width of
-  the entire screen (currently fixed to 80 columns).
+- timEd: Cosmetic fix: Adjust the size of the arealist window so it uses the
+  width of the entire screen (currently fixed to 80 columns). (requested by Dallas
+  Hinton)
+
+- timEd: Cosmetic fix: Make the use of initials in quoted messages
+  configurable. (requested by Dallas Hinton)
