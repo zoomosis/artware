@@ -32,3 +32,9 @@
 
 - timEd: Cosmetic fix: Make the use of initials in quoted messages
   configurable. (requested by Dallas Hinton)
+  (see UNIX port where this was inadvertantly made the default in 2008, but
+  later reverted)
+
+- timEd: Test whether Ctrl+Left & Ctrl+Right works in Windows version.
+
+- timEd: Convert the documentation to Markdown format.
