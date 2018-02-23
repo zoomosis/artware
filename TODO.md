@@ -38,6 +38,11 @@
 - timEd: Cosmetic fix: Use ISO dates in the user interface. Alternatively,
   allow the user to specify the date format in strftime() form in TIMED.CFG.
 
-- timEd: Test whether Ctrl+Left & Ctrl+Right works in Windows version.
+- timEd: Test whether Ctrl+Left & Ctrl+Right works in Windows version,
+  especially Windows 10. Also Dallas Hinton reports that F1 key doesn't work
+  in Windows 10.
+
+- timEd: Document how to use timEd in Windows 10, using Legacy Mode in the
+  shortcut properties.
 
 - timEd: Convert the documentation to Markdown format.
