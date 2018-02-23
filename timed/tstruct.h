@@ -457,28 +457,6 @@ typedef struct _addrlist
 }  ADDRLIST;
 
 
-/*
- *  bmg.h ->    Boyer-Moore-Gosper search definitions
- *
- *  see bmg.c for documentation
- */
-
-
-#define bmgMAXPAT   22      /*  max pattern length  */
-typedef struct
-    {
-    char    delta[256];         /*  ASCII only deltas      */
-    char    pat[bmgMAXPAT + 1]; /*  the pattern            */
-    char    ignore;             /*  ignore case flag       */
-    char    wholeword;          /*  match whole words only */
-    }
-    bmgARG;
-
-// defines for 'howstrict' above..
-
-#define ALWAYS    0x00
-#define NOTFIRST  0x01
-#define NOTLAST   0x02
 
 /*
 ** DOW.H - day-of-week macro.  From the FidoNet CECHO - by
