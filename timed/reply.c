@@ -1202,16 +1202,20 @@ char *expand(char *line, MIS *mis, MIS *newmis)
            lineptr += 4;
            tempptr += strlen(tempaddress);
            }
-
-		else if (strncmpi(lineptr, "mmon", 4) == 0)
-		{  
-			/* %mmon */
-
-			sprintf(tempaddress, "%2.2i", t->tm_mon + 1);
-			memcpy(tempptr, tempaddress, strlen(tempaddress));
-			lineptr += 4;
-			tempptr += strlen(tempaddress);
-		}
+        else if (strncmpi(lineptr, "syear", 5) == 0)  /* %syear */
+        {
+           sprintf(tempaddress, "%2.2i", (t->tm_year + 1900) % 100);
+           memcpy(tempptr, tempaddress, strlen(tempaddress));
+           lineptr += 5;
+           tempptr += strlen(tempaddress);
+        }
+	else if (strncmpi(lineptr, "mmon", 4) == 0)  /* %mmon */
+	{  
+	    sprintf(tempaddress, "%2.2i", t->tm_mon + 1);
+	    memcpy(tempptr, tempaddress, strlen(tempaddress));
+	    lineptr += 4;
+	    tempptr += strlen(tempaddress);
+	}
         else if(strncmpi(lineptr, "mon", 3)==0)    /* %mon */
            {
            sprintf(tempaddress, "%s", months_ab[t->tm_mon]);
