@@ -118,6 +118,14 @@ static int nt_kbhit(void)
 					{
 						iKey = 372;  /* Ctrl+Right */
 					}
+					else if (vk == 38 && vs == 72)
+					{
+						iKey = 397;  /* Ctrl+Up */
+					}
+					else if (vk == 40 && vs == 80)
+					{
+						iKey = 401;  /* Ctrl+Down */
+					}
 					else
 					{
 						iKey = uc;
