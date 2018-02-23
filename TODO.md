@@ -35,6 +35,9 @@
   (see UNIX port where this was inadvertantly made the default in 2008, but
   later reverted)
 
+- timEd: Cosmetic fix: Use ISO dates in the user interface. Alternatively,
+  allow the user to specify the date format in strftime() form in TIMED.CFG.
+
 - timEd: Test whether Ctrl+Left & Ctrl+Right works in Windows version.
 
 - timEd: Convert the documentation to Markdown format.
