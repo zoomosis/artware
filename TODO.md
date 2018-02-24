@@ -12,8 +12,6 @@
 - timEd: Test Hudson code. Probably need to use old Y2K-patched timEd to
   verify data integrity. (Can do this on SDM, Squish & JAM, too.)
 
-- timEd: Fix: Text cursor won't turn off in Windows NT version
-
 - timEd: Fix: Popup windows in NT build erroneously close when a keyboard
   modifier key (eg. Ctrl, Alt, Shift) is pressed (very minor bug!)
 
