@@ -1,7 +1,5 @@
 - Update README.md with latest news and build instructions
 
-- timEd: Add more %vars to reply.c (%mmon already added)
-
 - timEd: add DEBUG option to makefiles
 
 - timEd: See SVN log of UNIX for other previously-added features and merge
