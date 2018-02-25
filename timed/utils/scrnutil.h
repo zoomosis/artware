@@ -32,7 +32,7 @@ typedef struct
 
 #pragma pack(__pop)
 
-BOX *initbox(int y1, int x1, int y2, int x2, int border, int inside, int bstyle, YesNo save, char fill);
+BOX *initbox(int x1, int y1, int x2, int y2, int border, int inside, int bstyle, YesNo save, char fill);
 void drawbox(BOX *data);
 void delbox(BOX *data);
 void error(char message[80]);
