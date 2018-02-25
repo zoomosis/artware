@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
 
    while(1)
       {
-      if( (readret == NEXTAREA) || (readret == PREVAREA) ) /* goto next area with mail */
+      if( readret == NEXTAREA || readret == PREVAREA ) /* goto next area with mail */
          {
          thisarea = nextnewmail(thisarea, readret);
          if(thisarea == NULL) thisarea=SelectArea(cfg.first, 0, lastarea);
@@ -178,7 +178,20 @@ int main(int argc, char *argv[])
       if(thisarea==NULL)                  /* Selectarea ALT-X */
          break;
 
-      if((readret=ReadArea(thisarea)) == EXIT)  /* ALT-X pressed */
+	  readret=ReadArea(thisarea);
+
+      if( readret == NEXTAREA ) /* goto next area with mail */
+      {
+		 AREA *oldarea = thisarea;
+         thisarea = nextnewmail(thisarea, readret);
+		 if (thisarea == NULL)
+		 {
+			 /* there are no more areas with new mail */
+			 thisarea = oldarea;
+		 }
+      }
+
+	 if(readret == EXIT)  /* ALT-X pressed */
          break;
 
       lastarea = thisarea;

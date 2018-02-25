@@ -115,11 +115,36 @@ int ReadArea(AREA *area)
 
    while(area->nomsgs == 0)        /* Empty area! */
 		{
-      clsw(cfg.col[Cmsgtext]);
-		print(12, 20, cfg.col[Cmsgtext], "No Messages!");
-      print(14, 20, cfg.col[Cmsgtext], "Press ALT-E, E or <INS> to enter a message.");
+			int key;
+            BOX *box;
 
-      switch(get_idle_key(1, READERSCOPE))
+      clsw(cfg.col[Cmsgtext]);
+      box = initbox(11, 12, 21, 68, cfg.col[Cpopframe], cfg.col[Cpoptext], SINGLE, YES, ' ');
+      drawbox(box);
+      boxwrite(box,0,1,"               No messages in this area!");
+      boxwrite(box,2,1,"ALT-E, E or <INS>       : enter a new message");
+      boxwrite(box,3,1,"<right>, <enter> or '+' : next area with new mail");
+      boxwrite(box,4,1,"I                       : show info");
+      boxwrite(box,5,1,"U                       : run external command");
+      boxwrite(box,6,1,"CTRL-A                  : change address");
+      boxwrite(box,7,1,"CTRL-N                  : change name");
+      boxwrite(box,8,1,"<ESC>                   : exit area");
+
+      kbflush();
+
+	  key = get_idle_key(1, READERSCOPE);
+
+      delbox(box);
+
+#if 0
+	  {
+		  char msg[255];
+		  sprintf(msg, "%d", key);
+		  Message(msg, -1, 0, YES);
+	  }
+#endif
+
+      switch(key)
          {
          case cREADenter:
             MakeMessage(NULL, area, areahandle, 0, 0, NULL);
@@ -186,6 +211,11 @@ int ReadArea(AREA *area)
             curno = anchor(UP, areahandle);
             break;
 
+         case cREADnext:                       /* Right arrow */
+		 case cREADnextmsgorpage:              /* Enter */
+		 case cREADnextareanewmail:            /* '+' */
+            MsgCloseArea(areahandle);
+		    return NEXTAREA;
 
          default:
             break;
