@@ -253,7 +253,7 @@ typedef struct CONFIGURATION
  char AreaFixLog[_MAXPATH];
  char TempInBound[_MAXPATH];
  char resv2[832];
- ulong offset;                        /* This is the offset from the current
+ dword offset;                        /* This is the offset from the current
                 file-pointer to the 1st Node        */
 } CONFIG;
 
