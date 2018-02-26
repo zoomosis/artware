@@ -1,4 +1,4 @@
-# MSGAPI makefile for 16-bit DOS build using Watcom
+# MSGAPI makefile for 16-bit DOS build using OpenWatcom
 
 TARGET=..\dosapi.lib
 

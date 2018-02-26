@@ -1,4 +1,4 @@
-# MSGAPI makefile for 32-bit DOS build using Watcom & Borland TASM 
+# MSGAPI makefile for 32-bit DOS build using OpenWatcom & Borland TASM
 
 TARGET=..\386api.lib
 
