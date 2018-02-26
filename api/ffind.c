@@ -40,66 +40,64 @@
 
 #include "ffind.h"
 
-static void near CopyDTA2FF(FFIND *ff)
+static void near CopyDTA2FF(FFIND * ff)
 {
-  ff->usAttr=(word)ff->__dta.bAttr;
+    ff->usAttr = (word) ff->__dta.bAttr;
 
-  ff->scCdate.dos_st.time=ff->__dta.usTime;
-  ff->scCdate.dos_st.date=ff->__dta.usDate;
+    ff->scCdate.dos_st.time = ff->__dta.usTime;
+    ff->scCdate.dos_st.date = ff->__dta.usDate;
 
-  /* Copy dates into other structure too */
+    /* Copy dates into other structure too */
 
-  ff->scAdate=ff->scWdate=ff->scCdate;
-  ff->ulSize=ff->__dta.ulSize;
+    ff->scAdate = ff->scWdate = ff->scCdate;
+    ff->ulSize = ff->__dta.ulSize;
 
-  memset(ff->szName, '\0', sizeof(ff->szName));
-  memmove(ff->szName, ff->__dta.achName, sizeof(ff->szName));
-  strupr(ff->szName);
+    memset(ff->szName, '\0', sizeof(ff->szName));
+    memmove(ff->szName, ff->__dta.achName, sizeof(ff->szName));
+    strupr(ff->szName);
 }
 
-FFIND * _fast FindOpen(char *filespec, unsigned short attribute)
+FFIND *_fast FindOpen(char *filespec, unsigned short attribute)
 {
-  FFIND *ff;
+    FFIND *ff;
 
-  ff=malloc(sizeof(FFIND));
+    ff = malloc(sizeof(FFIND));
 
-  if (ff)
-  {
-    if (__dfindfirst(filespec, attribute, &ff->__dta)==0)
-      CopyDTA2FF(ff);
-    else
+    if (ff)
     {
-      free(ff);
-      ff=NULL;
+        if (__dfindfirst(filespec, attribute, &ff->__dta) == 0)
+            CopyDTA2FF(ff);
+        else
+        {
+            free(ff);
+            ff = NULL;
+        }
     }
-  }
 
-  return ff;
+    return ff;
 }
 
 
-int _fast FindNext(FFIND *ff)
+int _fast FindNext(FFIND * ff)
 {
-  int rc=-1;
+    int rc = -1;
 
-  if (ff)
-  {
-    if ((rc=__dfindnext(&ff->__dta))==0)
-      CopyDTA2FF(ff);
-  }
+    if (ff)
+    {
+        if ((rc = __dfindnext(&ff->__dta)) == 0)
+            CopyDTA2FF(ff);
+    }
 
-  return rc;
+    return rc;
 }
 
-void _fast FindClose(FFIND *ff)
+void _fast FindClose(FFIND * ff)
 {
-  if (ff)
-    free(ff);
+    if (ff)
+        free(ff);
 }
 
-FFIND * _fast FindInfo(char *filespec)
+FFIND *_fast FindInfo(char *filespec)
 {
-  return FindOpen(filespec, 0);
+    return FindOpen(filespec, 0);
 }
-
-

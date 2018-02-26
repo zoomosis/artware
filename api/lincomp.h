@@ -21,7 +21,8 @@ int sopen(const char *filename, int access, int share, int permission);
 #define chsize(a, b) 	 ftruncate(a, b)
 #define _fsopen(a, b, c) fopen(a, b)
 
-void fnsplit(const char *path, char *drive, char *dir, char *name, char *ext);
+void fnsplit(const char *path, char *drive, char *dir, char *name,
+             char *ext);
 
 #define _splitpath(a, b, c, d, e)	fnsplit(a, b, c, d, e)
 
@@ -32,11 +33,10 @@ void fnsplit(const char *path, char *drive, char *dir, char *name, char *ext);
 #define MAXPATH 255
 #define _MAX_PATH 255
 
-struct tm * _localtime(const time_t *timer, struct tm *tmbuf);
-void 	    _fullpath(char *out, char *in, int maxlen);
+struct tm *_localtime(const time_t * timer, struct tm *tmbuf);
+void _fullpath(char *out, char *in, int maxlen);
 
-char * strupr(char *s);
-char * strlwr(char *s);
+char *strupr(char *s);
+char *strlwr(char *s);
 
 #endif
-

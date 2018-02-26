@@ -9,105 +9,105 @@
 
 #ifdef __GNUC__
 
-  #define strnicmp(a, b, c) strncasecmp(a, b, c)
-  #define strncmpi(a, b, c) strncasecmp(a, b, c)
-  #define stricmp(a, b)  strcasecmp(a, b)
-  #define strcmpi(a, b)  strcasecmp(a, b)
+#define strnicmp(a, b, c) strncasecmp(a, b, c)
+#define strncmpi(a, b, c) strncasecmp(a, b, c)
+#define stricmp(a, b)  strcasecmp(a, b)
+#define strcmpi(a, b)  strcasecmp(a, b)
 
-  #include "lincomp.h"
+#include "lincomp.h"
 
 #endif
 
 
 #ifdef __FARDATA__
-  #include "alc.h"
+#include "alc.h"
 
-  #ifdef __TURBOC__
-    #define coreleft()    farcoreleft()
-  #endif
+#ifdef __TURBOC__
+#define coreleft()    farcoreleft()
+#endif
 #else
-  unsigned cdecl coreleft(void);
-  unsigned long cdecl farcoreleft(void);
+unsigned cdecl coreleft(void);
+unsigned long cdecl farcoreleft(void);
 #endif
 
 
 #if defined(__WATCOMC__) || defined(__MSC__)
 
-  #ifndef ZREE
+#ifndef ZREE
 
-    #ifdef _MSC_VER
-      #if _MSC_VER >= 600
-        #define farcalloc(a,b) _fcalloc(a,b)
-      #endif /* _MSC_VER >= 600 */
-    #endif /* _MSC_VER */
-  #endif /* ZREE */
+#ifdef _MSC_VER
+#if _MSC_VER >= 600
+#define farcalloc(a,b) _fcalloc(a,b)
+#endif                          /* _MSC_VER >= 600 */
+#endif                          /* _MSC_VER */
+#endif                          /* ZREE */
 
-  #define da_year year
-  #define da_day day
-  #define da_mon month
+#define da_year year
+#define da_day day
+#define da_mon month
 
-  #define ti_min minute
-  #define ti_hour hour
-  #define ti_hund hsecond
-  #define ti_sec second
+#define ti_min minute
+#define ti_hour hour
+#define ti_hund hsecond
+#define ti_sec second
 
-  #define getdate _dos_getdate
-  #define gettime _dos_gettime
+#define getdate _dos_getdate
+#define gettime _dos_gettime
 
-  #define NO_STRFTIME
+#define NO_STRFTIME
 
 /*  #ifndef __WATCOMC__*/
-  #define NO_MKTIME
+#define NO_MKTIME
 /*  #endif*/
 
 #elif defined(__TURBOC__)
 
-  #define dosdate_t date
-  #define dostime_t time
+#define dosdate_t date
+#define dostime_t time
 
-  #if (__TURBOC__==0x0295)    /* TC++ includes a strftime() function */
-    #define NO_STRFTIME
-    #define NO_MKTIME
-  #endif
+#if (__TURBOC__==0x0295)        /* TC++ includes a strftime() function */
+#define NO_STRFTIME
+#define NO_MKTIME
+#endif
 
 #endif
 
 #if defined(ZREE) || defined(__FLAT__)
-    #undef farcalloc
-    #undef farmalloc
-    #undef farrealloc
-    #undef farfree
-    #undef _fmalloc
+#undef farcalloc
+#undef farmalloc
+#undef farrealloc
+#undef farfree
+#undef _fmalloc
 
-    #define farcalloc  calloc
-    #define farmalloc  malloc
-    #define farrealloc realloc
-    #define farfree    free
-    #define _fmalloc   malloc
+#define farcalloc  calloc
+#define farmalloc  malloc
+#define farrealloc realloc
+#define farfree    free
+#define _fmalloc   malloc
 #endif
 
 #ifndef __TURBOC__
 
   /* For ERRNO definitions */
-  #define ENOTSAM EXDEV
+#define ENOTSAM EXDEV
 
 //  int _stdc fnsplit(const char *path,char *drive,char *dir,char *name,char *ext);
-  int _stdc getcurdir(int drive, char *directory);
+int _stdc getcurdir(int drive, char *directory);
 
-  int fossil_wherex(void);
-  int fossil_wherey(void);
-  void fossil_getxy(char *row, char *col);
+int fossil_wherex(void);
+int fossil_wherey(void);
+void fossil_getxy(char *row, char *col);
 
-  #define textattr(attr)
-  #define getdisk()                  get_disk()
-  #define setdisk(drive)             set_disk(drive)
+#define textattr(attr)
+#define getdisk()                  get_disk()
+#define setdisk(drive)             set_disk(drive)
 
-  #define getvect(int)            _dos_getvect(int)
-  #define setvect(int, func)      _dos_setvect(int, func)
-  #define inportb(port)           inp(port)
-  #define inport(port)            inpw(port)
-  #define outportb(port, byte)    outp(port, byte)
-  #define outport(port, byte)     outpw(port, byte)
+#define getvect(int)            _dos_getvect(int)
+#define setvect(int, func)      _dos_setvect(int, func)
+#define inportb(port)           inp(port)
+#define inport(port)            inpw(port)
+#define outportb(port, byte)    outp(port, byte)
+#define outport(port, byte)     outpw(port, byte)
 
 //  #ifndef MK_FP
 //    #define MK_FP(seg, off)  (void far *)((unsigned long)(seg)<<16L | (off))
@@ -115,23 +115,23 @@
 #endif
 
 #ifdef __MSC__
-  int _fast lock(int fh, long offset, long len);
-  int _fast unlock(int fh, long offset, long len);
-  #undef toupper
-  extern unsigned char _MyUprTab[256];      /* see _ctype.c */
-  #define toupper(c)  ((int)_MyUprTab[(c)])
+int _fast lock(int fh, long offset, long len);
+int _fast unlock(int fh, long offset, long len);
+#undef toupper
+extern unsigned char _MyUprTab[256]; /* see _ctype.c */
+#define toupper(c)  ((int)_MyUprTab[(c)])
 #endif
 
 #ifdef OS_2
-  void _fast vbuf_flush(void);
-  void SnSetPipeName(char *pipename);
-  void SnWrite(char *str);
+void _fast vbuf_flush(void);
+void SnSetPipeName(char *pipename);
+void SnWrite(char *str);
 
-  #define  Start_Shadow()
-  #define  End_Shadow()
+#define  Start_Shadow()
+#define  End_Shadow()
 #else
-  void pascal Start_Shadow(void);
-  void pascal End_Shadow(void);
+void pascal Start_Shadow(void);
+void pascal End_Shadow(void);
 #endif
 
 
@@ -162,13 +162,14 @@ typedef long timer_t;
 // #define LITTLE_ENDIAN            If compiling on a "back-words" (Intel)  
 //                                  Otherwise, #define BIG_ENDIAN          
 
-#define PATH_DELIM       '\\'   /* Default separator for path specification */
-#define _PRIVS_NUM         12   /* Maximum priv levels for Maximus         */
-#define CHAR_BITS           8   /* Number of bits in a `char' variable     */
-#define PATHLEN           120   /* Max. length of a path                   */
-#define MAX_DRIVES         26   /* Maximum number of drives on system;     *
-                                 * for MS-DOS, A through Z.  Used by       *
-                                 * Save_Dir()...                           */
+#define PATH_DELIM       '\\'   /* Default separator for path
+                                   specification */
+#define _PRIVS_NUM         12   /* Maximum priv levels for Maximus */
+#define CHAR_BITS           8   /* Number of bits in a `char' variable */
+#define PATHLEN           120   /* Max. length of a path */
+#define MAX_DRIVES         26   /* Maximum number of drives on system; *
+                                   for MS-DOS, A through Z.  Used by *
+                                   Save_Dir()...  */
 
 #define INTBIT_C        0x0001  /* Carry */
 #define INTBIT_P        0x0004  /* Parity */
@@ -229,8 +230,8 @@ typedef long timer_t;
 
 struct __priv
 {
-  char *name;
-  int priv;
+    char *name;
+    int priv;
 };
 
 
@@ -250,8 +251,8 @@ extern struct __priv _stdc _privs[];
 #ifndef NO_STRFTIME
   /* If compiler doesn't include a strftime(), use our own */
 
-  #include <time.h>
-  #include <sys/types.h>
+#include <time.h>
+#include <sys/types.h>
 
 /*  size_t _stdc strftime(char *,size_t,const char *,const struct tm *); */
 #endif
@@ -260,8 +261,8 @@ extern struct __priv _stdc _privs[];
 #ifndef NO_MKTIME
   /* If compiler doesn't include a mktime(), use our own */
 
-  #include <time.h>
-  #include <sys/types.h>
+#include <time.h>
+#include <sys/types.h>
 
 /*  time_t _stdc mktime(struct tm * tm_ptr); */
 #endif
@@ -269,8 +270,7 @@ extern struct __priv _stdc _privs[];
 /* MS docs use both SH_DENYNONE and SH_DENYNO */
 
 #if !defined(SH_DENYNONE) && defined(SH_DENYNO)
-  #define SH_DENYNONE SH_DENYNO
+#define SH_DENYNONE SH_DENYNO
 #endif
 
-#endif /* __PROG_H_DEFINED */
-
+#endif                          /* __PROG_H_DEFINED */

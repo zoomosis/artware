@@ -35,25 +35,24 @@
 #include "compiler.h"
 
 #if defined(__MSC__) || defined(__WATCOMC__)
-  #include <malloc.h>
+#include <malloc.h>
 
-  #ifdef __FARDATA__
+#ifdef __FARDATA__
 
-  /* for some insane reason the turbo-c coreleft() function changes
-   * it's return value based on the memory model.
-   */
+  /* for some insane reason the turbo-c coreleft() function changes it's
+     return value based on the memory model. */
 
-    unsigned long cdecl coreleft   (void);
-  #else
-    unsigned cdecl coreleft        (void);
-  #endif
+unsigned long cdecl coreleft(void);
+#else
+unsigned cdecl coreleft(void);
+#endif
 
 #elif defined(__TURBOC__)
-  #include <alloc.h>
+#include <alloc.h>
 #elif defined(__GNUC__)
-  #include <malloc.h>
+#include <malloc.h>
 #else
-  #error Which compiler are you using?
+#error Which compiler are you using?
 #endif
 
 #ifdef __TURBOC__
@@ -61,5 +60,4 @@
 //#define hfree(p)    farfree(p)
 #endif
 
-#endif /* __ALC_H_DEFINED */
-
+#endif                          /* __ALC_H_DEFINED */

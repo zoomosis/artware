@@ -153,5 +153,4 @@ size_t cdecl strftime(char *string, size_t maxsize, const char *format, const st
   return(strlen(string));
 }
 */
-#endif /* !NO_STRFTIME */
-
+#endif                          /* !NO_STRFTIME */

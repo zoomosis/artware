@@ -13,10 +13,8 @@
 #else
 
 #ifdef __GNUC__
-	#include <dirent.h>
+#include <dirent.h>
 #else
-	#include <direct.h>
+#include <direct.h>
 #endif
 #endif
-
-

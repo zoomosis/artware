@@ -13,42 +13,43 @@ typedef struct _ffind FFIND;
 
 struct _dosdta
 {
-  char achReserved[21];
-  byte bAttr;
-  word usTime;
-  word usDate;
-  dword ulSize;
-  char achName[13];
+    char achReserved[21];
+    byte bAttr;
+    word usTime;
+    word usDate;
+    dword ulSize;
+    char achName[13];
 };
 
-unsigned far pascal __dfindfirst(char far *name, unsigned attr, struct _dosdta far *dta);
-unsigned far pascal __dfindnext(struct _dosdta far *dta);
+unsigned far pascal __dfindfirst(char far * name, unsigned attr,
+                                 struct _dosdta far * dta);
+unsigned far pascal __dfindnext(struct _dosdta far * dta);
 
 
 struct _ffind
 {
-  word usAttr;
-  SCOMBO scCdate;
-  SCOMBO scAdate;
-  SCOMBO scWdate;
-  dword ulSize;
+    word usAttr;
+    SCOMBO scCdate;
+    SCOMBO scAdate;
+    SCOMBO scWdate;
+    dword ulSize;
 
-  char szName[13];
-  struct _dosdta __dta;
+    char szName[13];
+    struct _dosdta __dta;
 
-  #ifdef __FLAT__ /* OS/2 2.0 or NT */
+#ifdef __FLAT__                 /* OS/2 2.0 or NT */
     unsigned long hdir;
-  #else
-    unsigned short hdir;       /* directory handle from DosFindFirst */
-  #endif
+#else
+    unsigned short hdir;        /* directory handle from DosFindFirst */
+#endif
 
 };
 
-FFIND * _fast FindOpen(char *filespec,unsigned short attribute);
-FFIND * _fast FindInfo(char *filespec); /*PLF Thu  10-17-1991  18:03:09 */
-int _fast FindNext(FFIND *ff);
+FFIND *_fast FindOpen(char *filespec, unsigned short attribute);
+FFIND *_fast FindInfo(char *filespec); /* PLF Thu 10-17-1991 18:03:09 */
+int _fast FindNext(FFIND * ff);
 
-void _fast FindClose(FFIND *ff);
+void _fast FindClose(FFIND * ff);
 
 #define ATTR_READONLY  0x01
 #define ATTR_HIDDEN    0x02
@@ -68,5 +69,4 @@ void _fast FindClose(FFIND *ff);
 #define MSDOS_RSVD1     ATTR_RSVD1
 #define MSDOS_RSVD2     ATTR_RSVD2
 
-#endif /* __FFIND_H_DEFINED */
-
+#endif                          /* __FFIND_H_DEFINED */

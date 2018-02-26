@@ -7,54 +7,57 @@
 #include "msgapi.h"
 
 
-void   PrintStringList(STRINGLIST *l);
-char * StringTime(dword t);
-char * AscAddress(NETADDR *addr);
-void   rton(char *s);
-char * attr_to_txt(dword attr1, dword attr2);
+void PrintStringList(STRINGLIST * l);
+char *StringTime(dword t);
+char *AscAddress(NETADDR * addr);
+void rton(char *s);
+char *attr_to_txt(dword attr1, dword attr2);
 
 
 
 void main(void)
 {
-   MSG *ahandle;
-   MSGH *msghandle;
-   MIS mis;
-   int i;
-   struct _minf   minf;
-   dword current, high;
-   dword bodylen, ctrllen;
-   static char body[1024], ctrl[512];
+    MSG *ahandle;
+    MSGH *msghandle;
+    MIS mis;
+    int i;
+    struct _minf minf;
+    dword current, high;
+    dword bodylen, ctrllen;
+    static char body[1024], ctrl[512];
 
-   minf.def_zone    = 0;
-   minf.req_version = 0;
+    minf.def_zone = 0;
+    minf.req_version = 0;
 
-   MsgOpenApi(&minf, "", 1, "/tmp/");
+    MsgOpenApi(&minf, "", 1, "/tmp/");
 
-   memset(&mis, '\0', sizeof(MIS));
+    memset(&mis, '\0', sizeof(MIS));
 
-   strcpy(mis.from, "Gerard van Essen");
-   strcpy(mis.to, "Geaddresseerde");
-   strcpy(mis.subj, "1111111111222222222233333333334444444444555555555566666666667777777777**");
+    strcpy(mis.from, "Gerard van Essen");
+    strcpy(mis.to, "Geaddresseerde");
+    strcpy(mis.subj,
+           "1111111111222222222233333333334444444444555555555566666666667777777777**");
 
-   mis.origfido.zone  = 2;
-   mis.origfido.net   = 281;
-   mis.origfido.node  = 527;
-   mis.origfido.point = 0;
+    mis.origfido.zone = 2;
+    mis.origfido.net = 281;
+    mis.origfido.node = 527;
+    mis.origfido.point = 0;
 
-   strcpy(mis.origdomain, "fidonet");
+    strcpy(mis.origdomain, "fidonet");
 
-   mis.destfido.zone  = 2;
-   mis.destfido.net   = 500;
-   mis.destfido.node  = 26;
-   mis.destfido.point = 0;
+    mis.destfido.zone = 2;
+    mis.destfido.net = 500;
+    mis.destfido.node = 26;
+    mis.destfido.point = 0;
 
-   mis.msgwritten = JAMsysTime(NULL);
+    mis.msgwritten = JAMsysTime(NULL);
 
-   mis.attr1 = aLOCAL | aPRIVATE | aKILL | aIMM;
-   mis.attr2 = 0L;
+    mis.attr1 = aLOCAL | aPRIVATE | aKILL | aIMM;
+    mis.attr2 = 0L;
 
-   mis.via = AddToStringList(mis.via, "2:281/527 @1234566 NetMgr 2.00+", NULL, 0);
+    mis.via =
+        AddToStringList(mis.via, "2:281/527 @1234566 NetMgr 2.00+", NULL,
+                        0);
 //   mis.seenby = AddToStringList(mis.seenby, "2:281/527", NULL, 0);
 //   mis.path = AddToStringList(mis.path, "2:281/500 2:281/1", NULL, 0);
 
@@ -89,49 +92,46 @@ void main(void)
 //   mis.attached = AddToStringList(mis.attached, "c:\\tcpip\\etc\\rnspool\\artware\\0000014.MSG", NULL, 0);
 //   mis.attached = AddToStringList(mis.attached, "c:\\tcpip\\etc\\rnspool\\artware\\0000015.MSG", NULL, 0);
 
-   strcpy(body, "Hallo!\rDit is de body!\r\rKijk: {|}\r\rGerard\r");
-   for(i=0; i<70; i++)
-     strcat(body, "123456789\r");
-   strcpy(ctrl, "\01MSGID: 2:281/527 00112233");
+    strcpy(body, "Hallo!\rDit is de body!\r\rKijk: {|}\r\rGerard\r");
+    for (i = 0; i < 70; i++)
+        strcat(body, "123456789\r");
+    strcpy(ctrl, "\01MSGID: 2:281/527 00112233");
 
-   if( (ahandle=MsgOpenArea("/tmp/",
-                            MSGAREA_CRIFNEC,
-                            MSGTYPE_SDM | MSGTYPE_NET)) == NULL )
-      {
-      printf("\nError opening area\n");
-      exit(254);
-      }
+    if ((ahandle = MsgOpenArea("/tmp/",
+                               MSGAREA_CRIFNEC,
+                               MSGTYPE_SDM | MSGTYPE_NET)) == NULL)
+    {
+        printf("\nError opening area\n");
+        exit(254);
+    }
 
-   MsgLock(ahandle);
+    MsgLock(ahandle);
 
-   if( (msghandle=MsgOpenMsg(ahandle, MOPEN_CREATE, 0L)) == NULL)
-     {
-     printf("Error opening message!\n");
-     exit(254);
-     }
+    if ((msghandle = MsgOpenMsg(ahandle, MOPEN_CREATE, 0L)) == NULL)
+    {
+        printf("Error opening message!\n");
+        exit(254);
+    }
 
-   if(MsgWriteMsg(msghandle,
-                  0,
-                  &mis,
-                  body,
-                  strlen(body),
-                  strlen(body),
-                  strlen(ctrl)+1,
-                  ctrl) == -1)
-     {
-     printf("Error writing message!\n");
-     exit(254);
-     }
+    if (MsgWriteMsg(msghandle,
+                    0,
+                    &mis,
+                    body,
+                    strlen(body),
+                    strlen(body), strlen(ctrl) + 1, ctrl) == -1)
+    {
+        printf("Error writing message!\n");
+        exit(254);
+    }
 
-   if(MsgCloseMsg(msghandle) == -1)
-      {
-      printf("\nError closing message!\n");
-      exit(254);
-      }
+    if (MsgCloseMsg(msghandle) == -1)
+    {
+        printf("\nError closing message!\n");
+        exit(254);
+    }
 
-   MsgCloseArea(ahandle);
+    MsgCloseArea(ahandle);
 
-   MsgCloseApi();
+    MsgCloseApi();
 
 }
-

@@ -12,38 +12,38 @@
 
 long filelength(int handle)
 {
-  struct stat mystat;
-  
-  fstat(handle, &mystat);
-  
-  return (long) mystat.st_size;
-  
+    struct stat mystat;
+
+    fstat(handle, &mystat);
+
+    return (long)mystat.st_size;
+
 }
 
 // Convert a string to all lower case. Return (original) string.
 
-char * strlwr(char *s)
+char *strlwr(char *s)
 {
-  char *s1;
-  
-  for(s1=s; s1 && *s1; s1++)
-     *s1 = tolower(*s1);
-     
-  return s;
+    char *s1;
+
+    for (s1 = s; s1 && *s1; s1++)
+        *s1 = tolower(*s1);
+
+    return s;
 
 }
 
 
 // Convert a string to upper case
 
-char * strupr(char *s)
+char *strupr(char *s)
 {
-  char *s1;
-  
-  for(s1=s; s1 && *s1; s1++)
-     *s1 = toupper(*s1);
-     
-  return s;
+    char *s1;
+
+    for (s1 = s; s1 && *s1; s1++)
+        *s1 = toupper(*s1);
+
+    return s;
 
 }
 
@@ -54,14 +54,14 @@ char * strupr(char *s)
 
 int lock(int handle, unsigned long offset, unsigned long nbytes)
 {
-  return(flock(handle, LOCK_EX | LOCK_NB));
+    return (flock(handle, LOCK_EX | LOCK_NB));
 }
 
 // Unlock a file.
 
 int unlock(int handle, unsigned long offset, unsigned long nbytes)
 {
-  return(flock(handle, LOCK_UN | LOCK_NB));
+    return (flock(handle, LOCK_UN | LOCK_NB));
 }
 
 // Open a file with sharing support. Don't know what to do with
@@ -69,68 +69,80 @@ int unlock(int handle, unsigned long offset, unsigned long nbytes)
 
 int sopen(const char *filename, int access, int share, int permission)
 {
-  return(open(filename, access, permission));
+    return (open(filename, access, permission));
 }
 
 // Split a path into dir, name, ext. Ignore 'drive' here, by
 // making it '\0' always.
 
-void fnsplit(const char *path, char *drive, char *dir, char *name, char *ext)
+void fnsplit(const char *path, char *drive, char *dir, char *name,
+             char *ext)
 {
-  char temp[512];
-  char *charptr;
+    char temp[512];
+    char *charptr;
 
-  if(drive) *drive = '\0';
-  if(dir)   *dir   = '\0';
-  if(name)  *name  = '\0';
-  if(ext)   *ext   = '\0';  
-  
-  if(!path) return;
+    if (drive)
+        *drive = '\0';
+    if (dir)
+        *dir = '\0';
+    if (name)
+        *name = '\0';
+    if (ext)
+        *ext = '\0';
 
-  strncpy(temp, path, 511);
-  temp[511] = '\0';
-  
-  // First we look for an etension  
-  charptr = strrchr(temp, '.');  
-  if(ext) strncpy(ext, charptr, MAXEXT);
-  if(charptr) *charptr = '\0';
-  
-  // Then we look for the filename
-  charptr = strrchr(temp, '/');  
-  // If we found a slash, copy the part after the last slash..
-  if(name && charptr) strncpy(name, charptr, MAXFILE);
-  // If we didn't, we just got a filename, no path! Copy and return.
-  if(!charptr) 
+    if (!path)
+        return;
+
+    strncpy(temp, path, 511);
+    temp[511] = '\0';
+
+    // First we look for an etension 
+    charptr = strrchr(temp, '.');
+    if (ext)
+        strncpy(ext, charptr, MAXEXT);
+    if (charptr)
+        *charptr = '\0';
+
+    // Then we look for the filename
+    charptr = strrchr(temp, '/');
+    // If we found a slash, copy the part after the last slash..
+    if (name && charptr)
+        strncpy(name, charptr, MAXFILE);
+    // If we didn't, we just got a filename, no path! Copy and return.
+    if (!charptr)
     {
-    if(name) strncpy(name, temp, MAXFILE);
-    return;
+        if (name)
+            strncpy(name, temp, MAXFILE);
+        return;
     }
-  
-  if(charptr) *charptr = '\0';
 
-  // Then what's left must be the the dir..
-  
-  if(dir) strcpy(dir, temp);  
-  
+    if (charptr)
+        *charptr = '\0';
+
+    // Then what's left must be the the dir..
+
+    if (dir)
+        strcpy(dir, temp);
+
 }
 
 // A localtime() lookalike, for compatibility with Watcom
 
-struct tm * _localtime(const time_t *timer, struct tm *tmbuf)
+struct tm *_localtime(const time_t * timer, struct tm *tmbuf)
 {
-  struct tm *mytm;	
-  
-  mytm = localtime(timer);
-  
-  memcpy(tmbuf, mytm, sizeof(struct tm));
-  
-  return mytm;
-  
+    struct tm *mytm;
+
+    mytm = localtime(timer);
+
+    memcpy(tmbuf, mytm, sizeof(struct tm));
+
+    return mytm;
+
 }
 
 // Fake the _fullpath function..
 
 void _fullpath(char *out, char *in, int maxlen)
 {
-   strncpy(out, in, maxlen-1);
+    strncpy(out, in, maxlen - 1);
 }

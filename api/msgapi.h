@@ -6,8 +6,8 @@
 #include "typedefs.h"
 
 #ifdef __OS2__
-  #define INCL_BASE
-  #include <os2.h>
+#define INCL_BASE
+#include <os2.h>
 #else
 #endif
 
@@ -54,15 +54,18 @@ typedef struct _netaddr NETADDR;
 
 struct _minf
 {
-  word req_version;
-  word def_zone;
-  word haveshare;       /* filled in by msgapi routines - no need to set this */
+    word req_version;
+    word def_zone;
+    word haveshare;             /* filled in by msgapi routines - no need
+                                   to set this */
 
-  /* GvE: */
+    /* GvE: */
 
-  word useflags;        /* 1 = use ^AFLAGS kludges                            */
-  word nospace;         /* 1 = NOT use space between filename & pw for freq   */
-  char hudsonpath[120]; /* Path to Hudson base files, no trailing backslash   */
+    word useflags;              /* 1 = use ^AFLAGS kludges */
+    word nospace;               /* 1 = NOT use space between filename & pw 
+                                   for freq */
+    char hudsonpath[120];       /* Path to Hudson base files, no trailing
+                                   backslash */
 };
 
 #pragma pack(__pop)
@@ -78,10 +81,10 @@ struct _minf
 
 struct _netaddr
 {
-  word zone;
-  word net;
-  word node;
-  word point;
+    word zone;
+    word net;
+    word node;
+    word point;
 };
 
 #pragma pack(__pop)
@@ -94,9 +97,9 @@ struct _netaddr
 typedef struct _stringlist
 {
 
-   char               *s;
-   char               *pw;
-   struct _stringlist *next;
+    char *s;
+    char *pw;
+    struct _stringlist *next;
 
 } STRINGLIST;
 
@@ -105,102 +108,102 @@ typedef struct _stringlist
 
   /* Bitmasks for 'attr1' */
 
-  #define aPRIVATE 0x00000001L
-  #define aCRASH   0x00000002L
-  #define aREAD    0x00000004L
-  #define aSENT    0x00000008L
-  #define aFILE    0x00000010L
-  #define aFWD     0x00000020L
-  #define aORPHAN  0x00000040L
-  #define aKILL    0x00000080L
-  #define aLOCAL   0x00000100L
-  #define aHOLD    0x00000200L
-  #define aXX2     0x00000400L
-  #define aFRQ     0x00000800L
-  #define aRRQ     0x00001000L
-  #define aCPT     0x00002000L
-  #define aARQ     0x00004000L
-  #define aURQ     0x00008000L
-  #define aSCANNED 0x00010000L
-  #define aUID     0x00020000L
-  #define aDIR     0x00040000L
-  #define aAS      0x00080000L
-  #define aIMM     0x00100000L
-  #define aKFS     0x00200000L
-  #define aTFS     0x00400000L
-  #define aCFM     0x00800000L
-  #define aLOK     0x01000000L
-  #define aZGT     0x02000000L   // ZoneGated (JAM)
-  #define aENC     0x04000000L   // Encrypted (JAM)
-  #define aCOM     0x08000000L   // Compressed (JAM)
-  #define aESC     0x10000000L   // Escaped (JAM)
-  #define aFPU     0x20000000L   // Force pickup (JAM)
-  #define aNODISP  0x40000000L   // Don't display to user (JAM)
-  #define aDEL     0x80000000L   // Deleted
+#define aPRIVATE 0x00000001L
+#define aCRASH   0x00000002L
+#define aREAD    0x00000004L
+#define aSENT    0x00000008L
+#define aFILE    0x00000010L
+#define aFWD     0x00000020L
+#define aORPHAN  0x00000040L
+#define aKILL    0x00000080L
+#define aLOCAL   0x00000100L
+#define aHOLD    0x00000200L
+#define aXX2     0x00000400L
+#define aFRQ     0x00000800L
+#define aRRQ     0x00001000L
+#define aCPT     0x00002000L
+#define aARQ     0x00004000L
+#define aURQ     0x00008000L
+#define aSCANNED 0x00010000L
+#define aUID     0x00020000L
+#define aDIR     0x00040000L
+#define aAS      0x00080000L
+#define aIMM     0x00100000L
+#define aKFS     0x00200000L
+#define aTFS     0x00400000L
+#define aCFM     0x00800000L
+#define aLOK     0x01000000L
+#define aZGT     0x02000000L    // ZoneGated (JAM)
+#define aENC     0x04000000L    // Encrypted (JAM)
+#define aCOM     0x08000000L    // Compressed (JAM)
+#define aESC     0x10000000L    // Escaped (JAM)
+#define aFPU     0x20000000L    // Force pickup (JAM)
+#define aNODISP  0x40000000L    // Don't display to user (JAM)
+#define aDEL     0x80000000L    // Deleted
 
   /* Bitmasks for 'attr2' */
 
-  #define aTLOC    0x00000001L   // Local message type
-  #define aTECHO   0x00000002L   // Echo message type
-  #define aTNET    0x00000004L   // Netmail message type
-  #define aUNSENT  0x00000008L   // HMB - netmail - unsent
-  #define aUNMOVED 0x00000010L   // HMB - echo - unmoved
-  #define aHUB     0x00000020L   // HUB routing (FLAG)
-  #define aXMA     0x00000040L   // XMAIL alternative compression (FLAG)
-  #define aHIR     0x00000080L   // FAX: HIRES FAX attached (FLAG)
-  #define aCOV     0x00000100L   // FAX: Coversheet (FLAG)
-  #define aSIG     0x00000200L   // FAX: Signature (FLAG)
-  #define aLET     0x00000400L   // FAX: Letterhead (FLAG)
-  #define aFAX     0x00000800L   // FAX: FAX attached (FLAG)
+#define aTLOC    0x00000001L    // Local message type
+#define aTECHO   0x00000002L    // Echo message type
+#define aTNET    0x00000004L    // Netmail message type
+#define aUNSENT  0x00000008L    // HMB - netmail - unsent
+#define aUNMOVED 0x00000010L    // HMB - echo - unmoved
+#define aHUB     0x00000020L    // HUB routing (FLAG)
+#define aXMA     0x00000040L    // XMAIL alternative compression (FLAG)
+#define aHIR     0x00000080L    // FAX: HIRES FAX attached (FLAG)
+#define aCOV     0x00000100L    // FAX: Coversheet (FLAG)
+#define aSIG     0x00000200L    // FAX: Signature (FLAG)
+#define aLET     0x00000400L    // FAX: Letterhead (FLAG)
+#define aFAX     0x00000800L    // FAX: FAX attached (FLAG)
 
 
 #pragma pack(__push, 1)
 
 typedef struct
 {
-  dword attr1;
-  dword attr2;
+    dword attr1;
+    dword attr2;
 
-  byte from[101];
-  byte to[101];
-  byte subj[101];
+    byte from[101];
+    byte to[101];
+    byte subj[101];
 
-  NETADDR origfido;        /* Origination and destination addresses */
-  NETADDR destfido;
+    NETADDR origfido;           /* Origination and destination addresses */
+    NETADDR destfido;
 
-  byte origdomain[101];     /* Origination & destination domains  */
-  byte destdomain[101];
+    byte origdomain[101];       /* Origination & destination domains */
+    byte destdomain[101];
 
-  byte originter[101];     /* Origination & destination Internet  */
-  byte destinter[101];
+    byte originter[101];        /* Origination & destination Internet */
+    byte destinter[101];
 
-  dword msgwritten;        /* When user wrote the msg (unix)          */
-  dword msgprocessed;      /* When system processed msg (unix)        */
-  dword msgreceived;       /* When user wrote the msg (unix)          */
-  byte ftsc_date[20];      /* ASCII time/date string                  */
+    dword msgwritten;           /* When user wrote the msg (unix) */
+    dword msgprocessed;         /* When system processed msg (unix) */
+    dword msgreceived;          /* When user wrote the msg (unix) */
+    byte ftsc_date[20];         /* ASCII time/date string */
 
-  dword timesread;         /* How many times msg was read             */
+    dword timesread;            /* How many times msg was read */
 
-  sword utc_ofs;           /* Offset from UTC of message writer, in   *
-                            * minutes.                                */
+    sword utc_ofs;              /* Offset from UTC of message writer, in *
+                                   minutes.  */
 
-  dword replyto;           /* Message # this message is a reply to    */
-  dword replies[9];        /* Up to 9 replies to this message         */
-  dword nextreply;         /* JAM: next reply to original message     */
+    dword replyto;              /* Message # this message is a reply to */
+    dword replies[9];           /* Up to 9 replies to this message */
+    dword nextreply;            /* JAM: next reply to original message */
 
-  dword origbase;          /* Msgbase format and type msg originated  */
-  dword msgno;             /* Message number (or UID for Sq/Hudson)   */
+    dword origbase;             /* Msgbase format and type msg originated */
+    dword msgno;                /* Message number (or UID for Sq/Hudson) */
 
-  STRINGLIST * attached;   /* List of attached files                  */
-  STRINGLIST * requested;  /* List of requested files                 */
-  STRINGLIST * seenby;
-  STRINGLIST * path;
-  STRINGLIST * via;
+    STRINGLIST *attached;       /* List of attached files */
+    STRINGLIST *requested;      /* List of requested files */
+    STRINGLIST *seenby;
+    STRINGLIST *path;
+    STRINGLIST *via;
 
-  char       * extrasub;   /* Extra unknown subfields (JAM)           */
-  dword      extrasublen;  /* Length of unknown extra subfields       */
+    char *extrasub;             /* Extra unknown subfields (JAM) */
+    dword extrasublen;          /* Length of unknown extra subfields */
 
-} MIS;    // Message Information Structure
+} MIS;                          // Message Information Structure
 
 #pragma pack(__pop)
 
@@ -217,53 +220,53 @@ typedef struct
 
 struct _msgapi
 {
-  #define MSGAPI_ID   0x0201414dL
+#define MSGAPI_ID   0x0201414dL
 
-  dword id;                       /* Must always equal MSGAPI_ID */
+    dword id;                   /* Must always equal MSGAPI_ID */
 
-  word len;                       /* LENGTH OF THIS STRUCTURE! */
-  word type;
+    word len;                   /* LENGTH OF THIS STRUCTURE! */
+    word type;
 
-  dword num_msg;
-  dword cur_msg;
-  dword high_msg;
-  dword high_water;
+    dword num_msg;
+    dword cur_msg;
+    dword high_msg;
+    dword high_water;
 
-  word sz_xmsg;
+    word sz_xmsg;
 
-  byte locked;                    /* Base is locked from use by other tasks */
-  byte isecho;                    /* Is this an EchoMail area?              */
+    byte locked;                /* Base is locked from use by other tasks */
+    byte isecho;                /* Is this an EchoMail area? */
 
-  /* Function pointers for manipulating messages within this area.          */
-  struct _apifuncs
-  {
-    sword  ( * CloseArea)(MSG *mh);
-    MSGH * ( * OpenMsg)  (MSG *mh,word mode,dword n);
-    sword  ( * CloseMsg) (MSGH *msgh);
-    dword  ( * ReadMsg)  (MSGH *msgh, MIS *mis, dword ofs,
-                                dword bytes, byte *text, dword cbyt,
-                                byte *ctxt);
-    sword  ( * WriteMsg) (MSGH *msgh,word append, MIS *mis,
-                                byte *text, dword textlen, dword totlen,
-                                dword clen, byte *ctxt);
-    sword  ( * KillMsg)  (MSG *mh, dword msgnum);
-    sword  ( * Lock)     (MSG *mh);
-    sword  ( * Unlock)   (MSG *mh);
-    sword  ( * SetCurPos)(MSGH *msgh, dword pos);
-    dword  ( * GetCurPos)(MSGH *msgh);
-    UMSGID ( * MsgnToUid)(MSG *mh, dword msgnum);
-    dword  ( * UidToMsgn)(MSG *mh,UMSGID umsgid,word type);
-    dword  ( * GetHighWater)(MSG *mh);
-    sword  ( * SetHighWater)(MSG *mh, dword hwm);
-    dword  ( * GetTextLen)(MSGH *msgh);
-    dword  ( * GetCtrlLen)(MSGH *msgh);
-  } *api;
+    /* Function pointers for manipulating messages within this area.  */
+    struct _apifuncs
+    {
+        sword(*CloseArea) (MSG * mh);
+        MSGH *(*OpenMsg) (MSG * mh, word mode, dword n);
+         sword(*CloseMsg) (MSGH * msgh);
+         dword(*ReadMsg) (MSGH * msgh, MIS * mis, dword ofs,
+                          dword bytes, byte * text, dword cbyt,
+                          byte * ctxt);
+         sword(*WriteMsg) (MSGH * msgh, word append, MIS * mis,
+                           byte * text, dword textlen, dword totlen,
+                           dword clen, byte * ctxt);
+         sword(*KillMsg) (MSG * mh, dword msgnum);
+         sword(*Lock) (MSG * mh);
+         sword(*Unlock) (MSG * mh);
+         sword(*SetCurPos) (MSGH * msgh, dword pos);
+         dword(*GetCurPos) (MSGH * msgh);
+         UMSGID(*MsgnToUid) (MSG * mh, dword msgnum);
+         dword(*UidToMsgn) (MSG * mh, UMSGID umsgid, word type);
+         dword(*GetHighWater) (MSG * mh);
+         sword(*SetHighWater) (MSG * mh, dword hwm);
+         dword(*GetTextLen) (MSGH * msgh);
+         dword(*GetCtrlLen) (MSGH * msgh);
+    } *api;
 
-  /* Pointer to application-specific data.  API_SQ.C and API_SDM.C use      *
-   * this for different things, so again, no applications should muck       *
-   * with anything in here.                                                 */
+    /* Pointer to application-specific data.  API_SQ.C and API_SDM.C use *
+       this for different things, so again, no applications should muck *
+       with anything in here.  */
 
-  void /*far*/ *apidata;
+    void /* far */ *apidata;
 };
 
 #pragma pack(__pop)
@@ -279,11 +282,11 @@ struct _msgapi
 #if !defined(MSGAPI_HANDLERS) && !defined(NO_MSGH_DEF)
 struct _msgh
 {
-  MSG *sq;
-  dword id;
+    MSG *sq;
+    dword id;
 
-  dword bytes_written;
-  dword cur_pos;
+    dword bytes_written;
+    dword cur_pos;
 };
 #endif
 
@@ -291,7 +294,7 @@ struct _msgh
  * functions.  If msgapierr==0, then no error occurred.                     */
 
 extern word _stdc msgapierr;
-extern char * errmsgs[];
+extern char *errmsgs[];
 extern struct _minf _stdc mi;
 extern char dbgmsg[200];
 
@@ -304,28 +307,32 @@ extern char dbgmsg[200];
 
 /* Values for 'msgapierr', above. */
 
-#define MERR_NONE        0 /* No error                                       */
-#define MERR_BADH        1 /* Invalid handle passed to function              */
-#define MERR_BADF        2 /* Invalid or corrupted file                      */
-#define MERR_NOMEM       3 /* Not enough memory for specified operation      */
-#define MERR_NODS        4 /* Maybe not enough disk space for operation      */
-#define MERR_NOENT       5 /* File/message does not exist                    */
-#define MERR_BADA        6 /* Bad argument passed to msgapi function         */
-#define MERR_EOPEN       7 /* Couldn't close - messages still open           */
-#define MERR_SEEK        8 /* Error seeking file                             */
-#define MERR_READ        9 /* Error reading file                             */
-#define MERR_WRITE      10 /* Error writing file                             */
-#define MERR_BADSIG     11 /* Bad signature in JAM message header            */
-#define MERR_BOARD      12 /* Hudson board doesn't match expected board      */
-#define MERR_MSGNO      13 /* Message number doesn't match requested         */
-#define MERR_BADMSGINFO 14 /* Msginfo.bbs file (HMB) lists incorrect # of msgs! */
-#define MERR_DELETED    15 /* Message seems to be deleted!                   */
-#define MERR_NOLOCK     16 /* Cannot lock actual file                        */
-#define MERR_NOUNLOCK   17 /* Cannot unlock actual file                      */
-#define MERR_OPENFILE   18 /* Cannot open actual file                        */
-#define MERR_BADREV     19 /* Bad revision numder (JAM)                      */
-#define MERR_NOHMB      20 /* Can't open HMB files                           */
-#define MERR_TOOMANYMSG 21 /* Too many msgs in area (Squish, DOS)            */
+#define MERR_NONE        0      /* No error */
+#define MERR_BADH        1      /* Invalid handle passed to function */
+#define MERR_BADF        2      /* Invalid or corrupted file */
+#define MERR_NOMEM       3      /* Not enough memory for specified
+                                   operation */
+#define MERR_NODS        4      /* Maybe not enough disk space for
+                                   operation */
+#define MERR_NOENT       5      /* File/message does not exist */
+#define MERR_BADA        6      /* Bad argument passed to msgapi function */
+#define MERR_EOPEN       7      /* Couldn't close - messages still open */
+#define MERR_SEEK        8      /* Error seeking file */
+#define MERR_READ        9      /* Error reading file */
+#define MERR_WRITE      10      /* Error writing file */
+#define MERR_BADSIG     11      /* Bad signature in JAM message header */
+#define MERR_BOARD      12      /* Hudson board doesn't match expected
+                                   board */
+#define MERR_MSGNO      13      /* Message number doesn't match requested */
+#define MERR_BADMSGINFO 14      /* Msginfo.bbs file (HMB) lists incorrect
+                                   # of msgs! */
+#define MERR_DELETED    15      /* Message seems to be deleted! */
+#define MERR_NOLOCK     16      /* Cannot lock actual file */
+#define MERR_NOUNLOCK   17      /* Cannot unlock actual file */
+#define MERR_OPENFILE   18      /* Cannot open actual file */
+#define MERR_BADREV     19      /* Bad revision numder (JAM) */
+#define MERR_NOHMB      20      /* Can't open HMB files */
+#define MERR_TOOMANYMSG 21      /* Too many msgs in area (Squish, DOS) */
 
 /* Now, a set of macros, which call the specified API function.  These      *
  * will map calls for 'MsgOpenMsg()' into 'SquishOpenMsg()',                *
@@ -361,70 +368,74 @@ extern char dbgmsg[200];
 #define MsgGetNumMsg(mh)      ((mh)->num_msg)
 #define MsgGetHighMsg(mh)     ((mh)->high_msg)
 
-sword  MsgOpenApi(struct _minf *minf, char *path, word useflags, char *hudson);
-sword  MsgCloseApi(void);
+sword MsgOpenApi(struct _minf *minf, char *path, word useflags,
+                 char *hudson);
+sword MsgCloseApi(void);
 
-MSG *  MsgOpenArea(byte *name,word mode,word type);
-sword  MsgValidate(word type,byte *name);
+MSG *MsgOpenArea(byte * name, word mode, word type);
+sword MsgValidate(word type, byte * name);
 
-sword InvalidMsgh(MSGH *msgh);
-sword InvalidMh(MSG *mh);
+sword InvalidMsgh(MSGH * msgh);
+sword InvalidMh(MSG * mh);
 
-void  SquishSetMaxMsg(MSG *sq, dword max_msgs, dword skip_msgs, dword age);
-dword SquishHash(byte *f);
-dword SquishUndelete(MSG *sq);
+void SquishSetMaxMsg(MSG * sq, dword max_msgs, dword skip_msgs, dword age);
+dword SquishHash(byte * f);
+dword SquishUndelete(MSG * sq);
 
-MSG * SdmOpenArea(byte *name,word mode,word type);
-sword SdmValidate(byte *name);
+MSG *SdmOpenArea(byte * name, word mode, word type);
+sword SdmValidate(byte * name);
 
-int SDMRenumber(MSG *mh);
+int SDMRenumber(MSG * mh);
 
-MSG * SquishOpenArea(byte *name,word mode,word type);
-sword SquishValidate(byte *name);
+MSG *SquishOpenArea(byte * name, word mode, word type);
+sword SquishValidate(byte * name);
 
 /* GvE: */
 
-MSG * JAMOpenArea(byte *name,word mode,word type);
-sword JAMValidate(byte *name);
+MSG *JAMOpenArea(byte * name, word mode, word type);
+sword JAMValidate(byte * name);
 
-MSG * HMBOpenArea(byte *name,word mode,word type);
-sword HMBValidate(byte *name);
+MSG *HMBOpenArea(byte * name, word mode, word type);
+sword HMBValidate(byte * name);
 
-int   HMBOpenBase (void);
-int   HMBCloseBase(void);
+int HMBOpenBase(void);
+int HMBCloseBase(void);
 
-byte *  CvtCtrlToKludge(byte *ctrl);
-byte *  GetCtrlToken(byte *where,byte *what);
-word    _CopyToBuf(byte *p, byte *out, byte **end, word maxlen);
-byte *  CopyToControlBuf(byte *txt, byte **newtext, unsigned *length);
-void    ConvertControlInfo(byte *ctrl, MIS *mis);
-word    NumKludges(char *txt);
-void    RemoveFromCtrl(byte *ctrl,byte *what);
-void    Convert_Flags(char *kludges, dword *attr1, dword *attr2);
-void    Attr2Flags(char *temp, dword attr1, dword attr2);
-void    Flags2Attr(char *s, dword *attr1, dword *attr2);
-MSG *   CreateAreaHandle(word type);
+byte *CvtCtrlToKludge(byte * ctrl);
+byte *GetCtrlToken(byte * where, byte * what);
+word _CopyToBuf(byte * p, byte * out, byte ** end, word maxlen);
+byte *CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length);
+void ConvertControlInfo(byte * ctrl, MIS * mis);
+word NumKludges(char *txt);
+void RemoveFromCtrl(byte * ctrl, byte * what);
+void Convert_Flags(char *kludges, dword * attr1, dword * attr2);
+void Attr2Flags(char *temp, dword attr1, dword attr2);
+void Flags2Attr(char *s, dword * attr1, dword * attr2);
+MSG *CreateAreaHandle(word type);
 
-byte * _fast Address(NETADDR *a);
-byte * StripNasties(byte *str);
+byte *_fast Address(NETADDR * a);
+byte *StripNasties(byte * str);
 
-int AnalyseTrail(char *s, unsigned len, MIS *mis);
+int AnalyseTrail(char *s, unsigned len, MIS * mis);
 
-STRINGLIST * AddToStringList(STRINGLIST *root, char *s, char *pw, int first);
-STRINGLIST * AddnToStringList(STRINGLIST *root, char *s, word len, char *pw, word pwlen);
-void         FreeStringList(STRINGLIST *start);
-void         CopyStringList(STRINGLIST *in, STRINGLIST **out);
-int          StrListLen(STRINGLIST *l);
-int          StrListElLen(STRINGLIST *l);
+STRINGLIST *AddToStringList(STRINGLIST * root, char *s, char *pw,
+                            int first);
+STRINGLIST *AddnToStringList(STRINGLIST * root, char *s, word len,
+                             char *pw, word pwlen);
+void FreeStringList(STRINGLIST * start);
+void CopyStringList(STRINGLIST * in, STRINGLIST ** out);
+int StrListLen(STRINGLIST * l);
+int StrListElLen(STRINGLIST * l);
 
-void Extract_Attaches(MIS *mis);
-void Extract_Requests(MIS *mis);
-void Files2Subject(MIS *mis, char *outsubj);
+void Extract_Attaches(MIS * mis);
+void Extract_Requests(MIS * mis);
+void Files2Subject(MIS * mis, char *outsubj);
 
-int AddToString(char **start, dword *curmax, dword *cursize, char *string);
+int AddToString(char **start, dword * curmax, dword * cursize,
+                char *string);
 
-void FreeMIS(MIS *mis);
-void CopyMIS(MIS *in, MIS *out);
+void FreeMIS(MIS * mis);
+void CopyMIS(MIS * in, MIS * out);
 
 /*
 **  Number of days since January 1, the 1st of each month
@@ -437,23 +448,22 @@ void CopyMIS(MIS *in, MIS *out);
 #pragma pack(__push, 1)
 
 typedef struct JAMtm
-    {
-    int     tm_sec,                    /* Seconds 0..59                     */
-            tm_min,                    /* Minutes 0..59                     */
-            tm_hour,                   /* Hour of day 0..23                 */
-            tm_mday,                   /* Day of month 1..31                */
-            tm_mon,                    /* Month 0..11                       */
-            tm_year,                   /* Years since 1900                  */
-            tm_wday,                   /* Day of week 0..6 (Sun..Sat)       */
-            tm_yday,                   /* Day of year 0..365                */
-            tm_isdst;                  /* Daylight savings time (not used)  */
-    } JAMTM;
+{
+    int tm_sec,                 /* Seconds 0..59 */
+     tm_min,                    /* Minutes 0..59 */
+     tm_hour,                   /* Hour of day 0..23 */
+     tm_mday,                   /* Day of month 1..31 */
+     tm_mon,                    /* Month 0..11 */
+     tm_year,                   /* Years since 1900 */
+     tm_wday,                   /* Day of week 0..6 (Sun..Sat) */
+     tm_yday,                   /* Day of year 0..365 */
+     tm_isdst;                  /* Daylight savings time (not used) */
+} JAMTM;
 
 #pragma pack(__pop)
 
-dword   JAMsysTime     (dword * pTime);
-dword   JAMsysMkTime   (JAMTM * pTm);
-JAMTM * JAMsysLocalTime(dword * pt);
+dword JAMsysTime(dword * pTime);
+dword JAMsysMkTime(JAMTM * pTm);
+JAMTM *JAMsysLocalTime(dword * pt);
 
 #endif
-

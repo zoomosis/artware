@@ -23,7 +23,6 @@
 #include "dr.h"
 #include "prog.h"
 #include "alc.h"
-#include "max.h"
 #include "old_msg.h"
 #include "msgapi.h"
 #include "jam.h"
@@ -34,36 +33,36 @@
 
 /* Prototypes */
 
-void near JAM2SQ(struct _msgh *msgh, byte *Subfields);
-void near addkludge(struct _msgh *msgh, char *text, int txtlen, char *data, dword len, word *cursize);
-void near Init_JAMheader(MSG *sq);
-void near SQ2JAM(MIS *mis, char *ctxt, MSG *sq, word mode, byte** SubFieldPtr);
+void near JAM2SQ(struct _msgh *msgh, byte * Subfields);
+void near addkludge(struct _msgh *msgh, char *text, int txtlen, char *data,
+                    dword len, word * cursize);
+void near Init_JAMheader(MSG * sq);
+void near SQ2JAM(MIS * mis, char *ctxt, MSG * sq, word mode,
+                 byte ** SubFieldPtr);
 
-byte near JAMMsgExists(MSG *sq, UMSGID umsgid);
+byte near JAMMsgExists(MSG * sq, UMSGID umsgid);
 
-int near JAMmbOpen (MSG *sq, byte *name);
-int near JAMmbClose(MSG *sq);
+int near JAMmbOpen(MSG * sq, byte * name);
+int near JAMmbClose(MSG * sq);
 
-int near JAMReadIdx   (MSG *sq, dword number, JAMIDXREC *idx);
-int near JAMReadHeader(MSG *sq, long offset, JAMHDR *hdr);
+int near JAMReadIdx(MSG * sq, dword number, JAMIDXREC * idx);
+int near JAMReadHeader(MSG * sq, long offset, JAMHDR * hdr);
 
-int near JAMWriteIdx   (MSG *sq, dword number, JAMIDXREC *idx);
-int near JAMWriteHeader(MSG *sq, long offset, JAMHDR *hdr);
+int near JAMWriteIdx(MSG * sq, dword number, JAMIDXREC * idx);
+int near JAMWriteHeader(MSG * sq, long offset, JAMHDR * hdr);
 
 /* Functions stolen from the JAM API (but modified) */
 
-void near JAMmbAddField(byte *start,
+void near JAMmbAddField(byte * start,
                         dword WhatField,
-                        size_t  DatLen,
-                        word * Position,
-                        byte * Data);
+                        size_t DatLen, word * Position, byte * Data);
 
-int near JAMmbUpdateHeaderInfo(MSG *sq, int WriteIt);
+int near JAMmbUpdateHeaderInfo(MSG * sq, int WriteIt);
 
-int    JAMmbStoreLastRead(MSG *sq, dword last, dword highest, dword CRC);
-dword  JAMmbFetchLastRead(MSG *sq, dword UserCRC, int getlast);
+int JAMmbStoreLastRead(MSG * sq, dword last, dword highest, dword CRC);
+dword JAMmbFetchLastRead(MSG * sq, dword UserCRC, int getlast);
 
-int ParseFido(char *s, NETADDR *addr, char *domain);
+int ParseFido(char *s, NETADDR * addr, char *domain);
 
 
 static JAMDATA *jamdata;
@@ -72,32 +71,32 @@ static JAMDATA *jamdata;
 
 static dword AttrTable1[NUMATTR1][2] = {
 
-{ aPRIVATE, MSG_PRIVATE     },
-{ aCRASH,   MSG_CRASH       },
-{ aREAD,    MSG_READ        },
-{ aSENT,    MSG_SENT        },
-{ aFILE,    MSG_FILEATTACH  },
-{ aFWD,     MSG_INTRANSIT   },
-{ aORPHAN,  MSG_ORPHAN      },
-{ aKILL,    MSG_KILLSENT    },
-{ aLOCAL,   MSG_LOCAL       },
-{ aHOLD,    MSG_HOLD        },
-{ aFRQ,     MSG_FILEREQUEST },
-{ aRRQ,     MSG_RECEIPTREQ  },
-{ aDIR,     MSG_DIRECT      },
-{ aAS,      MSG_ARCHIVESENT },
-{ aIMM,     MSG_IMMEDIATE   },
-{ aKFS,     MSG_KILLFILE    },
-{ aTFS,     MSG_TRUNCFILE   },
-{ aCFM,     MSG_CONFIRMREQ  },
-{ aLOK,     MSG_LOCKED      },
-{ aZGT,     MSG_GATE        },
-{ aENC,     MSG_ENCRYPT     },
-{ aCOM,     MSG_COMPRESS    },
-{ aESC,     MSG_ESCAPED     },
-{ aFPU,     MSG_FPU         },
-{ aNODISP,  MSG_NODISP      },
-{ aDEL,     MSG_DELETED     }
+    {aPRIVATE, MSG_PRIVATE},
+    {aCRASH, MSG_CRASH},
+    {aREAD, MSG_READ},
+    {aSENT, MSG_SENT},
+    {aFILE, MSG_FILEATTACH},
+    {aFWD, MSG_INTRANSIT},
+    {aORPHAN, MSG_ORPHAN},
+    {aKILL, MSG_KILLSENT},
+    {aLOCAL, MSG_LOCAL},
+    {aHOLD, MSG_HOLD},
+    {aFRQ, MSG_FILEREQUEST},
+    {aRRQ, MSG_RECEIPTREQ},
+    {aDIR, MSG_DIRECT},
+    {aAS, MSG_ARCHIVESENT},
+    {aIMM, MSG_IMMEDIATE},
+    {aKFS, MSG_KILLFILE},
+    {aTFS, MSG_TRUNCFILE},
+    {aCFM, MSG_CONFIRMREQ},
+    {aLOK, MSG_LOCKED},
+    {aZGT, MSG_GATE},
+    {aENC, MSG_ENCRYPT},
+    {aCOM, MSG_COMPRESS},
+    {aESC, MSG_ESCAPED},
+    {aFPU, MSG_FPU},
+    {aNODISP, MSG_NODISP},
+    {aDEL, MSG_DELETED}
 
 };
 
@@ -112,47 +111,48 @@ static dword AttrTable1[NUMATTR1][2] = {
 */
 
 
-MSG * JAMOpenArea(byte *name, word mode, word type)
+MSG *JAMOpenArea(byte * name, word mode, word type)
 {
-  MSG * sq;
+    MSG *sq;
 
-  NW(mode);
+    NW(mode);
 
-  msgapierr=MERR_NONE;
+    msgapierr = MERR_NONE;
 
-  if ((sq=CreateAreaHandle(type))==NULL)
-    return NULL;
+    if ((sq = CreateAreaHandle(type)) == NULL)
+        return NULL;
 
-  if ((sq->apidata=(JAMDATA *)calloc(1, sizeof(JAMDATA)))==NULL)
-  {
-    free(sq->api);
-    free(sq);
-    msgapierr=MERR_NOMEM;
-    return NULL;
-  }
-
-  /* For debugging : */
-  jamdata = sq->apidata;
-
-  *sq->api=JAM_funcs;
-
-  /* Now try to open the message area, using JAM_API functions */
-
-  if( JAMmbOpen(sq, name) == -1)  /* -1 == failed! */
+    if ((sq->apidata = (JAMDATA *) calloc(1, sizeof(JAMDATA))) == NULL)
     {
-    free(sq->apidata);
-    free(sq->api);
-    free(sq);
-    return NULL;
+        free(sq->api);
+        free(sq);
+        msgapierr = MERR_NOMEM;
+        return NULL;
     }
 
-  sq->num_msg  = JamData->HdrInfo.ActiveMsgs;
-  sq->high_msg = JAMUidToMsgn(sq,
-                 (dword) ((filelength(JamData->IdxHandle) / sizeof(JAMIDXREC))
-                                           + JamData->HdrInfo.BaseMsgNum - 1),
-                  UID_PREV);
+    /* For debugging : */
+    jamdata = sq->apidata;
 
-  return sq;
+    *sq->api = JAM_funcs;
+
+    /* Now try to open the message area, using JAM_API functions */
+
+    if (JAMmbOpen(sq, name) == -1) /* -1 == failed! */
+    {
+        free(sq->apidata);
+        free(sq->api);
+        free(sq);
+        return NULL;
+    }
+
+    sq->num_msg = JamData->HdrInfo.ActiveMsgs;
+    sq->high_msg = JAMUidToMsgn(sq,
+                                (dword) ((filelength(JamData->IdxHandle) /
+                                          sizeof(JAMIDXREC)) +
+                                         JamData->HdrInfo.BaseMsgNum - 1),
+                                UID_PREV);
+
+    return sq;
 }
 
 
@@ -165,25 +165,25 @@ MSG * JAMOpenArea(byte *name, word mode, word type)
 */
 
 
- sword  JAMCloseArea(MSG *sq)
+sword JAMCloseArea(MSG * sq)
 {
 
-  msgapierr=MERR_NONE;
+    msgapierr = MERR_NONE;
 
-  if (InvalidMh(sq))
-    return -1;
+    if (InvalidMh(sq))
+        return -1;
 
-  if(sq->locked)
-     JAMUnlock(sq);
+    if (sq->locked)
+        JAMUnlock(sq);
 
-  JAMmbClose(sq);
+    JAMmbClose(sq);
 
-  free(sq->api);
-  free((JAMDATA *)sq->apidata);
-  sq->id=0L;
-  free(sq);
+    free(sq->api);
+    free((JAMDATA *) sq->apidata);
+    sq->id = 0L;
+    free(sq);
 
-  return 0;
+    return 0;
 }
 
 
@@ -196,184 +196,189 @@ MSG * JAMOpenArea(byte *name, word mode, word type)
 */
 
 
-MSGH * JAMOpenMsg(MSG *sq, word mode, dword msgnum)
+MSGH *JAMOpenMsg(MSG * sq, word mode, dword msgnum)
 {
-  struct _msgh *msgh;
-  byte *SubFieldPtr = NULL;
+    struct _msgh *msgh;
+    byte *SubFieldPtr = NULL;
 
-  msgapierr=MERR_NONE;
+    msgapierr = MERR_NONE;
 
-  if (InvalidMh(sq))
-    return NULL;
+    if (InvalidMh(sq))
+        return NULL;
 
-  if(mode == MOPEN_WRITE) return NULL;  // Not supported
+    if (mode == MOPEN_WRITE)
+        return NULL;            // Not supported
 
-  if( ((mode == MOPEN_CREATE) || (mode == MOPEN_RW)) && (!(sq->locked)) )
-     return NULL;                     // We must be locked if we write!
+    if (((mode == MOPEN_CREATE) || (mode == MOPEN_RW)) && (!(sq->locked)))
+        return NULL;            // We must be locked if we write!
 
-  /* Translate special 'message numbers' to 'real' msg numbers */
+    /* Translate special 'message numbers' to 'real' msg numbers */
 
-  switch(msgnum)
+    switch (msgnum)
     {
     case MSGNUM_CUR:
-       msgnum = sq->cur_msg;
-       break;
+        msgnum = sq->cur_msg;
+        break;
 
     case MSGNUM_PREV:
-       msgnum = JAMUidToMsgn(sq, sq->cur_msg - 1, UID_PREV);
-       if(msgnum == 0)
-          {
-          msgapierr=MERR_NOENT;
-          return NULL;
-          }
-       break;
+        msgnum = JAMUidToMsgn(sq, sq->cur_msg - 1, UID_PREV);
+        if (msgnum == 0)
+        {
+            msgapierr = MERR_NOENT;
+            return NULL;
+        }
+        break;
 
     case MSGNUM_NEXT:
-       msgnum = JAMUidToMsgn(sq, sq->cur_msg + 1, UID_NEXT);
-       if(msgnum == 0)
-          {
-          msgapierr=MERR_NOENT;
-          return NULL;
-          }
-       break;
+        msgnum = JAMUidToMsgn(sq, sq->cur_msg + 1, UID_NEXT);
+        if (msgnum == 0)
+        {
+            msgapierr = MERR_NOENT;
+            return NULL;
+        }
+        break;
 
     default:
-       break;
+        break;
     }
 
-  /* If we're not creating a new msg, check existence */
+    /* If we're not creating a new msg, check existence */
 
-  if( (mode != MOPEN_CREATE) || (msgnum != 0L) )
+    if ((mode != MOPEN_CREATE) || (msgnum != 0L))
     {
-    if(
-        (msgnum < JamData->HdrInfo.BaseMsgNum) ||
-        (msgnum > sq->high_msg)
-      )
-      {
-      msgapierr=MERR_NOENT;
-      return NULL;
-      }
-    }
-
-
-  /* Alloc space for handle, and initialize */
-
-  if ((msgh=calloc(1, sizeof(struct _msgh)))==NULL)
-    {
-      msgapierr=MERR_NOMEM;
-      return NULL;
-    }
-
-  msgh->sq = sq;
-  msgh->id = MSGH_ID;
-  msgh->mode = mode;
-
-
-  /* Now get message index, to learn about msg */
-
-  if(msgnum != 0)   /* Not a new addition, so we want info */
-    {
-    sq->cur_msg = msgnum;
-
-    // Read Index
-
-    if( JAMReadIdx(sq, msgnum, &JamData->Idx) == -1 )
-       goto ErrorExit;
-
-    if( JamData->Idx.HdrOffset == -1 )  // Deleted message!
-        goto ErrorExit;
-
-    // Get header
-
-    if(JAMReadHeader(sq, JamData->Idx.HdrOffset, &JamData->Hdr) == -1)
-       goto ErrorExit;
-
-    if(JamData->Hdr.Attribute & MSG_DELETED)
-       {
-       msgapierr=MERR_DELETED;
-       goto ErrorExit;
-       }
-
-    if(JamData->Hdr.MsgNum != msgnum)       // Weird! Corrupt?
-       {
-       msgapierr=MERR_MSGNO;
-       goto ErrorExit;
-       }
-
-    // Don't read subfields if we are in MOPEN_RW mode.
-
-    if( (mode == MOPEN_READ) || (mode == MOPEN_RDHDR) )
-      {
-      if(JamData->Hdr.SubfieldLen != 0L)
+        if ((msgnum < JamData->HdrInfo.BaseMsgNum) ||
+            (msgnum > sq->high_msg))
         {
-        if( (SubFieldPtr = calloc(1, JamData->Hdr.SubfieldLen)) == NULL )
-            {
-            msgapierr=MERR_NOMEM;
-            goto ErrorExit;
-            }
-
-        // No seek here, we just read the header..
-        if(read(JamData->HdrHandle,
-                 SubFieldPtr,
-                   (unsigned) JamData->Hdr.SubfieldLen) !=
-                                          (int) JamData->Hdr.SubfieldLen )
-           {
-           msgapierr=MERR_READ;
-           goto ErrorExit;
-           }
+            msgapierr = MERR_NOENT;
+            return NULL;
         }
-      }
-
-
-    if(mode == MOPEN_CREATE) /* Re-create existing msg, zap out old */
-       {
-       JamData->Hdr.Attribute |= MSG_DELETED;
-       JamData->Hdr.TxtLen = 0L;
-
-       if(JAMWriteHeader(sq, JamData->Idx.HdrOffset, &JamData->Hdr) == -1)
-           goto ErrorExit;
-       }
-
-    msgh->hdroffset = JamData->Idx.HdrOffset;
-    msgh->txtoffset = JamData->Hdr.TxtOffset;
     }
 
 
-  if(mode == MOPEN_CREATE)   /* New addition to the message base */
+    /* Alloc space for handle, and initialize */
+
+    if ((msgh = calloc(1, sizeof(struct _msgh))) == NULL)
     {
-    /* Point to end, to add to msgbase */
-    msgh->hdroffset = lseek(JamData->HdrHandle, 0L, SEEK_END);
-    msgh->txtoffset = lseek(JamData->TxtHandle, 0L, SEEK_END);
-
-    if(msgnum == 0)
-      {
-      msgnum = (filelength(JamData->IdxHandle) / sizeof(JAMIDXREC)) + JamData->HdrInfo.BaseMsgNum;
-      sq->high_msg = msgnum;
-      sq->num_msg++;
-      JamData->HdrInfo.ActiveMsgs += 1; /* New addition, inc # msgs */
-      }
-
-    sq->cur_msg = msgnum;
+        msgapierr = MERR_NOMEM;
+        return NULL;
     }
 
-  if(mode != MOPEN_CREATE) /* So we need to know lengths etc. */
+    msgh->sq = sq;
+    msgh->id = MSGH_ID;
+    msgh->mode = mode;
+
+
+    /* Now get message index, to learn about msg */
+
+    if (msgnum != 0)            /* Not a new addition, so we want info */
     {
-       JAM2SQ(msgh, SubFieldPtr);
+        sq->cur_msg = msgnum;
+
+        // Read Index
+
+        if (JAMReadIdx(sq, msgnum, &JamData->Idx) == -1)
+            goto ErrorExit;
+
+        if (JamData->Idx.HdrOffset == -1) // Deleted message!
+            goto ErrorExit;
+
+        // Get header
+
+        if (JAMReadHeader(sq, JamData->Idx.HdrOffset, &JamData->Hdr) == -1)
+            goto ErrorExit;
+
+        if (JamData->Hdr.Attribute & MSG_DELETED)
+        {
+            msgapierr = MERR_DELETED;
+            goto ErrorExit;
+        }
+
+        if (JamData->Hdr.MsgNum != msgnum) // Weird! Corrupt?
+        {
+            msgapierr = MERR_MSGNO;
+            goto ErrorExit;
+        }
+
+        // Don't read subfields if we are in MOPEN_RW mode.
+
+        if ((mode == MOPEN_READ) || (mode == MOPEN_RDHDR))
+        {
+            if (JamData->Hdr.SubfieldLen != 0L)
+            {
+                if ((SubFieldPtr =
+                     calloc(1, JamData->Hdr.SubfieldLen)) == NULL)
+                {
+                    msgapierr = MERR_NOMEM;
+                    goto ErrorExit;
+                }
+
+                // No seek here, we just read the header..
+                if (read(JamData->HdrHandle,
+                         SubFieldPtr,
+                         (unsigned)JamData->Hdr.SubfieldLen) !=
+                    (int)JamData->Hdr.SubfieldLen)
+                {
+                    msgapierr = MERR_READ;
+                    goto ErrorExit;
+                }
+            }
+        }
+
+
+        if (mode == MOPEN_CREATE) /* Re-create existing msg, zap out old */
+        {
+            JamData->Hdr.Attribute |= MSG_DELETED;
+            JamData->Hdr.TxtLen = 0L;
+
+            if (JAMWriteHeader(sq, JamData->Idx.HdrOffset, &JamData->Hdr)
+                == -1)
+                goto ErrorExit;
+        }
+
+        msgh->hdroffset = JamData->Idx.HdrOffset;
+        msgh->txtoffset = JamData->Hdr.TxtOffset;
     }
 
-  msgh->msgnum = msgnum;
 
-  if(SubFieldPtr) free(SubFieldPtr);
+    if (mode == MOPEN_CREATE)   /* New addition to the message base */
+    {
+        /* Point to end, to add to msgbase */
+        msgh->hdroffset = lseek(JamData->HdrHandle, 0L, SEEK_END);
+        msgh->txtoffset = lseek(JamData->TxtHandle, 0L, SEEK_END);
 
-  return (MSGH *)msgh;
+        if (msgnum == 0)
+        {
+            msgnum =
+                (filelength(JamData->IdxHandle) / sizeof(JAMIDXREC)) +
+                JamData->HdrInfo.BaseMsgNum;
+            sq->high_msg = msgnum;
+            sq->num_msg++;
+            JamData->HdrInfo.ActiveMsgs += 1; /* New addition, inc # msgs */
+        }
 
-  // We only get here if we had an error!
+        sq->cur_msg = msgnum;
+    }
+
+    if (mode != MOPEN_CREATE)   /* So we need to know lengths etc. */
+    {
+        JAM2SQ(msgh, SubFieldPtr);
+    }
+
+    msgh->msgnum = msgnum;
+
+    if (SubFieldPtr)
+        free(SubFieldPtr);
+
+    return (MSGH *) msgh;
+
+    // We only get here if we had an error!
 
   ErrorExit:
 
-  if(SubFieldPtr) free(SubFieldPtr);
-  free(msgh);
-  return NULL;
+    if (SubFieldPtr)
+        free(SubFieldPtr);
+    free(msgh);
+    return NULL;
 
 }
 
@@ -387,21 +392,22 @@ MSGH * JAMOpenMsg(MSG *sq, word mode, dword msgnum)
 */
 
 
- sword  JAMCloseMsg(MSGH *msgh)
+sword JAMCloseMsg(MSGH * msgh)
 {
-  msgapierr=MERR_NONE;
+    msgapierr = MERR_NONE;
 
-  if (InvalidMsgh(msgh))
-     return -1;
+    if (InvalidMsgh(msgh))
+        return -1;
 
-  FreeMIS(&msgh->mis);
+    FreeMIS(&msgh->mis);
 
-  msgh->id=0L;
-  if(msgh->kludges) free(msgh->kludges);
+    msgh->id = 0L;
+    if (msgh->kludges)
+        free(msgh->kludges);
 
-  free((struct _msgh *)msgh);
+    free((struct _msgh *)msgh);
 
-  return 0;
+    return 0;
 }
 
 
@@ -414,67 +420,68 @@ MSGH * JAMOpenMsg(MSG *sq, word mode, dword msgnum)
       --------------------------------
 */
 
-dword  JAMReadMsg(MSGH *msgh, MIS *mis,
-                                  dword offset, dword bytes, byte *text,
-                                  dword clen, byte *ctxt)
+dword JAMReadMsg(MSGH * msgh, MIS * mis,
+                 dword offset, dword bytes, byte * text,
+                 dword clen, byte * ctxt)
 {
-  MSG *sq = msgh->sq;
-  dword bytesread=0L;
+    MSG *sq = msgh->sq;
+    dword bytesread = 0L;
 
-  msgapierr=MERR_NONE;
+    msgapierr = MERR_NONE;
 
-  if (InvalidMsgh(msgh))
-    return -1;
+    if (InvalidMsgh(msgh))
+        return -1;
 
-  /* Copy header info */
+    /* Copy header info */
 
-  if(mis)
-    CopyMIS(&msgh->mis, mis);
+    if (mis)
+        CopyMIS(&msgh->mis, mis);
 
-  /* Copy kludges */
+    /* Copy kludges */
 
-  if(ctxt && clen)
+    if (ctxt && clen)
     {
-    if(clen > msgh->clen)
-       clen = msgh->clen;
+        if (clen > msgh->clen)
+            clen = msgh->clen;
 
-    if(msgh->kludges)
-       memcpy(ctxt, msgh->kludges, (size_t) clen);
-    else *ctxt = '\0';
+        if (msgh->kludges)
+            memcpy(ctxt, msgh->kludges, (size_t) clen);
+        else
+            *ctxt = '\0';
     }
 
-  /* Read message text */
+    /* Read message text */
 
-  if(text && bytes)
+    if (text && bytes)
     {
-    if(bytes > (msgh->cur_len - offset))
-       bytes = (msgh->cur_len - offset);  /* No crazy len */
+        if (bytes > (msgh->cur_len - offset))
+            bytes = (msgh->cur_len - offset); /* No crazy len */
 
-     /* Only disk */
+        /* Only disk */
 
-    if(lseek(JamData->TxtHandle,
-            (long) (msgh->txtoffset + offset),
-            SEEK_SET) == -1)
-            {
-            msgapierr=MERR_SEEK;
+        if (lseek(JamData->TxtHandle,
+                  (long)(msgh->txtoffset + offset), SEEK_SET) == -1)
+        {
+            msgapierr = MERR_SEEK;
             return -1;
-            }
+        }
 
-    if (read(JamData->TxtHandle, text, (unsigned) bytes) != (int) bytes)
-       {
-       msgapierr=MERR_READ;
-       return -1;
-       }
+        if (read(JamData->TxtHandle, text, (unsigned)bytes) != (int)bytes)
+        {
+            msgapierr = MERR_READ;
+            return -1;
+        }
 
-    bytesread += bytes;
+        bytesread += bytes;
 
-    // Check for NULL termination - we don't want it here as it will
-    // mess up addition of SB + Path!
-    if(*(text + bytes - 1) == '\0')
-       *(text + bytes - 1) = '\n';  // This is UGLY. But what can I do? :-)
+        // Check for NULL termination - we don't want it here as it will
+        // mess up addition of SB + Path!
+        if (*(text + bytes - 1) == '\0')
+            *(text + bytes - 1) = '\n'; // This is UGLY. But what can I
+                                        // do? :-)
     }
 
-  return bytesread;
+    return bytesread;
 
 }
 
@@ -488,131 +495,144 @@ dword  JAMReadMsg(MSGH *msgh, MIS *mis,
 */
 
 
-sword JAMWriteMsg(MSGH *msgh, word append, MIS *mis, byte *text, dword textlen, dword totlen, dword clen, byte *ctxt)
+sword JAMWriteMsg(MSGH * msgh, word append, MIS * mis, byte * text,
+                  dword textlen, dword totlen, dword clen, byte * ctxt)
 {
-  MSG *sq = msgh->sq;
-  byte temp[101];
-  byte *SubFieldPtr = NULL;
+    MSG *sq = msgh->sq;
+    byte temp[101];
+    byte *SubFieldPtr = NULL;
 
-  msgapierr=MERR_NONE;
+    msgapierr = MERR_NONE;
 
-  if (InvalidMsgh(msgh))
-    return -1;
+    if (InvalidMsgh(msgh))
+        return -1;
 
-  if (!ctxt)
-    clen=0L;
+    if (!ctxt)
+        clen = 0L;
 
-  if (!text)
-    textlen=0L;
+    if (!text)
+        textlen = 0L;
 
-  if (textlen==0L)
-    text=NULL;
+    if (textlen == 0L)
+        text = NULL;
 
-  if (clen==0L)
-    ctxt=NULL;
+    if (clen == 0L)
+        ctxt = NULL;
 
-  if(!append)
+    if (!append)
     {
-    if(!mis) return -1; /* We need a header! */
+        if (!mis)
+            return -1;          /* We need a header! */
 
-    if(msgh->mode != MOPEN_RW) // if MOPEN_RW we retain old header for update!
-      {
-      Init_JAMheader(sq);
+        if (msgh->mode != MOPEN_RW) // if MOPEN_RW we retain old header
+                                    // for update!
+        {
+            Init_JAMheader(sq);
 
-      /* Set index values */
-      JamData->Idx.HdrOffset = msgh->hdroffset;
+            /* Set index values */
+            JamData->Idx.HdrOffset = msgh->hdroffset;
 
-      strcpy(temp, mis->to);
-      strlwr(temp);
-      JamData->Idx.UserCRC = JAMsysCrc32(temp, strlen(temp), -1L);
+            strcpy(temp, mis->to);
+            strlwr(temp);
+            JamData->Idx.UserCRC = JAMsysCrc32(temp, strlen(temp), -1L);
 
-      /* Write out the index */
+            /* Write out the index */
 
-      if(JAMWriteIdx(sq, msgh->msgnum, &JamData->Idx) == -1)
-         return -1; /* Write failed? */
+            if (JAMWriteIdx(sq, msgh->msgnum, &JamData->Idx) == -1)
+                return -1;      /* Write failed? */
 
-      /* Convert header + kludges */
+            /* Convert header + kludges */
 
-      if(totlen)
-         {
-         msgh->totlen = totlen;
-         JamData->Hdr.TxtLen = totlen;
-         }
-      else JamData->Hdr.TxtLen = msgh->cur_len;
+            if (totlen)
+            {
+                msgh->totlen = totlen;
+                JamData->Hdr.TxtLen = totlen;
+            }
+            else
+                JamData->Hdr.TxtLen = msgh->cur_len;
 
-      JamData->Hdr.TxtOffset = msgh->txtoffset;
+            JamData->Hdr.TxtOffset = msgh->txtoffset;
 
-      if(clen)
-         msgh->clen = clen;
+            if (clen)
+                msgh->clen = clen;
 
-      JamData->Hdr.MsgNum = msgh->msgnum;
-      }
+            JamData->Hdr.MsgNum = msgh->msgnum;
+        }
 
-    // Convert MIS structure, for MOPEN_RW only partially (attribs, links)
+        // Convert MIS structure, for MOPEN_RW only partially (attribs,
+        // links)
 
-    SQ2JAM(mis, ctxt, sq, msgh->mode, &SubFieldPtr);
+        SQ2JAM(mis, ctxt, sq, msgh->mode, &SubFieldPtr);
 
-    /* Write out the header */
+        /* Write out the header */
 
-    if(JAMWriteHeader(sq, JamData->Idx.HdrOffset, &JamData->Hdr) == -1)
-       {
-       if(SubFieldPtr) free(SubFieldPtr);
-       return -1;
-       }
+        if (JAMWriteHeader(sq, JamData->Idx.HdrOffset, &JamData->Hdr) ==
+            -1)
+        {
+            if (SubFieldPtr)
+                free(SubFieldPtr);
+            return -1;
+        }
 
-    if(msgh->mode == MOPEN_RW) // No Subfield/Text write then..
-       return 0;
+        if (msgh->mode == MOPEN_RW) // No Subfield/Text write then..
+            return 0;
 
-    /* Subfields */
+        /* Subfields */
 
-    if(SubFieldPtr)
-      {
-      if(write(JamData->HdrHandle,
-                 SubFieldPtr,
-                 (unsigned) JamData->Hdr.SubfieldLen) !=
-                                             (int) JamData->Hdr.SubfieldLen)
-         {
-         free(SubFieldPtr);
-         msgapierr=MERR_WRITE;
-         return -1;
-         }
-      free(SubFieldPtr);
-      }
+        if (SubFieldPtr)
+        {
+            if (write(JamData->HdrHandle,
+                      SubFieldPtr,
+                      (unsigned)JamData->Hdr.SubfieldLen) !=
+                (int)JamData->Hdr.SubfieldLen)
+            {
+                free(SubFieldPtr);
+                msgapierr = MERR_WRITE;
+                return -1;
+            }
+            free(SubFieldPtr);
+        }
 
-    if(textlen)
-      {
-      if( (msgh->bytes_written + textlen) > totlen)  /* They want too much */
-         {
-         msgapierr=MERR_BADA;
-         return -1;
-         }
-      if(write(JamData->TxtHandle, text, (unsigned) textlen) != (int) textlen)
-         {
-         msgapierr=MERR_WRITE;
-         return -1;
-         }
-      msgh->bytes_written += textlen;
-      }
+        if (textlen)
+        {
+            if ((msgh->bytes_written + textlen) > totlen) /* They want too 
+                                                             much */
+            {
+                msgapierr = MERR_BADA;
+                return -1;
+            }
+            if (write(JamData->TxtHandle, text, (unsigned)textlen) !=
+                (int)textlen)
+            {
+                msgapierr = MERR_WRITE;
+                return -1;
+            }
+            msgh->bytes_written += textlen;
+        }
     }
-  else     /* append */
+    else                        /* append */
     {
-    if(textlen)
-      {
-      if( (msgh->bytes_written + textlen) > msgh->totlen)  /* They want too much */
-         {
-         msgapierr=MERR_BADA;
-         return -1;
-         }
-      if(write(JamData->TxtHandle, text, (size_t) textlen) != (size_t) textlen)
-         {
-         msgapierr=MERR_WRITE;
-         return -1;
-         }
-      msgh->bytes_written += textlen;
-      }
+        if (textlen)
+        {
+            if ((msgh->bytes_written + textlen) > msgh->totlen) /* They
+                                                                   want
+                                                                   too
+                                                                   much */
+            {
+                msgapierr = MERR_BADA;
+                return -1;
+            }
+            if (write(JamData->TxtHandle, text, (size_t) textlen) !=
+                (size_t) textlen)
+            {
+                msgapierr = MERR_WRITE;
+                return -1;
+            }
+            msgh->bytes_written += textlen;
+        }
     }
 
-  return 0;
+    return 0;
 
 }
 
@@ -627,73 +647,75 @@ sword JAMWriteMsg(MSGH *msgh, word append, MIS *mis, byte *text, dword textlen, 
 */
 
 
- sword  JAMKillMsg(MSG *sq, dword msgnum)
+sword JAMKillMsg(MSG * sq, dword msgnum)
 {
-  sword retval = -1;
-  word  didlock = 0;
+    sword retval = -1;
+    word didlock = 0;
 
-  msgapierr=MERR_NONE;
+    msgapierr = MERR_NONE;
 
-  if (InvalidMh(sq))
-     return -1;
+    if (InvalidMh(sq))
+        return -1;
 
-  if(!sq->locked)
+    if (!sq->locked)
     {
-    if(JAMLock(sq) == -1)
-       return -1;
-    didlock = 1;
+        if (JAMLock(sq) == -1)
+            return -1;
+        didlock = 1;
     }
 
-  if( JAMReadIdx(sq, msgnum, &JamData->Idx) == -1 )
-     goto Exit;
+    if (JAMReadIdx(sq, msgnum, &JamData->Idx) == -1)
+        goto Exit;
 
-  if( JamData->Idx.HdrOffset == -1 )  // Deleted message!
-      goto Exit;
+    if (JamData->Idx.HdrOffset == -1) // Deleted message!
+        goto Exit;
 
-  // Get header
+    // Get header
 
-  if(JAMReadHeader(sq, JamData->Idx.HdrOffset, &JamData->Hdr) == -1)
-     goto Exit;
+    if (JAMReadHeader(sq, JamData->Idx.HdrOffset, &JamData->Hdr) == -1)
+        goto Exit;
 
-  if(JamData->Hdr.Attribute & MSG_DELETED)
-     goto Exit;
+    if (JamData->Hdr.Attribute & MSG_DELETED)
+        goto Exit;
 
-  if(JamData->Hdr.MsgNum != msgnum)       // Weird! Corrupt?
-     goto Exit;
+    if (JamData->Hdr.MsgNum != msgnum) // Weird! Corrupt?
+        goto Exit;
 
-  JamData->Hdr.Attribute |= MSG_DELETED;
+    JamData->Hdr.Attribute |= MSG_DELETED;
 
-  if(JAMWriteHeader(sq, JamData->Idx.HdrOffset, &JamData->Hdr) == -1)
-       goto Exit;
+    if (JAMWriteHeader(sq, JamData->Idx.HdrOffset, &JamData->Hdr) == -1)
+        goto Exit;
 
-  JamData->Idx.UserCRC = 0xFFFFFFFFL;
+    JamData->Idx.UserCRC = 0xFFFFFFFFL;
 
-  if(JAMWriteIdx(sq, msgnum, &JamData->Idx) == -1)
-       goto Exit;
+    if (JAMWriteIdx(sq, msgnum, &JamData->Idx) == -1)
+        goto Exit;
 
-  sq->num_msg--;
+    sq->num_msg--;
 
-  if(msgnum == sq->high_msg) /* Last Msg deleted? New high_msg! */
+    if (msgnum == sq->high_msg) /* Last Msg deleted? New high_msg! */
     {
-    sq->high_msg = JAMUidToMsgn(sq,
-                 (dword) ((filelength(JamData->IdxHandle) / sizeof(JAMIDXREC))
-                                           + JamData->HdrInfo.BaseMsgNum - 1),
-                  UID_PREV);
+        sq->high_msg = JAMUidToMsgn(sq,
+                                    (dword) ((filelength
+                                              (JamData->IdxHandle) /
+                                              sizeof(JAMIDXREC)) +
+                                             JamData->HdrInfo.BaseMsgNum -
+                                             1), UID_PREV);
     }
 
-  JamData->HdrInfo.ActiveMsgs--;
+    JamData->HdrInfo.ActiveMsgs--;
 
-  retval = 0;
+    retval = 0;
 
   Exit:
 
-  if(didlock)
-     {
-     if(JAMUnlock(sq) == -1)
-        return -1;
-     }
+    if (didlock)
+    {
+        if (JAMUnlock(sq) == -1)
+            return -1;
+    }
 
-  return retval;
+    return retval;
 }
 
 
@@ -705,46 +727,49 @@ sword JAMWriteMsg(MSGH *msgh, word append, MIS *mis, byte *text, dword textlen, 
       ----------------------------
 */
 
- sword  JAMLock(MSG *sq)
+sword JAMLock(MSG * sq)
 {
-  dword oldcounter = JamData->HdrInfo.ModCounter;
+    dword oldcounter = JamData->HdrInfo.ModCounter;
 
-  msgapierr=MERR_NONE;
+    msgapierr = MERR_NONE;
 
-  if (InvalidMh(sq))
-    return -1;
-
-  /* Don't do anything if already locked */
-
-  if (sq->locked)
-    return 0;
-
-  /* Set the flag in the _sqdata header */
-
-  if(JAMmbUpdateHeaderInfo(sq, 0) == -1)
-     return -1;
-
-  if(mi.haveshare)
-     {
-     if(lock(JamData->HdrHandle, 0L, 1L) == -1)
-        {
-        msgapierr=MERR_NOLOCK;
+    if (InvalidMh(sq))
         return -1;
+
+    /* Don't do anything if already locked */
+
+    if (sq->locked)
+        return 0;
+
+    /* Set the flag in the _sqdata header */
+
+    if (JAMmbUpdateHeaderInfo(sq, 0) == -1)
+        return -1;
+
+    if (mi.haveshare)
+    {
+        if (lock(JamData->HdrHandle, 0L, 1L) == -1)
+        {
+            msgapierr = MERR_NOLOCK;
+            return -1;
         }
-     }
+    }
 
-  sq->locked=TRUE;
+    sq->locked = TRUE;
 
-  if(JamData->HdrInfo.ModCounter != oldcounter) /* Area was updated in meantime */
-     {
-     sq->num_msg  = JamData->HdrInfo.ActiveMsgs;
-     sq->high_msg = JAMUidToMsgn(sq,
-                 (dword) ((filelength(JamData->IdxHandle) / sizeof(JAMIDXREC))
-                                           + JamData->HdrInfo.BaseMsgNum - 1),
-                  UID_PREV);
-     }
+    if (JamData->HdrInfo.ModCounter != oldcounter) /* Area was updated in
+                                                      meantime */
+    {
+        sq->num_msg = JamData->HdrInfo.ActiveMsgs;
+        sq->high_msg = JAMUidToMsgn(sq,
+                                    (dword) ((filelength
+                                              (JamData->IdxHandle) /
+                                              sizeof(JAMIDXREC)) +
+                                             JamData->HdrInfo.BaseMsgNum -
+                                             1), UID_PREV);
+    }
 
-  return 0;
+    return 0;
 }
 
 
@@ -758,36 +783,36 @@ sword JAMWriteMsg(MSGH *msgh, word append, MIS *mis, byte *text, dword textlen, 
 
 /* Undo the above "lock" operation */
 
- sword  JAMUnlock(MSG *sq)
+sword JAMUnlock(MSG * sq)
 {
 
-  msgapierr=MERR_NONE;
+    msgapierr = MERR_NONE;
 
-  if (InvalidMh(sq))
-    return -1;
-
-  if (!sq->locked)
-    return -1;
-
-  if(JAMmbUpdateHeaderInfo(sq, 1) == -1)
-     return -1;
-
-  flush_handle2(JamData->IdxHandle);
-  flush_handle2(JamData->TxtHandle);
-  flush_handle2(JamData->HdrHandle);
-
-  if(mi.haveshare)
-     {
-     if(unlock(JamData->HdrHandle, 0L, 1L) == -1)
-        {
-        msgapierr=MERR_NOUNLOCK;
+    if (InvalidMh(sq))
         return -1;
+
+    if (!sq->locked)
+        return -1;
+
+    if (JAMmbUpdateHeaderInfo(sq, 1) == -1)
+        return -1;
+
+    flush_handle2(JamData->IdxHandle);
+    flush_handle2(JamData->TxtHandle);
+    flush_handle2(JamData->HdrHandle);
+
+    if (mi.haveshare)
+    {
+        if (unlock(JamData->HdrHandle, 0L, 1L) == -1)
+        {
+            msgapierr = MERR_NOUNLOCK;
+            return -1;
         }
-     }
+    }
 
-  sq->locked=FALSE;
+    sq->locked = FALSE;
 
-  return 0;
+    return 0;
 }
 
 
@@ -800,11 +825,11 @@ sword JAMWriteMsg(MSGH *msgh, word append, MIS *mis, byte *text, dword textlen, 
       --------------------------------
 */
 
-sword JAMValidate(byte *name)
+sword JAMValidate(byte * name)
 {
-   NW(name);
+    NW(name);
 
-  return TRUE;
+    return TRUE;
 }
 
 
@@ -817,9 +842,9 @@ sword JAMValidate(byte *name)
 */
 
 
- sword  JAMSetCurPos(MSGH *msgh, dword pos)
+sword JAMSetCurPos(MSGH * msgh, dword pos)
 {
-   return msgh->cur_pos = pos;
+    return msgh->cur_pos = pos;
 }
 
 
@@ -833,12 +858,12 @@ sword JAMValidate(byte *name)
 
 
 
- dword  JAMGetCurPos(MSGH *msgh)
+dword JAMGetCurPos(MSGH * msgh)
 {
-  if (InvalidMsgh(msgh))
-    return -1;
+    if (InvalidMsgh(msgh))
+        return -1;
 
-  return (msgh->cur_pos);
+    return (msgh->cur_pos);
 }
 
 
@@ -851,15 +876,15 @@ sword JAMValidate(byte *name)
 */
 
 
-UMSGID  JAMMsgnToUid(MSG *sq, dword msgnum)
+UMSGID JAMMsgnToUid(MSG * sq, dword msgnum)
 {
 
-  msgapierr=MERR_NONE;
+    msgapierr = MERR_NONE;
 
-  if (InvalidMh(sq))
-    return 0L;
+    if (InvalidMh(sq))
+        return 0L;
 
-  return (UMSGID)msgnum;
+    return (UMSGID) msgnum;
 
 }
 
@@ -873,92 +898,93 @@ UMSGID  JAMMsgnToUid(MSG *sq, dword msgnum)
 */
 
 
-dword  JAMUidToMsgn(MSG *sq, UMSGID umsgid, word type)
+dword JAMUidToMsgn(MSG * sq, UMSGID umsgid, word type)
 {
-  sdword size;
-  dword curpos;
-  dword found=0;
+    sdword size;
+    dword curpos;
+    dword found = 0;
 
 
-  msgapierr=MERR_NONE;
+    msgapierr = MERR_NONE;
 
-  if (InvalidMh(sq))
-    return 0L;
+    if (InvalidMh(sq))
+        return 0L;
 
-  /* If number doesn't exist anymore, start at first existing msg */
+    /* If number doesn't exist anymore, start at first existing msg */
 
-  if(umsgid < JamData->HdrInfo.BaseMsgNum)
+    if (umsgid < JamData->HdrInfo.BaseMsgNum)
     {
-    if(type != UID_NEXT)
-       {
-       msgapierr=MERR_NOENT;
-       return 0L;
-       }
-    else
-       umsgid = JamData->HdrInfo.BaseMsgNum;
+        if (type != UID_NEXT)
+        {
+            msgapierr = MERR_NOENT;
+            return 0L;
+        }
+        else
+            umsgid = JamData->HdrInfo.BaseMsgNum;
     }
 
-   if( (size = filelength(JamData->IdxHandle) / sizeof(JAMIDXREC)) == 0L)
-      {
-      msgapierr=MERR_NOENT;
-      return 0L;
-      }
-
-   /* Maybe it is too high? */
-
-   if(umsgid > (JamData->HdrInfo.BaseMsgNum + size - 1))
-     {
-     if(type != UID_PREV)
-        {
-        msgapierr=MERR_NOENT;
+    if ((size = filelength(JamData->IdxHandle) / sizeof(JAMIDXREC)) == 0L)
+    {
+        msgapierr = MERR_NOENT;
         return 0L;
-        }
-     else
-        umsgid = JamData->HdrInfo.BaseMsgNum + size - 1;
-     }
+    }
 
-   /* An exact match is easy to check */
+    /* Maybe it is too high? */
 
-   if(type == UID_EXACT)
-     {
-     if(JAMMsgExists(sq, umsgid))
-        return umsgid;
-     else
+    if (umsgid > (JamData->HdrInfo.BaseMsgNum + size - 1))
+    {
+        if (type != UID_PREV)
         {
-        msgapierr=MERR_NOENT;
-        return 0L;
+            msgapierr = MERR_NOENT;
+            return 0L;
         }
-     }
+        else
+            umsgid = JamData->HdrInfo.BaseMsgNum + size - 1;
+    }
 
-   /* Otherwise, we walk through the index until we find a non-deleted msg.. */
+    /* An exact match is easy to check */
 
-   curpos = umsgid;
-
-   if(type == UID_NEXT) /* Look forward */
-      {
-      for( ; curpos < (JamData->HdrInfo.BaseMsgNum + size); curpos++)
+    if (type == UID_EXACT)
+    {
+        if (JAMMsgExists(sq, umsgid))
+            return umsgid;
+        else
         {
-        if(JAMMsgExists(sq, curpos))
+            msgapierr = MERR_NOENT;
+            return 0L;
+        }
+    }
+
+    /* Otherwise, we walk through the index until we find a non-deleted
+       msg.. */
+
+    curpos = umsgid;
+
+    if (type == UID_NEXT)       /* Look forward */
+    {
+        for (; curpos < (JamData->HdrInfo.BaseMsgNum + size); curpos++)
+        {
+            if (JAMMsgExists(sq, curpos))
             {
-            found = curpos;
-            break;
+                found = curpos;
+                break;
             }
         }
-      }
+    }
 
-   else if(type == UID_PREV) /* Look backward.. */
-      {
-      for( ; curpos >= JamData->HdrInfo.BaseMsgNum; curpos--)
+    else if (type == UID_PREV)  /* Look backward.. */
+    {
+        for (; curpos >= JamData->HdrInfo.BaseMsgNum; curpos--)
         {
-        if(JAMMsgExists(sq, curpos))
+            if (JAMMsgExists(sq, curpos))
             {
-            found = curpos;
-            break;
+                found = curpos;
+                break;
             }
         }
-      }
+    }
 
-   return (dword) found;
+    return (dword) found;
 }
 
 /*
@@ -969,9 +995,9 @@ dword  JAMUidToMsgn(MSG *sq, UMSGID umsgid, word type)
       ---------------------------
 */
 
- dword  JAMGetTextLen(MSGH *msgh)
+dword JAMGetTextLen(MSGH * msgh)
 {
-  return msgh->cur_len;
+    return msgh->cur_len;
 }
 
 /*
@@ -982,9 +1008,9 @@ dword  JAMUidToMsgn(MSG *sq, UMSGID umsgid, word type)
       ------------------------------
 */
 
- dword  JAMGetCtrlLen(MSGH *msgh)
+dword JAMGetCtrlLen(MSGH * msgh)
 {
-  return msgh->clen;
+    return msgh->clen;
 }
 
 /*
@@ -995,10 +1021,10 @@ dword  JAMUidToMsgn(MSG *sq, UMSGID umsgid, word type)
       --------------------------------
 */
 
-dword  JAMGetHighWater(MSG *sq)
+dword JAMGetHighWater(MSG * sq)
 {
-  NW(sq);
-  return 0;
+    NW(sq);
+    return 0;
 }
 
 /*
@@ -1009,11 +1035,11 @@ dword  JAMGetHighWater(MSG *sq)
       ---------------------------
 */
 
-sword  JAMSetHighWater(MSG *sq, dword hwm)
+sword JAMSetHighWater(MSG * sq, dword hwm)
 {
-  NW(sq);
-  NW(hwm);
-  return -1;
+    NW(sq);
+    NW(hwm);
+    return -1;
 }
 
 
@@ -1025,172 +1051,199 @@ sword  JAMSetHighWater(MSG *sq, dword hwm)
       --------------------------------------------------------------------
 */
 
-void near JAM2SQ(struct _msgh *msgh, byte *Subfields)
+void near JAM2SQ(struct _msgh *msgh, byte * Subfields)
 {
-   JAMSUBFIELD *SFptr;
-   char *bufptr, *new;
-   char temp[101];
-   MSG *sq = msgh->sq;
-   word cursize = 1024, copylen;
-   sword SFleft = (sword) JamData->Hdr.SubfieldLen;
-   int l;
-   word ExtraSubPosition = 0L;
+    JAMSUBFIELD *SFptr;
+    char *bufptr, *new;
+    char temp[101];
+    MSG *sq = msgh->sq;
+    word cursize = 1024, copylen;
+    sword SFleft = (sword) JamData->Hdr.SubfieldLen;
+    int l;
+    word ExtraSubPosition = 0L;
 
 
-   if(msgh->mode == MOPEN_RW)      // Don't convert Subfields for MOPEN_RW,
-     SFleft = 0;                   // can't write them anyway!
+    if (msgh->mode == MOPEN_RW) // Don't convert Subfields for MOPEN_RW,
+        SFleft = 0;             // can't write them anyway!
 
-   msgh->mis.replyto    = JamData->Hdr.ReplyTo;
-   msgh->mis.replies[0] = JamData->Hdr.Reply1st;
-   msgh->mis.nextreply  = JamData->Hdr.ReplyNext;
+    msgh->mis.replyto = JamData->Hdr.ReplyTo;
+    msgh->mis.replies[0] = JamData->Hdr.Reply1st;
+    msgh->mis.nextreply = JamData->Hdr.ReplyNext;
 
-   msgh->cur_len = JamData->Hdr.TxtLen;
+    msgh->cur_len = JamData->Hdr.TxtLen;
 
-   msgh->mis.origbase = sq->type;
-   msgh->mis.msgno    = JamData->Hdr.MsgNum;
+    msgh->mis.origbase = sq->type;
+    msgh->mis.msgno = JamData->Hdr.MsgNum;
 
-   /* Convert message attributes to MIS standard */
+    /* Convert message attributes to MIS standard */
 
-   for(l=0; l<NUMATTR1; l++)
-     {
-     if(JamData->Hdr.Attribute & AttrTable1[l][1])
-        msgh->mis.attr1 |= AttrTable1[l][0];
-     }
+    for (l = 0; l < NUMATTR1; l++)
+    {
+        if (JamData->Hdr.Attribute & AttrTable1[l][1])
+            msgh->mis.attr1 |= AttrTable1[l][0];
+    }
 
-   msgh->mis.msgwritten   = JamData->Hdr.DateWritten;
-   msgh->mis.msgprocessed = JamData->Hdr.DateProcessed;
-   msgh->mis.msgreceived  = JamData->Hdr.DateReceived;
+    msgh->mis.msgwritten = JamData->Hdr.DateWritten;
+    msgh->mis.msgprocessed = JamData->Hdr.DateProcessed;
+    msgh->mis.msgreceived = JamData->Hdr.DateReceived;
 
-   if (SFleft == 0) return; /* No subfields to process */
+    if (SFleft == 0)
+        return;                 /* No subfields to process */
 
-   if( (msgh->kludges = calloc(1, cursize) ) == NULL) return;
-   msgh->clen = 1;
+    if ((msgh->kludges = calloc(1, cursize)) == NULL)
+        return;
+    msgh->clen = 1;
 
-   SFptr = (JAMSUBFIELD *)Subfields;
+    SFptr = (JAMSUBFIELD *) Subfields;
 
-   while(SFleft > sizeof(JAMBINSUBFIELD))
-     {
-     bufptr = (char *)SFptr + sizeof(JAMBINSUBFIELD);
+    while (SFleft > sizeof(JAMBINSUBFIELD))
+    {
+        bufptr = (char *)SFptr + sizeof(JAMBINSUBFIELD);
 
-     if(SFptr->DatLen > (SFleft - sizeof(JAMBINSUBFIELD)))
-       SFptr->DatLen = SFleft - sizeof(JAMBINSUBFIELD);
+        if (SFptr->DatLen > (SFleft - sizeof(JAMBINSUBFIELD)))
+            SFptr->DatLen = SFleft - sizeof(JAMBINSUBFIELD);
 
-     switch(SFptr->LoID)
-       {
-       case JAMSFLD_OADDRESS:
-         memset(temp, '\0', sizeof(temp));
-         copylen = min(100, SFptr->DatLen);
-         memcpy(temp, bufptr, copylen);
-         if(ParseFido(temp, &msgh->mis.origfido, msgh->mis.origdomain) == -1)
-            strcpy(msgh->mis.originter, temp);  // Not Fido-type address, so..
-         break;
+        switch (SFptr->LoID)
+        {
+        case JAMSFLD_OADDRESS:
+            memset(temp, '\0', sizeof(temp));
+            copylen = min(100, SFptr->DatLen);
+            memcpy(temp, bufptr, copylen);
+            if (ParseFido(temp, &msgh->mis.origfido, msgh->mis.origdomain)
+                == -1)
+                strcpy(msgh->mis.originter, temp); // Not Fido-type
+                                                   // address, so..
+            break;
 
-       case JAMSFLD_DADDRESS:
-         memset(temp, '\0', sizeof(temp));
-         copylen = min(100, SFptr->DatLen);
-         memcpy(temp, bufptr, copylen);
-         if(ParseFido(temp, &msgh->mis.destfido, msgh->mis.destdomain) == -1)
-            strcpy(msgh->mis.destinter, temp);  // Not Fido-type address, so..
-          break;
+        case JAMSFLD_DADDRESS:
+            memset(temp, '\0', sizeof(temp));
+            copylen = min(100, SFptr->DatLen);
+            memcpy(temp, bufptr, copylen);
+            if (ParseFido(temp, &msgh->mis.destfido, msgh->mis.destdomain)
+                == -1)
+                strcpy(msgh->mis.destinter, temp); // Not Fido-type
+                                                   // address, so..
+            break;
 
-       case JAMSFLD_SENDERNAME:
-         copylen = min(100, SFptr->DatLen);
-         memcpy(&msgh->mis.from, bufptr, copylen);
-         break;
+        case JAMSFLD_SENDERNAME:
+            copylen = min(100, SFptr->DatLen);
+            memcpy(&msgh->mis.from, bufptr, copylen);
+            break;
 
-       case JAMSFLD_RECVRNAME:
-         copylen = min(100, SFptr->DatLen);
-         memcpy(&msgh->mis.to, bufptr, copylen);
-         break;
+        case JAMSFLD_RECVRNAME:
+            copylen = min(100, SFptr->DatLen);
+            memcpy(&msgh->mis.to, bufptr, copylen);
+            break;
 
-       case JAMSFLD_SUBJECT:
-         copylen = min(100, SFptr->DatLen);
-         memcpy(&msgh->mis.subj, bufptr, copylen);
-         break;
+        case JAMSFLD_SUBJECT:
+            copylen = min(100, SFptr->DatLen);
+            memcpy(&msgh->mis.subj, bufptr, copylen);
+            break;
 
-       case JAMSFLD_MSGID:
-         addkludge(msgh, "\01MSGID: ", 8, bufptr, SFptr->DatLen, &cursize);
-         break;
+        case JAMSFLD_MSGID:
+            addkludge(msgh, "\01MSGID: ", 8, bufptr, SFptr->DatLen,
+                      &cursize);
+            break;
 
-       case JAMSFLD_REPLYID:
-         addkludge(msgh, "\01REPLY: ", 8, bufptr, SFptr->DatLen, &cursize);
-         break;
+        case JAMSFLD_REPLYID:
+            addkludge(msgh, "\01REPLY: ", 8, bufptr, SFptr->DatLen,
+                      &cursize);
+            break;
 
-       case JAMSFLD_PID:
-         addkludge(msgh, "\01PID: ", 6, bufptr, SFptr->DatLen, &cursize);
-         break;
+        case JAMSFLD_PID:
+            addkludge(msgh, "\01PID: ", 6, bufptr, SFptr->DatLen,
+                      &cursize);
+            break;
 
-       case JAMSFLD_FLAGS:
-         memset(temp, '\0', sizeof(temp));
-         copylen = min(100, SFptr->DatLen);
-         memcpy(temp, bufptr, copylen);
-         Flags2Attr(temp, &msgh->mis.attr1, &msgh->mis.attr2);
-         break;
+        case JAMSFLD_FLAGS:
+            memset(temp, '\0', sizeof(temp));
+            copylen = min(100, SFptr->DatLen);
+            memcpy(temp, bufptr, copylen);
+            Flags2Attr(temp, &msgh->mis.attr1, &msgh->mis.attr2);
+            break;
 
-       case JAMSFLD_TZUTCINFO:
-         addkludge(msgh, "\01TZUTC: ", 8, bufptr, SFptr->DatLen, &cursize);
-         break;
+        case JAMSFLD_TZUTCINFO:
+            addkludge(msgh, "\01TZUTC: ", 8, bufptr, SFptr->DatLen,
+                      &cursize);
+            break;
 
-       case JAMSFLD_FTSKLUDGE:
-         addkludge(msgh, "\01", 1, bufptr, SFptr->DatLen, &cursize);
-         break;
+        case JAMSFLD_FTSKLUDGE:
+            addkludge(msgh, "\01", 1, bufptr, SFptr->DatLen, &cursize);
+            break;
 
-       case JAMSFLD_SEENBY2D:
-         msgh->mis.seenby = AddnToStringList(msgh->mis.seenby, bufptr, SFptr->DatLen, NULL, 0);
-         break;
+        case JAMSFLD_SEENBY2D:
+            msgh->mis.seenby =
+                AddnToStringList(msgh->mis.seenby, bufptr, SFptr->DatLen,
+                                 NULL, 0);
+            break;
 
-       case JAMSFLD_PATH2D:
-         msgh->mis.path = AddnToStringList(msgh->mis.path, bufptr, SFptr->DatLen, NULL, 0);
-         break;
+        case JAMSFLD_PATH2D:
+            msgh->mis.path =
+                AddnToStringList(msgh->mis.path, bufptr, SFptr->DatLen,
+                                 NULL, 0);
+            break;
 
-       case JAMSFLD_TRACE:
-         msgh->mis.via = AddnToStringList(msgh->mis.via, bufptr, SFptr->DatLen, NULL, 0);
-         break;
+        case JAMSFLD_TRACE:
+            msgh->mis.via =
+                AddnToStringList(msgh->mis.via, bufptr, SFptr->DatLen,
+                                 NULL, 0);
+            break;
 
-       case JAMSFLD_ENCLFREQ:
+        case JAMSFLD_ENCLFREQ:
 
-         // We have to check for an embedded NULL in this SubField. If there
-         // is one, the FREQ consists of two parts: <name><NULL><password>
-         memset(temp, '\0', sizeof(temp));
-         memcpy(temp, bufptr, min(100, SFptr->DatLen));
-         if(strlen(temp) == SFptr->DatLen)        // So there's no NULL!
-            msgh->mis.requested = AddnToStringList(msgh->mis.requested, bufptr, SFptr->DatLen, NULL, 0);
-         else  // Split in two parts....
-            msgh->mis.requested = AddToStringList(msgh->mis.requested, temp, strchr(temp, '\0')+1, 0);
-         break;
+            // We have to check for an embedded NULL in this SubField. If
+            // there
+            // is one, the FREQ consists of two parts:
+            // <name><NULL><password>
+            memset(temp, '\0', sizeof(temp));
+            memcpy(temp, bufptr, min(100, SFptr->DatLen));
+            if (strlen(temp) == SFptr->DatLen) // So there's no NULL!
+                msgh->mis.requested =
+                    AddnToStringList(msgh->mis.requested, bufptr,
+                                     SFptr->DatLen, NULL, 0);
+            else                // Split in two parts....
+                msgh->mis.requested =
+                    AddToStringList(msgh->mis.requested, temp,
+                                    strchr(temp, '\0') + 1, 0);
+            break;
 
-       case JAMSFLD_ENCLFILE:
-       case JAMSFLD_ENCLFILEWC:
+        case JAMSFLD_ENCLFILE:
+        case JAMSFLD_ENCLFILEWC:
 
-         msgh->mis.attached = AddnToStringList(msgh->mis.attached, bufptr, SFptr->DatLen, NULL, 0);
-         break;
+            msgh->mis.attached =
+                AddnToStringList(msgh->mis.attached, bufptr, SFptr->DatLen,
+                                 NULL, 0);
+            break;
 
-       default:
+        default:
 
-         msgh->mis.extrasublen += (SFptr->DatLen + sizeof(JAMBINSUBFIELD));
-         new = realloc(msgh->mis.extrasub, msgh->mis.extrasublen);
-         if(new)
-           {
-           msgh->mis.extrasub = new;
-           JAMmbAddField((byte *)(msgh->mis.extrasub),
-                          SFptr->LoID,
-                          SFptr->DatLen,
-                          &ExtraSubPosition,
-                          (byte *)bufptr);
-           }
-         else // We ran out of memory. Try and prevent further SHIT, free all extra subs now..
-           {
-           if(msgh->mis.extrasub) free(msgh->mis.extrasub);
-           msgh->mis.extrasub = NULL;
-           msgh->mis.extrasublen = 0L;
-           }
-         break;
-       }
+            msgh->mis.extrasublen +=
+                (SFptr->DatLen + sizeof(JAMBINSUBFIELD));
+            new = realloc(msgh->mis.extrasub, msgh->mis.extrasublen);
+            if (new)
+            {
+                msgh->mis.extrasub = new;
+                JAMmbAddField((byte *) (msgh->mis.extrasub),
+                              SFptr->LoID,
+                              SFptr->DatLen,
+                              &ExtraSubPosition, (byte *) bufptr);
+            }
+            else                // We ran out of memory. Try and prevent
+                                // further SHIT, free all extra subs now..
+            {
+                if (msgh->mis.extrasub)
+                    free(msgh->mis.extrasub);
+                msgh->mis.extrasub = NULL;
+                msgh->mis.extrasublen = 0L;
+            }
+            break;
+        }
 
-     SFleft -= (sizeof(JAMBINSUBFIELD) + SFptr->DatLen); /* How much left? */
-     SFptr = (JAMSUBFIELD *) (bufptr + SFptr->DatLen); /* Point to next
-                                                              SubField */
-     }
+        SFleft -= (sizeof(JAMBINSUBFIELD) + SFptr->DatLen); /* How much
+                                                               left? */
+        SFptr = (JAMSUBFIELD *) (bufptr + SFptr->DatLen); /* Point to next
+                                                             SubField */
+    }
 
 }
 
@@ -1203,32 +1256,34 @@ void near JAM2SQ(struct _msgh *msgh, byte *Subfields)
     -----------------------------------------------------------------
 */
 
-void near addkludge(struct _msgh *msgh, char *text, int txtlen, char *data, dword len, word *cursize)
+void near addkludge(struct _msgh *msgh, char *text, int txtlen, char *data,
+                    dword len, word * cursize)
 {
-   int thislen;
-   char *oldkludges;
+    int thislen;
+    char *oldkludges;
 
-   // Max lenght of 'FTSCKLUDGE' subfield. Nice maximum...
-   if(len > 255) len = 255;
+    // Max lenght of 'FTSCKLUDGE' subfield. Nice maximum...
+    if (len > 255)
+        len = 255;
 
-   thislen = txtlen + len;
-   msgh->clen += thislen;
-   if(msgh->clen > (*cursize - 10))
-     {
-     *cursize += 512;
-     oldkludges = msgh->kludges;
-     msgh->kludges = realloc(msgh->kludges, *cursize);
-     if(msgh->kludges == NULL)        /* Out of memory!! */
-       {
-       msgh->kludges = oldkludges;
-       msgh->clen -= thislen;
-       return;
-       }
-     }
+    thislen = txtlen + len;
+    msgh->clen += thislen;
+    if (msgh->clen > (*cursize - 10))
+    {
+        *cursize += 512;
+        oldkludges = msgh->kludges;
+        msgh->kludges = realloc(msgh->kludges, *cursize);
+        if (msgh->kludges == NULL) /* Out of memory!! */
+        {
+            msgh->kludges = oldkludges;
+            msgh->clen -= thislen;
+            return;
+        }
+    }
 
-   memcpy(msgh->kludges + msgh->clen - thislen - 1, text, txtlen);
-   memcpy(msgh->kludges + msgh->clen - thislen + txtlen - 1, data, len);
-   *(msgh->kludges + msgh->clen - 1) = '\0';
+    memcpy(msgh->kludges + msgh->clen - thislen - 1, text, txtlen);
+    memcpy(msgh->kludges + msgh->clen - thislen + txtlen - 1, data, len);
+    *(msgh->kludges + msgh->clen - 1) = '\0';
 
 }
 
@@ -1243,16 +1298,16 @@ void near addkludge(struct _msgh *msgh, char *text, int txtlen, char *data, dwor
 */
 
 
-void near Init_JAMheader(MSG *sq)
+void near Init_JAMheader(MSG * sq)
 {
 
-   memset(&JamData->Hdr, '\0', sizeof(JAMHDR));
+    memset(&JamData->Hdr, '\0', sizeof(JAMHDR));
 
-   strcpy(JamData->Hdr.Signature, "JAM");
-   JamData->Hdr.Revision    = CURRENTREVLEV;
-   JamData->Hdr.MsgIdCRC    = -1L;
-   JamData->Hdr.ReplyCRC    = -1L;
-   JamData->Hdr.PasswordCRC = -1L;
+    strcpy(JamData->Hdr.Signature, "JAM");
+    JamData->Hdr.Revision = CURRENTREVLEV;
+    JamData->Hdr.MsgIdCRC = -1L;
+    JamData->Hdr.ReplyCRC = -1L;
+    JamData->Hdr.PasswordCRC = -1L;
 
 }
 
@@ -1265,303 +1320,323 @@ void near Init_JAMheader(MSG *sq)
       ------------------------------------------------------
 */
 
-void near SQ2JAM(MIS *mis, char *ctxt, MSG *sq, word mode, byte **SubFieldPtr)
+void near SQ2JAM(MIS * mis, char *ctxt, MSG * sq, word mode,
+                 byte ** SubFieldPtr)
 {
-   char temp[300];
-   word position;
-   char *kludgeptr, *endptr;
-   word curlen = 2048;  // Current length of Subfields
-   int l, len;
-   STRINGLIST *curstring;
+    char temp[300];
+    word position;
+    char *kludgeptr, *endptr;
+    word curlen = 2048;         // Current length of Subfields
+    int l, len;
+    STRINGLIST *curstring;
 
-   *SubFieldPtr = NULL;
+    *SubFieldPtr = NULL;
 
-   /* We start by converting MIS header info.. */
+    /* We start by converting MIS header info.. */
 
-   JamData->Hdr.ReplyTo   = mis->replyto;
-   JamData->Hdr.Reply1st  = mis->replies[0];
-   JamData->Hdr.ReplyNext = mis->nextreply;
+    JamData->Hdr.ReplyTo = mis->replyto;
+    JamData->Hdr.Reply1st = mis->replies[0];
+    JamData->Hdr.ReplyNext = mis->nextreply;
 
-   /* Convert message attributes to MIS standard */
+    /* Convert message attributes to MIS standard */
 
-   JamData->Hdr.Attribute = 0L;  // Clean out first, for MOPEN_RW
+    JamData->Hdr.Attribute = 0L; // Clean out first, for MOPEN_RW
 
-   for(l=0; l<NUMATTR1; l++)
-     {
-     if(mis->attr1 & AttrTable1[l][0])
-        JamData->Hdr.Attribute |= AttrTable1[l][1];
-     }
+    for (l = 0; l < NUMATTR1; l++)
+    {
+        if (mis->attr1 & AttrTable1[l][0])
+            JamData->Hdr.Attribute |= AttrTable1[l][1];
+    }
 
-   if(sq->type & (MSGTYPE_ECHO|MSGTYPE_NEWS))
-       JamData->Hdr.Attribute |= MSG_TYPEECHO;
-   else if(sq->type & (MSGTYPE_NET|MSGTYPE_MAIL))
-       JamData->Hdr.Attribute |= MSG_TYPENET;
-   else
-       JamData->Hdr.Attribute |= MSG_TYPELOCAL;
+    if (sq->type & (MSGTYPE_ECHO | MSGTYPE_NEWS))
+        JamData->Hdr.Attribute |= MSG_TYPEECHO;
+    else if (sq->type & (MSGTYPE_NET | MSGTYPE_MAIL))
+        JamData->Hdr.Attribute |= MSG_TYPENET;
+    else
+        JamData->Hdr.Attribute |= MSG_TYPELOCAL;
 
-   JamData->Hdr.DateWritten   = mis->msgwritten;
-   JamData->Hdr.DateProcessed = mis->msgprocessed;
-   JamData->Hdr.DateReceived  = mis->msgreceived;
+    JamData->Hdr.DateWritten = mis->msgwritten;
+    JamData->Hdr.DateProcessed = mis->msgprocessed;
+    JamData->Hdr.DateReceived = mis->msgreceived;
 
-   if(mis->attr1 & aREAD)
-     {
-     if(JamData->Hdr.DateReceived == 0L)
-        JamData->Hdr.DateReceived = JAMsysTime(NULL);
-     if(mis->timesread == 0)
-        JamData->Hdr.TimesRead = 1;
-     }
+    if (mis->attr1 & aREAD)
+    {
+        if (JamData->Hdr.DateReceived == 0L)
+            JamData->Hdr.DateReceived = JAMsysTime(NULL);
+        if (mis->timesread == 0)
+            JamData->Hdr.TimesRead = 1;
+    }
 
-   if(mode == MOPEN_RW) return;  // No need to convert Subfields..
+    if (mode == MOPEN_RW)
+        return;                 // No need to convert Subfields..
 
-   position = 0L;
+    position = 0L;
 
-   // We start with 2048 bytes - enough to hold items below. When we
-   // start adding kludges and long stuff like SB/PAth, we'll check if
-   // it's enough every time..
+    // We start with 2048 bytes - enough to hold items below. When we
+    // start adding kludges and long stuff like SB/PAth, we'll check if
+    // it's enough every time..
 
-   if( (*SubFieldPtr = calloc(1, curlen)) == NULL )
-      return;
+    if ((*SubFieldPtr = calloc(1, curlen)) == NULL)
+        return;
 
-   JAMmbAddField(*SubFieldPtr, JAMSFLD_SENDERNAME, strlen(mis->from), &position, mis->from);
-   JAMmbAddField(*SubFieldPtr, JAMSFLD_RECVRNAME,  strlen(mis->to), &position, mis->to);
+    JAMmbAddField(*SubFieldPtr, JAMSFLD_SENDERNAME, strlen(mis->from),
+                  &position, mis->from);
+    JAMmbAddField(*SubFieldPtr, JAMSFLD_RECVRNAME, strlen(mis->to),
+                  &position, mis->to);
 
-   if(sq->type & (MSGTYPE_NET|MSGTYPE_MAIL))
-     {
-     // Now we convert to FLAGS kludges (if necessary). Only a few FLAGS
-     // are not covered by the standard JAM attributes.
-     if(mis->attr2 & (aFAX|aLET|aSIG|aCOV|aHIR|aXMA|aHUB) )
-       {
-       memset(temp, '\0', sizeof(temp));
-       Attr2Flags(temp, 0L, (mis->attr2 & (aFAX|aLET|aSIG|aCOV|aHIR|aXMA|aHUB)));
-       if(strlen(temp) > 7)
-         {
-         strcpy(temp, temp+7);  // Skip "^AFLAGS "
-         JAMmbAddField(*SubFieldPtr, JAMSFLD_FLAGS, strlen(temp), &position, temp);
-         }
-       }
-
-     if(mis->origfido.point == 0)
-        sprintf(temp, "%hu:%hu/%hu", mis->origfido.zone,
-                                     mis->origfido.net,
-                                     mis->origfido.node);
-     else
-        sprintf(temp, "%hu:%hu/%hu.%hu", mis->origfido.zone,
-                                         mis->origfido.net,
-                                         mis->origfido.node,
-                                         mis->origfido.point);
-
-     if(mis->origdomain[0] != '\0')
+    if (sq->type & (MSGTYPE_NET | MSGTYPE_MAIL))
+    {
+        // Now we convert to FLAGS kludges (if necessary). Only a few
+        // FLAGS
+        // are not covered by the standard JAM attributes.
+        if (mis->attr2 & (aFAX | aLET | aSIG | aCOV | aHIR | aXMA | aHUB))
         {
-        strcat(temp, "@");
-        strcat(temp, mis->origdomain);
+            memset(temp, '\0', sizeof(temp));
+            Attr2Flags(temp, 0L,
+                       (mis->
+                        attr2 & (aFAX | aLET | aSIG | aCOV | aHIR | aXMA |
+                                 aHUB)));
+            if (strlen(temp) > 7)
+            {
+                strcpy(temp, temp + 7); // Skip "^AFLAGS "
+                JAMmbAddField(*SubFieldPtr, JAMSFLD_FLAGS, strlen(temp),
+                              &position, temp);
+            }
         }
 
-     JAMmbAddField(*SubFieldPtr, JAMSFLD_OADDRESS, strlen(temp), &position, temp);
+        if (mis->origfido.point == 0)
+            sprintf(temp, "%hu:%hu/%hu", mis->origfido.zone,
+                    mis->origfido.net, mis->origfido.node);
+        else
+            sprintf(temp, "%hu:%hu/%hu.%hu", mis->origfido.zone,
+                    mis->origfido.net,
+                    mis->origfido.node, mis->origfido.point);
 
-
-     if(mis->destfido.point == 0)
-        sprintf(temp, "%hu:%hu/%hu", mis->destfido.zone,
-                                     mis->destfido.net,
-                                     mis->destfido.node);
-     else
-        sprintf(temp, "%hu:%hu/%hu.%hu", mis->destfido.zone,
-                                         mis->destfido.net,
-                                         mis->destfido.node,
-                                         mis->destfido.point);
-
-     if(mis->destdomain[0] != '\0')
+        if (mis->origdomain[0] != '\0')
         {
-        strcat(temp, "@");
-        strcat(temp, mis->destdomain);
+            strcat(temp, "@");
+            strcat(temp, mis->origdomain);
         }
 
-     JAMmbAddField(*SubFieldPtr, JAMSFLD_DADDRESS, strlen(temp), &position, temp);
-     }
+        JAMmbAddField(*SubFieldPtr, JAMSFLD_OADDRESS, strlen(temp),
+                      &position, temp);
 
-   JAMmbAddField(*SubFieldPtr, JAMSFLD_SUBJECT, strlen(mis->subj), &position, mis->subj);
 
-   // ------- Check for attached files
+        if (mis->destfido.point == 0)
+            sprintf(temp, "%hu:%hu/%hu", mis->destfido.zone,
+                    mis->destfido.net, mis->destfido.node);
+        else
+            sprintf(temp, "%hu:%hu/%hu.%hu", mis->destfido.zone,
+                    mis->destfido.net,
+                    mis->destfido.node, mis->destfido.point);
 
-   if(mis->attached != NULL)
-     {
-     JamData->Hdr.Attribute |= MSG_FILEATTACH;
-     for(curstring = mis->attached; curstring; curstring = curstring->next)
-       {
-       if(curstring->s == NULL || curstring->s[0] == '\0')
-          continue;
-       JAMmbAddField(*SubFieldPtr, JAMSFLD_ENCLFILE,
-                             strlen(curstring->s), &position, curstring->s);
-       }
-     }
-
-   // ---------- Check for file requests
-
-   if(mis->requested != NULL)
-     {
-     JamData->Hdr.Attribute |= MSG_FILEREQUEST;
-     for(curstring = mis->requested; curstring; curstring = curstring->next)
-       {
-       if(curstring->s == NULL || curstring->s[0] == '\0')
-          continue;
-
-       strcpy(temp, curstring->s);
-       len = strlen(temp);
-
-       if(curstring->pw != NULL)
-         {
-         sprintf(temp, "%s\0%s", curstring->s, curstring->pw);
-         strcpy(temp+len+1, curstring->pw);
-         len += (strlen(curstring->pw) + 1);
-         }
-
-       JAMmbAddField(*SubFieldPtr, JAMSFLD_ENCLFREQ, len, &position, temp);
-       }
-     }
-
-   // --------- Check for SEEN-BY lines
-
-   if(mis->seenby != NULL && (sq->type & (MSGTYPE_ECHO|MSGTYPE_NEWS)))
-     {
-     for(curstring = mis->seenby; curstring; curstring = curstring->next)
-       {
-       if(curstring->s == NULL || curstring->s[0] == '\0')
-          continue;
-
-       len = strlen(curstring->s);
-
-       if( (position + len + 20) > curlen)
-          {
-          curlen += (512+len);
-          if( (*SubFieldPtr = realloc(*SubFieldPtr, curlen)) == NULL )
-             return; // Out of mem :-(
-          }
-
-       JAMmbAddField(*SubFieldPtr, JAMSFLD_SEENBY2D,
-                             strlen(curstring->s), &position, curstring->s);
-       }
-     }
-
-   // ------------- Check for PATH lines.
-
-   if(mis->path != NULL && (sq->type & (MSGTYPE_ECHO|MSGTYPE_NEWS)) )
-     {
-     for(curstring = mis->path; curstring; curstring = curstring->next)
-       {
-       if(curstring->s == NULL || curstring->s[0] == '\0')
-          continue;
-
-       len = strlen(curstring->s);
-
-       if( (position + len + 20) > curlen)
-          {
-          curlen += (512+len);
-          if( (*SubFieldPtr = realloc(*SubFieldPtr, curlen)) == NULL )
-             return; // Out of mem :-(
-          }
-
-       JAMmbAddField(*SubFieldPtr, JAMSFLD_PATH2D,
-                             strlen(curstring->s), &position, curstring->s);
-       }
-     }
-
-   // ----------  Check for VIA lines
-
-   if(mis->via != NULL && (sq->type & (MSGTYPE_NET|MSGTYPE_MAIL)))
-     {
-     for(curstring = mis->via; curstring; curstring = curstring->next)
-       {
-       if(curstring->s == NULL || curstring->s[0] == '\0')
-          continue;
-
-       len = strlen(curstring->s);
-
-       if( (position + len + 20) > curlen)
-          {
-          curlen += (512+len);
-          if( (*SubFieldPtr = realloc(*SubFieldPtr, curlen)) == NULL )
-             return; // Out of mem :-(
-          }
-
-       JAMmbAddField(*SubFieldPtr, JAMSFLD_TRACE,
-                             strlen(curstring->s), &position, curstring->s);
-       }
-     }
-
-   // ---------- Add extra unknown SubFields.
-
-   if(mis->extrasublen != 0L)
-     {
-     if( (position + mis->extrasublen) > curlen)
+        if (mis->destdomain[0] != '\0')
         {
-        curlen += (mis->extrasublen);
-        if( (*SubFieldPtr = realloc(*SubFieldPtr, curlen)) == NULL )
-           return; // Out of mem :-(
+            strcat(temp, "@");
+            strcat(temp, mis->destdomain);
         }
 
-     memcpy((*SubFieldPtr + position), mis->extrasub, mis->extrasublen);
-     position+= mis->extrasublen;
-     }
+        JAMmbAddField(*SubFieldPtr, JAMSFLD_DADDRESS, strlen(temp),
+                      &position, temp);
+    }
 
-   /* Update SubFieldLen, just in case there are no kludges */
+    JAMmbAddField(*SubFieldPtr, JAMSFLD_SUBJECT, strlen(mis->subj),
+                  &position, mis->subj);
 
-   JamData->Hdr.SubfieldLen = position;
+    // ------- Check for attached files
 
-   if(ctxt == NULL) return;
-
-   kludgeptr = ctxt;
-   while( (kludgeptr = strchr(kludgeptr, '\01')) != NULL )
-     {
-     // First we check the size of the memory block we use.
-     // Realloc if too small, take 255 chars as a MAX for
-     // Subfields to add. Add 10 bytes for LoID, HiID etc.
-
-     if( (position + 266) > curlen)
+    if (mis->attached != NULL)
+    {
+        JamData->Hdr.Attribute |= MSG_FILEATTACH;
+        for (curstring = mis->attached; curstring;
+             curstring = curstring->next)
         {
-        curlen += 512;
-        if( (*SubFieldPtr = realloc(*SubFieldPtr, curlen)) == NULL )
-           return; // Out of mem :-(
+            if (curstring->s == NULL || curstring->s[0] == '\0')
+                continue;
+            JAMmbAddField(*SubFieldPtr, JAMSFLD_ENCLFILE,
+                          strlen(curstring->s), &position, curstring->s);
+        }
+    }
+
+    // ---------- Check for file requests
+
+    if (mis->requested != NULL)
+    {
+        JamData->Hdr.Attribute |= MSG_FILEREQUEST;
+        for (curstring = mis->requested; curstring;
+             curstring = curstring->next)
+        {
+            if (curstring->s == NULL || curstring->s[0] == '\0')
+                continue;
+
+            strcpy(temp, curstring->s);
+            len = strlen(temp);
+
+            if (curstring->pw != NULL)
+            {
+                sprintf(temp, "%s\0%s", curstring->s, curstring->pw);
+                strcpy(temp + len + 1, curstring->pw);
+                len += (strlen(curstring->pw) + 1);
+            }
+
+            JAMmbAddField(*SubFieldPtr, JAMSFLD_ENCLFREQ, len, &position,
+                          temp);
+        }
+    }
+
+    // --------- Check for SEEN-BY lines
+
+    if (mis->seenby != NULL && (sq->type & (MSGTYPE_ECHO | MSGTYPE_NEWS)))
+    {
+        for (curstring = mis->seenby; curstring;
+             curstring = curstring->next)
+        {
+            if (curstring->s == NULL || curstring->s[0] == '\0')
+                continue;
+
+            len = strlen(curstring->s);
+
+            if ((position + len + 20) > curlen)
+            {
+                curlen += (512 + len);
+                if ((*SubFieldPtr = realloc(*SubFieldPtr, curlen)) == NULL)
+                    return;     // Out of mem :-(
+            }
+
+            JAMmbAddField(*SubFieldPtr, JAMSFLD_SEENBY2D,
+                          strlen(curstring->s), &position, curstring->s);
+        }
+    }
+
+    // ------------- Check for PATH lines.
+
+    if (mis->path != NULL && (sq->type & (MSGTYPE_ECHO | MSGTYPE_NEWS)))
+    {
+        for (curstring = mis->path; curstring; curstring = curstring->next)
+        {
+            if (curstring->s == NULL || curstring->s[0] == '\0')
+                continue;
+
+            len = strlen(curstring->s);
+
+            if ((position + len + 20) > curlen)
+            {
+                curlen += (512 + len);
+                if ((*SubFieldPtr = realloc(*SubFieldPtr, curlen)) == NULL)
+                    return;     // Out of mem :-(
+            }
+
+            JAMmbAddField(*SubFieldPtr, JAMSFLD_PATH2D,
+                          strlen(curstring->s), &position, curstring->s);
+        }
+    }
+
+    // ---------- Check for VIA lines
+
+    if (mis->via != NULL && (sq->type & (MSGTYPE_NET | MSGTYPE_MAIL)))
+    {
+        for (curstring = mis->via; curstring; curstring = curstring->next)
+        {
+            if (curstring->s == NULL || curstring->s[0] == '\0')
+                continue;
+
+            len = strlen(curstring->s);
+
+            if ((position + len + 20) > curlen)
+            {
+                curlen += (512 + len);
+                if ((*SubFieldPtr = realloc(*SubFieldPtr, curlen)) == NULL)
+                    return;     // Out of mem :-(
+            }
+
+            JAMmbAddField(*SubFieldPtr, JAMSFLD_TRACE,
+                          strlen(curstring->s), &position, curstring->s);
+        }
+    }
+
+    // ---------- Add extra unknown SubFields.
+
+    if (mis->extrasublen != 0L)
+    {
+        if ((position + mis->extrasublen) > curlen)
+        {
+            curlen += (mis->extrasublen);
+            if ((*SubFieldPtr = realloc(*SubFieldPtr, curlen)) == NULL)
+                return;         // Out of mem :-(
         }
 
-     endptr = strchr(kludgeptr+1, '\01');
+        memcpy((*SubFieldPtr + position), mis->extrasub, mis->extrasublen);
+        position += mis->extrasublen;
+    }
 
-     if(endptr == NULL) endptr = strchr(kludgeptr+1, '\0');
+    /* Update SubFieldLen, just in case there are no kludges */
 
-     if(!strncmp(kludgeptr+1, "MSGID: ", 7))
+    JamData->Hdr.SubfieldLen = position;
+
+    if (ctxt == NULL)
+        return;
+
+    kludgeptr = ctxt;
+    while ((kludgeptr = strchr(kludgeptr, '\01')) != NULL)
+    {
+        // First we check the size of the memory block we use.
+        // Realloc if too small, take 255 chars as a MAX for
+        // Subfields to add. Add 10 bytes for LoID, HiID etc.
+
+        if ((position + 266) > curlen)
         {
-        JAMmbAddField(*SubFieldPtr, JAMSFLD_MSGID, endptr-(kludgeptr+8),
-                                                   &position, kludgeptr+8);
-        memset(temp, '\0', sizeof(temp));
-        memcpy(temp, kludgeptr+8, endptr-(kludgeptr+8));
-        strlwr(temp);
-        JamData->Hdr.MsgIdCRC = JAMsysCrc32(temp, strlen(temp), -1L);
+            curlen += 512;
+            if ((*SubFieldPtr = realloc(*SubFieldPtr, curlen)) == NULL)
+                return;         // Out of mem :-(
         }
-     else if(!strncmp(kludgeptr+1, "REPLY: ", 7))
+
+        endptr = strchr(kludgeptr + 1, '\01');
+
+        if (endptr == NULL)
+            endptr = strchr(kludgeptr + 1, '\0');
+
+        if (!strncmp(kludgeptr + 1, "MSGID: ", 7))
         {
-        JAMmbAddField(*SubFieldPtr, JAMSFLD_REPLYID, endptr-(kludgeptr+8),
-                                                   &position, kludgeptr+8);
-        memset(temp, '\0', sizeof(temp));
-        memcpy(temp, kludgeptr+8, endptr-(kludgeptr+8));
-        strlwr(temp);
-        JamData->Hdr.ReplyCRC = JAMsysCrc32(temp, strlen(temp), -1L);
+            JAMmbAddField(*SubFieldPtr, JAMSFLD_MSGID,
+                          endptr - (kludgeptr + 8), &position,
+                          kludgeptr + 8);
+            memset(temp, '\0', sizeof(temp));
+            memcpy(temp, kludgeptr + 8, endptr - (kludgeptr + 8));
+            strlwr(temp);
+            JamData->Hdr.MsgIdCRC = JAMsysCrc32(temp, strlen(temp), -1L);
         }
-     else if(!strncmp(kludgeptr+1, "PID: ", 5))
+        else if (!strncmp(kludgeptr + 1, "REPLY: ", 7))
         {
-        JAMmbAddField(*SubFieldPtr, JAMSFLD_PID, endptr-(kludgeptr+6),
-                                                   &position, kludgeptr+6);
+            JAMmbAddField(*SubFieldPtr, JAMSFLD_REPLYID,
+                          endptr - (kludgeptr + 8), &position,
+                          kludgeptr + 8);
+            memset(temp, '\0', sizeof(temp));
+            memcpy(temp, kludgeptr + 8, endptr - (kludgeptr + 8));
+            strlwr(temp);
+            JamData->Hdr.ReplyCRC = JAMsysCrc32(temp, strlen(temp), -1L);
         }
-     else if(!strncmp(kludgeptr+1, "TZUTC: ", 7))
+        else if (!strncmp(kludgeptr + 1, "PID: ", 5))
         {
-        JAMmbAddField(*SubFieldPtr, JAMSFLD_TZUTCINFO, endptr-(kludgeptr+8),
-                                                   &position, kludgeptr+8);
+            JAMmbAddField(*SubFieldPtr, JAMSFLD_PID,
+                          endptr - (kludgeptr + 6), &position,
+                          kludgeptr + 6);
         }
-     else JAMmbAddField(*SubFieldPtr, JAMSFLD_FTSKLUDGE, endptr-(kludgeptr+1),
-                                                     &position, kludgeptr+1);
-     kludgeptr++;
-     }
+        else if (!strncmp(kludgeptr + 1, "TZUTC: ", 7))
+        {
+            JAMmbAddField(*SubFieldPtr, JAMSFLD_TZUTCINFO,
+                          endptr - (kludgeptr + 8), &position,
+                          kludgeptr + 8);
+        }
+        else
+            JAMmbAddField(*SubFieldPtr, JAMSFLD_FTSKLUDGE,
+                          endptr - (kludgeptr + 1), &position,
+                          kludgeptr + 1);
+        kludgeptr++;
+    }
 
 
 
-   JamData->Hdr.SubfieldLen = position;
+    JamData->Hdr.SubfieldLen = position;
 }
 
 /*
@@ -1573,28 +1648,28 @@ void near SQ2JAM(MIS *mis, char *ctxt, MSG *sq, word mode, byte **SubFieldPtr)
 */
 
 
-byte near JAMMsgExists(MSG *sq, UMSGID umsgid)
+byte near JAMMsgExists(MSG * sq, UMSGID umsgid)
 {
-   JAMHDR hdr;
+    JAMHDR hdr;
 
-   /* Read index entry.. */
+    /* Read index entry.. */
 
-   if(JAMReadIdx(sq, umsgid, &JamData->Idx) == -1)
-      return 0;
+    if (JAMReadIdx(sq, umsgid, &JamData->Idx) == -1)
+        return 0;
 
-   /* If both are 0xFFFFFFFF there is no corresponding header.. */
+    /* If both are 0xFFFFFFFF there is no corresponding header.. */
 
-   if( (JamData->Idx.UserCRC   == 0xFFFFFFFFL) &&
-       (JamData->Idx.HdrOffset == 0xFFFFFFFFL) )
-       return 0;
+    if ((JamData->Idx.UserCRC == 0xFFFFFFFFL) &&
+        (JamData->Idx.HdrOffset == 0xFFFFFFFFL))
+        return 0;
 
-   if(JAMReadHeader(sq, JamData->Idx.HdrOffset, &hdr) == -1)
-      return 0;
+    if (JAMReadHeader(sq, JamData->Idx.HdrOffset, &hdr) == -1)
+        return 0;
 
-   if(hdr.Attribute & MSG_DELETED)
-      return 0;
-   else
-      return 1;
+    if (hdr.Attribute & MSG_DELETED)
+        return 0;
+    else
+        return 1;
 
 }
 
@@ -1605,90 +1680,98 @@ byte near JAMMsgExists(MSG *sq, UMSGID umsgid)
 /* ----------------------------------------------------------- */
 
 
-int near JAMmbOpen(MSG *sq, byte *tempname)
+int near JAMmbOpen(MSG * sq, byte * tempname)
 {
-  char FileName[120], name[100];
+    char FileName[120], name[100];
 
 #ifndef __GNUC__
-  int caccess = O_RDWR | O_BINARY | O_CREAT;
+    int caccess = O_RDWR | O_BINARY | O_CREAT;
 #else
-  int caccess = O_RDWR | O_CREAT;
+    int caccess = O_RDWR | O_CREAT;
 #endif
 
-  unsigned mode   = S_IREAD | S_IWRITE;
+    unsigned mode = S_IREAD | S_IWRITE;
 
 
-  strcpy(name, tempname);
-  #ifdef __GNUC__
-  Strip_Trailing(name, '/');
-  #else
-  Strip_Trailing(name, '\\');
-  #endif
+    strcpy(name, tempname);
+#ifdef __GNUC__
+    Strip_Trailing(name, '/');
+#else
+    Strip_Trailing(name, '\\');
+#endif
 
-  JamData->HdrHandle =
-   JamData->IdxHandle =
-    JamData->TxtHandle =
-     JamData->LrdHandle = -1;
+    JamData->HdrHandle =
+        JamData->IdxHandle = JamData->TxtHandle = JamData->LrdHandle = -1;
 
-  /* .JHR file */
+    /* .JHR file */
 
-  sprintf(FileName, "%s%s", name, EXT_HDRFILE);
-  if((JamData->HdrHandle=sopen(FileName, caccess, SH_DENYNO, mode)) == -1)
-     {
-     msgapierr=MERR_OPENFILE;
-     return -1;
-     }
-
-  if(filelength(JamData->HdrHandle) == 0L)  // Zero length, create new header
+    sprintf(FileName, "%s%s", name, EXT_HDRFILE);
+    if ((JamData->HdrHandle =
+         sopen(FileName, caccess, SH_DENYNO, mode)) == -1)
     {
-    memset(&JamData->HdrInfo, 0, sizeof(JAMHDRINFO));
-    strcpy(JamData->HdrInfo.Signature, HEADERSIGNATURE);
-    JamData->HdrInfo.DateCreated=JAMsysTime(NULL);
-    JamData->HdrInfo.PasswordCRC=0xffffffffL;
-    JamData->HdrInfo.BaseMsgNum=1L;
+        msgapierr = MERR_OPENFILE;
+        return -1;
+    }
 
-    lseek(JamData->HdrHandle, 0L, SEEK_SET);
-    if (write(JamData->HdrHandle, &JamData->HdrInfo, sizeof(JAMHDRINFO))
-                                                        !=sizeof(JAMHDRINFO))
+    if (filelength(JamData->HdrHandle) == 0L) // Zero length, create new
+                                              // header
+    {
+        memset(&JamData->HdrInfo, 0, sizeof(JAMHDRINFO));
+        strcpy(JamData->HdrInfo.Signature, HEADERSIGNATURE);
+        JamData->HdrInfo.DateCreated = JAMsysTime(NULL);
+        JamData->HdrInfo.PasswordCRC = 0xffffffffL;
+        JamData->HdrInfo.BaseMsgNum = 1L;
+
+        lseek(JamData->HdrHandle, 0L, SEEK_SET);
+        if (write
+            (JamData->HdrHandle, &JamData->HdrInfo,
+             sizeof(JAMHDRINFO)) != sizeof(JAMHDRINFO))
         {
-        msgapierr=MERR_WRITE;
-        goto ErrorExit;
+            msgapierr = MERR_WRITE;
+            goto ErrorExit;
         }
     }
-  else
-    if(JAMmbUpdateHeaderInfo(sq, 0) == -1)
+    else if (JAMmbUpdateHeaderInfo(sq, 0) == -1)
         goto ErrorExit;
 
-  /* .JDT file */
+    /* .JDT file */
 
-  sprintf(FileName, "%s%s", name, EXT_TXTFILE);
-  if( (JamData->TxtHandle=sopen(FileName, caccess, SH_DENYNO, mode)) == -1)
-      goto ErrorExit;
+    sprintf(FileName, "%s%s", name, EXT_TXTFILE);
+    if ((JamData->TxtHandle =
+         sopen(FileName, caccess, SH_DENYNO, mode)) == -1)
+        goto ErrorExit;
 
-  /* .JDX file */
+    /* .JDX file */
 
-  sprintf(FileName, "%s%s", name, EXT_IDXFILE);
-  if( (JamData->IdxHandle=sopen(FileName, caccess, SH_DENYNO, mode)) == -1)
-      goto ErrorExit;
+    sprintf(FileName, "%s%s", name, EXT_IDXFILE);
+    if ((JamData->IdxHandle =
+         sopen(FileName, caccess, SH_DENYNO, mode)) == -1)
+        goto ErrorExit;
 
-  /* .JLR file */
+    /* .JLR file */
 
-  sprintf(FileName, "%s%s", name, EXT_LRDFILE);
-  if( (JamData->LrdHandle=sopen(FileName, caccess, SH_DENYNO, mode)) == -1)
-      goto ErrorExit;
+    sprintf(FileName, "%s%s", name, EXT_LRDFILE);
+    if ((JamData->LrdHandle =
+         sopen(FileName, caccess, SH_DENYNO, mode)) == -1)
+        goto ErrorExit;
 
-  return 0;  // Success!
+    return 0;                   // Success!
 
   ErrorExit:
 
-  if(!msgapierr) msgapierr=MERR_OPENFILE;
+    if (!msgapierr)
+        msgapierr = MERR_OPENFILE;
 
-  if(JamData->HdrHandle != -1) close(JamData->HdrHandle);
-  if(JamData->IdxHandle != -1) close(JamData->IdxHandle);
-  if(JamData->TxtHandle != -1) close(JamData->TxtHandle);
-  if(JamData->LrdHandle != -1) close(JamData->LrdHandle);
+    if (JamData->HdrHandle != -1)
+        close(JamData->HdrHandle);
+    if (JamData->IdxHandle != -1)
+        close(JamData->IdxHandle);
+    if (JamData->TxtHandle != -1)
+        close(JamData->TxtHandle);
+    if (JamData->LrdHandle != -1)
+        close(JamData->LrdHandle);
 
-  return -1;  // Something wrong :-(
+    return -1;                  // Something wrong :-(
 
 }
 
@@ -1698,16 +1781,16 @@ int near JAMmbOpen(MSG *sq, byte *tempname)
 /* -------------------------------------- */
 
 
-int near JAMmbClose(MSG *sq)
+int near JAMmbClose(MSG * sq)
 {
-  /* Close all handles */
+    /* Close all handles */
 
-  close(JamData->HdrHandle);
-  close(JamData->TxtHandle);
-  close(JamData->IdxHandle);
-  close(JamData->LrdHandle);
+    close(JamData->HdrHandle);
+    close(JamData->TxtHandle);
+    close(JamData->IdxHandle);
+    close(JamData->LrdHandle);
 
-  return 0;
+    return 0;
 }
 
 
@@ -1716,34 +1799,34 @@ int near JAMmbClose(MSG *sq)
 /* - Returns -1 on error, 0 if all went well.        - */
 /* --------------------------------------------------- */
 
-int near JAMReadHeader(MSG *sq, long offset, JAMHDR *hdr)
+int near JAMReadHeader(MSG * sq, long offset, JAMHDR * hdr)
 {
 
     /* Fetch header */
-    if(lseek(JamData->HdrHandle, offset, SEEK_SET) != offset)
-        {
-        msgapierr=MERR_SEEK;
+    if (lseek(JamData->HdrHandle, offset, SEEK_SET) != offset)
+    {
+        msgapierr = MERR_SEEK;
         return -1;
-        }
+    }
 
-    if(read(JamData->HdrHandle, hdr, sizeof(JAMHDR)) != sizeof(JAMHDR))
-        {
-        msgapierr=MERR_READ;
+    if (read(JamData->HdrHandle, hdr, sizeof(JAMHDR)) != sizeof(JAMHDR))
+    {
+        msgapierr = MERR_READ;
         return -1;
-        }
+    }
 
     /* Check header */
-    if(strcmp(hdr->Signature, HEADERSIGNATURE) != 0)
-        {
-        msgapierr=MERR_BADSIG;
+    if (strcmp(hdr->Signature, HEADERSIGNATURE) != 0)
+    {
+        msgapierr = MERR_BADSIG;
         return -1;
-        }
+    }
 
-    if(hdr->Revision != CURRENTREVLEV)
-        {
-        msgapierr=MERR_BADREV;
+    if (hdr->Revision != CURRENTREVLEV)
+    {
+        msgapierr = MERR_BADREV;
         return -1;
-        }
+    }
 
     return 0;
 }
@@ -1754,20 +1837,20 @@ int near JAMReadHeader(MSG *sq, long offset, JAMHDR *hdr)
 /* - Returns -1 on error, 0 if all went well. - */
 /* -------------------------------------------- */
 
-int near JAMWriteHeader(MSG *sq, long offset, JAMHDR *hdr)
+int near JAMWriteHeader(MSG * sq, long offset, JAMHDR * hdr)
 {
 
-    if(lseek(JamData->HdrHandle, offset, SEEK_SET) != offset)
-        {
-        msgapierr=MERR_SEEK;
+    if (lseek(JamData->HdrHandle, offset, SEEK_SET) != offset)
+    {
+        msgapierr = MERR_SEEK;
         return -1;
-        }
+    }
 
-    if(write(JamData->HdrHandle, hdr, sizeof(JAMHDR)) != sizeof(JAMHDR))
-        {
-        msgapierr=MERR_WRITE;
+    if (write(JamData->HdrHandle, hdr, sizeof(JAMHDR)) != sizeof(JAMHDR))
+    {
+        msgapierr = MERR_WRITE;
         return -1;
-        }
+    }
 
     return 0;
 }
@@ -1780,61 +1863,63 @@ int near JAMWriteHeader(MSG *sq, long offset, JAMHDR *hdr)
 /* ------------------------------------------------------ */
 
 
-int near JAMReadIdx(MSG *sq, dword number, JAMIDXREC *idx)
+int near JAMReadIdx(MSG * sq, dword number, JAMIDXREC * idx)
 {
-   long WhatOffset;
-   int  BytesRead;
+    long WhatOffset;
+    int BytesRead;
 
 
-    if( (JamData->IdxCache.active != 0)     &&
-        (number <= JamData->IdxCache.high) &&
-        (number >= JamData->IdxCache.base) &&
-        (time(NULL) < (JamData->IdxCache.birth+5)) )      /* Cache hit? */
+    if ((JamData->IdxCache.active != 0) && (number <= JamData->IdxCache.high) && (number >= JamData->IdxCache.base) && (time(NULL) < (JamData->IdxCache.birth + 5))) /* Cache 
+                                                                                                                                                                        hit? 
+                                                                                                                                                                      */
 
-        {
+    {
         memcpy(idx,
-               &JamData->IdxCache.contents[number - JamData->IdxCache.base],
+               &JamData->IdxCache.contents[number -
+                                           JamData->IdxCache.base],
                sizeof(JAMIDXREC));
 
         return 0;
-        }
+    }
 
     /* No cache hit, fill cache */
 
     JamData->IdxCache.active = 0; /* Invalidate contents */
-    JamData->IdxCache.high   = 0;
+    JamData->IdxCache.high = 0;
 
-    JamData->IdxCache.base = number - (IDXBUFSIZE/2);
+    JamData->IdxCache.base = number - (IDXBUFSIZE / 2);
 
-    if( (JamData->IdxCache.base < JamData->HdrInfo.BaseMsgNum) ||
-        ((IDXBUFSIZE/2) > number) )
-       JamData->IdxCache.base = JamData->HdrInfo.BaseMsgNum;
+    if ((JamData->IdxCache.base < JamData->HdrInfo.BaseMsgNum) ||
+        ((IDXBUFSIZE / 2) > number))
+        JamData->IdxCache.base = JamData->HdrInfo.BaseMsgNum;
 
     /* Fetch index record */
 
-    WhatOffset=(JamData->IdxCache.base - JamData->HdrInfo.BaseMsgNum) * (long) sizeof(JAMIDXREC);
+    WhatOffset =
+        (JamData->IdxCache.base -
+         JamData->HdrInfo.BaseMsgNum) * (long)sizeof(JAMIDXREC);
     if (lseek(JamData->IdxHandle, WhatOffset, SEEK_SET) != WhatOffset)
-        {
-        msgapierr=MERR_SEEK;
+    {
+        msgapierr = MERR_SEEK;
         return -1;
-        }
+    }
 
     if ((BytesRead = read(JamData->IdxHandle,
                           &JamData->IdxCache.contents[0],
-                          sizeof(JAMIDXREC) * IDXBUFSIZE )) == -1)
-        {
-        msgapierr=MERR_READ;
+                          sizeof(JAMIDXREC) * IDXBUFSIZE)) == -1)
+    {
+        msgapierr = MERR_READ;
         return -1;
-        }
+    }
 
     JamData->IdxCache.high = JamData->IdxCache.base +
-                             (BytesRead/sizeof(JAMIDXREC)) - 1;
+        (BytesRead / sizeof(JAMIDXREC)) - 1;
 
-    if(BytesRead < sizeof(JAMIDXREC))
-       {
-       msgapierr=MERR_READ;
-       return -1;
-       }
+    if (BytesRead < sizeof(JAMIDXREC))
+    {
+        msgapierr = MERR_READ;
+        return -1;
+    }
 
     JamData->IdxCache.birth = time(NULL);
     JamData->IdxCache.active = 1;
@@ -1853,28 +1938,30 @@ int near JAMReadIdx(MSG *sq, dword number, JAMIDXREC *idx)
 /* -------------------------------------------- */
 
 
-int near JAMWriteIdx(MSG *sq, dword number, JAMIDXREC *idx)
+int near JAMWriteIdx(MSG * sq, dword number, JAMIDXREC * idx)
 {
-   long offset;
+    long offset;
 
     JamData->IdxCache.active = 0; /* Invalidate contents of cache! */
-    JamData->IdxCache.high   = 0;
+    JamData->IdxCache.high = 0;
 
     /* Fetch index record */
 
-    offset = (number - JamData->HdrInfo.BaseMsgNum) * (long) sizeof(JAMIDXREC);
+    offset =
+        (number - JamData->HdrInfo.BaseMsgNum) * (long)sizeof(JAMIDXREC);
 
-    if(lseek(JamData->IdxHandle, offset, SEEK_SET) != offset)
-        {
-        msgapierr=MERR_SEEK;
+    if (lseek(JamData->IdxHandle, offset, SEEK_SET) != offset)
+    {
+        msgapierr = MERR_SEEK;
         return -1;
-        }
+    }
 
-    if(write(JamData->IdxHandle, idx, sizeof(JAMIDXREC)) != sizeof(JAMIDXREC))
-        {
-        msgapierr=MERR_WRITE;
+    if (write(JamData->IdxHandle, idx, sizeof(JAMIDXREC)) !=
+        sizeof(JAMIDXREC))
+    {
+        msgapierr = MERR_WRITE;
         return -1;
-        }
+    }
 
     return 0;
 }
@@ -1900,66 +1987,69 @@ int near JAMWriteIdx(MSG *sq, dword number, JAMIDXREC *idx)
 **  updated to point to the first position after the newly added field.
 */
 
-void near JAMmbAddField(byte *start, dword WhatField,
-                               size_t DatLen,
-                               word * Position, byte * Data)
+void near JAMmbAddField(byte * start, dword WhatField,
+                        size_t DatLen, word * Position, byte * Data)
 {
-   JAMSUBFIELD *SubFieldPtr;
+    JAMSUBFIELD *SubFieldPtr;
 
-   if(DatLen > 255) return;
+    if (DatLen > 255)
+        return;
 
-   SubFieldPtr=(JAMSUBFIELD *)(start + *Position);
-   SubFieldPtr->LoID=(word)WhatField;
-   SubFieldPtr->HiID=0;
-   SubFieldPtr->DatLen=0L;
-   *Position+= sizeof(JAMBINSUBFIELD);
+    SubFieldPtr = (JAMSUBFIELD *) (start + *Position);
+    SubFieldPtr->LoID = (word) WhatField;
+    SubFieldPtr->HiID = 0;
+    SubFieldPtr->DatLen = 0L;
+    *Position += sizeof(JAMBINSUBFIELD);
 
-   memcpy( (start + *Position), Data, DatLen);
-   SubFieldPtr->DatLen+=DatLen;
-   *Position+= DatLen;
+    memcpy((start + *Position), Data, DatLen);
+    SubFieldPtr->DatLen += DatLen;
+    *Position += DatLen;
 }
 
 
 
 
-int near JAMmbUpdateHeaderInfo(MSG *sq, int WriteIt)
+int near JAMmbUpdateHeaderInfo(MSG * sq, int WriteIt)
 {
 
     /* Seek to beginning of file */
-    if (lseek(JamData->HdrHandle, 0L, SEEK_SET)!=0L)
-        {
-        msgapierr=MERR_SEEK;
+    if (lseek(JamData->HdrHandle, 0L, SEEK_SET) != 0L)
+    {
+        msgapierr = MERR_SEEK;
         return -1;
-        }
+    }
 
-    /* Update ModCounter if told to*/
+    /* Update ModCounter if told to */
     if (WriteIt)
-        {
+    {
         JamData->HdrInfo.ModCounter++;
 
         if (JamData->HdrInfo.BaseMsgNum == 0L)
             JamData->HdrInfo.BaseMsgNum = 1L;
 
         /* Update header info record */
-        if (write(JamData->HdrHandle, &JamData->HdrInfo, sizeof(JAMHDRINFO))!= sizeof(JAMHDRINFO))
-            {
+        if (write
+            (JamData->HdrHandle, &JamData->HdrInfo,
+             sizeof(JAMHDRINFO)) != sizeof(JAMHDRINFO))
+        {
             JamData->HdrInfo.ModCounter--;
-            msgapierr=MERR_WRITE;
+            msgapierr = MERR_WRITE;
             return -1;
-            }
         }
+    }
     else
         /* Fetch header info record */
+    {
+        if (read(JamData->HdrHandle, &JamData->HdrInfo, sizeof(JAMHDRINFO))
+            != sizeof(JAMHDRINFO))
         {
-        if (read(JamData->HdrHandle, &JamData->HdrInfo, sizeof(JAMHDRINFO))!= sizeof(JAMHDRINFO))
-            {
-            msgapierr=MERR_READ;
+            msgapierr = MERR_READ;
             return -1;
-            }
+        }
 
         if (JamData->HdrInfo.BaseMsgNum == 0L)
             JamData->HdrInfo.BaseMsgNum = 1L;
-        }
+    }
 
     return 0;
 }
@@ -1970,13 +2060,13 @@ int near JAMmbUpdateHeaderInfo(MSG *sq, int WriteIt)
 **  failure.
 */
 
-dword JAMmbFetchLastRead(MSG *sq, dword UserCRC, int getlast)
+dword JAMmbFetchLastRead(MSG * sq, dword UserCRC, int getlast)
 {
     sdword ReadCount;
     dword LastReadRec;
     JAMLREAD new;
 
-    begin:
+  begin:
 
     /* Seek to beginning of file */
 
@@ -1985,39 +2075,40 @@ dword JAMmbFetchLastRead(MSG *sq, dword UserCRC, int getlast)
 
     /* Read file from top to bottom */
 
-    LastReadRec=0L;
+    LastReadRec = 0L;
     while (1)
+    {
+        ReadCount =
+            read(JamData->LrdHandle, &new, (sdword) sizeof(JAMLREAD));
+        if (ReadCount != (sdword) sizeof(JAMLREAD))
         {
-        ReadCount=read(JamData->LrdHandle, &new, (sdword)sizeof(JAMLREAD));
-        if (ReadCount!=(sdword)sizeof(JAMLREAD))
-            {
             if (!ReadCount)
                 /* End of file */
-                {
+            {
                 memset(&new, '\0', sizeof(JAMLREAD));
                 new.UserCRC = UserCRC;
-                new.UserID  = UserCRC;
+                new.UserID = UserCRC;
                 write(JamData->LrdHandle, &new, sizeof(JAMLREAD));
                 goto begin;
-                }
+            }
             else
                 /* Read error */
                 return -1;
-            }
+        }
 
         /* See if it matches what we want */
-        if(new.UserCRC == UserCRC)
-          {
-          JamData->lastread = LastReadRec;
-          if(getlast)
-            return new.LastReadMsg;
-          else
-             return max(new.LastReadMsg, new.HighReadMsg);
-          }
+        if (new.UserCRC == UserCRC)
+        {
+            JamData->lastread = LastReadRec;
+            if (getlast)
+                return new.LastReadMsg;
+            else
+                return max(new.LastReadMsg, new.HighReadMsg);
+        }
 
         /* Next record number */
         LastReadRec++;
-        }/*while*/
+    }                           /* while */
 
 }
 
@@ -2027,7 +2118,7 @@ dword JAMmbFetchLastRead(MSG *sq, dword UserCRC, int getlast)
 **  Returns 1 upon success and 0 upon failure.
 */
 
-int JAMmbStoreLastRead(MSG *sq, dword last, dword highest, dword CRC)
+int JAMmbStoreLastRead(MSG * sq, dword last, dword highest, dword CRC)
 {
     sdword UserOffset;
     JAMLREAD new;
@@ -2035,18 +2126,19 @@ int JAMmbStoreLastRead(MSG *sq, dword last, dword highest, dword CRC)
 
     /* Seek to the appropriate position */
 
-    UserOffset=(sdword)(JamData->lastread * (sdword)sizeof(JAMLREAD));
-    if (lseek(JamData->LrdHandle, UserOffset, SEEK_SET)!=UserOffset)
+    UserOffset = (sdword) (JamData->lastread * (sdword) sizeof(JAMLREAD));
+    if (lseek(JamData->LrdHandle, UserOffset, SEEK_SET) != UserOffset)
         return -1;
 
     memset(&new, '\0', sizeof(JAMLREAD));
     new.UserCRC = CRC;
-    new.UserID  = CRC;
+    new.UserID = CRC;
     new.HighReadMsg = highest;
     new.LastReadMsg = last;
 
     /* Write record */
-    if (write(JamData->LrdHandle, &new, (sdword)sizeof(JAMLREAD))!=(sdword)sizeof(JAMLREAD))
+    if (write(JamData->LrdHandle, &new, (sdword) sizeof(JAMLREAD)) !=
+        (sdword) sizeof(JAMLREAD))
         return -1;
 
     return 0;
@@ -2058,24 +2150,23 @@ int JAMmbStoreLastRead(MSG *sq, dword last, dword highest, dword CRC)
 // not a fido address, return -1
 // ===============================================================
 
-int ParseFido(char *s, NETADDR *addr, char *domain)
+int ParseFido(char *s, NETADDR * addr, char *domain)
 {
-   char *charptr;
+    char *charptr;
 
-   if( (strchr(s, ':') == NULL) || (strchr(s, '/') == NULL) )
-     return -1;    // Not a Fido address
+    if ((strchr(s, ':') == NULL) || (strchr(s, '/') == NULL))
+        return -1;              // Not a Fido address
 
-   if( (charptr=strchr(s, '@')) != NULL )    // Address has a domain
-     {
-     strcpy(domain, charptr+1);
-     *charptr = '\0';
-     }
+    if ((charptr = strchr(s, '@')) != NULL) // Address has a domain
+    {
+        strcpy(domain, charptr + 1);
+        *charptr = '\0';
+    }
 
-   sscanf(s, "%hu:%hu/%hu.%hu", &addr->zone, &addr->net, &addr->node,
-                                                               &addr->point);
- 
-   return 0;
+    sscanf(s, "%hu:%hu/%hu.%hu", &addr->zone, &addr->net, &addr->node,
+           &addr->point);
+
+    return 0;
 }
 
 // ========================================================
-
