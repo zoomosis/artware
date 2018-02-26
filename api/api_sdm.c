@@ -1282,20 +1282,20 @@ void near Get_Binary_Date(struct _stamp *todate, struct _stamp *fromdate,
                           byte * asciidate)
 {
     if (fromdate->date.da == 0 ||
-        fromdate->date.da > 31 ||
         fromdate->date.mo == 0 ||
         fromdate->date.mo > 12 ||
         fromdate->date.yr > 20 ||
         fromdate->date.yr < 10 ||
         fromdate->time.hh > 23 ||
         fromdate->time.mm > 59 ||
-        fromdate->time.ss > 59 ||
         ((union stamp_combo *)&fromdate)->ldate == 0)
     {
         ASCII_Date_To_Binary(asciidate, (union stamp_combo *)todate);
     }
     else
+    {
         *todate = *fromdate;
+    }
 }
 
 // ======================================================================
