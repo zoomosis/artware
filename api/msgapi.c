@@ -4,7 +4,11 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
+
+#ifdef __WATCOMC__
 #include <dos.h>
+#endif
+
 #include "alc.h"
 #include "prog.h"
 #include "msgapi.h"
@@ -740,6 +744,47 @@ void Flags2Attr(char *s, dword * attr1, dword * attr2)
 
 }
 
+static int isleap(int year)
+{
+    return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
+}
+
+#define UNIX_EPOCH 1970
+
+static dword unixtime(const struct tm *tm)
+{
+    int year, i;
+    dword result;
+
+    result = 0UL;
+    year = tm->tm_year + 1900;
+
+    /* Traverse through each year */
+    for (i = UNIX_EPOCH; i < year; i++)
+    {
+        result += 31536000UL;  /* 60s * 60m * 24h * 365d = 31536000s */
+        if (isleap(i))
+        {
+            /* It was a leap year; add a day's worth of seconds */
+            result += 86400UL;  /* 60s * 60m * 24h = 86400s */
+        }
+    }
+
+    /* Traverse through each day of the year, adding a day's worth
+     * of seconds each time. */
+    for (i = 0; i < tm->tm_yday; i++)
+    {
+        result += 86400UL;  /* 60s * 60m * 24h = 86400s */
+    }
+
+    /* Now add the number of seconds remaining */
+    result += 3600UL * tm->tm_hour;
+    result += 60UL * tm->tm_min;
+    result += (dword) tm->tm_sec;
+
+    return result;
+}
+
 // ===============================================================
 
 /*
@@ -755,6 +800,7 @@ void Flags2Attr(char *s, dword * attr1, dword * attr2)
 */
 dword JAMsysTime(dword * pTime)
 {
+#if 0
     dword ti;
     struct dosdate_t d;
     struct dostime_t t;
@@ -778,6 +824,19 @@ dword JAMsysTime(dword * pTime)
         *pTime = ti;
 
     return (ti);
+#else
+    struct tm *tm;
+    time_t now;
+    now = time(NULL);
+
+    if (now != (time_t)-1)
+    {
+        tm = localtime(&now);
+        return unixtime(tm);
+    }
+
+    return (dword) 0;
+#endif
 }
 
 /*

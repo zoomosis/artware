@@ -19,7 +19,6 @@ int _fast getwordq(char *strng, char *dest, char *delim, char quote,
 char *_fast soundex(char *string);
 int _fast any2dec(char *str, unsigned int radix);
 char *_fast dec2any(unsigned int number, unsigned int radix);
-int _fast isleap(int year);
 char *_fast strrcat(char *string1, char *string2);
 char *_fast make_fullfname(char *path);
 char *_fast firstchar(char *strng, char *delim, int findword);

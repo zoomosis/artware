@@ -1,3 +1,5 @@
+#include "spack.h"
+
 #define SQNUMATTR1 26
 
 #ifdef __FLAT__
@@ -77,3 +79,5 @@ typedef struct
 
 #define SQADDMASK1 (aAS|aDIR|aIMM|aKFS|aTFS|aLOK|aCFM)
 #define SQADDMASK2 (aHUB|aXMA|aHIR|aCOV|aSIG|aLET|aFAX)
+
+#include "spop.h"

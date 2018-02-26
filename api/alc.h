@@ -50,7 +50,7 @@ unsigned cdecl coreleft(void);
 #elif defined(__TURBOC__)
 #include <alloc.h>
 #elif defined(__GNUC__)
-#include <malloc.h>
+#include <stdlib.h>
 #else
 #error Which compiler are you using?
 #endif

@@ -22,7 +22,6 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <malloc.h>
 #include "prog.h"
 #include "dr.h"
 #include "alc.h"

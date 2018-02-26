@@ -6,7 +6,7 @@ struct _sqidx;
 
 typedef struct _sqidx SQIDX;
 typedef struct _sqhdr SQHDR;
-typedef long FOFS;
+typedef sdword FOFS;
 
 
 #define NULL_FRAME      ((FOFS)0L)

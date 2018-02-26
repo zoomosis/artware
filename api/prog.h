@@ -146,8 +146,6 @@ void pascal End_Shadow(void);
 #endif
 
 
-typedef long timer_t;
-
 #define REGISTER
 
 #ifndef TRUE

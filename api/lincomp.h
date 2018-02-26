@@ -1,4 +1,6 @@
-#ifdef __GCC__
+#include "compiler.h"
+
+#ifdef __UNIX__
 
 #include <time.h>
 

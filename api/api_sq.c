@@ -17,6 +17,7 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <assert.h>
 
 #include "prog.h"
 #include "alc.h"
@@ -53,6 +54,9 @@ MSG *SquishOpenArea(byte * name, word mode, word type)
     struct _sqbase sqbase;
     MSG *sq;
 
+	assert(sizeof(struct _sqbase) == 256);
+	assert(sizeof (struct _sqhdr) == 28);
+	assert(sizeof (XMSG) == 238);
 
     if ((sq = CreateAreaHandle(type)) == NULL)
         return NULL;
