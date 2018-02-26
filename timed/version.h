@@ -2,8 +2,13 @@
 #define __VERSION_H__
 
 #define PROGNAME "timEd"
-#define VERSION "1.31+"
 #define PROGYEAR "2018"
+
+#if RELEASE
+#define VERSION "1.31+"
+#else
+#define VERSION "1.31.g1+"
+#endif
 
 #ifdef __DOS__
 #ifdef __FLAT__
