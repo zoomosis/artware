@@ -1,6 +1,10 @@
 # MSGAPI makefile for 32-bit OS/2 build using OpenWatcom
 
+!ifdef __LINUX__
+TARGET=../os2api.lib
+!else
 TARGET=..\os2api.lib
+!endif
 
 CC=wcl386
 CFLAGS=-zq -d2 -wx -zp1 -sg -bt=os2

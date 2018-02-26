@@ -1,6 +1,10 @@
 # MSGAPI makefile for 32-bit Windows NT build using OpenWatcom
 
+!ifdef __LINUX__
+TARGET=../ntapi.lib
+!else
 TARGET=..\ntapi.lib
+!endif
 
 CC=wcl386
 CFLAGS=-zq -d2 -wx -zp1 -sg -bm -bt=nt
