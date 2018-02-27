@@ -34,6 +34,9 @@
 - timEd: Cosmetic fix: Use ISO dates in the user interface. Alternatively,
   allow the user to specify the date format in strftime() form in TIMED.CFG.
 
+- timEd: Bug: When hitting right arrow in an empty message base, timEd
+  doesn't necessarily move to the first area with new mail.
+  
 - timEd: Document how to use timEd in Windows 10, using Legacy Mode in the
   shortcut properties.
 
