@@ -41,3 +41,5 @@
   shortcut properties.
 
 - timEd: Convert the documentation to Markdown format.
+
+- timEd: Write a TIMCOLOR.EXE replacement.
