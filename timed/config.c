@@ -625,7 +625,7 @@ void addname(char *name)
 
 // =========================================================
 
-AREA *init_area()
+AREA *init_area(void)
 {
     AREA *thisarea;
 
@@ -1079,15 +1079,15 @@ void AddAreasArea(char *line)   /* Here we add an area to the list */
 void ReadSquishCfg(char *filename)
 {
 
-    XFILE *squishfile;
-    char *line, temp[80];
+    FILE *squishfile;
+    char line[2048], temp[80];
     char *keyword;
     unsigned lineno = 0;
 
 
     if (filename == NULL)
     {
-        if ((squishfile = xopen(SquishCfg)) == NULL)
+        if ((squishfile = fopen(SquishCfg, "r")) == NULL)
         {
             sprintf(msg, "Can't open squish.cfg! (%s)", SquishCfg);
             Message(msg, -1, 254, YES);
@@ -1095,7 +1095,7 @@ void ReadSquishCfg(char *filename)
     }
     else
     {
-        if ((squishfile = xopen(filename)) == NULL)
+        if ((squishfile = fopen(filename, "r")) == NULL)
         {
             sprintf(msg, "Can't open squish include file! (%s)", filename);
             Message(msg, -1, 254, YES);
@@ -1114,8 +1114,10 @@ void ReadSquishCfg(char *filename)
         print(14, 36, 7, temp);
     }
 
-    while ((line = xgetline(squishfile)) != NULL)
+    while (fgets(line, sizeof line, squishfile) != NULL)
     {
+        StripCR(line);
+
         if (!(lineno++ % 5))
             working(14, 7, 7);
 
@@ -1148,7 +1150,7 @@ void ReadSquishCfg(char *filename)
         }
     }
 
-    xclose(squishfile);
+    fclose(squishfile);
 
     print(14, 7, 9, "û");
 
@@ -1159,16 +1161,16 @@ void ReadSquishCfg(char *filename)
 /* --  Read a Areas.bbs file and get the defined areas  -- */
 /* ------------------------------------------------------- */
 
-void ReadAreasBBS()
+void ReadAreasBBS(void)
 {
 
-    XFILE *areasfile;
-    char *line, drive[MAXDRIVE], dir[MAXDIR], temppath[256];
+    FILE *areasfile;
+    char line[2048], drive[MAXDRIVE], dir[MAXDIR], temppath[256];
     int skip = 0;               /* To skip first line */
     char *p, temp[80];
     unsigned lineno = 0;
 
-    areasfile = xopen(AreasBBS);
+    areasfile = fopen(AreasBBS, "r");
 
     if (areasfile == NULL)
     {
@@ -1177,7 +1179,7 @@ void ReadAreasBBS()
             fnsplit(SquishCfg, drive, dir, NULL, NULL);
             sprintf(temppath, "%s%s%s", drive, dir, AreasBBS);
         }
-        if ((areasfile = xopen(temppath)) == NULL)
+        if ((areasfile = fopen(temppath, "r")) == NULL)
         {
             sprintf(msg, "Can't open areas.bbs file! (%s)", AreasBBS);
             Message(msg, -1, 0, YES);
@@ -1195,8 +1197,10 @@ void ReadAreasBBS()
     print(16, 25, 7, temp);
 
 
-    while ((line = xgetline(areasfile)) != NULL)
+    while (fgets(line, sizeof line, areasfile) != NULL)
     {
+        StripCR(line);
+
         if (!(lineno++ % 5))
             working(16, 7, 7);
         p = line;
@@ -1209,7 +1213,7 @@ void ReadAreasBBS()
             AddAreasArea(line);
     }
 
-    xclose(areasfile);
+    fclose(areasfile);
 
     print(16, 7, 9, "û");
 
@@ -1218,7 +1222,7 @@ void ReadAreasBBS()
 // =========================================================
 
 
-void ReadFECFG()
+void ReadFECFG(void)
 {
     CONFIG *fecfg;
     int l, extraleft, n, left, toread;
@@ -2549,7 +2553,7 @@ void ana_GECHO_area(AREAFILE_GE * area, GE_ADDRESS * aka_array)
 //
 // ==============================================================
 
-void ReadxMailCFG()
+void ReadxMailCFG(void)
 {
     FILE *cfgfile;
     xMailArea area;
@@ -2593,7 +2597,7 @@ void ReadxMailCFG()
 
 // ==============================================================
 
-void ReadFmailCFG()
+void ReadFmailCFG(void)
 {
     configType *fmcfg = NULL;
     FM12configType *fm12cfg = NULL;
@@ -2976,7 +2980,7 @@ void ana_Fmail_area(rawEchoType * area, nodeFakeType * aka_array)
 
 // ==============================================================
 
-void ReadWtrCFG()
+void ReadWtrCFG(void)
 {
     int cfgfile;
     WTRAREA area;
@@ -3226,8 +3230,8 @@ char *xpstrdup(char *str)
 
 void ReadConfigFile(char *temp, int showname)
 {
-    XFILE *cfgfile;
-    char *line;
+    FILE *cfgfile;
+    char line[2048];
     char show[120];
     int counter = 0, number = 0;
 
@@ -3247,14 +3251,16 @@ void ReadConfigFile(char *temp, int showname)
         print(18, 30, 7, msg);
     }
 
-    if ((cfgfile = xopen(temp)) == NULL)
+    if ((cfgfile = fopen(temp, "r")) == NULL)
     {
         sprintf(msg, " Darn! I can't open %s! ", temp);
         Message(msg, -1, 254, YES);
     }
 
-    while ((line = xgetline(cfgfile)) != NULL)
+    while (fgets(line, sizeof line, cfgfile) != NULL)
     {
+        StripCR(line);
+
         if (showname)
             if (!(counter++ % 5))
                 working(18, 7, 7);
@@ -3267,7 +3273,7 @@ void ReadConfigFile(char *temp, int showname)
         analyse(line, number);
     }
 
-    xclose(cfgfile);
+    fclose(cfgfile);
 
     if (showname)
         print(18, 7, 9, "û");
@@ -3623,14 +3629,14 @@ void uucpaddress(char *address)
 void ReadSoup2SQCFG(void)
 {
 
-    XFILE *soupfile;
-    char *line, *rest, *tag, *path, *type, temp[80];
+    FILE *soupfile;
+    char line[2048], *rest, *tag, *path, *type, temp[80];
     char *keyword;
     unsigned lineno = 0;
     AREA *thisarea;
 
 
-    if ((soupfile = xopen(Soup2SQcfg)) == NULL)
+    if ((soupfile = fopen(Soup2SQcfg, "r")) == NULL)
     {
         sprintf(msg, "Can't open Soup2SQ config! (%s)", Soup2SQcfg);
         Message(msg, -1, 254, YES);
@@ -3646,8 +3652,10 @@ void ReadSoup2SQCFG(void)
     print(14, 36, 7, temp);
 
 
-    while ((line = xgetline(soupfile)) != NULL)
+    while (fgets(line, sizeof line, soupfile) != NULL)
     {
+        StripCR(line);
+
         if (!(lineno++ % 5))
             working(14, 7, 7);
 
@@ -3701,7 +3709,7 @@ void ReadSoup2SQCFG(void)
         }
     }
 
-    xclose(soupfile);
+    fclose(soupfile);
 
     print(14, 7, 9, "û");
 

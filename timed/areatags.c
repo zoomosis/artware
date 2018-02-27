@@ -107,23 +107,25 @@ int ChooseTagset(void)
 
 int ReadTagFile(int choice)
 {
-    XFILE *in;
+    FILE *in;
     char name[120];
     AREA *curarea;
-    char *line;
+    char line[2048];
 
 
     sprintf(name, "%s\\timed%d.tag", cfg.homedir, (char)choice);
 
-    if ((in = xopen(name)) == NULL)
+    if ((in = fopen(name, "r")) == NULL)
         return -1;
 
     // clear all tags
     for (curarea = cfg.first; curarea; curarea = curarea->next)
         curarea->tagged = 0;
 
-    while ((line = xgetline(in)) != NULL)
+    while (fgets(line, sizeof line, in) != NULL)
     {
+        StripCR(line);
+
         if (strlen(line) == 0)
             continue;
 
@@ -132,7 +134,7 @@ int ReadTagFile(int choice)
                 curarea->tagged = 1;
     }
 
-    xclose(in);
+    fclose(in);
 
     return 0;
 
@@ -142,19 +144,19 @@ int ReadTagFile(int choice)
 
 char *GetDesc(int no)
 {
-    XFILE *in;
+    FILE *in;
     char name[120];
-    char *line;
+    char line[2048];
     static char desc[80];
 
     strcpy(desc, "Not found.");
 
     sprintf(name, "%s\\timed%d.tag", cfg.homedir, no);
 
-    if ((in = xopen(name)) == NULL)
+    if ((in = fopen(name, "r")) == NULL)
         return desc;
 
-    if ((line = xgetline(in)) != NULL)
+    if (fgets(line, sizeof line, in) != NULL)
     {
         if (line[0] == ';')     // description?
             strncpy(desc, line + 1, 78); // Copy it!
@@ -163,7 +165,7 @@ char *GetDesc(int no)
                                                      // nothing!
     }
 
-    xclose(in);
+    fclose(in);
 
     return desc;
 }
