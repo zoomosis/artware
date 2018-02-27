@@ -20,7 +20,7 @@ OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
   quotos2.obj readarea.obj repedit.obj reply.obj request.obj &
   select.obj shel2dos.obj showhdr.obj showinfo.obj showmail.obj &
   timed.obj tosslog.obj txtbuild.obj unrec.obj printer.obj &
-  working.obj wrap.obj xfile.obj video.obj scrnutil.obj picklist.obj &
+  working.obj wrap.obj video.obj scrnutil.obj picklist.obj &
   markchn.obj trapflag.obj macro.obj charset.obj filter.obj &
   v7.obj fd.obj nodelist.obj nodebrow.obj fido.obj private.obj &
   fidonode.obj fidouser.obj patmat.obj
