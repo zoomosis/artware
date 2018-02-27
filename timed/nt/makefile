@@ -3,7 +3,7 @@
 TARGET=..\timednt.exe
 
 CC=wcl386
-CFLAGS=-zq -bm -sg -wx -bt=nt -l=nt -k32k -I..\..\api -I..\utils
+CFLAGS=-zq -bm -sg -wx -bt=nt -l=nt -k32k -I..\..\api -I..
 #COPT=-oneatx
 SRC_DIR=..
 MSGAPI=..\..\api\ntapi.lib
@@ -22,9 +22,6 @@ OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
   patmat.obj
 
 {$(SRC_DIR)}.c.obj:
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-
-{$(SRC_DIR)\utils}.c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
 $(TARGET): $(OBJS) $(MSGAPI)

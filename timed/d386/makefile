@@ -3,7 +3,7 @@
 TARGET=..\tim386.exe
 
 CC=wcl386
-CFLAGS=-zq -wx -bt=dos4g -l=dos4g -k32k -I..\..\api -I..\utils
+CFLAGS=-zq -wx -bt=dos4g -l=dos4g -k32k -I..\..\api -I..
 #COPT=-oneatx
 CDEFS=-D__DOS__=1
 SRC_DIR=..
