@@ -1,3 +1,6 @@
+#ifndef __UNIX_H__
+#define __UNIX_H__
+
 #include "compiler.h"
 
 #ifdef __UNIX__
@@ -40,5 +43,7 @@ void _fullpath(char *out, char *in, int maxlen);
 
 char *strupr(char *s);
 char *strlwr(char *s);
+
+#endif
 
 #endif

@@ -6,7 +6,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-#include "lincomp.h"
+#include "unix.h"
 
 // A function to return the size of an open file.
 

@@ -7,14 +7,14 @@
 #include "typedefs.h"
 #include "stamp.h"
 
-#ifdef __GNUC__
+#ifdef __UNIX__
 
 #define strnicmp(a, b, c) strncasecmp(a, b, c)
 #define strncmpi(a, b, c) strncasecmp(a, b, c)
 #define stricmp(a, b)  strcasecmp(a, b)
 #define strcmpi(a, b)  strcasecmp(a, b)
 
-#include "lincomp.h"
+#include "unix.h"
 
 #endif
 

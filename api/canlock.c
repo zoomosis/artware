@@ -12,7 +12,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "lincomp.h"
+#include "unix.h"
 
 int canlock(char *path)
 {
