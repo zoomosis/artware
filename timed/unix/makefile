@@ -11,7 +11,7 @@ OBJS=areatags.o attach.o bmg.o checkcc.o choose.o select.o shel2dos.o \
   cleanidx.o clock.o config.o copymsg.o dirlist.o edit.o pickone.o \
   print.o printer.o quotos2.o readarea.o repedit.o reply.o request.o \
   errorrpt.o fido.o find.o getbody.o getfmt.o timed.o tosslog.o \
-  txtbuild.o unrec.o nodeglue.o working.o wrap.o xfile.o videounix.o \
+  txtbuild.o unrec.o nodeglue.o working.o wrap.o videounix.o \
   scrnutilunix.o picklist.o markchn.o macro.o charset.o filter.o v7.o fd.o \
   nodelist.o nodebrow.o private.o fidonode.o fidouser.o patmat.o
 
