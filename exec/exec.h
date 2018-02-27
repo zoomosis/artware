@@ -1,3 +1,6 @@
+#ifndef __EXEC_H__
+#define __EXEC_H__
+
 /*
 	--- Version 3.3 91-11-21 16:12 ---
 
@@ -392,3 +395,4 @@ typedef struct {
 
 extern prep_block swap_prep;
 
+#endif
