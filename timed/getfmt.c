@@ -1,7 +1,5 @@
 #include "includes.h"
 
-#include "timer.h"
-
 void checkaline(LINE * current);
 
 char *pascal near nextline(void);
