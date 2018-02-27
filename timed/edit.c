@@ -106,7 +106,7 @@ void SetEditCursor(void);
 
 /* ------------------------------------------------------- */
 
-LINE *edittext(LINE * begin, AREA * area, MSG * areahandle, MMSG * curmsg,
+LINE *edittext(LINE * begin, AREA * area, MSGA * areahandle, MMSG * curmsg,
                int curtxtline)
 {
     LINE *curline, *nextline;
@@ -877,8 +877,8 @@ void import_file(void)
     BOX *getnamebox, *status;
     static char filename[80] = "";
     LINE *firstnewline = NULL, *lastnewline = NULL, *curline = NULL;
-    XFILE *infile;
-    char *temp, templine[10];
+    FILE *infile;
+    char temp[2048], templine[10];
     unsigned long line = 0;
     struct stat mystat;
     char **result = NULL;
@@ -949,7 +949,7 @@ void import_file(void)
     if (current->status & HIGHLIGHT) // Shut off block.
         unmark(NULL, 1);
 
-    if ((infile = xopen(filename)) == NULL)
+    if ((infile = fopen(filename, "r")) == NULL)
     {
         Message("Unable to open inputfile!", -1, 0, YES);
         return;
@@ -961,8 +961,10 @@ void import_file(void)
     drawbox(status);
     print(12, 28, cfg.col[Cpoptext], "Working, line #");
 
-    while ((temp = xgetline(infile)) != NULL)
+    while (fgets(temp, sizeof temp, infile) != NULL)
     {
+        StripCR(temp);
+
         if (!(line++ % 10))
         {
             sprintf(templine, "%lu", line++);
@@ -997,7 +999,7 @@ void import_file(void)
 
     delbox(status);
 
-    xclose(infile);
+    fclose(infile);
 
     if (lastnewline)            // Only if any text added!
     {
@@ -2355,7 +2357,7 @@ void MakeTopLine(AREA * area, MMSG * curmsg)
 
 // ==============================================================
 
-void WriteToFile(int raw, int block, AREA * area, MSG * areahandle,
+void WriteToFile(int raw, int block, AREA * area, MSGA * areahandle,
                  MMSG * curmsg)
 {
     FILE *out;

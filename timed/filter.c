@@ -6,7 +6,7 @@ char *ExtractOrigin(MMSG * curmsg);
 
 // =========================================================================
 
-void FilterMessage(MMSG * curmsg, AREA * area, MSG * areahandle,
+void FilterMessage(MMSG * curmsg, AREA * area, MSGA * areahandle,
                    int realbody)
 {
     dword thisone;
@@ -204,11 +204,11 @@ char *ExtractOrigin(MMSG * curmsg)
 
 LINE *ReadFmtBodyFromDisk(char *filename)
 {
-    XFILE *in;
-    char *line;
+    FILE *in;
+    char line[2048];
     LINE *first = NULL, *current, *last;
 
-    in = xopen(filename);
+    in = fopen(filename, "r");
     if (in == NULL)
     {
         sprintf(msg, "Can't open %s!", filename);
@@ -216,7 +216,7 @@ LINE *ReadFmtBodyFromDisk(char *filename)
         return NULL;
     }
 
-    while ((line = xgetline(in)) != NULL)
+    while (fgets(line, sizeof line, in) != NULL)
     {
         current = wraptext(line, maxx, 1, 1);
         if (current)
@@ -240,7 +240,7 @@ LINE *ReadFmtBodyFromDisk(char *filename)
 
     }
 
-    xclose(in);
+    fclose(in);
 
     return first;
 }
@@ -250,11 +250,11 @@ LINE *ReadFmtBodyFromDisk(char *filename)
 
 RAWBLOCK *ReadBodyFromDisk(char *filename)
 {
-    XFILE *in;
-    char *line;
+    FILE *in;
+    char line[2048];
     RAWBLOCK *blk;
 
-    in = xopen(filename);
+    in = fopen(filename, "r");
     if (in == NULL)
     {
         sprintf(msg, "Can't open %s!", filename);
@@ -264,13 +264,14 @@ RAWBLOCK *ReadBodyFromDisk(char *filename)
 
     blk = InitRawblock(8192, 2048, 8192); // Updated for perfbeta
 
-    while ((line = xgetline(in)) != NULL)
+    while (fgets(line, sizeof line, in) != NULL)
     {
+        StripCR(line);
         AddToBlock(blk, line, -1);
         AddToBlock(blk, "\r", 1);
     }
 
-    xclose(in);
+    fclose(in);
 
     if (blk->curlen < 2)
     {

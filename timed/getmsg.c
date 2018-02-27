@@ -1,7 +1,7 @@
 #include "includes.h"
 
-void get_JAM_thread(MMSG * curmsg, MSG * areahandle);
-int ConfirmReceipt(MSG * areahandle, AREA * area, MIS * mis, dword no);
+void get_JAM_thread(MMSG * curmsg, MSGA * areahandle);
+int ConfirmReceipt(MSGA * areahandle, AREA * area, MIS * mis, dword no);
 RAWBLOCK *CreateCFMbody(MIS * mis, MIS * newmis);
 
 
@@ -200,7 +200,7 @@ void pascal normalize(char *s)
 #endif
 
 
-void get_JAM_thread(MMSG * curmsg, MSG * areahandle)
+void get_JAM_thread(MMSG * curmsg, MSGA * areahandle)
 {
     long current, nextread;
     int pos = 1;
@@ -255,7 +255,7 @@ void get_JAM_thread(MMSG * curmsg, MSG * areahandle)
 /* ----------------------------------------------- */
 
 
-int MarkReceived(MSG * areahandle, AREA * area, dword no, int not,
+int MarkReceived(MSGA * areahandle, AREA * area, dword no, int not,
                  int hasCFM)
 {
     MIS *tempmis = NULL;
@@ -353,7 +353,7 @@ int MarkReceived(MSG * areahandle, AREA * area, dword no, int not,
 //
 // ==============================================================
 
-int ConfirmReceipt(MSG * areahandle, AREA * area, MIS * mis, dword no)
+int ConfirmReceipt(MSGA * areahandle, AREA * area, MIS * mis, dword no)
 {
     MIS *newmis;
     RAWBLOCK *blk = NULL;
@@ -412,11 +412,11 @@ int ConfirmReceipt(MSG * areahandle, AREA * area, MIS * mis, dword no)
 
 RAWBLOCK *CreateCFMbody(MIS * mis, MIS * newmis)
 {
-    XFILE *infile;
+    FILE *infile;
     RAWBLOCK *blk;
-    char *line;
+    char line[2048];
 
-    infile = xopen(cfg.usr.cfmfile);
+    infile = fopen(cfg.usr.cfmfile, "r");
     if (!infile)
     {
         sprintf(msg, "Can't open %0.32s to create receipt confirmation",
@@ -426,13 +426,13 @@ RAWBLOCK *CreateCFMbody(MIS * mis, MIS * newmis)
     }
 
     blk = InitRawblock(2048, 1024, 4096);
-    while (line = xgetline(infile))
+    while (fgets(line, sizeof line, infile) != NULL)
     {
         AddToBlock(blk, expand(line, mis, newmis), -1);
         AddToBlock(blk, "\r", -1);
     }
 
-    xclose(infile);
+    fclose(infile);
 
     return blk;
 
