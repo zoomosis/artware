@@ -59,7 +59,7 @@ void fnsplit(const char *path, char *drive, char *dir, char *name,
 #define MAXDRIVE 1
 #define MAXDIR MAXFILE
 #define MAXPATH MAXDIR
-#define _MAX_PATH MAXPAT
+#define _MAX_PATH MAXPATH
 
 struct tm *_localtime(const time_t * timer, struct tm *tmbuf);
 void _fullpath(char *out, char *in, int maxlen);

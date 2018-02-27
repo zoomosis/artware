@@ -1,7 +1,7 @@
 # MSGAPI makefile for UNIX build
 
 TARGET=../unixapi.a
-CFLAGS=-g -Wall
+CFLAGS=-m32 -g -Wall
 LIB=ar
 RANLIB=ranlib
 SRC_DIR=..
