@@ -39,7 +39,7 @@ void near Convert_Fmsg_To_Xmsg(struct _omsg *fmsg, XMSG * msg,
                                word def_zone);
 void near Convert_Xmsg_To_Fmsg(XMSG * msg, struct _omsg *fmsg);
 void near Init_Xmsg(XMSG * msg);
-sword near _SdmRescanArea(MSG * mh);
+sword near _SdmRescanArea(MSGA * mh);
 sword near _Grab_Clen(MSGH * msgh);
 void WriteToFd(byte * str);
 void near Get_Binary_Date(struct _stamp *todate, struct _stamp *fromdate,
@@ -64,9 +64,9 @@ void CheckReadOnly(char *filename);
 
 // ====================================================================
 
-MSG *SdmOpenArea(byte * name, word mode, word type)
+MSGA *SdmOpenArea(byte * name, word mode, word type)
 {
-    MSG *mh;
+    MSGA *mh;
 
 //  NW(_junksqd); /* to shut up wcc */
 
@@ -143,7 +143,7 @@ MSG *SdmOpenArea(byte * name, word mode, word type)
 // ====================================================================
 
 
-sword SdmCloseArea(MSG * mh)
+sword SdmCloseArea(MSGA * mh)
 {
     static byte *msgbody =
         "NOECHO\r\rPlease ignore.  This message is only used "
@@ -210,7 +210,7 @@ sword SdmCloseArea(MSG * mh)
 // ====================================================================
 
 
-MSGH *SdmOpenMsg(MSG * mh, word mode, dword msgnum)
+MSGH *SdmOpenMsg(MSGA * mh, word mode, dword msgnum)
 {
     byte msgname[PATHLEN];
     int handle;
@@ -569,7 +569,7 @@ sword SdmWriteMsg(MSGH * msgh, word append, MIS * mis, byte * text,
     char *newkludges = NULL;
     dword trailmax;
     STRINGLIST *current;
-    MSG *sq = msgh->sq;
+    MSGA *sq = msgh->sq;
 
 
     NW(totlen);
@@ -688,7 +688,7 @@ sword SdmWriteMsg(MSGH * msgh, word append, MIS * mis, byte * text,
 
 // ====================================================================
 
-sword SdmKillMsg(MSG * mh, dword msgnum)
+sword SdmKillMsg(MSGA * mh, dword msgnum)
 {
     dword hwm;
     byte temp[PATHLEN];
@@ -751,7 +751,7 @@ sword SdmKillMsg(MSG * mh, dword msgnum)
 
 // ====================================================================
 
-sword SdmLock(MSG * mh)
+sword SdmLock(MSGA * mh)
 {
 
     if (InvalidMh(mh))
@@ -767,7 +767,7 @@ sword SdmLock(MSG * mh)
 
 // ====================================================================
 
-sword SdmUnlock(MSG * mh)
+sword SdmUnlock(MSGA * mh)
 {
     if (InvalidMh(mh))
         return -1;
@@ -823,7 +823,7 @@ dword SdmGetCurPos(MSGH * msgh)
 
 // ====================================================================
 
-UMSGID SdmMsgnToUid(MSG * mh, dword msgnum)
+UMSGID SdmMsgnToUid(MSGA * mh, dword msgnum)
 {
     if (InvalidMh(mh))
         return (UMSGID) 0L;
@@ -834,7 +834,7 @@ UMSGID SdmMsgnToUid(MSG * mh, dword msgnum)
 
 // ====================================================================
 
-dword SdmUidToMsgn(MSG * mh, UMSGID umsgid, word type)
+dword SdmUidToMsgn(MSGA * mh, UMSGID umsgid, word type)
 {
     word wmsgid;
     word mn;
@@ -859,7 +859,7 @@ dword SdmUidToMsgn(MSG * mh, UMSGID umsgid, word type)
 
 // ====================================================================
 
-dword SdmGetHighWater(MSG * mh)
+dword SdmGetHighWater(MSGA * mh)
 {
     MSGH *msgh;
     MIS mis;
@@ -889,7 +889,7 @@ dword SdmGetHighWater(MSG * mh)
 
 // ====================================================================
 
-sword SdmSetHighWater(MSG * mh, dword hwm)
+sword SdmSetHighWater(MSGA * mh, dword hwm)
 {
     if (InvalidMh(mh))
         return -1;
@@ -911,7 +911,7 @@ sword SdmSetHighWater(MSG * mh, dword hwm)
 
 #ifdef __GNUC__
 
-sword near _SdmRescanArea(MSG * mh)
+sword near _SdmRescanArea(MSGA * mh)
 {
     DIR *mydir;
     struct dirent *mydirent;
@@ -988,7 +988,7 @@ sword near _SdmRescanArea(MSG * mh)
 
 #if defined(__MSDOS__) || defined(__DOS__) || defined(__DOS4GW__)
 
-sword near _SdmRescanArea(MSG * mh)
+sword near _SdmRescanArea(MSGA * mh)
 {
 //  #ifndef __WATCOMC__
 //  struct ffblk myffblk;
@@ -1070,7 +1070,7 @@ sword near _SdmRescanArea(MSG * mh)
 
 // NT Version of this.
 
-sword near _SdmRescanArea(MSG * mh)
+sword near _SdmRescanArea(MSGA * mh)
 {
     struct find_t fileinfo;
     byte temp[_MAX_PATH] = "";
@@ -1143,7 +1143,7 @@ sword near _SdmRescanArea(MSG * mh)
 
 /* Updated OS/2 version of this stuff */
 
-sword near _SdmRescanArea(MSG * mh)
+sword near _SdmRescanArea(MSGA * mh)
 {
     byte temp[PATHLEN];
     word mn, thismsg;
@@ -1234,7 +1234,7 @@ sword near _SdmRescanArea(MSG * mh)
 
 // ==================================================
 
-int SDMRenumber(MSG * mh)
+int SDMRenumber(MSGA * mh)
 {
     int mn;
     char oldname[120], newname[120];
@@ -1470,7 +1470,7 @@ char *MIS2SDM(MSGH * msgh, MIS * mis, struct _omsg *sdmhdr, char *kludges)
 {
     int i;
     dword maxlen, curlen;
-    MSG *sq = msgh->sq;
+    MSGA *sq = msgh->sq;
     JAMTM *tmdate;
     struct tm *timestamp;
     char temp[150];

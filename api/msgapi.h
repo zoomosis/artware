@@ -45,7 +45,7 @@ struct _msgapi;
 struct _msgh;
 struct _netaddr;
 
-typedef struct _msgapi MSG;
+typedef struct _msgapi MSGA;
 typedef struct _msgh MSGH;
 typedef dword UMSGID;
 typedef struct _netaddr NETADDR;
@@ -225,8 +225,8 @@ struct _msgapi
     /* Function pointers for manipulating messages within this area.  */
     struct _apifuncs
     {
-        sword(*CloseArea) (MSG * mh);
-        MSGH *(*OpenMsg) (MSG * mh, word mode, dword n);
+        sword(*CloseArea) (MSGA * mh);
+        MSGH *(*OpenMsg) (MSGA * mh, word mode, dword n);
          sword(*CloseMsg) (MSGH * msgh);
          dword(*ReadMsg) (MSGH * msgh, MIS * mis, dword ofs,
                           dword bytes, byte * text, dword cbyt,
@@ -234,15 +234,15 @@ struct _msgapi
          sword(*WriteMsg) (MSGH * msgh, word append, MIS * mis,
                            byte * text, dword textlen, dword totlen,
                            dword clen, byte * ctxt);
-         sword(*KillMsg) (MSG * mh, dword msgnum);
-         sword(*Lock) (MSG * mh);
-         sword(*Unlock) (MSG * mh);
+         sword(*KillMsg) (MSGA * mh, dword msgnum);
+         sword(*Lock) (MSGA * mh);
+         sword(*Unlock) (MSGA * mh);
          sword(*SetCurPos) (MSGH * msgh, dword pos);
          dword(*GetCurPos) (MSGH * msgh);
-         UMSGID(*MsgnToUid) (MSG * mh, dword msgnum);
-         dword(*UidToMsgn) (MSG * mh, UMSGID umsgid, word type);
-         dword(*GetHighWater) (MSG * mh);
-         sword(*SetHighWater) (MSG * mh, dword hwm);
+         UMSGID(*MsgnToUid) (MSGA * mh, dword msgnum);
+         dword(*UidToMsgn) (MSGA * mh, UMSGID umsgid, word type);
+         dword(*GetHighWater) (MSGA * mh);
+         sword(*SetHighWater) (MSGA * mh, dword hwm);
          dword(*GetTextLen) (MSGH * msgh);
          dword(*GetCtrlLen) (MSGH * msgh);
     } *api;
@@ -267,7 +267,7 @@ struct _msgapi
 #if !defined(MSGAPI_HANDLERS) && !defined(NO_MSGH_DEF)
 struct _msgh
 {
-    MSG *sq;
+    MSGA *sq;
     dword id;
 
     dword bytes_written;
@@ -357,30 +357,30 @@ sword MsgOpenApi(struct _minf *minf, char *path, word useflags,
                  char *hudson);
 sword MsgCloseApi(void);
 
-MSG *MsgOpenArea(byte * name, word mode, word type);
+MSGA *MsgOpenArea(byte * name, word mode, word type);
 sword MsgValidate(word type, byte * name);
 
 sword InvalidMsgh(MSGH * msgh);
-sword InvalidMh(MSG * mh);
+sword InvalidMh(MSGA * mh);
 
-void SquishSetMaxMsg(MSG * sq, dword max_msgs, dword skip_msgs, dword age);
+void SquishSetMaxMsg(MSGA * sq, dword max_msgs, dword skip_msgs, dword age);
 dword SquishHash(byte * f);
-dword SquishUndelete(MSG * sq);
+dword SquishUndelete(MSGA * sq);
 
-MSG *SdmOpenArea(byte * name, word mode, word type);
+MSGA *SdmOpenArea(byte * name, word mode, word type);
 sword SdmValidate(byte * name);
 
-int SDMRenumber(MSG * mh);
+int SDMRenumber(MSGA * mh);
 
-MSG *SquishOpenArea(byte * name, word mode, word type);
+MSGA *SquishOpenArea(byte * name, word mode, word type);
 sword SquishValidate(byte * name);
 
 /* GvE: */
 
-MSG *JAMOpenArea(byte * name, word mode, word type);
+MSGA *JAMOpenArea(byte * name, word mode, word type);
 sword JAMValidate(byte * name);
 
-MSG *HMBOpenArea(byte * name, word mode, word type);
+MSGA *HMBOpenArea(byte * name, word mode, word type);
 sword HMBValidate(byte * name);
 
 int HMBOpenBase(void);
@@ -396,7 +396,7 @@ void RemoveFromCtrl(byte * ctrl, byte * what);
 void Convert_Flags(char *kludges, dword * attr1, dword * attr2);
 void Attr2Flags(char *temp, dword attr1, dword attr2);
 void Flags2Attr(char *s, dword * attr1, dword * attr2);
-MSG *CreateAreaHandle(word type);
+MSGA *CreateAreaHandle(word type);
 
 byte *_fast Address(NETADDR * a);
 byte *StripNasties(byte * str);

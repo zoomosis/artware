@@ -31,8 +31,8 @@
 
 // Some function added by GvE
 
-int BuildUidlist(MSG * sq);
-int RemoveFromIndex(MSG * sq, dword msgnum);
+int BuildUidlist(MSGA * sq);
+int RemoveFromIndex(MSGA * sq, dword msgnum);
 int SquishCalcTrailing(MSGH * msgh);
 //int  AddToString(char **start, unsigned *curmax, unsigned *cursize, char *string);
 void MIS2SQ(MIS * mis, XMSG * xmsg);
@@ -49,10 +49,10 @@ extern dword SQAttrTable1[SQNUMATTR1][2];
    --------------------------------------------------------------- */
 
 
-MSG *SquishOpenArea(byte * name, word mode, word type)
+MSGA *SquishOpenArea(byte * name, word mode, word type)
 {
     struct _sqbase sqbase;
-    MSG *sq;
+    MSGA *sq;
 
 	assert(sizeof(struct _sqbase) == 256);
 	assert(sizeof (struct _sqhdr) == 28);
@@ -153,7 +153,7 @@ MSG *SquishOpenArea(byte * name, word mode, word type)
    --------------------------------------------------------------- */
 
 
-sword SquishCloseArea(MSG * sq)
+sword SquishCloseArea(MSGA * sq)
 {
     if (InvalidMh(sq))
         return -1;
@@ -190,7 +190,7 @@ sword SquishCloseArea(MSG * sq)
 
 
 
-MSGH *SquishOpenMsg(MSG * sq, word mode, dword msgnum)
+MSGH *SquishOpenMsg(MSGA * sq, word mode, dword msgnum)
 {
     struct _msgh *msgh;
 
@@ -417,7 +417,7 @@ dword SquishReadMsg(MSGH * msgh, MIS * mis, dword offset, dword bytes,
 sword SquishWriteMsg(MSGH * msgh, word append, MIS * mis, byte * text,
                      dword textlen, dword totlen, dword clen, byte * ctxt)
 {
-    MSG *sq = msgh->sq;
+    MSGA *sq = msgh->sq;
 
     SQIDX idxe, here;
 
@@ -908,7 +908,7 @@ sword SquishWriteMsg(MSGH * msgh, word append, MIS * mis, byte * text,
 
 
 
-sword SquishKillMsg(MSG * sq, dword msgnum)
+sword SquishKillMsg(MSGA * sq, dword msgnum)
 {
     SQIDX killframe;
     FOFS killofs;
@@ -1067,7 +1067,7 @@ sword SquishKillMsg(MSG * sq, dword msgnum)
  * able to access the message base during the duration it is locked,         *
  * however, message writing will go MUCHMUCHMUCH quicker.                    */
 
-sword SquishLock(MSG * sq)
+sword SquishLock(MSGA * sq)
 {
 
     if (InvalidMh(sq))
@@ -1120,7 +1120,7 @@ sword SquishLock(MSG * sq)
 
 /* Undo the above "lock" operation */
 
-sword SquishUnlock(MSG * sq)
+sword SquishUnlock(MSGA * sq)
 {
     if (InvalidMh(sq))
         return -1;
@@ -1202,7 +1202,7 @@ dword SquishGetCurPos(MSGH * msgh)
    --------------------------------------------------------------- */
 
 
-UMSGID SquishMsgnToUid(MSG * sq, dword msgnum)
+UMSGID SquishMsgnToUid(MSGA * sq, dword msgnum)
 {
 
     if (InvalidMh(sq))
@@ -1224,7 +1224,7 @@ UMSGID SquishMsgnToUid(MSG * sq, dword msgnum)
    --------------------------------------------------------------- */
 
 
-dword SquishUidToMsgn(MSG * sq, UMSGID umsgid, word type)
+dword SquishUidToMsgn(MSGA * sq, UMSGID umsgid, word type)
 {
     UMSGID answer;
     dword mn;
@@ -1287,7 +1287,7 @@ dword SquishGetCtrlLen(MSGH * msgh)
    --------------------------------------------------------------- */
 
 
-dword SquishGetHighWater(MSG * sq)
+dword SquishGetHighWater(MSGA * sq)
 {
     return (SquishUidToMsgn(sq, sq->high_water, UID_PREV));
 }
@@ -1298,7 +1298,7 @@ dword SquishGetHighWater(MSG * sq)
    --------------------------------------------------------------- */
 
 
-sword SquishSetHighWater(MSG * sq, dword hwm)
+sword SquishSetHighWater(MSGA * sq, dword hwm)
 {
     sq->high_water = SquishMsgnToUid(sq, hwm);
     return 0;
@@ -1311,7 +1311,7 @@ sword SquishSetHighWater(MSG * sq, dword hwm)
 
 // Extra function hacked on by Gerard van Essen to undelete
 
-dword SquishUndelete(MSG * sq)
+dword SquishUndelete(MSGA * sq)
 {
     SQHDR sqheader;
     dword maxmsg = Sqd->max_msg;
@@ -1473,7 +1473,7 @@ dword SquishUndelete(MSG * sq)
 /****************** END OF EXTERNALLY-VISIBLE FUNCTIONS *********************/
 /****************************************************************************/
 
-sword _OpenSquish(MSG * sq, word * mode)
+sword _OpenSquish(MSGA * sq, word * mode)
 {
     byte temp[PATHLEN];
 
@@ -1531,7 +1531,7 @@ sword _OpenSquish(MSG * sq, word * mode)
    --                                                           --
    --------------------------------------------------------------- */
 
-SQHDR *_SquishGotoMsg(MSG * sq, dword msgnum,
+SQHDR *_SquishGotoMsg(MSGA * sq, dword msgnum,
                       FOFS * seek_frame, SQIDX * idx, word updptrs)
 {
     SQIDX idxe;
@@ -1590,7 +1590,7 @@ SQHDR *_SquishGotoMsg(MSG * sq, dword msgnum,
    --                                                           --
    --------------------------------------------------------------- */
 
-MSGH *_SquishOpenMsgRead(MSG * sq, word mode, dword msgnum)
+MSGH *_SquishOpenMsgRead(MSGA * sq, word mode, dword msgnum)
 {
     struct _msgh *msgh;
 
@@ -1741,7 +1741,7 @@ MSGH *_SquishOpenMsgRead(MSG * sq, word mode, dword msgnum)
    --------------------------------------------------------------- */
 
 
-sword _SquishReadHeader(MSG * sq, dword ofs, SQHDR * hdr)
+sword _SquishReadHeader(MSGA * sq, dword ofs, SQHDR * hdr)
 {
     if (ofs == NULL_FRAME)
         return 0;
@@ -1762,7 +1762,7 @@ sword _SquishReadHeader(MSG * sq, dword ofs, SQHDR * hdr)
    --------------------------------------------------------------- */
 
 
-sword _SquishWriteHeader(MSG * sq, dword ofs, SQHDR * hdr)
+sword _SquishWriteHeader(MSGA * sq, dword ofs, SQHDR * hdr)
 {
     if (ofs == NULL_FRAME)
         return 0;
@@ -1784,7 +1784,7 @@ sword _SquishWriteHeader(MSG * sq, dword ofs, SQHDR * hdr)
    --------------------------------------------------------------- */
 
 
-sword _SquishUpdateHeaderNext(MSG * sq, dword ofs,
+sword _SquishUpdateHeaderNext(MSGA * sq, dword ofs,
                               SQHDR * hdr, dword newval)
 {
     if (ofs == NULL_FRAME)
@@ -1812,7 +1812,7 @@ sword _SquishUpdateHeaderNext(MSG * sq, dword ofs,
    --------------------------------------------------------------- */
 
 
-sword _SquishUpdateHeaderPrev(MSG * sq, dword ofs, SQHDR * hdr,
+sword _SquishUpdateHeaderPrev(MSGA * sq, dword ofs, SQHDR * hdr,
                               dword newval)
 {
     if (ofs == NULL_FRAME)
@@ -1839,7 +1839,7 @@ sword _SquishUpdateHeaderPrev(MSG * sq, dword ofs, SQHDR * hdr,
 /* Rewrite the first "struct _sq" portion of the file (which contains the   *
  * global data)                                                             */
 
-sword _SquishWriteSq(MSG * sq)
+sword _SquishWriteSq(MSGA * sq)
 {
     struct _sqbase sqbase;
 
@@ -1870,7 +1870,7 @@ sword _SquishWriteSq(MSG * sq)
    --                                                           --
    --------------------------------------------------------------- */
 
-sword _SquishReadSq(MSG * sq, struct _sqbase * sqb)
+sword _SquishReadSq(MSGA * sq, struct _sqbase * sqb)
 {
     lseek(Sqd->sfd, 0L, SEEK_SET);
 
@@ -1888,7 +1888,7 @@ sword _SquishReadSq(MSG * sq, struct _sqbase * sqb)
    --                                                           --
    --------------------------------------------------------------- */
 
-sword _SquishUpdateSq(MSG * sq, word force)
+sword _SquishUpdateSq(MSGA * sq, word force)
 {
     struct _sqbase now;         /* The status of the header in the SQD */
     struct _sqbase new;         /* The new, to-be-written header */
@@ -1979,7 +1979,7 @@ void Init_Hdr(SQHDR * sh)
    --                                                           --
    --------------------------------------------------------------- */
 
-void SqToSqbase(MSG * sq, struct _sqbase *sqbase)
+void SqToSqbase(MSGA * sq, struct _sqbase *sqbase)
 {
     memset(sqbase, '\0', sizeof(struct _sqbase));
 
@@ -2009,7 +2009,7 @@ void SqToSqbase(MSG * sq, struct _sqbase *sqbase)
    --------------------------------------------------------------- */
 
 
-void SqbaseToSq(struct _sqbase *sqbase, MSG * sq)
+void SqbaseToSq(struct _sqbase *sqbase, MSGA * sq)
 {
     Sqd->len = sqbase->len;
     sq->num_msg = sqbase->num_msg;
@@ -2043,7 +2043,7 @@ void SqbaseToSq(struct _sqbase *sqbase, MSG * sq)
    --                                                           --
    --------------------------------------------------------------- */
 
-sword AddIndex(MSG * sq, SQIDX * ix, dword num)
+sword AddIndex(MSGA * sq, SQIDX * ix, dword num)
 {
     dword *tmpptr;
 
@@ -2086,7 +2086,7 @@ sword AddIndex(MSG * sq, SQIDX * ix, dword num)
    --                                                           --
    --------------------------------------------------------------- */
 
-sword Add_To_Free_Chain(MSG * sq, FOFS killofs, SQHDR * killhdr)
+sword Add_To_Free_Chain(MSGA * sq, FOFS killofs, SQHDR * killhdr)
 {
     SQHDR lhdr;
 
@@ -2137,7 +2137,7 @@ sword Add_To_Free_Chain(MSG * sq, FOFS killofs, SQHDR * killhdr)
    --                                                           --
    --------------------------------------------------------------- */
 
-sword _SquishGetIdxFrame(MSG * sq, dword num, SQIDX * idx)
+sword _SquishGetIdxFrame(MSGA * sq, dword num, SQIDX * idx)
 {
     dword ofs;
 
@@ -2162,7 +2162,7 @@ sword _SquishGetIdxFrame(MSG * sq, dword num, SQIDX * idx)
 
 /* Finds a free frame big enough to hold the specified message */
 
-sword _SquishFindFree(MSG * sq, FOFS * this_frame, dword totlen,
+sword _SquishFindFree(MSGA * sq, FOFS * this_frame, dword totlen,
                       dword clen, SQHDR * freehdr,
                       FOFS * last_frame, SQHDR * lhdr, MSGH * msgh)
 {
@@ -2329,7 +2329,7 @@ dword SquishHash(byte * f)
 
 
 
-int _SquishLock(MSG * sq)
+int _SquishLock(MSGA * sq)
 {
     return !(mi.haveshare && lock(Sqd->sfd, 0L, 1L) == -1);
 }
@@ -2339,7 +2339,7 @@ int _SquishLock(MSG * sq)
    --------------------------------------------------------------- */
 
 
-void _SquishUnlock(MSG * sq)
+void _SquishUnlock(MSGA * sq)
 {
     if (mi.haveshare)
         unlock(Sqd->sfd, 0L, 1L);
@@ -2351,7 +2351,7 @@ void _SquishUnlock(MSG * sq)
 // --       Will be used for UID <-> Msgn conversion.         --
 // -------------------------------------------------------------
 
-int BuildUidlist(MSG * sq)
+int BuildUidlist(MSGA * sq)
 {
 #define CHUNKSIZE 1300          // 1300 index entries at a time, < 16 Kb
     SQIDX *bufptr = NULL, *curidx;
@@ -2435,7 +2435,7 @@ int BuildUidlist(MSG * sq)
 
 // Remove an entry from the index (both disk & memory index).
 
-int RemoveFromIndex(MSG * sq, dword msgnum)
+int RemoveFromIndex(MSGA * sq, dword msgnum)
 {
     byte *pcBuf;
     int got;
@@ -2619,7 +2619,7 @@ void MIS2SQ(MIS * mis, XMSG * xmsg)
 void SQ2MIS(MSGH * msgh, XMSG * xmsg, MIS * mis)
 {
     int l;
-    MSG *sq = msgh->sq;
+    MSGA *sq = msgh->sq;
     struct tm tmdate;
 
     memcpy(mis->to, xmsg->to, 36);

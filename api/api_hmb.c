@@ -109,9 +109,9 @@ ATTR_AH Attr_AH_Table[HMBATTRNUM] = {
 
 int HMBOpenBase(void);
 int HMBCloseBase(void);
-int near HMBScanArea(MSG * sq);
-//void  near HMB2SQ(XMSG *msg, HMB_MSGHDR *hmbhdr, MSG *sq);
-sword near FindRecno(MSG * sq, word msgno);
+int near HMBScanArea(MSGA * sq);
+//void  near HMB2SQ(XMSG *msg, HMB_MSGHDR *hmbhdr, MSGA *sq);
+sword near FindRecno(MSGA * sq, word msgno);
 int near ReadKludges(struct _msgh *msgh);
 void near HMBHandleKludges(char *ctrl, MIS * mis);
 int near HMBCalcTextLen(struct _msgh *msgh);
@@ -127,8 +127,8 @@ HMB_MSGIDX *HMBReadEntireIndex(void);
 sword near HMBReadHeader(sword recno, HMB_MSGHDR * hdr);
 sword near HMBWriteHeader(sword recno, HMB_MSGHDR * hdr);
 
-void HMB2MIS(MIS * mis, HMB_MSGHDR * hmbhdr, MSG * sq);
-void MIS2HMB(MSG * sq, struct _msgh *msgh, MIS * mis, HMB_MSGHDR * hmbhdr,
+void HMB2MIS(MIS * mis, HMB_MSGHDR * hmbhdr, MSGA * sq);
+void MIS2HMB(MSGA * sq, struct _msgh *msgh, MIS * mis, HMB_MSGHDR * hmbhdr,
              byte * kludges);
 /*
      -----------------------------
@@ -139,9 +139,9 @@ void MIS2HMB(MSG * sq, struct _msgh *msgh, MIS * mis, HMB_MSGHDR * hmbhdr,
 */
 
 
-MSG *HMBOpenArea(byte * name, word mode, word type)
+MSGA *HMBOpenArea(byte * name, word mode, word type)
 {
-    MSG *sq = NULL;
+    MSGA *sq = NULL;
 
     msgapierr = MERR_NONE;
 
@@ -198,7 +198,7 @@ MSG *HMBOpenArea(byte * name, word mode, word type)
 
     // All went well, return areahandle..
 
-    return (MSG *) sq;
+    return (MSGA *) sq;
 
   ErrorExit:                   // We only get here if things went wrong
 
@@ -221,7 +221,7 @@ MSG *HMBOpenArea(byte * name, word mode, word type)
       -----------------------------
 */
 
-sword HMBCloseArea(MSG * sq)
+sword HMBCloseArea(MSGA * sq)
 {
     msgapierr = MERR_NONE;
 
@@ -254,7 +254,7 @@ sword HMBCloseArea(MSG * sq)
 */
 
 
-MSGH *HMBOpenMsg(MSG * sq, word mode, dword msgnum)
+MSGH *HMBOpenMsg(MSGA * sq, word mode, dword msgnum)
 {
     struct _msgh *msgh;
     HMB_MSGHDR hdr;
@@ -601,7 +601,7 @@ dword HMBReadMsg(MSGH * msgh, MIS * mis,
 sword HMBWriteMsg(MSGH * msgh, word append, MIS * mis, byte * text,
                   dword textlen, dword totlen, dword clen, byte * ctxt)
 {
-    MSG *sq = msgh->sq;
+    MSGA *sq = msgh->sq;
     HMB_MSGHDR hmbhdr;
     HMB_MSGTOIDX toidx = "";
     HMB_TXT *txt;
@@ -857,7 +857,7 @@ sword HMBWriteMsg(MSGH * msgh, word append, MIS * mis, byte * text,
 */
 
 
-sword HMBKillMsg(MSG * sq, dword msgnum)
+sword HMBKillMsg(MSGA * sq, dword msgnum)
 {
     sword retval = -1;
     word didlock = 0;
@@ -948,7 +948,7 @@ sword HMBKillMsg(MSG * sq, dword msgnum)
       ----------------------------
 */
 
-sword HMBLock(MSG * sq)
+sword HMBLock(MSGA * sq)
 {
     int result, i;
     char temp[120];
@@ -1023,7 +1023,7 @@ sword HMBLock(MSG * sq)
 
 /* Undo the above "lock" operation */
 
-sword HMBUnlock(MSG * sq)
+sword HMBUnlock(MSGA * sq)
 {
     char temp[120];
 
@@ -1130,7 +1130,7 @@ dword HMBGetCurPos(MSGH * msgh)
 */
 
 
-UMSGID HMBMsgnToUid(MSG * sq, dword msgnum)
+UMSGID HMBMsgnToUid(MSGA * sq, dword msgnum)
 {
     msgapierr = MERR_NONE;
 
@@ -1162,7 +1162,7 @@ UMSGID HMBMsgnToUid(MSG * sq, dword msgnum)
 */
 
 
-dword HMBUidToMsgn(MSG * sq, UMSGID umsgid, word type)
+dword HMBUidToMsgn(MSGA * sq, UMSGID umsgid, word type)
 {
     word wmsgid;
     word mn;
@@ -1223,7 +1223,7 @@ dword HMBGetCtrlLen(MSGH * msgh)
       --------------------------------
 */
 
-dword HMBGetHighWater(MSG * sq)
+dword HMBGetHighWater(MSGA * sq)
 {
     return sq->high_water;
 }
@@ -1236,7 +1236,7 @@ dword HMBGetHighWater(MSG * sq)
       ---------------------------
 */
 
-sword HMBSetHighWater(MSG * sq, dword hwm)
+sword HMBSetHighWater(MSGA * sq, dword hwm)
 {
     sq->high_water = hwm;
     return 0;
@@ -1373,7 +1373,7 @@ int HMBCloseBase(void)
 /* Scan a message area, build index for area */
 /* ----------------------------------------- */
 
-int near HMBScanArea(MSG * sq)
+int near HMBScanArea(MSGA * sq)
 {
     word howmany = HMBinfo.msginfo.total_on_board[BNUM];
     int l, current;
@@ -1440,7 +1440,7 @@ int near HMBScanArea(MSG * sq)
 /* ------------------------------------------------------------------------ */
 
 
-sword near FindRecno(MSG * sq, word msgno)
+sword near FindRecno(MSGA * sq, word msgno)
 {
     // num_msg should be array_size in locked/multiple writes!
 
@@ -1461,7 +1461,7 @@ sword near FindRecno(MSG * sq, word msgno)
 /* Convert HMB header info to MIS format  */
 /* -------------------------------------- */
 
-void HMB2MIS(MIS * mis, HMB_MSGHDR * hmbhdr, MSG * sq)
+void HMB2MIS(MIS * mis, HMB_MSGHDR * hmbhdr, MSGA * sq)
 {
     word m, d, y, h;
     int l;
@@ -1762,7 +1762,7 @@ int near HMBCalcTextLen(struct _msgh *msgh)
 /* ----------------------------------------------------- */
 
 
-void MIS2HMB(MSG * sq, struct _msgh *msgh, MIS * mis, HMB_MSGHDR * hmbhdr,
+void MIS2HMB(MSGA * sq, struct _msgh *msgh, MIS * mis, HMB_MSGHDR * hmbhdr,
              byte * kludges)
 {
     char temp[150];

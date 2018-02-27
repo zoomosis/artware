@@ -103,7 +103,7 @@ sword MsgCloseApi(void)
 }
 
 
-MSG *MsgOpenArea(byte * name, word mode, word type)
+MSGA *MsgOpenArea(byte * name, word mode, word type)
 {
 
     if (type & MSGTYPE_SQUISH)
@@ -125,12 +125,12 @@ MSG *MsgOpenArea(byte * name, word mode, word type)
 }
 
 
-MSG *CreateAreaHandle(word type)
+MSGA *CreateAreaHandle(word type)
 {
-    MSG *sq;
+    MSGA *sq;
 
 
-    if ((sq = calloc(1, sizeof(MSG))) == NULL)
+    if ((sq = calloc(1, sizeof(MSGA))) == NULL)
     {
         msgapierr = MERR_NOMEM;
         return NULL;
@@ -150,7 +150,7 @@ MSG *CreateAreaHandle(word type)
         sq->isecho = TRUE;
 
     sq->sz_xmsg = sizeof(XMSG);
-    sq->len = sizeof(MSG);
+    sq->len = sizeof(MSGA);
 
     return sq;
 
@@ -197,7 +197,7 @@ sword InvalidMsgh(MSGH * msgh)
 
 /* Check to ensure that a message area handle is valid.							 */
 
-sword InvalidMh(MSG * mh)
+sword InvalidMh(MSGA * mh)
 {
     if (mh == NULL || mh->id != MSGAPI_ID)
     {

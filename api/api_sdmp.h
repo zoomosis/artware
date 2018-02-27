@@ -1,20 +1,20 @@
 
-sword SdmCloseArea(MSG * mh);
-MSGH *SdmOpenMsg(MSG * mh, word mode, dword msgnum);
+sword SdmCloseArea(MSGA * mh);
+MSGH *SdmOpenMsg(MSGA * mh, word mode, dword msgnum);
 sword SdmCloseMsg(MSGH * msgh);
 dword SdmReadMsg(MSGH * msgh, MIS * msg, dword offset, dword bytes,
                  byte * text, dword clen, byte * ctxt);
 sword SdmWriteMsg(MSGH * msgh, word append, MIS * msg, byte * text,
                   dword textlen, dword totlen, dword clen, byte * ctxt);
-sword SdmKillMsg(MSG * mh, dword msgnum);
-sword SdmLock(MSG * mh);
-sword SdmUnlock(MSG * mh);
+sword SdmKillMsg(MSGA * mh, dword msgnum);
+sword SdmLock(MSGA * mh);
+sword SdmUnlock(MSGA * mh);
 sword SdmSetCurPos(MSGH * msgh, dword pos);
 dword SdmGetCurPos(MSGH * msgh);
-UMSGID SdmMsgnToUid(MSG * mh, dword msgnum);
-dword SdmUidToMsgn(MSG * mh, UMSGID umsgid, word type);
-dword SdmGetHighWater(MSG * mh);
-sword SdmSetHighWater(MSG * sq, dword hwm);
+UMSGID SdmMsgnToUid(MSGA * mh, dword msgnum);
+dword SdmUidToMsgn(MSGA * mh, UMSGID umsgid, word type);
+dword SdmGetHighWater(MSGA * mh);
+sword SdmSetHighWater(MSGA * sq, dword hwm);
 dword SdmGetTextLen(MSGH * msgh);
 dword SdmGetCtrlLen(MSGH * msgh);
 

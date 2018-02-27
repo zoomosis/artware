@@ -9,7 +9,7 @@
 
 struct _msgh
 {
-    MSG *sq;
+    MSGA *sq;
     dword id;                   /* Must always equal MSGH_ID */
 
     dword bytes_written;

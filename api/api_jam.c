@@ -36,20 +36,20 @@
 void near JAM2SQ(struct _msgh *msgh, byte * Subfields);
 void near addkludge(struct _msgh *msgh, char *text, int txtlen, char *data,
                     dword len, word * cursize);
-void near Init_JAMheader(MSG * sq);
-void near SQ2JAM(MIS * mis, char *ctxt, MSG * sq, word mode,
+void near Init_JAMheader(MSGA * sq);
+void near SQ2JAM(MIS * mis, char *ctxt, MSGA * sq, word mode,
                  byte ** SubFieldPtr);
 
-byte near JAMMsgExists(MSG * sq, UMSGID umsgid);
+byte near JAMMsgExists(MSGA * sq, UMSGID umsgid);
 
-int near JAMmbOpen(MSG * sq, byte * name);
-int near JAMmbClose(MSG * sq);
+int near JAMmbOpen(MSGA * sq, byte * name);
+int near JAMmbClose(MSGA * sq);
 
-int near JAMReadIdx(MSG * sq, dword number, JAMIDXREC * idx);
-int near JAMReadHeader(MSG * sq, long offset, JAMHDR * hdr);
+int near JAMReadIdx(MSGA * sq, dword number, JAMIDXREC * idx);
+int near JAMReadHeader(MSGA * sq, long offset, JAMHDR * hdr);
 
-int near JAMWriteIdx(MSG * sq, dword number, JAMIDXREC * idx);
-int near JAMWriteHeader(MSG * sq, long offset, JAMHDR * hdr);
+int near JAMWriteIdx(MSGA * sq, dword number, JAMIDXREC * idx);
+int near JAMWriteHeader(MSGA * sq, long offset, JAMHDR * hdr);
 
 /* Functions stolen from the JAM API (but modified) */
 
@@ -57,10 +57,10 @@ void near JAMmbAddField(byte * start,
                         dword WhatField,
                         size_t DatLen, word * Position, byte * Data);
 
-int near JAMmbUpdateHeaderInfo(MSG * sq, int WriteIt);
+int near JAMmbUpdateHeaderInfo(MSGA * sq, int WriteIt);
 
-int JAMmbStoreLastRead(MSG * sq, dword last, dword highest, dword CRC);
-dword JAMmbFetchLastRead(MSG * sq, dword UserCRC, int getlast);
+int JAMmbStoreLastRead(MSGA * sq, dword last, dword highest, dword CRC);
+dword JAMmbFetchLastRead(MSGA * sq, dword UserCRC, int getlast);
 
 int ParseFido(char *s, NETADDR * addr, char *domain);
 
@@ -111,9 +111,9 @@ static dword AttrTable1[NUMATTR1][2] = {
 */
 
 
-MSG *JAMOpenArea(byte * name, word mode, word type)
+MSGA *JAMOpenArea(byte * name, word mode, word type)
 {
-    MSG *sq;
+    MSGA *sq;
 
     NW(mode);
 
@@ -165,7 +165,7 @@ MSG *JAMOpenArea(byte * name, word mode, word type)
 */
 
 
-sword JAMCloseArea(MSG * sq)
+sword JAMCloseArea(MSGA * sq)
 {
 
     msgapierr = MERR_NONE;
@@ -196,7 +196,7 @@ sword JAMCloseArea(MSG * sq)
 */
 
 
-MSGH *JAMOpenMsg(MSG * sq, word mode, dword msgnum)
+MSGH *JAMOpenMsg(MSGA * sq, word mode, dword msgnum)
 {
     struct _msgh *msgh;
     byte *SubFieldPtr = NULL;
@@ -424,7 +424,7 @@ dword JAMReadMsg(MSGH * msgh, MIS * mis,
                  dword offset, dword bytes, byte * text,
                  dword clen, byte * ctxt)
 {
-    MSG *sq = msgh->sq;
+    MSGA *sq = msgh->sq;
     dword bytesread = 0L;
 
     msgapierr = MERR_NONE;
@@ -498,7 +498,7 @@ dword JAMReadMsg(MSGH * msgh, MIS * mis,
 sword JAMWriteMsg(MSGH * msgh, word append, MIS * mis, byte * text,
                   dword textlen, dword totlen, dword clen, byte * ctxt)
 {
-    MSG *sq = msgh->sq;
+    MSGA *sq = msgh->sq;
     byte temp[101];
     byte *SubFieldPtr = NULL;
 
@@ -647,7 +647,7 @@ sword JAMWriteMsg(MSGH * msgh, word append, MIS * mis, byte * text,
 */
 
 
-sword JAMKillMsg(MSG * sq, dword msgnum)
+sword JAMKillMsg(MSGA * sq, dword msgnum)
 {
     sword retval = -1;
     word didlock = 0;
@@ -727,7 +727,7 @@ sword JAMKillMsg(MSG * sq, dword msgnum)
       ----------------------------
 */
 
-sword JAMLock(MSG * sq)
+sword JAMLock(MSGA * sq)
 {
     dword oldcounter = JamData->HdrInfo.ModCounter;
 
@@ -783,7 +783,7 @@ sword JAMLock(MSG * sq)
 
 /* Undo the above "lock" operation */
 
-sword JAMUnlock(MSG * sq)
+sword JAMUnlock(MSGA * sq)
 {
 
     msgapierr = MERR_NONE;
@@ -876,7 +876,7 @@ dword JAMGetCurPos(MSGH * msgh)
 */
 
 
-UMSGID JAMMsgnToUid(MSG * sq, dword msgnum)
+UMSGID JAMMsgnToUid(MSGA * sq, dword msgnum)
 {
 
     msgapierr = MERR_NONE;
@@ -898,7 +898,7 @@ UMSGID JAMMsgnToUid(MSG * sq, dword msgnum)
 */
 
 
-dword JAMUidToMsgn(MSG * sq, UMSGID umsgid, word type)
+dword JAMUidToMsgn(MSGA * sq, UMSGID umsgid, word type)
 {
     sdword size;
     dword curpos;
@@ -1021,7 +1021,7 @@ dword JAMGetCtrlLen(MSGH * msgh)
       --------------------------------
 */
 
-dword JAMGetHighWater(MSG * sq)
+dword JAMGetHighWater(MSGA * sq)
 {
     NW(sq);
     return 0;
@@ -1035,7 +1035,7 @@ dword JAMGetHighWater(MSG * sq)
       ---------------------------
 */
 
-sword JAMSetHighWater(MSG * sq, dword hwm)
+sword JAMSetHighWater(MSGA * sq, dword hwm)
 {
     NW(sq);
     NW(hwm);
@@ -1056,7 +1056,7 @@ void near JAM2SQ(struct _msgh *msgh, byte * Subfields)
     JAMSUBFIELD *SFptr;
     char *bufptr, *new;
     char temp[101];
-    MSG *sq = msgh->sq;
+    MSGA *sq = msgh->sq;
     word cursize = 1024, copylen;
     sword SFleft = (sword) JamData->Hdr.SubfieldLen;
     int l;
@@ -1298,7 +1298,7 @@ void near addkludge(struct _msgh *msgh, char *text, int txtlen, char *data,
 */
 
 
-void near Init_JAMheader(MSG * sq)
+void near Init_JAMheader(MSGA * sq)
 {
 
     memset(&JamData->Hdr, '\0', sizeof(JAMHDR));
@@ -1320,7 +1320,7 @@ void near Init_JAMheader(MSG * sq)
       ------------------------------------------------------
 */
 
-void near SQ2JAM(MIS * mis, char *ctxt, MSG * sq, word mode,
+void near SQ2JAM(MIS * mis, char *ctxt, MSGA * sq, word mode,
                  byte ** SubFieldPtr)
 {
     char temp[300];
@@ -1648,7 +1648,7 @@ void near SQ2JAM(MIS * mis, char *ctxt, MSG * sq, word mode,
 */
 
 
-byte near JAMMsgExists(MSG * sq, UMSGID umsgid)
+byte near JAMMsgExists(MSGA * sq, UMSGID umsgid)
 {
     JAMHDR hdr;
 
@@ -1680,7 +1680,7 @@ byte near JAMMsgExists(MSG * sq, UMSGID umsgid)
 /* ----------------------------------------------------------- */
 
 
-int near JAMmbOpen(MSG * sq, byte * tempname)
+int near JAMmbOpen(MSGA * sq, byte * tempname)
 {
     char FileName[120], name[100];
 
@@ -1781,7 +1781,7 @@ int near JAMmbOpen(MSG * sq, byte * tempname)
 /* -------------------------------------- */
 
 
-int near JAMmbClose(MSG * sq)
+int near JAMmbClose(MSGA * sq)
 {
     /* Close all handles */
 
@@ -1799,7 +1799,7 @@ int near JAMmbClose(MSG * sq)
 /* - Returns -1 on error, 0 if all went well.        - */
 /* --------------------------------------------------- */
 
-int near JAMReadHeader(MSG * sq, long offset, JAMHDR * hdr)
+int near JAMReadHeader(MSGA * sq, long offset, JAMHDR * hdr)
 {
 
     /* Fetch header */
@@ -1837,7 +1837,7 @@ int near JAMReadHeader(MSG * sq, long offset, JAMHDR * hdr)
 /* - Returns -1 on error, 0 if all went well. - */
 /* -------------------------------------------- */
 
-int near JAMWriteHeader(MSG * sq, long offset, JAMHDR * hdr)
+int near JAMWriteHeader(MSGA * sq, long offset, JAMHDR * hdr)
 {
 
     if (lseek(JamData->HdrHandle, offset, SEEK_SET) != offset)
@@ -1863,7 +1863,7 @@ int near JAMWriteHeader(MSG * sq, long offset, JAMHDR * hdr)
 /* ------------------------------------------------------ */
 
 
-int near JAMReadIdx(MSG * sq, dword number, JAMIDXREC * idx)
+int near JAMReadIdx(MSGA * sq, dword number, JAMIDXREC * idx)
 {
     long WhatOffset;
     int BytesRead;
@@ -1938,7 +1938,7 @@ int near JAMReadIdx(MSG * sq, dword number, JAMIDXREC * idx)
 /* -------------------------------------------- */
 
 
-int near JAMWriteIdx(MSG * sq, dword number, JAMIDXREC * idx)
+int near JAMWriteIdx(MSGA * sq, dword number, JAMIDXREC * idx)
 {
     long offset;
 
@@ -2009,7 +2009,7 @@ void near JAMmbAddField(byte * start, dword WhatField,
 
 
 
-int near JAMmbUpdateHeaderInfo(MSG * sq, int WriteIt)
+int near JAMmbUpdateHeaderInfo(MSGA * sq, int WriteIt)
 {
 
     /* Seek to beginning of file */
@@ -2060,7 +2060,7 @@ int near JAMmbUpdateHeaderInfo(MSG * sq, int WriteIt)
 **  failure.
 */
 
-dword JAMmbFetchLastRead(MSG * sq, dword UserCRC, int getlast)
+dword JAMmbFetchLastRead(MSGA * sq, dword UserCRC, int getlast)
 {
     sdword ReadCount;
     dword LastReadRec;
@@ -2118,7 +2118,7 @@ dword JAMmbFetchLastRead(MSG * sq, dword UserCRC, int getlast)
 **  Returns 1 upon success and 0 upon failure.
 */
 
-int JAMmbStoreLastRead(MSG * sq, dword last, dword highest, dword CRC)
+int JAMmbStoreLastRead(MSGA * sq, dword last, dword highest, dword CRC)
 {
     sdword UserOffset;
     JAMLREAD new;
