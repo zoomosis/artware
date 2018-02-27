@@ -1,5 +1,0 @@
-This, for a large part, coincides with MSGAPI design. Transparant access to
-messages is provided, for 'modern' message types however with loss of
-information. The 'message handle' concept in the MSGAPI allows storage of extra
-information (msgbase specific), but this extra information will be lost as soon
-as the message is closed (because the msghandle is then deallocated).
