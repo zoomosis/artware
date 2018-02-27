@@ -4,15 +4,15 @@
 extern LINE *firstmemline, *lastmemline;
 extern int curtxtline;
 
-MMSG *ForwardMessage(MSG * toareahandle, AREA * toarea, AREA * area,
+MMSG *ForwardMessage(MSGA * toareahandle, AREA * toarea, AREA * area,
                      MMSG * curmsg);
 void mutilate_origin(LINE * first);
 
 
 /* -------------------------------------------------------------- */
 
-void CopyMarked(AREA * area, AREA * toarea, MSG * areahandle,
-                MSG * toareahandle, int kill)
+void CopyMarked(AREA * area, AREA * toarea, MSGA * areahandle,
+                MSGA * toareahandle, int kill)
 {
     MMSG *curmsg;
     char temp[80];
@@ -96,7 +96,7 @@ void CopyMarked(AREA * area, AREA * toarea, MSG * areahandle,
 /* ----------------------------------------------- */
 
 
-void DeleteMarked(AREA * area, MSG * areahandle)
+void DeleteMarked(AREA * area, MSGA * areahandle)
 {
     char temp[80];
     int i, add = 0;
@@ -139,7 +139,7 @@ void DeleteMarked(AREA * area, MSG * areahandle)
 /* ----------------------------------------------- */
 
 
-void MoveMessage(MSG * areahandle, AREA * area, MMSG * curmsg)
+void MoveMessage(MSGA * areahandle, AREA * area, MMSG * curmsg)
 {
     BOX *border;
     char infotext[320];
@@ -147,7 +147,7 @@ void MoveMessage(MSG * areahandle, AREA * area, MMSG * curmsg)
     dword no;
     MMSG *message = NULL;
     AREA *toarea = NULL;
-    MSG *toareahandle = NULL;
+    MSGA *toareahandle = NULL;
     UMSGID absolute;
     RAWBLOCK *infront, *last;
 
@@ -348,7 +348,7 @@ void MoveMessage(MSG * areahandle, AREA * area, MMSG * curmsg)
 
 // Routines to forward message, let user edit the text etc.
 
-MMSG *ForwardMessage(MSG * toareahandle, AREA * toarea, AREA * area,
+MMSG *ForwardMessage(MSGA * toareahandle, AREA * toarea, AREA * area,
                      MMSG * curmsg)
 {
     MMSG *message;

@@ -47,12 +47,12 @@ void CheckLineForFile(char *s);
 int file_ext(char *s);
 void addfilename(char *p, char *first);
 int showlist(REQLIST * first);
-void writerequest(REQLIST * first, AREA * area, MSG * areahandle,
+void writerequest(REQLIST * first, AREA * area, MSGA * areahandle,
                   MMSG * origmsg);
 
 
 
-int get_request(MMSG * curmsg, AREA * area, MSG * areahandle)
+int get_request(MMSG * curmsg, AREA * area, MSGA * areahandle)
 {
     LINE *curptr;               /* Point to first line of message */
     int retval;
@@ -429,13 +429,13 @@ int showlist(REQLIST * first)
 
 /* ---------------------------------------------------- */
 
-void writerequest(REQLIST * first, AREA * area, MSG * areahandle,
+void writerequest(REQLIST * first, AREA * area, MSGA * areahandle,
                   MMSG * origmsg)
 {
     AREA *toarea;
     REQLIST *curfile = first;
     MMSG *curmsg;
-    MSG *toareahandle;
+    MSGA *toareahandle;
     int retval;
 
     if ((toarea = SelectArea(cfg.first, 1, cfg.first)) == NULL) /* Select

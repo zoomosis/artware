@@ -22,6 +22,7 @@
 
 #include <string.h>
 #include <ctype.h>
+#include "compiler.h"
 #include "bmg.h"
 
 /*

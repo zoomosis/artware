@@ -1,7 +1,7 @@
 #include "includes.h"
 
-dword getnumber(char c, MSG * areahandle, AREA * area);
-dword PickReply(MMSG * curmsg, MSG * areahandle);
+dword getnumber(char c, MSGA * areahandle, AREA * area);
+dword PickReply(MMSG * curmsg, MSGA * areahandle);
 int HighlightLines(MMSG * curmsg);
 
 
@@ -24,7 +24,7 @@ typedef struct
 MARK mark;
 
 
-dword ShowMsg(MMSG * msg, AREA * area, MSG * areahandle, int displaytype)
+dword ShowMsg(MMSG * msg, AREA * area, MSGA * areahandle, int displaytype)
 {
     char temp[MAX_SCREEN_WIDTH];
     dword command;
@@ -89,7 +89,7 @@ dword ShowMsg(MMSG * msg, AREA * area, MSG * areahandle, int displaytype)
 
 // ==============================================================
 
-dword showbody(MMSG * curmsg, MSG * areahandle, AREA * area,
+dword showbody(MMSG * curmsg, MSGA * areahandle, AREA * area,
                int displaytype)
 {
     int l;
@@ -928,7 +928,7 @@ dword showbody(MMSG * curmsg, MSG * areahandle, AREA * area,
 
 /* ---------------------------------------------------------- */
 
-dword getnumber(char c, MSG * areahandle, AREA * area)
+dword getnumber(char c, MSGA * areahandle, AREA * area)
 {
     dword n, curno;
     int ret = 1;
@@ -993,7 +993,7 @@ dword getnumber(char c, MSG * areahandle, AREA * area)
 
 /* ------------------------------------------------------------- */
 
-char *MakeRep(MMSG * msg, MSG * areahandle, AREA * area)
+char *MakeRep(MMSG * msg, MSGA * areahandle, AREA * area)
 {
     static char repstring[90];
     char temp[80];
@@ -1053,7 +1053,7 @@ char *MakeRep(MMSG * msg, MSG * areahandle, AREA * area)
 /* --------------------------------------------------------------- */
 
 
-dword PickReply(MMSG * curmsg, MSG * areahandle)
+dword PickReply(MMSG * curmsg, MSGA * areahandle)
 {
     MSGH *msghandle;
     MIS mis;

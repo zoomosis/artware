@@ -4,7 +4,7 @@ char *SumAttaches(MMSG * curmsg);
 void ShowFileInfo(MMSG * curmsg);
 
 
-void showinfo(MMSG * curmsg, AREA * area, MSG * areahandle)
+void showinfo(MMSG * curmsg, AREA * area, MSGA * areahandle)
 {
     BOX *infobox;
     char temp[81];
@@ -89,7 +89,7 @@ void showinfo(MMSG * curmsg, AREA * area, MSG * areahandle)
     print(16, 9, cfg.col[Cpoptext], temp);
 
     if (area->base & MSGTYPE_SDM)
-        sprintf(temp, "Base : *.MSG");
+        sprintf(temp, "Base : *.MSGA");
     else if (area->base & MSGTYPE_JAM)
         sprintf(temp, "Base : JAM");
     else if (area->base & MSGTYPE_HMB)
@@ -140,7 +140,7 @@ void showinfo(MMSG * curmsg, AREA * area, MSG * areahandle)
 
         if (!(area->base & MSGTYPE_SQUISH))
             break;              /* We surely don't want to do this for
-                                   *.MSG! */
+                                   *.MSGA! */
 
         action = 0;
         ltoa((long)areadata->max_msg, max, 10);

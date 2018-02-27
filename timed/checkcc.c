@@ -26,11 +26,11 @@ static AREALIST *firstarea, *lastarea;
 char nowcc, nowxc, nowhc;
 
 void check_element(char *charptr, MIS * header, AREA * area);
-void write_one(MSG * areahandle, AREA * area, MIS * curheader,
+void write_one(MSGA * areahandle, AREA * area, MIS * curheader,
                char *msgbuf);
 void get_bomb_list(char *charptr, MIS * header, AREA * area);
 HDRLIST *get_copy(MIS * header);
-void WriteCCs(MSG * areahandle, AREA * area, RAWBLOCK ** first,
+void WriteCCs(MSGA * areahandle, AREA * area, RAWBLOCK ** first,
               MIS * header);
 void WriteXCs(AREA * area, RAWBLOCK ** first, MIS * header);
 void AddToArealist(char *charptr);
@@ -39,7 +39,7 @@ int which_aka(NETADDR * addr);
 int MoreToCome(HDRLIST * thisone);
 
 
-void check_cc(AREA * area, MSG * areahandle, MIS * mis, RAWBLOCK ** first)
+void check_cc(AREA * area, MSGA * areahandle, MIS * mis, RAWBLOCK ** first)
 {
 
     char *start, *charptr, *nextnl, *nextel;
@@ -254,7 +254,7 @@ void check_element(char *el, MIS * mis, AREA * area)
 
 // ===================================================================
 
-void WriteCCs(MSG * areahandle, AREA * area, RAWBLOCK ** first, MIS * mis)
+void WriteCCs(MSGA * areahandle, AREA * area, RAWBLOCK ** first, MIS * mis)
 {
     RAWBLOCK *ccinfo = *first, *thismsgstart;
     HDRLIST *thisone;
@@ -494,7 +494,7 @@ void WriteXCs(AREA * area, RAWBLOCK ** first, MIS * mis)
     char temp[MAX_SCREEN_WIDTH];
     char info[] = "* Crossposted in: ";
     char *kludges;
-    MSG *thisareahandle;
+    MSGA *thisareahandle;
     HDRLIST *ourhdr = get_copy(mis);
 
     // Expand XC: names and build a textblock out of it

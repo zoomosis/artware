@@ -3,7 +3,7 @@
 RAWBLOCK *spawn_editor(int checkchange, char *areatag);
 RAWBLOCK *DoReplace(RAWBLOCK * blk, AREA * area, MMSG * curmsg,
                     char *command, int origin, int raw);
-RAWBLOCK *internal_edit(LINE * first, AREA * area, MSG * areahandle,
+RAWBLOCK *internal_edit(LINE * first, AREA * area, MSGA * areahandle,
                         MMSG * curmsg, int startline);
 int CheckForOutputFile(char *curfile);
 int WriteFmtBody(RAWBLOCK * blk, char *curfile);
@@ -13,7 +13,7 @@ int WriteFmtBody(RAWBLOCK * blk, char *curfile);
 /* ----------------------------------------------- */
 
 RAWBLOCK *GetBody(AREA * area,
-                  MSG * areahandle,
+                  MSGA * areahandle,
                   MMSG * curmsg,
                   char *origline,
                   LINE * firstline, int checkchange, int startline)
@@ -349,7 +349,7 @@ RAWBLOCK *spawn_editor(int checkchange, char *areatag)
 
 // ==============================================================
 
-RAWBLOCK *internal_edit(LINE * firstline, AREA * area, MSG * areahandle,
+RAWBLOCK *internal_edit(LINE * firstline, AREA * area, MSGA * areahandle,
                         MMSG * curmsg, int startline)
 {
     int lasthard = 1;

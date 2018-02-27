@@ -74,23 +74,23 @@ static char wide_display = 0;
 
 int oldstart = -1, oldcur = -1;
 
-int fillstruct(MSG * areahandle, AREA * area, dword current);
-void readheader(unsigned int num, MSG * areahandle, AREA * area,
+int fillstruct(MSGA * areahandle, AREA * area, dword current);
+void readheader(unsigned int num, MSGA * areahandle, AREA * area,
                 HDRLIST * thisone);
-void checkfilled(int start, int rows, MSG * areahandle, AREA * area);
+void checkfilled(int start, int rows, MSGA * areahandle, AREA * area);
 void showthem(int start, int rows, int curpos);
-void print_msg(MSG * areahandle, AREA * area, long msgno, FILE * outfile);
-dword process_msgs(MSG * areahandle, AREA * area, int curpos,
+void print_msg(MSGA * areahandle, AREA * area, long msgno, FILE * outfile);
+dword process_msgs(MSGA * areahandle, AREA * area, int curpos,
                    int operation);
 void get_range(char dowhat, int maxpos, AREA * area);
 void tagall(char dowhat, int maxpos, AREA * area);
 void freescreen(HDRLIST * screennow);
-void details(AREA * area, MSG * areahandle, int num, int start);
-void CheckInternet(MIS * mis, MSG * areahandle, dword no);
+void details(AREA * area, MSGA * areahandle, int num, int start);
+void CheckInternet(MIS * mis, MSGA * areahandle, dword no);
 
 
 
-dword MsgList(MSG * areahandle, AREA * area, dword current, char wide)
+dword MsgList(MSGA * areahandle, AREA * area, dword current, char wide)
 {
     dword lastmsg, marker;
     BOX *listbox;
@@ -408,7 +408,7 @@ dword MsgList(MSG * areahandle, AREA * area, dword current, char wide)
 /* ------------------------------------------------- */
 
 
-void readheader(unsigned num, MSG * areahandle, AREA * area,
+void readheader(unsigned num, MSGA * areahandle, AREA * area,
                 HDRLIST * thisone)
 {
     MSGH *msghandle;
@@ -535,7 +535,7 @@ void readheader(unsigned num, MSG * areahandle, AREA * area,
 
 /* Fill the "index" of msgs, w/ pointers to 'header string' to be displayed */
 
-int fillstruct(MSG * areahandle, AREA * area, dword curmsgno)
+int fillstruct(MSGA * areahandle, AREA * area, dword curmsgno)
 {
     struct _sdmdata *dataptr = (struct _sdmdata *)areahandle->apidata;
     unsigned *msglijst = (unsigned *)dataptr->msgnum;
@@ -652,7 +652,7 @@ int PrivateFillStruct(AREA * area, dword curmsgno)
 /* Walk through msgs to be displayed, if header not read yet, do it now! */
 
 
-void checkfilled(int start, int rows, MSG * areahandle, AREA * area)
+void checkfilled(int start, int rows, MSGA * areahandle, AREA * area)
 {
 
     unsigned int l, n, i;
@@ -741,12 +741,12 @@ void showthem(int start, int rows, int curpos)
 
 /* Kill, Move, Copy, Print all tagged messages */
 
-dword process_msgs(MSG * areahandle, AREA * area, int curpos,
+dword process_msgs(MSGA * areahandle, AREA * area, int curpos,
                    int operation)
 {
     dword marker, current;
     AREA *toarea;
-    MSG *toareahandle;
+    MSGA *toareahandle;
     char temp[80];
 
     marker = uidlist[curpos];
@@ -795,7 +795,7 @@ dword process_msgs(MSG * areahandle, AREA * area, int curpos,
 
 
 
-void print_msg(MSG * areahandle, AREA * area, long msgno, FILE * outfile)
+void print_msg(MSGA * areahandle, AREA * area, long msgno, FILE * outfile)
 {
 
     MMSG *curmsg;
@@ -953,7 +953,7 @@ void freescreen(HDRLIST * screennow)
 
 // Show details about a certain message.
 
-void details(AREA * area, MSG * areahandle, int num, int start)
+void details(AREA * area, MSGA * areahandle, int num, int start)
 {
     MMSG *thismsg;
     dword no;
@@ -1009,7 +1009,7 @@ void details(AREA * area, MSG * areahandle, int num, int start)
 
 // ==============================================================
 
-void CheckInternet(MIS * mis, MSG * areahandle, dword no)
+void CheckInternet(MIS * mis, MSGA * areahandle, dword no)
 {
     MSGH *msghandle;
     char *body, *inet = NULL, *newline;

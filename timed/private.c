@@ -1,6 +1,6 @@
 #include "includes.h"
 
-int MaySee(MSG * areahandle, dword no)
+int MaySee(MSGA * areahandle, dword no)
 {
     MSGH *msghandle;
     MIS mis;
@@ -37,7 +37,7 @@ int MaySee(MSG * areahandle, dword no)
 
 // ==============================================================
 
-int ScanMaySee(AREA * area, MSG * areahandle)
+int ScanMaySee(AREA * area, MSGA * areahandle)
 {
     dword uidtoscan;
 
@@ -85,7 +85,7 @@ int BePrivate(AREA * area)
 
 // ==============================================================
 
-int CurrentIsNotLast(AREA * area, MSG * areahandle)
+int CurrentIsNotLast(AREA * area, MSGA * areahandle)
 {
     dword uid;
 
@@ -107,7 +107,7 @@ int CurrentIsNotLast(AREA * area, MSG * areahandle)
 
 // ==============================================================
 
-dword GetNextPrivate(AREA * area, MSG * areahandle)
+dword GetNextPrivate(AREA * area, MSGA * areahandle)
 {
     dword uid;
 
@@ -125,7 +125,7 @@ dword GetNextPrivate(AREA * area, MSG * areahandle)
 
 // ==============================================================
 
-dword GetPrevPrivate(AREA * area, MSG * areahandle)
+dword GetPrevPrivate(AREA * area, MSGA * areahandle)
 {
     dword uid;
 

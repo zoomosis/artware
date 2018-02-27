@@ -3,7 +3,7 @@
 void UpdateEchotosslog(char *tag);
 
 
-void add_tosslog(AREA * area, MSG * areahandle)
+void add_tosslog(AREA * area, MSGA * areahandle)
 {
     int tosslog;
     char temp[1024], tmpmsg[1024];

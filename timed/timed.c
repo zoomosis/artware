@@ -7,7 +7,7 @@
 
 extern int clockthreadid;
 
-int pause = 0;
+int startup_pause = 0;
 char timdir[100] = "";
 
 void readparms(int argc, char *argv[]);
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 
     print(1, 19, 7, myname);
     print(2, 5, 7, "(c) 1992-" PROGYEAR "  Gerard van Essen and others.");
-    print(3, 3, 7, "Message editor for Squish, *.MSG, JAM & Hudson");
+    print(3, 3, 7, "Message editor for Squish, *.MSGA, JAM & Hudson");
 
     print(4, 0, 3, "Ã");
     print(4, maxx - 1, 3, "´");
@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
     sprintf(msg, " Registered to %s. ", cfg.usr.name[0].name);
     print(6, 40 - (strlen(msg) / 2), 113, msg);
 
-    if ((pause == 1) || (!(TIMREGISTERED)))
+    if ((startup_pause == 1) || (!(TIMREGISTERED)))
     {
         print(22, 32, 113, " Press a key.. ");
         kbflush();
@@ -363,7 +363,7 @@ void readparms(int argc, char *argv[])
                 break;
 
             case 'p':          /* Pause at startup */
-                pause = 1;
+                startup_pause = 1;
                 break;
 
             case 'v':          /* Show version & licence */
@@ -381,7 +381,7 @@ void readparms(int argc, char *argv[])
 
 void getstats(AREA * curarea)
 {
-    MSG *areahandle;
+    MSGA *areahandle;
 
     if (!
         (areahandle =

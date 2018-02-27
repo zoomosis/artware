@@ -40,7 +40,7 @@ int EditOneRequest(char *filename, char *password);
 #define MAXEXT  _MAX_EXT
 #endif
 
-int MakeHeader(MSG * areahandle, MMSG * curmsg, int reply, AREA * area,
+int MakeHeader(MSGA * areahandle, MMSG * curmsg, int reply, AREA * area,
                UMSGID reply_to_id, char *subject, MMSG * newmmsg)
 {
     int editret = 0;
@@ -130,7 +130,7 @@ int MakeHeader(MSG * areahandle, MMSG * curmsg, int reply, AREA * area,
 /* ----------------------------------------------- */
 
 
-int EditHeader(MSG * areahandle, MMSG * curmsg, int address, int aka,
+int EditHeader(MSGA * areahandle, MMSG * curmsg, int address, int aka,
                int domatch, AREA * area)
 {
     char tempaddress[101], addrcopy[101];

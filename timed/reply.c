@@ -28,7 +28,7 @@ LINE *lastmemline = NULL;
 int curtxtline = 0;
 
 void add_text(char *line);      /* Add a line to text in mem */
-int WriteReplyLink(AREA * area, MSG * areahandle, dword orig, dword new);
+int WriteReplyLink(AREA * area, MSGA * areahandle, dword orig, dword new);
 void AskDumpBody(RAWBLOCK * blk);
 
 
@@ -39,7 +39,7 @@ void AskDumpBody(RAWBLOCK * blk);
 /* reply == 4 : bounce reply                       */
 /* ----------------------------------------------- */
 
-void MakeMessage(MMSG * curmsg, AREA * area, MSG * areahandle, word reply,
+void MakeMessage(MMSG * curmsg, AREA * area, MSGA * areahandle, word reply,
                  UMSGID reply_to_id, char *add_to_top)
 {
     dword origmsg;
@@ -202,7 +202,7 @@ void MakeMessage(MMSG * curmsg, AREA * area, MSG * areahandle, word reply,
 void ReplyOther(MMSG * curmsg, AREA * area)
 {
     AREA *toarea, *preselarea = cfg.first;
-    MSG *toareahandle;
+    MSGA *toareahandle;
     char temp[100];
     char *s;
 
@@ -266,7 +266,7 @@ void ReplyOther(MMSG * curmsg, AREA * area)
 
 // bodytoo == -1 means attributes only
 
-void ChangeMessage(MMSG * curmsg, AREA * area, MSG * areahandle,
+void ChangeMessage(MMSG * curmsg, AREA * area, MSGA * areahandle,
                    int bodytoo)
 {
     int editret = 0, zonegated = check_gated(curmsg);
@@ -1532,7 +1532,7 @@ void add_text(char *line)
 /* -------------------------------------------------------- */
 
 
-int WriteReplyLink(AREA * area, MSG * areahandle, dword orig, dword new)
+int WriteReplyLink(AREA * area, MSGA * areahandle, dword orig, dword new)
 {
     MIS replymis;
     int n;
@@ -1675,7 +1675,7 @@ void near rton(char *s)
 // preserve ==  1 : preserve original body, untranslated
 // preserve == -1 : do NOT do any character translation.
 
-int SaveMessage(MSG * areahandle, AREA * area, MIS * mis, RAWBLOCK * blk,
+int SaveMessage(MSGA * areahandle, AREA * area, MIS * mis, RAWBLOCK * blk,
                 char *kludges, dword no, int preserve)
 {
     dword txtsize = 0L, ctrlsize = 0L;

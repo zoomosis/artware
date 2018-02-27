@@ -24,6 +24,7 @@
 
 #ifdef __UNIX__
 #include <unistd.h>
+#include <ncurses.h>
 #endif
 
 #include <msgapi.h>

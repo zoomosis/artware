@@ -5,10 +5,10 @@ void checkaline(LINE * current);
 char *pascal near nextline(void);
 int IsPersonal(char *toname, NETADDR * address, AREA * area);
 
-void FixReplies(MMSG * curmsg, MSG * areahandle);
+void FixReplies(MMSG * curmsg, MSGA * areahandle);
 void checkaddress(MMSG * curmsg, AREA * area);
 void cleanup(char *s);
-void get_JAM_thread(MMSG * curmsg, MSG * areahandle);
+void get_JAM_thread(MMSG * curmsg, MSGA * areahandle);
 void AppendAtEnd(MMSG * curmsg, char *keyword, STRINGLIST * l);
 
 LINE *current;
@@ -29,7 +29,7 @@ unsigned char pos, ll;
 #endif
 
 
-MMSG *GetFmtMsg(long curno, MSG * areahandle, AREA * area)
+MMSG *GetFmtMsg(long curno, MSGA * areahandle, AREA * area)
 {
     MMSG *curmsg;
     MSGH *msghandle;
@@ -341,7 +341,7 @@ MMSG *GetFmtMsg(long curno, MSG * areahandle, AREA * area)
 
 // ---------------------------------------------------------------
 
-MMSG *GetRawMsg(long curno, MSG * areahandle, int what, int convert)
+MMSG *GetRawMsg(long curno, MSGA * areahandle, int what, int convert)
 {
     MMSG *curmsg;
     MSGH *msghandle;

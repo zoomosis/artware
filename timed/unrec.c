@@ -1,7 +1,7 @@
 #include "includes.h"
 
 
-void unreceive(MMSG * curmsg, MSG * areahandle, AREA * area)
+void unreceive(MMSG * curmsg, MSGA * areahandle, AREA * area)
 {
     char temp[100];
 

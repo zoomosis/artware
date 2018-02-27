@@ -1,7 +1,7 @@
 
 #include "includes.h"
 
-int AttemptLock(MSG * areahandle)
+int AttemptLock(MSGA * areahandle)
 {
 
     while (1)

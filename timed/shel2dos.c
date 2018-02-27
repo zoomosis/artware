@@ -16,7 +16,7 @@
 
 
 int GetCommandLine(char **progptr, char **parmsptr, AREA * area,
-                   MSG * areahandle, MMSG * curmsg);
+                   MSGA * areahandle, MMSG * curmsg);
 
 
 #ifdef __UNIX__
@@ -175,7 +175,7 @@ int shell_to_DOS(void)
 
 // =============================================================
 
-int runexternal(AREA * area, MSG ** areahandle, MMSG * curmsg,
+int runexternal(AREA * area, MSGA ** areahandle, MMSG * curmsg,
                 long lastorhigh, dword highest)
 {
     char *curdir;
@@ -295,7 +295,7 @@ int runexternal(AREA * area, MSG ** areahandle, MMSG * curmsg,
 // =============================================================
 
 int GetCommandLine(char **progptr, char **parmsptr, AREA * area,
-                   MSG * areahandle, MMSG * curmsg)
+                   MSGA * areahandle, MMSG * curmsg)
 {
     BOX *inputbox;
     int ret;
@@ -356,7 +356,7 @@ int GetCommandLine(char **progptr, char **parmsptr, AREA * area,
 
 // ==============================================================
 
-char *BuildCommandLine(char *charptr, AREA * area, MSG * areahandle,
+char *BuildCommandLine(char *charptr, AREA * area, MSGA * areahandle,
                        MMSG * curmsg, char *curfile, char *newfile)
 {
     char *tmpout, *out, *tmpptr;
@@ -587,7 +587,7 @@ int runaprog(char *prog, char *parms, int waitforkey)
 
 // =============================================================
 
-int editrunexternal(AREA * area, MSG * areahandle, MMSG * curmsg)
+int editrunexternal(AREA * area, MSGA * areahandle, MMSG * curmsg)
 {
     char *prog = NULL, *parms = NULL;
 

@@ -26,7 +26,7 @@ int ShowOutFiles(char *outstring);
 
 
 
-void PrintMessage(MMSG * curmsg, AREA * area, MSG * areahandle,
+void PrintMessage(MMSG * curmsg, AREA * area, MSGA * areahandle,
                   int hardcopy, int tagged, int what)
 {
     FILE *outfile;
@@ -128,7 +128,7 @@ void PrintMessage(MMSG * curmsg, AREA * area, MSG * areahandle,
 
 
 
-FILE *OpenExist(char *filename, AREA * area, MSG * areahandle,
+FILE *OpenExist(char *filename, AREA * area, MSGA * areahandle,
                 MMSG * curmsg)
 {
     FILE *outfile;

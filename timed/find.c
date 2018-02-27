@@ -79,7 +79,7 @@ typedef struct
     char target[120];
     FILE *targetFILE;
     AREA *targetarea;
-    MSG *targethandle;
+    MSGA *targethandle;
     SEARCHARG *first;
 
 } SEARCHBLOCK;
@@ -129,22 +129,22 @@ void GetOptions(SEARCHARG * thisone, int topline);
 void FreeChain(SEARCHARG * first);
 void GlobalOptions(void);
 
-void DoSearch(MSG * starthandle, AREA * startarea, long startlast);
+void DoSearch(MSGA * starthandle, AREA * startarea, long startlast);
 void MakeBMGTables(void);
-int search_area(MSG * areahandle, AREA * area);
+int search_area(MSGA * areahandle, AREA * area);
 AREA *GetNextArea(AREA * area);
-dword GetNextMsg(dword curno, AREA * area, MSG * areahandle);
+dword GetNextMsg(dword curno, AREA * area, MSGA * areahandle);
 
 int check_msg(MMSG * thismsg);
 int check_arg(MMSG * thismsg, SEARCHARG * arg);
 
 int searchitem(char *txt, int len, SEARCHARG * arg, char howstrict,
                char complete);
-dword HandleMessage(dword curno, MSG * areahandle, AREA * area,
+dword HandleMessage(dword curno, MSGA * areahandle, AREA * area,
                     MMSG * thismsg, dword thisuid);
 void bottom(char *s);
 
-void CopyMoveMsg(AREA * area, MSG * areahandle, MMSG * curmsg, int kill,
+void CopyMoveMsg(AREA * area, MSGA * areahandle, MMSG * curmsg, int kill,
                  dword msgno, dword thisuid);
 void MarkLines(MMSG * curmsg);
 void check_line(LINE * line);
@@ -165,7 +165,7 @@ void CloseFindDatabase(void);
 // =======================================================
 // Main findmessage function.
 
-void FindMessage(MSG * areahandle, AREA * area, long last)
+void FindMessage(MSGA * areahandle, AREA * area, long last)
 {
     BOX *baseframe;
     char temp[MAX_SCREEN_WIDTH];
@@ -1267,9 +1267,9 @@ void GlobalOptions(void)
 
 // =======================================================
 
-void DoSearch(MSG * starthandle, AREA * startarea, long startlast)
+void DoSearch(MSGA * starthandle, AREA * startarea, long startlast)
 {
-    MSG *curhandle;
+    MSGA *curhandle;
     AREA *curarea = NULL;
     BOX *statusbox;
     int retval = 0;
@@ -1419,7 +1419,7 @@ void MakeBMGTables(void)
 
 // ============================================================
 
-int search_area(MSG * areahandle, AREA * area)
+int search_area(MSGA * areahandle, AREA * area)
 {
     dword curno = 0L;
     UMSGID thisuid;
@@ -1596,7 +1596,7 @@ AREA *GetNextArea(AREA * area)
 // Find next message to be scanned by search (forward <-> backward etc
 // ====================================================================
 
-dword GetNextMsg(dword curno, AREA * area, MSG * areahandle)
+dword GetNextMsg(dword curno, AREA * area, MSGA * areahandle)
 {
     word type;
     dword next;
@@ -1849,7 +1849,7 @@ int searchitem(char *txt, int len, SEARCHARG * arg, char howstrict,
 
 // =========================================================
 
-dword HandleMessage(dword curno, MSG * areahandle, AREA * area,
+dword HandleMessage(dword curno, MSGA * areahandle, AREA * area,
                     MMSG * thismsg, dword thisuid)
 {
     int added = 0;
@@ -1972,7 +1972,7 @@ void bottom(char *s)
 
 // ================================================
 
-void CopyMoveMsg(AREA * area, MSG * areahandle, MMSG * curmsg, int kill,
+void CopyMoveMsg(AREA * area, MSGA * areahandle, MMSG * curmsg, int kill,
                  dword msgno, dword thisuid)
 {
 

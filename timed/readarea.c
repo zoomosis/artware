@@ -1,31 +1,28 @@
 #include "includes.h"
 
 #ifdef __OS2__
-
 #define INCL_DOSPROCESS
 #include <os2.h>
-
 #endif
 
-long GetLast(AREA * area, MSG * areahandle, int raw);
+long GetLast(AREA * area, MSGA * areahandle, int raw);
 void ReleaseMsg(MMSG * thismsg, int allofit);
 void UpdateLastread(AREA * area, long last, dword highest,
-                    MSG * areahandle);
-long MsgGetLowMsg(MSG * areahandle);
-void beep(void);
-void ScanArea(AREA * area, MSG * areahandle, int raw);
+                    MSGA * areahandle);
+long MsgGetLowMsg(MSGA * areahandle);
+void ScanArea(AREA * area, MSGA * areahandle, int raw);
 void get_custom_info(AREA * area);
 long get_last_squish(AREA * area);
 long get_last_sdm(AREA * area);
-long get_last_JAM(MSG * areahandle);
+long get_last_JAM(MSGA * areahandle);
 void put_last_squish(AREA * area, long last);
 void put_last_sdm(AREA * area, long last);
-void put_last_JAM(long last, MSG * areahandle, dword highest);
-long get_last_HMB(MSG * areahandle);
-void put_last_HMB(long last, MSG * areahandle);
-int ReScanArea(MSG ** areahandle, AREA * area, dword lastorhigh,
+void put_last_JAM(long last, MSGA * areahandle, dword highest);
+long get_last_HMB(MSGA * areahandle);
+void put_last_HMB(long last, MSGA * areahandle);
+int ReScanArea(MSGA ** areahandle, AREA * area, dword lastorhigh,
                dword highest);
-dword GetMaySeeLastRead(MSG * areahandle, AREA * area, dword lr);
+dword GetMaySeeLastRead(MSGA * areahandle, AREA * area, dword lr);
 
 
 typedef struct
@@ -63,7 +60,7 @@ HMBLASTREAD HMBlr;
 int ReadArea(AREA * area)
 {
 
-    MSG *areahandle = NULL;
+    MSGA *areahandle = NULL;
     MMSG *curmsg = NULL;
     MSGH *msghandle = NULL;
 
@@ -431,7 +428,7 @@ int ReadArea(AREA * area)
 
                 if (!(area->base & MSGTYPE_SDM))
                 {
-                    Message("This is not a *.MSG area!", -1, 0, YES);
+                    Message("This is not a *.MSGA area!", -1, 0, YES);
                     break;
                 }
                 savescreen();
@@ -541,7 +538,7 @@ int ReadArea(AREA * area)
 
 
 
-long GetLast(AREA * area, MSG * areahandle, int raw)
+long GetLast(AREA * area, MSGA * areahandle, int raw)
 {
     long last, lr = 0;
 
@@ -635,7 +632,7 @@ void ReleaseMsg(MMSG * thismsg, int allofit)
 
 
 void UpdateLastread(AREA * area, long last, dword highest,
-                    MSG * areahandle)
+                    MSGA * areahandle)
 {
 
     if (area->base & MSGTYPE_SQUISH)
@@ -653,14 +650,16 @@ void UpdateLastread(AREA * area, long last, dword highest,
 
 
 
-long MsgGetLowMsg(MSG * areahandle)
+long MsgGetLowMsg(MSGA * areahandle)
 {
 
     return (MsgUidToMsgn(areahandle, 1L, UID_NEXT));
 
 }
 
-void beep(void)
+#ifndef __UNIX__
+
+int beep(void)
 {
 #if !defined(__OS2__) && !defined(__NT__)
     int i;
@@ -675,11 +674,13 @@ void beep(void)
 #else
     DosBeep(50, 100);
 #endif
+    return 0;
 }
 
+#endif
 
 
-void ScanArea(AREA * area, MSG * areahandle, int raw)
+void ScanArea(AREA * area, MSGA * areahandle, int raw)
 {
     dword noprivate, highprivate, lowprivate, lastprivate;
 
@@ -724,7 +725,7 @@ void ScanArea(AREA * area, MSG * areahandle, int raw)
 
 // ==============================================================
 
-dword GetMaySeeLastRead(MSG * areahandle, AREA * area, dword lr)
+dword GetMaySeeLastRead(MSGA * areahandle, AREA * area, dword lr)
 {
     dword uid;
     int i;
@@ -753,7 +754,7 @@ dword GetMaySeeLastRead(MSG * areahandle, AREA * area, dword lr)
 
 // ==============================================================
 
-dword anchor(int direction, MSG * areahandle)
+dword anchor(int direction, MSGA * areahandle)
 {
 #define MAXANCHORS 10
     static dword last[MAXANCHORS];
@@ -838,7 +839,7 @@ long get_last_sdm(AREA * area)
 }
 
 
-long get_last_JAM(MSG * areahandle)
+long get_last_JAM(MSGA * areahandle)
 {
     long last;
 
@@ -852,7 +853,7 @@ long get_last_JAM(MSG * areahandle)
 
 
 
-long get_last_HMB(MSG * areahandle)
+long get_last_HMB(MSGA * areahandle)
 {
     if (HMBlr.read < (time(NULL) - 10))
     {
@@ -914,7 +915,7 @@ void put_last_squish(AREA * area, long last)
 }
 
 
-void put_last_HMB(long last, MSG * areahandle)
+void put_last_HMB(long last, MSGA * areahandle)
 {
 
     if (HMBreadlast() == -1)
@@ -962,7 +963,7 @@ void put_last_sdm(AREA * area, long last)
 }
 
 
-void put_last_JAM(long last, MSG * areahandle, dword highest)
+void put_last_JAM(long last, MSGA * areahandle, dword highest)
 {
     int didlock = 0;
 
@@ -1063,7 +1064,7 @@ int HMBwritelast(void)
 
 // ===============================================================
 
-int ReScanArea(MSG ** areahandle, AREA * area, dword lastorhigh,
+int ReScanArea(MSGA ** areahandle, AREA * area, dword lastorhigh,
                dword highest)
 {
 

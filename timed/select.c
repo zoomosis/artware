@@ -51,12 +51,12 @@ int HMBreadlast(void);
 
 AREA *SelectArea(AREA * first, int pickonly, AREA * area_to_start);
 void ScanAreas(AREA * first, int personal, int unscanned);
-int PersMsg(MSG * areahandle, AREA * curarea);
+int PersMsg(MSGA * areahandle, AREA * curarea);
 int PersHMB(AREA * curarea);
 int speedsearch(char c, AREA * first, int teller, int pickonly);
 int fastscan(AREA * curarea, int personal);
-int show_thismsg(MSG * areahandle, AREA * area, UMSGID uid);
-int JAMpersonal(MSG * areahandle, AREA * curarea);
+int show_thismsg(MSGA * areahandle, AREA * area, UMSGID uid);
+int JAMpersonal(MSGA * areahandle, AREA * curarea);
 int quickscan(AREA * area);
 void analyse_toidx(void);
 void check_toidx(HMB_MSGTOIDX * thisentry, unsigned recno, int idx);
@@ -506,7 +506,7 @@ AREA *SelectArea(AREA * first, int pickonly, AREA * area_to_start)
 void ScanAreas(AREA * first, int personal, int unscanned)
 {
 
-    MSG *areahandle;
+    MSGA *areahandle;
     AREA *curarea;
     BOX *msgbox;
     char temp[81];
@@ -655,7 +655,7 @@ void ScanAreas(AREA * first, int personal, int unscanned)
 
 
 
-int PersMsg(MSG * areahandle, AREA * curarea)
+int PersMsg(MSGA * areahandle, AREA * curarea)
 {
     long curno = curarea->lr - 1;
     int command = NEXT, l, readresult;
@@ -725,7 +725,7 @@ int PersHMB(AREA * curarea)
 {
     HMB_PERSINDEX *this;
     int command = NEXT;
-    MSG *areahandle = NULL;
+    MSGA *areahandle = NULL;
     unsigned char board;
 
     board = (unsigned char)atoi(curarea->dir);
@@ -816,7 +816,7 @@ int fastscan(AREA * curarea, int personal)
     struct my_idx *l;
     long current = 0, lastuid = 0;
     PERSMSG *firstmsg = NULL, *lastmsg = NULL, *curmsg;
-    MSG *areahandle;
+    MSGA *areahandle;
     int loop;
     int index;
     dword last;
@@ -930,7 +930,7 @@ int fastscan(AREA * curarea, int personal)
 }
 
 
-int show_thismsg(MSG * areahandle, AREA * area, UMSGID uid)
+int show_thismsg(MSGA * areahandle, AREA * area, UMSGID uid)
 {
     dword curno, command;
     MMSG *persmsg;
@@ -987,7 +987,7 @@ int show_thismsg(MSG * areahandle, AREA * area, UMSGID uid)
 
 
 
-int JAMpersonal(MSG * areahandle, AREA * curarea)
+int JAMpersonal(MSGA * areahandle, AREA * curarea)
 {
     int ret = NEXT;
     JAMIDXREC *l;

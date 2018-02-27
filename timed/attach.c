@@ -1,6 +1,6 @@
 #include "includes.h"
 
-void DoWrite(MIS * mis, MSG * areahandle, AREA * area);
+void DoWrite(MIS * mis, MSGA * areahandle, AREA * area);
 int CopyFile(char *filename, char *tofilename, int delete);
 
 int ok = 1;
@@ -163,7 +163,7 @@ int check_attach(MIS * mis, char *list, int copyfiles)
 
 // =======================================================================
 
-void writefa(MIS * mis, MSG * areahandle, AREA * area, int exceptfirst)
+void writefa(MIS * mis, MSGA * areahandle, AREA * area, int exceptfirst)
 {
     STRINGLIST **files, *tmplist = NULL, *temp;
 
@@ -217,7 +217,7 @@ void writefa(MIS * mis, MSG * areahandle, AREA * area, int exceptfirst)
 
 // ==============================================================
 
-void DoWrite(MIS * mis, MSG * areahandle, AREA * area)
+void DoWrite(MIS * mis, MSGA * areahandle, AREA * area)
 {
     char *kludges;
 

@@ -2,14 +2,14 @@
 
 // Prototypes
 
-void WalkChain(MARKLIST * marklist, MARKLIST * history, MSG * areahandle,
+void WalkChain(MARKLIST * marklist, MARKLIST * history, MSGA * areahandle,
                dword curno);
 
 // ====================================================================
 // Mark all messages belonging to a reply chain (tree).
 // ====================================================================
 
-void MarkReplyChain(AREA * area, MSG * areahandle, dword startmsg)
+void MarkReplyChain(AREA * area, MSGA * areahandle, dword startmsg)
 {
     MARKLIST *history;
 
@@ -35,7 +35,7 @@ void MarkReplyChain(AREA * area, MSG * areahandle, dword startmsg)
 // link...
 // ====================================================================
 
-void WalkChain(MARKLIST * marklist, MARKLIST * history, MSG * areahandle,
+void WalkChain(MARKLIST * marklist, MARKLIST * history, MSGA * areahandle,
                dword curno)
 {
     MSGH *msghandle;
