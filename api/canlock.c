@@ -1,18 +1,19 @@
-#ifndef __GNUC__
-#include <mem.h>
-#include <io.h>
-#include <dos.h>
-#include <share.h>
-#else
-#include <unistd.h>
-#endif
-
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <string.h>
 #include <stdio.h>
 
-#include "unix.h"
+#include "compiler.h"
+
+#ifdef __UNIX__
+#include <unistd.h>
+#else
+#include <mem.h>
+#include <io.h>
+#include <dos.h>
+#include <share.h>
+#endif
+
 
 int canlock(char *path)
 {
