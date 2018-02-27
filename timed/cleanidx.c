@@ -1,10 +1,6 @@
 #include "includes.h"
 
 
-void clean_index(AREA * area);
-
-
-
 void clean_index(AREA * area)
 {
     int index;
@@ -13,7 +9,7 @@ void clean_index(AREA * area)
 
     sprintf(idxname, "%s.sqi", area->dir);
 
-    if ((index = sopen(idxname, O_RDWR | O_BINARY, SH_DENYWR)) == -1)
+    if ((index = sopen(idxname, O_RDWR | O_BINARY, SH_DENYWR, S_IREAD)) == -1)
         return;
 
     if (chsize
