@@ -57,6 +57,8 @@ void _settextcursor(short type);
 #define maxx getmaxx(stdscr)
 #define maxy getmaxy(stdscr)
 
+#define _setcursortype(ct) curs_set(ct)
+
 #else
 
 extern int maxx;

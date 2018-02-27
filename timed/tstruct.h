@@ -44,6 +44,10 @@ typedef int16_t sword;
 #define textattr
 #endif
 
+#ifdef __UNIX__
+#define getdisk() 0
+#endif
+
 #define NETMAIL   1
 #define LOCAL     2
 #define ECHOMAIL  3

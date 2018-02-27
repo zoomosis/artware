@@ -48,10 +48,14 @@ int main(int argc, char *argv[])
 
 #ifdef __OS2__
     atexit(killclock);
+#endif
+
+#if defined(__OS2__) || defined(__NT__)
     signal(SIGBREAK, donothing);
+#endif
+
+#if defined(__OS2__) || defined(__NT__) || defined(__UNIX__)
     signal(SIGINT, donothing);
-#elif defined(__NT__)
-    /* don't disable Ctrl+C or Ctrl+Break in NT version */
 #else
 #ifndef __386__
     ins09();
