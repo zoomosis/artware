@@ -39,7 +39,7 @@
  *  whole: whole words only
  */
 
-void bmgCompile(char *pat, bmgARG *arg, int ignore, int whole)
+void bmgCompile(char *pat, bmgARG * arg, int ignore, int whole)
 {
     int i,                      /* general ctr */
      patlen;                    /* pattern length */
@@ -59,13 +59,13 @@ void bmgCompile(char *pat, bmgARG *arg, int ignore, int whole)
 
     for (i = 0; i < patlen; ++i)
     {
-        arg->delta[(int) arg->pat[i]] = patlen - i - 1;
+        arg->delta[(int)arg->pat[i]] = patlen - i - 1;
     }
-    
+
     if (ignore)
     {
         /* tweak upper case if ignore on */
-        
+
         for (i = 0; i < patlen; ++i)
         {
             arg->delta[toupper(pat[i])] = patlen - i - 1;
@@ -94,7 +94,7 @@ void bmgCompile(char *pat, bmgARG *arg, int ignore, int whole)
 
 #define SEPS " .,[]{}:;'`!?<>\\/%\"-=+|$#@~^&_()"
 
-char *bmgSearch(char *buffer, int buflen, bmgARG *arg, char howstrict)
+char *bmgSearch(char *buffer, int buflen, bmgARG * arg, char howstrict)
 {
     char *s;                    /* temp ptr for comparisons */
     int inc,                    /* position increment */
@@ -109,10 +109,11 @@ char *bmgSearch(char *buffer, int buflen, bmgARG *arg, char howstrict)
     {
         return NULL;
     }
-    
+
     for (;;)
     {
-        while (((inc = arg->delta[(int) buffer[k]]) != 0) && ((k += inc) < buflen))
+        while (((inc = arg->delta[(int)buffer[k]]) != 0)
+               && ((k += inc) < buflen))
         {
             /* nothing */ ;
         }
@@ -125,9 +126,8 @@ char *bmgSearch(char *buffer, int buflen, bmgARG *arg, char howstrict)
         s = buffer + (k++ - (patlen - 1));
 
         if (!
-            (arg->
-             ignore ? strnicmp(s, arg->pat, patlen) : strncmp(s, arg->pat,
-                                                              patlen)))
+            (arg->ignore ? strnicmp(s, arg->pat, patlen) :
+             strncmp(s, arg->pat, patlen)))
         {
             /* Match on string! Now check whole words... */
 
@@ -136,8 +136,11 @@ char *bmgSearch(char *buffer, int buflen, bmgARG *arg, char howstrict)
                 return (s);
             }
 
-            if (((howstrict & NOTFIRST) && (s == buffer)) ||  /* Is begin of buffer? */
-                ((howstrict & NOTLAST) && (s == (buffer + buflen - patlen)))  /* end */
+            if (((howstrict & NOTFIRST) && (s == buffer)) || /* Is begin
+                                                                of buffer? 
+                                                              */
+                ((howstrict & NOTLAST) && (s == (buffer + buflen - patlen))) /* end 
+                                                                              */
                 )
             {
                 /* nothing */ ;
@@ -151,7 +154,8 @@ char *bmgSearch(char *buffer, int buflen, bmgARG *arg, char howstrict)
                     beginok = 1;
                 }
 
-                if (((s + patlen) == (buffer + buflen)) || (strchr(SEPS, *(s + patlen)) != NULL))
+                if (((s + patlen) == (buffer + buflen))
+                    || (strchr(SEPS, *(s + patlen)) != NULL))
                 {
                     endok = 1;
                 }

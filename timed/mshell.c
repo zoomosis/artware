@@ -14,19 +14,19 @@
 
 
                               /* constants */
-#define MEMTAG  0xa55a        /* value for mh_tag  */
+#define MEMTAG  0xa55a          /* value for mh_tag */
 
                               /* structures */
-typedef struct memnod         /* memory block header info */
+typedef struct memnod           /* memory block header info */
 {
-   unsigned int    mh_tag;    /* special ident tag */
-   size_t          mh_size;   /* size of allocation block */
+    unsigned int mh_tag;        /* special ident tag */
+    size_t mh_size;             /* size of allocation block */
 
-   struct memnod * mh_next;   /* next memory block */
-   struct memnod * mh_prev;   /* previous memory block */
+    struct memnod *mh_next;     /* next memory block */
+    struct memnod *mh_prev;     /* previous memory block */
 
-   char          * mh_file;   /* file allocation was from */
-   unsigned int    mh_line;   /* line allocation was from */
+    char *mh_file;              /* file allocation was from */
+    unsigned int mh_line;       /* line allocation was from */
 
 } MEMHDR;
 
@@ -50,18 +50,18 @@ typedef struct memnod         /* memory block header info */
 
                     /* local variables */
 
-static unsigned long mem_size= 0;   /* amount of memory used */
+static unsigned long mem_size = 0; /* amount of memory used */
 
-static MEMHDR   *memlist= NULL; /* list of memory blocks */
+static MEMHDR *memlist = NULL;  /* list of memory blocks */
 
                     /* local functions */
 
-void    mem_tag_err(void *, char *, int, char *);   /* tag error */
+void mem_tag_err(void *, char *, int, char *); /* tag error */
 
 
-    void mem_list_add(MEMHDR *);        /* add block to list */
-    void mem_list_delete(MEMHDR *);     /* delete block from list */
-    #define Mem_Tag_Err(a,b) mem_tag_err(a,fil,lin,b)
+void mem_list_add(MEMHDR *);    /* add block to list */
+void mem_list_delete(MEMHDR *); /* delete block from list */
+#define Mem_Tag_Err(a,b) mem_tag_err(a,fil,lin,b)
 
 
 /* ------------- functions accessed only through macros -------------------*/
@@ -74,72 +74,63 @@ void    mem_tag_err(void *, char *, int, char *);   /* tag error */
                this routine is acccessed through the malloc macro.
 */
 
-void *debug_alloc(
-      size_t    size,
-      char      *fil,
-      int       lin
-   )
-
+void *debug_alloc(size_t size, char *fil, int lin)
 {
-  MEMHDR    *p;
-  char temp[120];
+    MEMHDR *p;
+    char temp[120];
 
 
 //  sprintf(temp, "Alloc    : %d bytes (%s, line %d)", size, fil, lin);
 //  LOG(temp);
 
-                  /* allocate memory block */
-  p= malloc(RESERVE_SIZE + size);
-  if (p== NULL)  return NULL;
+    /* allocate memory block */
+    p = malloc(RESERVE_SIZE + size);
+    if (p == NULL)
+        return NULL;
 
 
-                   /* init header */
-  p->mh_tag  = MEMTAG;
-  p->mh_size = size;
-  mem_size  += size;
+    /* init header */
+    p->mh_tag = MEMTAG;
+    p->mh_size = size;
+    mem_size += size;
 
-  p->mh_file = fil;
-  p->mh_line = lin;
+    p->mh_file = fil;
+    p->mh_line = lin;
 
-  mem_list_add(p);
+    mem_list_add(p);
 
-  memset(HDR_2_CLIENT(p), 0xFF, size);
+    memset(HDR_2_CLIENT(p), 0xFF, size);
 
-                  /* return pointer to client data */
-  return HDR_2_CLIENT(p);
+    /* return pointer to client data */
+    return HDR_2_CLIENT(p);
 }
 
 
-void *debug_calloc(
-      size_t    n,
-      size_t    size,
-      char      *fil,
-      int       lin
-   )
-
+void *debug_calloc(size_t n, size_t size, char *fil, int lin)
 {
-  MEMHDR    *p;
-  char temp[120];
-                  /* allocate memory block */
+    MEMHDR *p;
+    char temp[120];
+    /* allocate memory block */
 
 //  sprintf(temp, "Calloc   : %d bytes (%s, line %d)", size, fil, lin);
 //  LOG(temp);
 
-  p= calloc(n, RESERVE_SIZE + size);
-  if (p== NULL)  return NULL;
+    p = calloc(n, RESERVE_SIZE + size);
+    if (p == NULL)
+        return NULL;
 
-                   /* init header */
-  p->mh_tag  = MEMTAG;
-  p->mh_size = size*n;
-  mem_size  += (size*n);
+    /* init header */
+    p->mh_tag = MEMTAG;
+    p->mh_size = size * n;
+    mem_size += (size * n);
 
-  p->mh_file = fil;
-  p->mh_line = lin;
+    p->mh_file = fil;
+    p->mh_line = lin;
 
-  mem_list_add(p);
+    mem_list_add(p);
 
-                  /* return pointer to client data */
-  return HDR_2_CLIENT(p);
+    /* return pointer to client data */
+    return HDR_2_CLIENT(p);
 }
 
 
@@ -153,53 +144,50 @@ void *debug_calloc(
                this routine is acccessed through the realloc macro.
 */
 
-void *debug_realloc(
-     void   *ptr,
-     size_t size,
-     char   *fil,
-     int    lin
-   )
+void *debug_realloc(void *ptr, size_t size, char *fil, int lin)
 {
-  MEMHDR    *p;
-  char temp[120];
+    MEMHDR *p;
+    char temp[120];
 
 //  sprintf(temp, "ReAlloc  : %d bytes (%s, line %d)", size, fil, lin);
 //  LOG(temp);
 
-  if(!ptr)
-     return (debug_alloc(size, fil, lin));
+    if (!ptr)
+        return (debug_alloc(size, fil, lin));
 
-                  /* convert client pointer to header pointer */
-  p= CLIENT_2_HDR(ptr);
-                  /* check for valid block */
-  if (p->mh_tag != MEMTAG) {
-     Mem_Tag_Err(p, "attempt to re-allocate non-existing memory block");
-     return NULL;
-  }
-                  /* invalidate header */
-  p->mh_tag = ~MEMTAG;
-  mem_size -= p->mh_size;
+    /* convert client pointer to header pointer */
+    p = CLIENT_2_HDR(ptr);
+    /* check for valid block */
+    if (p->mh_tag != MEMTAG)
+    {
+        Mem_Tag_Err(p, "attempt to re-allocate non-existing memory block");
+        return NULL;
+    }
+    /* invalidate header */
+    p->mh_tag = ~MEMTAG;
+    mem_size -= p->mh_size;
 
-  mem_list_delete(p);    /* remove block from list */
+    mem_list_delete(p);         /* remove block from list */
 
-                 /* reallocate memory block */
-  p = (MEMHDR *) realloc(p, RESERVE_SIZE + size);
-  if (p== NULL) return NULL;
-                 /* update header */
+    /* reallocate memory block */
+    p = (MEMHDR *) realloc(p, RESERVE_SIZE + size);
+    if (p == NULL)
+        return NULL;
+    /* update header */
 
-  p->mh_tag  = MEMTAG;
-  p->mh_size = size;
-  mem_size  += size;
+    p->mh_tag = MEMTAG;
+    p->mh_size = size;
+    mem_size += size;
 
-  p->mh_file  = fil;
-  p->mh_line  = lin;
+    p->mh_file = fil;
+    p->mh_line = lin;
 
 
-  mem_list_add(p);      /* add block to list */
+    mem_list_add(p);            /* add block to list */
 
-                /* return pointer to client data */
+    /* return pointer to client data */
 
-  return HDR_2_CLIENT(p);
+    return HDR_2_CLIENT(p);
 }
 
 
@@ -214,23 +202,20 @@ void *debug_realloc(
 
 */
 
-char *debug_strdup(
-      char  *str,
-      char  *fil,
-      int   lin
-   )
+char *debug_strdup(char *str, char *fil, int lin)
 {
 
-  char *s;
-  char temp[120];
+    char *s;
+    char temp[120];
 
 //  sprintf(temp, "StrDup   : (%s, line %d)", fil, lin);
 //  LOG(temp);
 
-  s= debug_alloc(strlen(str)+1, fil, lin);
+    s = debug_alloc(strlen(str) + 1, fil, lin);
 
-  if (s != NULL) strcpy(s, str);
-  return s;
+    if (s != NULL)
+        strcpy(s, str);
+    return s;
 }
 
 
@@ -246,39 +231,36 @@ char *debug_strdup(
 */
 
 
-void debug_free(
-     void   *ptr,
-     char   *fil,
-     int    lin
-   )
+void debug_free(void *ptr, char *fil, int lin)
 {
-  MEMHDR    *p;
-  char temp[120];
-  
+    MEMHDR *p;
+    char temp[120];
+
 
 //  sprintf(temp, "Free     : (%s, line %d)", fil, lin);
 //  LOG(temp);
 
 
-               /* convert client pointer to header pointer */
-  p= CLIENT_2_HDR(ptr);
+    /* convert client pointer to header pointer */
+    p = CLIENT_2_HDR(ptr);
 
-  memset(ptr, 0xFF, p->mh_size);
+    memset(ptr, 0xFF, p->mh_size);
 
-             /* check for valid block */
-  if (p->mh_tag != MEMTAG) {
-     Mem_Tag_Err(p, "attemp to free non-existing memory block");
-     return;
-  }
-             /* invalidate header */
+    /* check for valid block */
+    if (p->mh_tag != MEMTAG)
+    {
+        Mem_Tag_Err(p, "attemp to free non-existing memory block");
+        return;
+    }
+    /* invalidate header */
 
-  p->mh_tag  = ~MEMTAG;
-  mem_size  -= p->mh_size;
+    p->mh_tag = ~MEMTAG;
+    mem_size -= p->mh_size;
 
-  mem_list_delete(p);     /* remove block from list */
+    mem_list_delete(p);         /* remove block from list */
 
-                    /* free memory block */
-  free(p);
+    /* free memory block */
+    free(p);
 }
 
 
@@ -291,9 +273,9 @@ void debug_free(
                memory shell. Does not reflect the space used
                by the overhead
 */
-unsigned long Mem_Used (void)
+unsigned long Mem_Used(void)
 {
-  return mem_size;
+    return mem_size;
 }
 
 
@@ -307,101 +289,106 @@ unsigned long Mem_Used (void)
 
 */
 
-void Mem_Display (FILE *fp)
+void Mem_Display(FILE * fp)
 {
-      MEMHDR    *p;
-      int   idx;
-     if (mem_size)
-        fprintf(fp, "Memory leaks  %d bytes (memory not freed)\n", mem_size);
-     else
+    MEMHDR *p;
+    int idx;
+    if (mem_size)
+        fprintf(fp, "Memory leaks  %d bytes (memory not freed)\n",
+                mem_size);
+    else
         fprintf(fp, "All allocated memory correctly freed.\n");
-     fprintf(fp, "\nIndex    Size  File  -  Line - \n");
+    fprintf(fp, "\nIndex    Size  File  -  Line - \n");
 
-      idx= 0;
-      p = memlist;
-      while (p != NULL)
-         {
-         if( strcmpi(p->mh_file, "..\\config.c") != 0 &&
-             strcmpi(p->mh_file, "..\\macro.c") != 0 )
-             {
-             fprintf(fp, "%-5d %6u", idx++, p->mh_size);
-             fprintf(fp, "   %s line: %d", p->mh_file, p->mh_line);
-             if (p->mh_tag != MEMTAG)   fprintf(fp, " Invalid");
-             fprintf(fp, "\n");
-             }
-         p= p->mh_next;
-         }
+    idx = 0;
+    p = memlist;
+    while (p != NULL)
+    {
+        if (strcmpi(p->mh_file, "..\\config.c") != 0 &&
+            strcmpi(p->mh_file, "..\\macro.c") != 0)
+        {
+            fprintf(fp, "%-5d %6u", idx++, p->mh_size);
+            fprintf(fp, "   %s line: %d", p->mh_file, p->mh_line);
+            if (p->mh_tag != MEMTAG)
+                fprintf(fp, " Invalid");
+            fprintf(fp, "\n");
+        }
+        p = p->mh_next;
+    }
 
 }
 
 
 // ==============================================================
 
-void Mem_Check (FILE *fp)
+void Mem_Check(FILE * fp)
 {
- if (Mem_Used() != 0) {
-    fprintf(fp,"   Memory allocation error     \n");
-    fprintf(fp, "Memory list not empty : \n");
-    Mem_Display(fp);
- }
+    if (Mem_Used() != 0)
+    {
+        fprintf(fp, "   Memory allocation error     \n");
+        fprintf(fp, "Memory list not empty : \n");
+        Mem_Display(fp);
+    }
 }
 
 
 /*------------memory list manipulation functions--------------------------*/
 /*  mem_list_add() -- add block to list */
 
-static void mem_list_add(MEMHDR *p)
+static void mem_list_add(MEMHDR * p)
 {
-  p->mh_next= memlist;
-  p->mh_prev= NULL;
-  if (memlist != NULL) memlist->mh_prev = p;
-  memlist= p;
+    p->mh_next = memlist;
+    p->mh_prev = NULL;
+    if (memlist != NULL)
+        memlist->mh_prev = p;
+    memlist = p;
 
-  #if defined (DEBUG_LIST)
+#if defined (DEBUG_LIST)
     printf("mem_list_add()\n");
     Mem_Display(stdout);
-  #endif
+#endif
 }
 
 
 // ==============================================================
 /* mem_list_delete()  -- delete block from list */
 
-static void mem_list_delete (MEMHDR *p)
+static void mem_list_delete(MEMHDR * p)
 {
-  if (p->mh_next != NULL)  p->mh_next->mh_prev = p->mh_prev;
+    if (p->mh_next != NULL)
+        p->mh_next->mh_prev = p->mh_prev;
 
-  if (p->mh_prev != NULL)  p->mh_prev->mh_next = p->mh_next;
-  else
-     memlist = p->mh_next;
+    if (p->mh_prev != NULL)
+        p->mh_prev->mh_next = p->mh_next;
+    else
+        memlist = p->mh_next;
 
-  #if defined (DEBUG_LIST)
-      printf("mem_list_delete()\n");
-      Mem_Display(stdout);
-  #endif
+#if defined (DEBUG_LIST)
+    printf("mem_list_delete()\n");
+    Mem_Display(stdout);
+#endif
 }
 
 
 /* ----------------------error display------------------------------------*/
 /* mem_tag_err() --- display memory tag error  */
 
-static void mem_tag_err (void *p, char *fil, int lin, char *errmsg)
+static void mem_tag_err(void *p, char *fil, int lin, char *errmsg)
 {
 
-  fprintf(stderr, "Memory tag error - %p in file %s line: %d \n", p, fil, lin);
-  fprintf(stderr, "%s \n", errmsg);
+    fprintf(stderr, "Memory tag error - %p in file %s line: %d \n", p, fil,
+            lin);
+    fprintf(stderr, "%s \n", errmsg);
 
-  Mem_Display(stderr);
-  exit(1);
+    Mem_Display(stderr);
+    exit(1);
 }
 
 // ==============================================================
 
 void direct_free(void *s)
 {
-   free(s);
+    free(s);
 }
 
 // ==============================================================
-
-

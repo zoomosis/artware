@@ -5,72 +5,69 @@
 
 
 LINE *fastFormatText(char *txt, int column)
-
 {
-   LINE	*first,
-        *current,
-        *last;
+    LINE *first, *current, *last;
 
-   char *curptr,
-	*begin;
+    char *curptr, *begin;
 
-   int len;
-   unsigned charsleft;
+    int len;
+    unsigned charsleft;
 
-	/* Setup start of list */
+    /* Setup start of list */
 
-   first = (LINE *)mem_calloc(1, sizeof(LINE));
+    first = (LINE *) mem_calloc(1, sizeof(LINE));
 
-   current = last = first;
+    current = last = first;
 
-   curptr = begin = txt;			/* We start at the beginning ;-) */
+    curptr = begin = txt;       /* We start at the beginning ;-) */
 
-   charsleft = strlen(begin);
+    charsleft = strlen(begin);
 
-   while( charsleft > (column-1))				/* Until end of text */
-      {
-      curptr = begin + (column-2);
+    while (charsleft > (column - 1)) /* Until end of text */
+    {
+        curptr = begin + (column - 2);
 
-      // We may have a line ending in two spaces. In that case, we will not
-      // separate the two spaces (some typists use two spaces to separate
-      // sentences).
+        // We may have a line ending in two spaces. In that case, we will
+        // not
+        // separate the two spaces (some typists use two spaces to
+        // separate
+        // sentences).
 
-      if(*curptr == ' ' && *(curptr+1) == ' ' && *(curptr-1) != ' ')
-        curptr--;
+        if (*curptr == ' ' && *(curptr + 1) == ' ' && *(curptr - 1) != ' ')
+            curptr--;
 
-      while( (*curptr != ' ')  && (curptr>begin) )
-             curptr--;
+        while ((*curptr != ' ') && (curptr > begin))
+            curptr--;
 
-      if (curptr == begin)       /* couldn't find seperator, take all */
-         {
-         curptr = begin + (column-2);
-         current->status |= NOSPACE;
-         }
+        if (curptr == begin)    /* couldn't find seperator, take all */
+        {
+            curptr = begin + (column - 2);
+            current->status |= NOSPACE;
+        }
 
-      len = (int) (curptr - begin + 1);
-      current->ls = mem_calloc(1, len+1);
-		memcpy(current->ls, begin, len);
-      current->len = len;
-      charsleft -= len;
-      if(IsQuote(current->ls))
-         current->status |= QUOTE;
+        len = (int)(curptr - begin + 1);
+        current->ls = mem_calloc(1, len + 1);
+        memcpy(current->ls, begin, len);
+        current->len = len;
+        charsleft -= len;
+        if (IsQuote(current->ls))
+            current->status |= QUOTE;
 
-      begin = curptr + 1;
+        begin = curptr + 1;
 
-      last = mem_calloc(1, sizeof(LINE));
-      last->prev = current;
-      current->next = last;
-      current = last;
+        last = mem_calloc(1, sizeof(LINE));
+        last->prev = current;
+        current->next = last;
+        current = last;
 
-      }
+    }
 
-   current->ls   = mem_strdup(begin);
-   current->len  = strlen(begin);
-   current->next = NULL;
-   current->status |= HCR;
-   if(IsQuote(current->ls))
-      current->status |= QUOTE;
+    current->ls = mem_strdup(begin);
+    current->len = strlen(begin);
+    current->next = NULL;
+    current->status |= HCR;
+    if (IsQuote(current->ls))
+        current->status |= QUOTE;
 
-   return (LINE *)first;
+    return (LINE *) first;
 }
-

@@ -24,7 +24,7 @@
 
 typedef struct
 {
-  int dummy;
+    int dummy;
 }
 Cbtree;
 
@@ -47,4 +47,4 @@ typedef long Item;
 
 #endif
 
-#endif  /* __CBTREE_H__ */
+#endif                          /* __CBTREE_H__ */

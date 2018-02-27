@@ -78,7 +78,7 @@ int patmat(char *raw, char *pat)
         else
         {
             /* else hunt for match or wild card */
-            for (i = 0; i <= (int) strlen(raw); i++)
+            for (i = 0; i <= (int)strlen(raw); i++)
             {
                 if (*(raw + i) == *(pat + 1) || *(pat + 1) == '?')
                 {

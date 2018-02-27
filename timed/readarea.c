@@ -2,28 +2,30 @@
 
 #ifdef __OS2__
 
-  #define INCL_DOSPROCESS
-  #include <os2.h>
+#define INCL_DOSPROCESS
+#include <os2.h>
 
 #endif
 
-long  GetLast(AREA *area, MSG *areahandle, int raw);
-void  ReleaseMsg(MMSG *thismsg, int allofit);
-void  UpdateLastread(AREA *area, long last, dword highest, MSG *areahandle);
-long  MsgGetLowMsg(MSG *areahandle);
-void  beep (void);
-void  ScanArea(AREA *area, MSG *areahandle, int raw);
-void  get_custom_info(AREA *area);
-long  get_last_squish(AREA *area);
-long  get_last_sdm(AREA *area);
-long  get_last_JAM(MSG *areahandle);
-void  put_last_squish(AREA *area, long last);
-void  put_last_sdm(AREA *area, long last);
-void  put_last_JAM(long last, MSG *areahandle, dword highest);
-long  get_last_HMB(MSG *areahandle);
-void  put_last_HMB(long last, MSG *areahandle);
-int   ReScanArea(MSG **areahandle, AREA *area, dword lastorhigh, dword highest);
-dword GetMaySeeLastRead(MSG *areahandle, AREA *area, dword lr);
+long GetLast(AREA * area, MSG * areahandle, int raw);
+void ReleaseMsg(MMSG * thismsg, int allofit);
+void UpdateLastread(AREA * area, long last, dword highest,
+                    MSG * areahandle);
+long MsgGetLowMsg(MSG * areahandle);
+void beep(void);
+void ScanArea(AREA * area, MSG * areahandle, int raw);
+void get_custom_info(AREA * area);
+long get_last_squish(AREA * area);
+long get_last_sdm(AREA * area);
+long get_last_JAM(MSG * areahandle);
+void put_last_squish(AREA * area, long last);
+void put_last_sdm(AREA * area, long last);
+void put_last_JAM(long last, MSG * areahandle, dword highest);
+long get_last_HMB(MSG * areahandle);
+void put_last_HMB(long last, MSG * areahandle);
+int ReScanArea(MSG ** areahandle, AREA * area, dword lastorhigh,
+               dword highest);
+dword GetMaySeeLastRead(MSG * areahandle, AREA * area, dword lr);
 
 
 typedef struct
@@ -38,877 +40,944 @@ typedef struct
 {
 
     unsigned char board;
-    API_HMBIDX    *msgs;
-    word          array_size;
+    API_HMBIDX *msgs;
+    word array_size;
 
 } HMBdata;
 
 
-int   HMBreadlast(void);
-int   HMBwritelast(void);
+int HMBreadlast(void);
+int HMBwritelast(void);
 
 
 typedef struct
 {
-   word   lastread[200];
-   time_t read;
+    word lastread[200];
+    time_t read;
 } HMBLASTREAD;
 
 HMBLASTREAD HMBlr;
 
 
 
-int ReadArea(AREA *area)
+int ReadArea(AREA * area)
 {
 
-	MSG 	*areahandle = NULL;
-	MMSG	*curmsg     = NULL;
-   MSGH  *msghandle  = NULL;
+    MSG *areahandle = NULL;
+    MMSG *curmsg = NULL;
+    MSGH *msghandle = NULL;
 
 
-	dword	curno=0,
-         lastok=0,
-         timhigh,
-         lastorhigh,
-         highest=0,
-         howmuch;
+    dword curno = 0, lastok = 0, timhigh, lastorhigh, highest = 0, howmuch;
 
-	int	command=NEXT,
-         errors=0,
-         retval;
+    int command = NEXT, errors = 0, retval;
 
 
-   #ifdef __WATCOMC__
-   _heapmin();
-   #endif
-
-	/* Open message area */
-
-	if(!(areahandle=MsgOpenArea(area->dir, MSGAREA_CRIFNEC, area->base)))
-      {
-      Message("Error opening area.", -1, 0, YES);
-      showerror();
-		return 0;
-      }
-
-
-	/* Read area statistics */
-
-   timhigh = area->highest > 0 ? area->highest : 0;   /* Save 'fast scan' result */
-
-   ScanArea(area, areahandle, 0);                   /* Do a 'real' MSGAPI scan */
-
-   lastorhigh = MsgMsgnToUid(areahandle, area->lr);
-
-
-   if((timhigh > area->highest) &&
-      (area->base & MSGTYPE_SQUISH) &&
-      !BePrivate(area) ) /* Check for 'dirty' index */
-     {
-     MsgCloseArea(areahandle);
-     clean_index(area);
-     if(!(areahandle=MsgOpenArea(area->dir, MSGAREA_CRIFNEC, area->base)))
-        return 0;
-     }
-
-   get_custom_info(area);        /* Get hello, rephello, etc in 'custom' */
-
-   while(area->nomsgs == 0)        /* Empty area! */
-		{
-			int key;
-            BOX *box;
-
-      clsw(cfg.col[Cmsgtext]);
-      box = initbox(11, 12, 21, 68, cfg.col[Cpopframe], cfg.col[Cpoptext], SINGLE, YES, ' ');
-      drawbox(box);
-      boxwrite(box,0,1,"               No messages in this area!");
-      boxwrite(box,2,1,"ALT-E, E or <INS>       : enter a new message");
-      boxwrite(box,3,1,"<right>, <enter> or '+' : next area with new mail");
-      boxwrite(box,4,1,"I                       : show info");
-      boxwrite(box,5,1,"U                       : run external command");
-      boxwrite(box,6,1,"CTRL-A                  : change address");
-      boxwrite(box,7,1,"CTRL-N                  : change name");
-      boxwrite(box,8,1,"<ESC>                   : exit area");
-
-      kbflush();
-
-	  key = get_idle_key(1, READERSCOPE);
-
-      delbox(box);
-
-#if 0
-	  {
-		  char msg[255];
-		  sprintf(msg, "%d", key);
-		  Message(msg, -1, 0, YES);
-	  }
+#ifdef __WATCOMC__
+    _heapmin();
 #endif
 
-      switch(key)
-         {
-         case cREADenter:
+    /* Open message area */
+
+    if (!
+        (areahandle = MsgOpenArea(area->dir, MSGAREA_CRIFNEC, area->base)))
+    {
+        Message("Error opening area.", -1, 0, YES);
+        showerror();
+        return 0;
+    }
+
+
+    /* Read area statistics */
+
+    timhigh = area->highest > 0 ? area->highest : 0; /* Save 'fast scan'
+                                                        result */
+
+    ScanArea(area, areahandle, 0); /* Do a 'real' MSGAPI scan */
+
+    lastorhigh = MsgMsgnToUid(areahandle, area->lr);
+
+
+    if ((timhigh > area->highest) && (area->base & MSGTYPE_SQUISH) && !BePrivate(area)) /* Check 
+                                                                                           for 
+                                                                                           'dirty' 
+                                                                                           index 
+                                                                                         */
+    {
+        MsgCloseArea(areahandle);
+        clean_index(area);
+        if (!
+            (areahandle =
+             MsgOpenArea(area->dir, MSGAREA_CRIFNEC, area->base)))
+            return 0;
+    }
+
+    get_custom_info(area);      /* Get hello, rephello, etc in 'custom' */
+
+    while (area->nomsgs == 0)   /* Empty area! */
+    {
+        int key;
+        BOX *box;
+
+        clsw(cfg.col[Cmsgtext]);
+        box =
+            initbox(11, 12, 21, 68, cfg.col[Cpopframe], cfg.col[Cpoptext],
+                    SINGLE, YES, ' ');
+        drawbox(box);
+        boxwrite(box, 0, 1, "               No messages in this area!");
+        boxwrite(box, 2, 1,
+                 "ALT-E, E or <INS>       : enter a new message");
+        boxwrite(box, 3, 1,
+                 "<right>, <enter> or '+' : next area with new mail");
+        boxwrite(box, 4, 1, "I                       : show info");
+        boxwrite(box, 5, 1,
+                 "U                       : run external command");
+        boxwrite(box, 6, 1, "CTRL-A                  : change address");
+        boxwrite(box, 7, 1, "CTRL-N                  : change name");
+        boxwrite(box, 8, 1, "<ESC>                   : exit area");
+
+        kbflush();
+
+        key = get_idle_key(1, READERSCOPE);
+
+        delbox(box);
+
+#if 0
+        {
+            char msg[255];
+            sprintf(msg, "%d", key);
+            Message(msg, -1, 0, YES);
+        }
+#endif
+
+        switch (key)
+        {
+        case cREADenter:
             MakeMessage(NULL, area, areahandle, 0, 0, NULL);
             break;
 
-         case cREADgoback:
+        case cREADgoback:
             MsgCloseArea(areahandle);
             return 0;
 
-         case cREADmaintenance:
+        case cREADmaintenance:
             // retval: -2 == error, -1 == no messages in area.
-            if(maint_menu(area) == -2)  /* Can't re-open the area!! */
-              return ESC; /* Short way out (what can I do?) Normal routines try to close area! */
+            if (maint_menu(area) == -2) /* Can't re-open the area!! */
+                return ESC;     /* Short way out (what can I do?) Normal
+                                   routines try to close area! */
             break;
 
-         case cREADinfo:
+        case cREADinfo:
             showinfo(NULL, area, areahandle);
             break;
 
-         case cREADchangeaddress:     /* CTRL - A */
-            if ((retval=choose_address()) != -1)
-               custom.aka = retval;
+        case cREADchangeaddress: /* CTRL - A */
+            if ((retval = choose_address()) != -1)
+                custom.aka = retval;
             break;
 
-         case cREADchangename:    /* CTRL - N */
-            if ((retval=choose_name()) != -1)
-               custom.name = retval;
+        case cREADchangename:  /* CTRL - N */
+            if ((retval = choose_name()) != -1)
+                custom.name = retval;
             break;
 
-         case cREADrunexternal:
+        case cREADrunexternal:
 
             curmsg = mem_calloc(1, sizeof(MMSG));
-            if(runexternal(area, &areahandle, curmsg, 0, 0) == -1)
-              {
-              mem_free(curmsg);
-              // Argh! We can't reopen the area. Go back soon!
-              area->mlist = NULL;
-              return ESC; /* Short way out (what can I do?) Normal routines try to close area! */
-              }
+            if (runexternal(area, &areahandle, curmsg, 0, 0) == -1)
+            {
+                mem_free(curmsg);
+                // Argh! We can't reopen the area. Go back soon!
+                area->mlist = NULL;
+                return ESC;     /* Short way out (what can I do?) Normal
+                                   routines try to close area! */
+            }
             mem_free(curmsg);
             break;
 
-         case cREADsqundelete:
-            if(!(area->base & MSGTYPE_SQUISH))
-              {
-              Message("This is not a Squish area!", -1, 0, YES);
-              break;
-              }
+        case cREADsqundelete:
+            if (!(area->base & MSGTYPE_SQUISH))
+            {
+                Message("This is not a Squish area!", -1, 0, YES);
+                break;
+            }
             anchor(DOWN, areahandle);
             savescreen();
             AttemptLock(areahandle);
             Message("Please wait, undeleting..", 0, 0, NO);
-            howmuch=SquishUndelete(areahandle);
+            howmuch = SquishUndelete(areahandle);
             MsgUnlock(areahandle);
-            ScanArea(area, areahandle, 0);     /* Do a 'real' MSGAPI scan */
-            if(howmuch == (dword) -1)
-               Message("Error undeleting messages!", -1, 0, YES);
+            ScanArea(area, areahandle, 0); /* Do a 'real' MSGAPI scan */
+            if (howmuch == (dword) - 1)
+                Message("Error undeleting messages!", -1, 0, YES);
             else
-               {
-               sprintf(msg, "%lu message were undeleted.", howmuch);
-               Message(msg, -1, 0, NO);
-               }
+            {
+                sprintf(msg, "%lu message were undeleted.", howmuch);
+                Message(msg, -1, 0, NO);
+            }
             putscreen();
             curno = anchor(UP, areahandle);
             break;
 
-         case cREADnext:                       /* Right arrow */
-		 case cREADnextmsgorpage:              /* Enter */
-		 case cREADnextareanewmail:            /* '+' */
+        case cREADnext:        /* Right arrow */
+        case cREADnextmsgorpage: /* Enter */
+        case cREADnextareanewmail: /* '+' */
             MsgCloseArea(areahandle);
-		    return NEXTAREA;
+            return NEXTAREA;
 
-         default:
+        default:
             break;
-         }
-
-      ScanArea(area, areahandle, 0);
-
-		}        /* Empty area */
-
-
-	curno = lastok = area->lr;
-	clsw(cfg.col[Cmsgtext]);
-   stuffkey(cREADsetbookmark);
-
-   // Set up marklist space
-
-   if(area->mlist == NULL)
-     area->mlist = InitMarkList();
-
-	/* Message reading loop */
-
-	do
-		{
-      readit:
-
-		curmsg = GetFmtMsg(curno, areahandle, area);			/* Read msg from disk */
-
-      if(heapcheck() == -1)
-         Message("Heap corrupt (in readarea.c)! Report to the author!", -1, 254, NO);
-
-      if (!curmsg)           /* Error reading msg! */
-         {
-         if(((retval = ReScanArea(&areahandle, area, lastorhigh, highest)) != 0) ||
-            (errors++ > 4) )
-            {
-            Message("Errors, exiting area", 4, 0, NO);
-            if(retval != -2) MsgCloseArea(areahandle);
-            return 0;
-            }
-
-         if (lastok < area->highest)
-            curno = ++lastok;             /* Goto next.. */
-
-         else if (lastok > area->lowest)
-            curno = --lastok;              /* Goto prev.. */
-
-         else
-              {
-              MsgCloseArea(areahandle);
-              return 0;
-              }
-
-         goto readit;
-
-         }
-
-      lastok = curno = MsgGetCurMsg(areahandle);         /* Where are we? */
-      if( (lastorhigh = curmsg->uid) > highest)
-        highest = lastorhigh;
-
-      command = ShowMsg(curmsg, area, areahandle, NORMAL_DISPLAY);			/* Show it! */
-
-      if(MsgGetCurMsg(areahandle) != curno)
-        {
-        if((msghandle = MsgOpenMsg(areahandle, MOPEN_READ, curno)) != NULL)
-            MsgCloseMsg(msghandle);                      /* 'reposition' MSGAPI where we were.. */
         }
 
-      errors=0;
+        ScanArea(area, areahandle, 0);
 
-      if (command>0)
-         curno = command;
-      else
-         {
-		   switch(command)
-			   {
-			   case NEXT:
+    }                           /* Empty area */
 
-               if(BePrivate(area))
-                 curno = GetNextPrivate(area, areahandle);
-               else
-                 curno = MSGNUM_NEXT;
-				   break;
 
-			   case PREV:
+    curno = lastok = area->lr;
+    clsw(cfg.col[Cmsgtext]);
+    stuffkey(cREADsetbookmark);
 
-				   if (MsgGetCurMsg(areahandle) > area->lowest)
-                 {
-                 if(BePrivate(area))
-                     curno = GetPrevPrivate(area, areahandle);
-                 else
-						   curno = MSGNUM_PREV;
-                 }
-				   else { curno = area->lowest; beep(); }
-				   break;
+    // Set up marklist space
+
+    if (area->mlist == NULL)
+        area->mlist = InitMarkList();
+
+    /* Message reading loop */
+
+    do
+    {
+      readit:
+
+        curmsg = GetFmtMsg(curno, areahandle, area); /* Read msg from disk 
+                                                      */
+
+        if (heapcheck() == -1)
+            Message("Heap corrupt (in readarea.c)! Report to the author!",
+                    -1, 254, NO);
+
+        if (!curmsg)            /* Error reading msg! */
+        {
+            if (((retval =
+                  ReScanArea(&areahandle, area, lastorhigh, highest)) != 0)
+                || (errors++ > 4))
+            {
+                Message("Errors, exiting area", 4, 0, NO);
+                if (retval != -2)
+                    MsgCloseArea(areahandle);
+                return 0;
+            }
+
+            if (lastok < area->highest)
+                curno = ++lastok; /* Goto next.. */
+
+            else if (lastok > area->lowest)
+                curno = --lastok; /* Goto prev.. */
+
+            else
+            {
+                MsgCloseArea(areahandle);
+                return 0;
+            }
+
+            goto readit;
+
+        }
+
+        lastok = curno = MsgGetCurMsg(areahandle); /* Where are we? */
+        if ((lastorhigh = curmsg->uid) > highest)
+            highest = lastorhigh;
+
+        command = ShowMsg(curmsg, area, areahandle, NORMAL_DISPLAY); /* Show 
+                                                                        it! 
+                                                                      */
+
+        if (MsgGetCurMsg(areahandle) != curno)
+        {
+            if ((msghandle =
+                 MsgOpenMsg(areahandle, MOPEN_READ, curno)) != NULL)
+                MsgCloseMsg(msghandle); /* 'reposition' MSGAPI where we
+                                           were.. */
+        }
+
+        errors = 0;
+
+        if (command > 0)
+            curno = command;
+        else
+        {
+            switch (command)
+            {
+            case NEXT:
+
+                if (BePrivate(area))
+                    curno = GetNextPrivate(area, areahandle);
+                else
+                    curno = MSGNUM_NEXT;
+                break;
+
+            case PREV:
+
+                if (MsgGetCurMsg(areahandle) > area->lowest)
+                {
+                    if (BePrivate(area))
+                        curno = GetPrevPrivate(area, areahandle);
+                    else
+                        curno = MSGNUM_PREV;
+                }
+                else
+                {
+                    curno = area->lowest;
+                    beep();
+                }
+                break;
 
             case HOME:
 
-                 curno = MsgGetLowMsg(areahandle);
-                 break;
+                curno = MsgGetLowMsg(areahandle);
+                break;
 
             case END:
 
-                 curno = MsgGetHighMsg(areahandle);
-                 break;
+                curno = MsgGetHighMsg(areahandle);
+                break;
 
 
-            case LIST :
+            case LIST:
             case BROADLIST:
 
-               /* mem_free up mem first, could get tight */
+                /* mem_free up mem first, could get tight */
 
-               ReleaseMsg(curmsg, 0);
+                ReleaseMsg(curmsg, 0);
 
-               if ((curno = MsgList(areahandle, area, curno, (command==BROADLIST))) == 0)
-                  command = ESC;
+                if ((curno =
+                     MsgList(areahandle, area, curno,
+                             (command == BROADLIST))) == 0)
+                    command = ESC;
 
-               break;
+                break;
 
             case FIND:
 
-               /* mem_free up mem first, could get tight */
+                /* mem_free up mem first, could get tight */
 
-               ReleaseMsg(curmsg, 0);
+                ReleaseMsg(curmsg, 0);
 
-               anchor(DOWN, areahandle);
-               FindMessage(areahandle, area, MsgGetCurMsg(areahandle));
-               if(area->nomsgs == 0)
-                  command = ESC;
-               curno = anchor(UP, areahandle);
-               /* This might have been reset */
+                anchor(DOWN, areahandle);
+                FindMessage(areahandle, area, MsgGetCurMsg(areahandle));
+                if (area->nomsgs == 0)
+                    command = ESC;
+                curno = anchor(UP, areahandle);
+                /* This might have been reset */
 
-               get_custom_info(area);
-               break;
+                get_custom_info(area);
+                break;
 
-			   case ENTER:
+            case ENTER:
 
-               anchor(DOWN, areahandle);
-               ReleaseMsg(curmsg, 0);
-               MakeMessage(NULL, area, areahandle, 0, 0, NULL);
-               curno = anchor(UP, areahandle);
+                anchor(DOWN, areahandle);
+                ReleaseMsg(curmsg, 0);
+                MakeMessage(NULL, area, areahandle, 0, 0, NULL);
+                curno = anchor(UP, areahandle);
 
-				   break;
+                break;
 
             case EDITHELLO:
 
-               edit_hello_strings(area);
-               break;
+                edit_hello_strings(area);
+                break;
 
             case FILTERMSG:
 
-               FilterMessage(curmsg, area, areahandle, 0);
-               break;
+                FilterMessage(curmsg, area, areahandle, 0);
+                break;
 
             case CHANGECHARSET:
 
-               PickCharMap();
-               break;
+                PickCharMap();
+                break;
 
             case FILTERREALBODY:
 
-               FilterMessage(curmsg, area, areahandle, 1);
-               break;
+                FilterMessage(curmsg, area, areahandle, 1);
+                break;
 
             case SQUNDELETE:
 
-               if(!(area->base & MSGTYPE_SQUISH))
-                 {
-                 Message("This is not a Squish area!", -1, 0, YES);
-                 break;
-                 }
-               anchor(DOWN, areahandle);
-               savescreen();
-               AttemptLock(areahandle);
-               Message("Please wait, undeleting..", 0, 0, NO);
-               howmuch=SquishUndelete(areahandle);
-               MsgUnlock(areahandle);
-               ScanArea(area, areahandle, 0);     /* Do a 'real' MSGAPI scan */
-               if(howmuch == (dword) -1)
-                  Message("Error undeleting messages!", -1, 0, YES);
-               else
-                  {
-                  sprintf(msg, "%lu message were undeleted.", howmuch);
-                  Message(msg, -1, 0, NO);
-                  }
-               putscreen();
-               curno = anchor(UP, areahandle);
-               break;
+                if (!(area->base & MSGTYPE_SQUISH))
+                {
+                    Message("This is not a Squish area!", -1, 0, YES);
+                    break;
+                }
+                anchor(DOWN, areahandle);
+                savescreen();
+                AttemptLock(areahandle);
+                Message("Please wait, undeleting..", 0, 0, NO);
+                howmuch = SquishUndelete(areahandle);
+                MsgUnlock(areahandle);
+                ScanArea(area, areahandle, 0); /* Do a 'real' MSGAPI scan */
+                if (howmuch == (dword) - 1)
+                    Message("Error undeleting messages!", -1, 0, YES);
+                else
+                {
+                    sprintf(msg, "%lu message were undeleted.", howmuch);
+                    Message(msg, -1, 0, NO);
+                }
+                putscreen();
+                curno = anchor(UP, areahandle);
+                break;
 
             case SDMRENUMBER:
 
-               if(!(area->base & MSGTYPE_SDM))
-                 {
-                 Message("This is not a *.MSG area!", -1, 0, YES);
-                 break;
-                 }
-               savescreen();
-               Message("Please wait, renumbering..", 0, 0, NO);
-               if((curno = (dword) SDMRenumber(areahandle)) == -1)
-                  Message("There was an error while renumbering", -1, 0, YES);
-               ScanArea(area, areahandle, 0);     /* Do a 'real' MSGAPI scan */
-               if((msghandle = MsgOpenMsg(areahandle, MOPEN_READ, curno)) != NULL)
-                   MsgCloseMsg(msghandle);                      /* 'reposition' MSGAPI where we were.. */
-               putscreen();
-               break;
+                if (!(area->base & MSGTYPE_SDM))
+                {
+                    Message("This is not a *.MSG area!", -1, 0, YES);
+                    break;
+                }
+                savescreen();
+                Message("Please wait, renumbering..", 0, 0, NO);
+                if ((curno = (dword) SDMRenumber(areahandle)) == -1)
+                    Message("There was an error while renumbering", -1, 0,
+                            YES);
+                ScanArea(area, areahandle, 0); /* Do a 'real' MSGAPI scan */
+                if ((msghandle =
+                     MsgOpenMsg(areahandle, MOPEN_READ, curno)) != NULL)
+                    MsgCloseMsg(msghandle); /* 'reposition' MSGAPI where
+                                               we were.. */
+                putscreen();
+                break;
 
             case EXTERNAL:
 
-               anchor(DOWN, areahandle);
+                anchor(DOWN, areahandle);
 
-               if(runexternal(area, &areahandle, curmsg, lastorhigh, highest) == -1)
-                 {
-                 // Argh! We can't reopen the area. Go back soon!
-                 ReleaseMsg(curmsg, 1);
-                 DumpMarkList(area->mlist);
-                 DumpMarkList(area->mayseelist);
-                 area->mlist = NULL;
-                 area->mayseelist = NULL;
-                 return ESC; /* Short way out (what can I do?) Normal routines try to close area! */
-                 }
+                if (runexternal
+                    (area, &areahandle, curmsg, lastorhigh, highest) == -1)
+                {
+                    // Argh! We can't reopen the area. Go back soon!
+                    ReleaseMsg(curmsg, 1);
+                    DumpMarkList(area->mlist);
+                    DumpMarkList(area->mayseelist);
+                    area->mlist = NULL;
+                    area->mayseelist = NULL;
+                    return ESC; /* Short way out (what can I do?) Normal
+                                   routines try to close area! */
+                }
 
-               curno = anchor(UP, areahandle);
+                curno = anchor(UP, areahandle);
 
-               break;
+                break;
 
             case MSGMAINT:
 
-               ReleaseMsg(curmsg, 0);
+                ReleaseMsg(curmsg, 0);
 
-               anchor(DOWN, areahandle);
+                anchor(DOWN, areahandle);
 
-               // return : -2 == error, -1 == no msgs in area anymore
-               curno = maint_menu(area);
-               if(curno== -1 || curno == -2)  /* Can't re-open the area!! */
-                  {
-                  ReleaseMsg(curmsg, 1);
-                  DumpMarkList(area->mlist);
-                  DumpMarkList(area->mayseelist);
-                  area->mlist = NULL;
-                  area->mayseelist = NULL;
-                  return ESC; /* Short way out (what can I do?) Normal routines try to close area! */
-                  }
+                // return : -2 == error, -1 == no msgs in area anymore
+                curno = maint_menu(area);
+                if (curno == -1 || curno == -2) /* Can't re-open the
+                                                   area!! */
+                {
+                    ReleaseMsg(curmsg, 1);
+                    DumpMarkList(area->mlist);
+                    DumpMarkList(area->mayseelist);
+                    area->mlist = NULL;
+                    area->mayseelist = NULL;
+                    return ESC; /* Short way out (what can I do?) Normal
+                                   routines try to close area! */
+                }
 
-               if(curno == 0)
-                  curno = anchor(UP, areahandle);
-               else   // renumbered area: reposition
-                 {
-                 if((msghandle = MsgOpenMsg(areahandle, MOPEN_READ, curno)) != NULL)
-                     MsgCloseMsg(msghandle);                      /* 'reposition' MSGAPI where we were.. */
-                 }
-               break;
+                if (curno == 0)
+                    curno = anchor(UP, areahandle);
+                else            // renumbered area: reposition
+                {
+                    if ((msghandle =
+                         MsgOpenMsg(areahandle, MOPEN_READ,
+                                    curno)) != NULL)
+                        MsgCloseMsg(msghandle); /* 'reposition' MSGAPI
+                                                   where we were.. */
+                }
+                break;
 
-            default:          /* Catch all other junk */
-               break;
-			   }
-         }
+            default:           /* Catch all other junk */
+                break;
+            }
+        }
 
-		ReleaseMsg(curmsg, 1);			/* Release mem */
-      curmsg=NULL;
+        ReleaseMsg(curmsg, 1);  /* Release mem */
+        curmsg = NULL;
 
-	} 	 while( (command != ESC) && (command != EXIT) && (command != NEXTAREA) && (command != PREVAREA) );		/* Until the user hits <ESC> */
+    }
+    while ((command != ESC) && (command != EXIT) && (command != NEXTAREA) && (command != PREVAREA)); /* Until 
+                                                                                                        the 
+                                                                                                        user 
+                                                                                                        hits 
+                                                                                                        <ESC> 
+                                                                                                      */
 
-	UpdateLastread(area, lastorhigh, highest, areahandle);
+    UpdateLastread(area, lastorhigh, highest, areahandle);
 
-   ScanArea(area, areahandle, 0);
+    ScanArea(area, areahandle, 0);
 
-	if(MsgCloseArea(areahandle))
-		Message("Error closing area!", 2, 0, NO);
+    if (MsgCloseArea(areahandle))
+        Message("Error closing area!", 2, 0, NO);
 
-   // Are there any message marks left?
-   if( (command != EXIT) &&
-       ( (area->mlist->active == 0) ||
-       (confirm("There are marked messages! Erase marks? [y/N]") != 0)) )
-     {
-     DumpMarkList(area->mlist);
-     area->mlist = NULL;
-     }
+    // Are there any message marks left?
+    if ((command != EXIT) &&
+        ((area->mlist->active == 0) ||
+         (confirm("There are marked messages! Erase marks? [y/N]") != 0)))
+    {
+        DumpMarkList(area->mlist);
+        area->mlist = NULL;
+    }
 
-   DumpMarkList(area->mayseelist);
-   area->mayseelist = NULL;
+    DumpMarkList(area->mayseelist);
+    area->mayseelist = NULL;
 
-   return command;
-
-}
-
-
-
-long GetLast(AREA *area, MSG *areahandle, int raw)
-{
-	long last, lr=0;
-
-   if(area->base & MSGTYPE_SQUISH)
-      last = get_last_squish(area);
-   else if(area->base & MSGTYPE_SDM)
-      last = get_last_sdm(area);
-   else if(area->base & MSGTYPE_JAM)
-      last = get_last_JAM(areahandle);
-   else
-      last = get_last_HMB(areahandle);
-
-   if(last == 0L)
-     {
-     if(raw)    // The return lowest in area, minus 1
-       {
-       lr = MsgUidToMsgn(areahandle, 1L, UID_NEXT);
-       return (lr ? lr-1 : 0);
-       }
-     else
-       last=1L;    // UIDToMsgn won't work with 0.
-     }
-
-   if(raw)
-     {
-     lr = MsgUidToMsgn(areahandle, last, UID_EXACT);  // Does is still exist?
-     if(!lr)
-       {
-       lr = MsgUidToMsgn(areahandle, last, UID_NEXT);
-       if(!lr)
-         {
-         lr = MsgUidToMsgn(areahandle, last, UID_PREV);  // First previous one
-         }
-       else
-         lr--;   // Sit one below first new message..
-       }
-     return lr;
-     }
-
-   // not raw if we get here
-
-   lr = MsgUidToMsgn(areahandle, last, UID_NEXT);  /* lastread or first new msg */
-
-	if(lr == 0)										/* didn't exist! */
-     lr = MsgUidToMsgn(areahandle, last, UID_PREV);	/* OK, then prev. msg! */
-
-	if(lr == 0)										/* Well then the first */
-     lr = MsgUidToMsgn(areahandle, 1L, UID_NEXT);
-
-
-   return (lr > 0) ? lr : 1;
+    return command;
 
 }
 
 
 
-void ReleaseMsg(MMSG *thismsg, int allofit)
+long GetLast(AREA * area, MSG * areahandle, int raw)
 {
+    long last, lr = 0;
 
-   if (!thismsg) return;
+    if (area->base & MSGTYPE_SQUISH)
+        last = get_last_squish(area);
+    else if (area->base & MSGTYPE_SDM)
+        last = get_last_sdm(area);
+    else if (area->base & MSGTYPE_JAM)
+        last = get_last_JAM(areahandle);
+    else
+        last = get_last_HMB(areahandle);
 
-   FreeMIS(&thismsg->mis);
+    if (last == 0L)
+    {
+        if (raw)                // The return lowest in area, minus 1
+        {
+            lr = MsgUidToMsgn(areahandle, 1L, UID_NEXT);
+            return (lr ? lr - 1 : 0);
+        }
+        else
+            last = 1L;          // UIDToMsgn won't work with 0.
+    }
 
-   if (thismsg->ctxt)    mem_free(thismsg->ctxt);
-   thismsg->ctxt=NULL;
-   if (thismsg->ctext)   mem_free(thismsg->ctext);
-   thismsg->ctext=NULL;
-   if (thismsg->msgtext) mem_free(thismsg->msgtext);
-   thismsg->msgtext=NULL;
+    if (raw)
+    {
+        lr = MsgUidToMsgn(areahandle, last, UID_EXACT); // Does is still
+                                                        // exist?
+        if (!lr)
+        {
+            lr = MsgUidToMsgn(areahandle, last, UID_NEXT);
+            if (!lr)
+            {
+                lr = MsgUidToMsgn(areahandle, last, UID_PREV); // First
+                                                               // previous 
+                                                               // one
+            }
+            else
+                lr--;           // Sit one below first new message..
+        }
+        return lr;
+    }
 
-   FreeLines(thismsg->txt);
-   thismsg->txt = NULL;
+    // not raw if we get here
 
-   if(thismsg->firstblock)
-      FreeBlocks(thismsg->firstblock);
-   thismsg->firstblock = NULL;
+    lr = MsgUidToMsgn(areahandle, last, UID_NEXT); /* lastread or first
+                                                      new msg */
 
-	if(allofit)
-      mem_free(thismsg);
+    if (lr == 0)                /* didn't exist! */
+        lr = MsgUidToMsgn(areahandle, last, UID_PREV); /* OK, then prev.
+                                                          msg! */
+
+    if (lr == 0)                /* Well then the first */
+        lr = MsgUidToMsgn(areahandle, 1L, UID_NEXT);
+
+
+    return (lr > 0) ? lr : 1;
+
 }
 
 
 
-void UpdateLastread(AREA *area, long last, dword highest, MSG *areahandle)
+void ReleaseMsg(MMSG * thismsg, int allofit)
 {
 
-	if (area->base & MSGTYPE_SQUISH)
-			put_last_squish(area, last);
-	else if(area->base & MSGTYPE_JAM)
-         put_last_JAM(last, areahandle, highest);
-   else if(area->base & MSGTYPE_SDM)
-			put_last_sdm(area, last);
-   else if(area->base & MSGTYPE_HMB)
-         put_last_HMB(last, areahandle);
-   else return;
+    if (!thismsg)
+        return;
+
+    FreeMIS(&thismsg->mis);
+
+    if (thismsg->ctxt)
+        mem_free(thismsg->ctxt);
+    thismsg->ctxt = NULL;
+    if (thismsg->ctext)
+        mem_free(thismsg->ctext);
+    thismsg->ctext = NULL;
+    if (thismsg->msgtext)
+        mem_free(thismsg->msgtext);
+    thismsg->msgtext = NULL;
+
+    FreeLines(thismsg->txt);
+    thismsg->txt = NULL;
+
+    if (thismsg->firstblock)
+        FreeBlocks(thismsg->firstblock);
+    thismsg->firstblock = NULL;
+
+    if (allofit)
+        mem_free(thismsg);
+}
+
+
+
+void UpdateLastread(AREA * area, long last, dword highest,
+                    MSG * areahandle)
+{
+
+    if (area->base & MSGTYPE_SQUISH)
+        put_last_squish(area, last);
+    else if (area->base & MSGTYPE_JAM)
+        put_last_JAM(last, areahandle, highest);
+    else if (area->base & MSGTYPE_SDM)
+        put_last_sdm(area, last);
+    else if (area->base & MSGTYPE_HMB)
+        put_last_HMB(last, areahandle);
+    else
+        return;
 
 }
 
 
 
-long MsgGetLowMsg(MSG *areahandle)
+long MsgGetLowMsg(MSG * areahandle)
 {
 
-	return (MsgUidToMsgn(areahandle, 1L, UID_NEXT));
+    return (MsgUidToMsgn(areahandle, 1L, UID_NEXT));
 
 }
 
-void beep (void)
+void beep(void)
 {
-   #if !defined(__OS2__) && !defined(__NT__)
-   int i;
-	sound(50);
+#if !defined(__OS2__) && !defined(__NT__)
+    int i;
+    sound(50);
 //   delay(10);
 //   sleep(1);
-   for(i=0; i<1000; i+=2)
-     i--;
-	nosound();
-   #elif defined(__NT__)
+    for (i = 0; i < 1000; i += 2)
+        i--;
+    nosound();
+#elif defined(__NT__)
 //   Beep(50, 100);
-   #else
-   DosBeep(50, 100);
-   #endif
+#else
+    DosBeep(50, 100);
+#endif
 }
 
 
 
-void ScanArea(AREA *area, MSG *areahandle, int raw)
+void ScanArea(AREA * area, MSG * areahandle, int raw)
 {
-   dword noprivate, highprivate, lowprivate, lastprivate;
+    dword noprivate, highprivate, lowprivate, lastprivate;
 
-	area->scanned = 1;
-	if ( (area->nomsgs  = MsgGetNumMsg (areahandle)) == 0)
-      {
-      area->highest = 0L;
-      area->lowest  = 0L;
-      area->lr      = 0L;
-      UpdateLastread(area, 0L, 0L, areahandle);
-      return;
-      };
+    area->scanned = 1;
+    if ((area->nomsgs = MsgGetNumMsg(areahandle)) == 0)
+    {
+        area->highest = 0L;
+        area->lowest = 0L;
+        area->lr = 0L;
+        UpdateLastread(area, 0L, 0L, areahandle);
+        return;
+    };
 
-	area->highest = MsgGetHighMsg(areahandle);
-	area->lowest  = MsgGetLowMsg (areahandle);
-   area->lr      = GetLast(area, areahandle, raw);
+    area->highest = MsgGetHighMsg(areahandle);
+    area->lowest = MsgGetLowMsg(areahandle);
+    area->lr = GetLast(area, areahandle, raw);
 
-   // These are the basic stats, but what if we only have to
-   // show private messages!
+    // These are the basic stats, but what if we only have to
+    // show private messages!
 
-   if( (cfg.usr.status & RESPECTPRIVATE) &&
-       (area->type != ECHOMAIL && area->type != NEWS) )
-     {
-     noprivate = highprivate = lowprivate = lastprivate = 0L;
-     ScanMaySee(area, areahandle);
-     if( (area->nomsgs = area->mayseelist->active) != 0)
-       {
-       area->lowest = MsgUidToMsgn(areahandle, area->mayseelist->list[0], UID_EXACT);
-       area->highest = MsgUidToMsgn(areahandle,
-               area->mayseelist->list[area->mayseelist->active-1], UID_EXACT);
-       area->lr = GetMaySeeLastRead(areahandle, area, area->lr);
-       }
-     }
-
-
-}
-
-// ==============================================================
-
-dword GetMaySeeLastRead(MSG *areahandle, AREA *area, dword lr)
-{
-   dword uid;
-   int i;
-
-   uid = MsgMsgnToUid(areahandle, lr);
-   if(IsMarked(area->mayseelist, uid)) // The lastread is a message we may see
-     return lr;
-
-   // Otherwise we traverse the list of marked messages to find a higher
-   // one. If we don't, we'll take a lower one..
-
-   for(i=0; i<area->mayseelist->active; i++)
-     {
-     if(area->mayseelist->list[i] > uid)
-       return MsgUidToMsgn(areahandle, area->mayseelist->list[i], UID_EXACT);
-     }
-
-   // If we got here, there wasn't a higher one. Take the highest (last)
-
-   return MsgUidToMsgn(areahandle, area->mayseelist->list[i-1], UID_EXACT);
-
-}
-
-// ==============================================================
-
-dword anchor(int direction, MSG *areahandle)
-{
-   #define MAXANCHORS 10
-   static dword last[MAXANCHORS];
-   static int now=0;
-   dword retval;
-
-   if (direction == DOWN)
-      {
-      if(now < MAXANCHORS)
-         last[now++] = MsgMsgnToUid(areahandle, MsgGetCurMsg(areahandle));
-      return last[now-1];
-      }
-
-   /* else direction == UP */
-
-   if(now > 0)
-     {
-     now--;
-	  if( (retval = MsgUidToMsgn(areahandle, last[now], UID_NEXT)) == 0)
-	     retval = MsgUidToMsgn(areahandle, last[now], UID_PREV);
-     }
-   else Message("Anchor error!", -1, 0, YES);
-
-   return retval;
-}
-
-
-
-long get_last_squish(AREA *area)
-{
-	int lrfile;
-	long last;
-	char temp[80];
-
-
-   sprintf(temp, "%s.sql", area->dir);
-
-   if ((lrfile = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
-      return 0L;
-
-   if(lseek(lrfile, cfg.usr.sqoff * sizeof(long), SEEK_SET) != (cfg.usr.sqoff * sizeof(long)))
-     {
-     last = 0L;
-     }
-   else if(read(lrfile, &last, sizeof(long)) != sizeof(long))
-     {
-     last = 0L;
-     }
-
-   close(lrfile);
-
-   return last;
-
-}
-
-
-long get_last_sdm(AREA *area)
-{
-	int lrfile;
-	long retval;
-   dword last= 0L;
-	char temp[80];
-
-
-   sprintf(temp, "%s\\%s", area->dir, cfg.usr.lr);
-
-   if ((lrfile = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
-      return 0L;
-
-	if(read(lrfile, &last, sizeof(word)) != sizeof(word))
-      last = 0L;
-
-   close(lrfile);
-
-   retval = (long) last;
-
-   return retval;
-
-}
-
-
-long get_last_JAM(MSG *areahandle)
-{
-   long last;
-
-   if( (last=JAMmbFetchLastRead(areahandle, cfg.usr.name[0].crc, (cfg.usr.status & JAMGETLAST) ? 1 : 0)) == -1)
-      Message("Error reading lastread!", -1, 0, YES);
-
-   return last;
-}
-
-
-
-long get_last_HMB(MSG *areahandle)
-{
-   if(HMBlr.read < (time(NULL) - 10) )
-      {
-      if(HMBreadlast() == -1)
-         return 1L;
-      }
-
-   return(HMBlr.lastread[(((HMBdata *)areahandle->apidata)->board - 1)]);
-
-}
-
-
-
-
-void put_last_squish(AREA *area, long last)
-{
-	char temp[80];
-	int lrfile;
-   unsigned lastpos = cfg.usr.sqoff * sizeof(long);
-   long dummy=0;
-
-   sprintf(temp, "%s.sql", area->dir);
-
-   if ((lrfile = sopen(temp, O_CREAT|O_RDWR|O_BINARY, SH_DENYWR, S_IREAD|S_IWRITE)) == -1)
-		{
-      Message("Can't open lastread file!", -1, 0, YES);
-      return;
-		}
-
-   if(filelength(lrfile) < lastpos )
-      {
-      lseek(lrfile, 0L, SEEK_END);
-      while(tell(lrfile) < lastpos)
+    if ((cfg.usr.status & RESPECTPRIVATE) &&
+        (area->type != ECHOMAIL && area->type != NEWS))
+    {
+        noprivate = highprivate = lowprivate = lastprivate = 0L;
+        ScanMaySee(area, areahandle);
+        if ((area->nomsgs = area->mayseelist->active) != 0)
         {
-        if(write(lrfile, &dummy, sizeof(long)) != sizeof(long))
-           {
-           Message("Can't write! Disk full?", -1, 0, YES);
-           close(lrfile);
-           return;
-           }
+            area->lowest =
+                MsgUidToMsgn(areahandle, area->mayseelist->list[0],
+                             UID_EXACT);
+            area->highest =
+                MsgUidToMsgn(areahandle,
+                             area->mayseelist->list[area->mayseelist->
+                                                    active - 1],
+                             UID_EXACT);
+            area->lr = GetMaySeeLastRead(areahandle, area, area->lr);
         }
-      }
+    }
 
-   if(lseek(lrfile, lastpos, SEEK_SET) != lastpos)
-      {
-      Message("Can't seek lastread file!", -1, 0, YES);
-      close(lrfile);
-      return;
-      }
 
-	if ( (write(lrfile, &last, sizeof(long))) != sizeof(long) )
-         Message("Can't write! Disk full?", -1, 0, YES);
+}
 
-	close(lrfile);
+// ==============================================================
+
+dword GetMaySeeLastRead(MSG * areahandle, AREA * area, dword lr)
+{
+    dword uid;
+    int i;
+
+    uid = MsgMsgnToUid(areahandle, lr);
+    if (IsMarked(area->mayseelist, uid)) // The lastread is a message we
+                                         // may see
+        return lr;
+
+    // Otherwise we traverse the list of marked messages to find a higher
+    // one. If we don't, we'll take a lower one..
+
+    for (i = 0; i < area->mayseelist->active; i++)
+    {
+        if (area->mayseelist->list[i] > uid)
+            return MsgUidToMsgn(areahandle, area->mayseelist->list[i],
+                                UID_EXACT);
+    }
+
+    // If we got here, there wasn't a higher one. Take the highest (last)
+
+    return MsgUidToMsgn(areahandle, area->mayseelist->list[i - 1],
+                        UID_EXACT);
+
+}
+
+// ==============================================================
+
+dword anchor(int direction, MSG * areahandle)
+{
+#define MAXANCHORS 10
+    static dword last[MAXANCHORS];
+    static int now = 0;
+    dword retval;
+
+    if (direction == DOWN)
+    {
+        if (now < MAXANCHORS)
+            last[now++] =
+                MsgMsgnToUid(areahandle, MsgGetCurMsg(areahandle));
+        return last[now - 1];
+    }
+
+    /* else direction == UP */
+
+    if (now > 0)
+    {
+        now--;
+        if ((retval = MsgUidToMsgn(areahandle, last[now], UID_NEXT)) == 0)
+            retval = MsgUidToMsgn(areahandle, last[now], UID_PREV);
+    }
+    else
+        Message("Anchor error!", -1, 0, YES);
+
+    return retval;
+}
+
+
+
+long get_last_squish(AREA * area)
+{
+    int lrfile;
+    long last;
+    char temp[80];
+
+
+    sprintf(temp, "%s.sql", area->dir);
+
+    if ((lrfile = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
+        return 0L;
+
+    if (lseek(lrfile, cfg.usr.sqoff * sizeof(long), SEEK_SET) !=
+        (cfg.usr.sqoff * sizeof(long)))
+    {
+        last = 0L;
+    }
+    else if (read(lrfile, &last, sizeof(long)) != sizeof(long))
+    {
+        last = 0L;
+    }
+
+    close(lrfile);
+
+    return last;
 
 }
 
 
-void put_last_HMB(long last, MSG *areahandle)
+long get_last_sdm(AREA * area)
 {
+    int lrfile;
+    long retval;
+    dword last = 0L;
+    char temp[80];
 
-   if(HMBreadlast() == -1)
-     {
-     Message("Error updating lastread!", -1, 0, YES);
-     return;
-     }
 
-   HMBlr.lastread[(((HMBdata *)areahandle->apidata)->board - 1)] = (word) last;
+    sprintf(temp, "%s\\%s", area->dir, cfg.usr.lr);
 
-   if(HMBwritelast() == -1)
-     {
-     Message("Error updating lastread!", -1, 0, YES);
-     return;
-     }
+    if ((lrfile = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
+        return 0L;
+
+    if (read(lrfile, &last, sizeof(word)) != sizeof(word))
+        last = 0L;
+
+    close(lrfile);
+
+    retval = (long)last;
+
+    return retval;
 
 }
 
 
-void put_last_sdm(AREA *area, long last)
+long get_last_JAM(MSG * areahandle)
 {
-	char temp[80];
-	int lrfile;
-   word lastint;
+    long last;
+
+    if ((last =
+         JAMmbFetchLastRead(areahandle, cfg.usr.name[0].crc,
+                            (cfg.usr.status & JAMGETLAST) ? 1 : 0)) == -1)
+        Message("Error reading lastread!", -1, 0, YES);
+
+    return last;
+}
 
 
-   sprintf(temp, "%s\\%s", area->dir, cfg.usr.lr);
 
-   lastint = (word) last;
+long get_last_HMB(MSG * areahandle)
+{
+    if (HMBlr.read < (time(NULL) - 10))
+    {
+        if (HMBreadlast() == -1)
+            return 1L;
+    }
 
-   if ((lrfile = sopen(temp, O_CREAT|O_WRONLY|O_TRUNC|O_BINARY, SH_DENYWR, S_IREAD|S_IWRITE)) == -1)
-		{
-      Message("Can't open lastread file!", -1, 0, YES);
-      return;
-		}
-
-	if (write(lrfile, &lastint, sizeof(word)) != sizeof(word) )
-         Message("Can't write! Disk full?", -1, 0, YES);
-
-	close(lrfile);
+    return (HMBlr.
+            lastread[(((HMBdata *) areahandle->apidata)->board - 1)]);
 
 }
 
 
-void put_last_JAM(long last, MSG *areahandle, dword highest)
+
+
+void put_last_squish(AREA * area, long last)
 {
-   int didlock = 0;
+    char temp[80];
+    int lrfile;
+    unsigned lastpos = cfg.usr.sqoff * sizeof(long);
+    long dummy = 0;
 
-   if(!areahandle->locked)
-     {
-     AttemptLock(areahandle);
-     didlock = 1;
-     }
+    sprintf(temp, "%s.sql", area->dir);
 
-   if(JAMmbStoreLastRead(areahandle, last, highest, cfg.usr.name[0].crc) == -1)
-      Message("Error updating lastread!", -1, 0, YES);
+    if ((lrfile =
+         sopen(temp, O_CREAT | O_RDWR | O_BINARY, SH_DENYWR,
+               S_IREAD | S_IWRITE)) == -1)
+    {
+        Message("Can't open lastread file!", -1, 0, YES);
+        return;
+    }
 
-   if(didlock)
-      MsgUnlock(areahandle);
+    if (filelength(lrfile) < lastpos)
+    {
+        lseek(lrfile, 0L, SEEK_END);
+        while (tell(lrfile) < lastpos)
+        {
+            if (write(lrfile, &dummy, sizeof(long)) != sizeof(long))
+            {
+                Message("Can't write! Disk full?", -1, 0, YES);
+                close(lrfile);
+                return;
+            }
+        }
+    }
+
+    if (lseek(lrfile, lastpos, SEEK_SET) != lastpos)
+    {
+        Message("Can't seek lastread file!", -1, 0, YES);
+        close(lrfile);
+        return;
+    }
+
+    if ((write(lrfile, &last, sizeof(long))) != sizeof(long))
+        Message("Can't write! Disk full?", -1, 0, YES);
+
+    close(lrfile);
+
+}
+
+
+void put_last_HMB(long last, MSG * areahandle)
+{
+
+    if (HMBreadlast() == -1)
+    {
+        Message("Error updating lastread!", -1, 0, YES);
+        return;
+    }
+
+    HMBlr.lastread[(((HMBdata *) areahandle->apidata)->board - 1)] =
+        (word) last;
+
+    if (HMBwritelast() == -1)
+    {
+        Message("Error updating lastread!", -1, 0, YES);
+        return;
+    }
+
+}
+
+
+void put_last_sdm(AREA * area, long last)
+{
+    char temp[80];
+    int lrfile;
+    word lastint;
+
+
+    sprintf(temp, "%s\\%s", area->dir, cfg.usr.lr);
+
+    lastint = (word) last;
+
+    if ((lrfile =
+         sopen(temp, O_CREAT | O_WRONLY | O_TRUNC | O_BINARY, SH_DENYWR,
+               S_IREAD | S_IWRITE)) == -1)
+    {
+        Message("Can't open lastread file!", -1, 0, YES);
+        return;
+    }
+
+    if (write(lrfile, &lastint, sizeof(word)) != sizeof(word))
+        Message("Can't write! Disk full?", -1, 0, YES);
+
+    close(lrfile);
+
+}
+
+
+void put_last_JAM(long last, MSG * areahandle, dword highest)
+{
+    int didlock = 0;
+
+    if (!areahandle->locked)
+    {
+        AttemptLock(areahandle);
+        didlock = 1;
+    }
+
+    if (JAMmbStoreLastRead(areahandle, last, highest, cfg.usr.name[0].crc)
+        == -1)
+        Message("Error updating lastread!", -1, 0, YES);
+
+    if (didlock)
+        MsgUnlock(areahandle);
 
 }
 
@@ -916,107 +985,111 @@ void put_last_JAM(long last, MSG *areahandle, dword highest)
 
 /* Read all 200 ints of lastreads for entire Hudson base */
 
-int   HMBreadlast(void)
+int HMBreadlast(void)
 {
-  int lrfile;
-  char lrfilename[120];
-  long offset;
+    int lrfile;
+    char lrfilename[120];
+    long offset;
 
-  memset(&HMBlr, '\0', sizeof(HMBlr));
+    memset(&HMBlr, '\0', sizeof(HMBlr));
 
-  sprintf(lrfilename, "%s\\lastread.bbs", cfg.usr.hudsonpath);
-  if( (lrfile=sopen(lrfilename, O_CREAT | O_BINARY | O_RDWR, SH_DENYNO, S_IREAD | S_IWRITE)) == -1)
-     return -1;
-
-  offset = (long) (cfg.usr.hudsonoff * (sizeof(word) * 200));
-
-  if(filelength(lrfile) < (offset+(sizeof(word)*200)))
-     {
-     if(chsize(lrfile, (long) offset + ((long)sizeof(word)*200L)) == -1)
-       Message("Error resizing lastread file!", -1, 0, YES);
-     else
-       {          // All's well, no read necessary though..
-       close(lrfile);
-       return 0;
-       }
-     }
-
-  if(filelength(lrfile) > 0L)
-     {
-     if(
-         (lseek(lrfile, offset, SEEK_SET) != offset) ||
-         (read(lrfile, &HMBlr.lastread, (unsigned) (sizeof(word) * 200)) != (int) (sizeof(word) * 200))
-       )
-        {
-        close(lrfile);
+    sprintf(lrfilename, "%s\\lastread.bbs", cfg.usr.hudsonpath);
+    if ((lrfile =
+         sopen(lrfilename, O_CREAT | O_BINARY | O_RDWR, SH_DENYNO,
+               S_IREAD | S_IWRITE)) == -1)
         return -1;
+
+    offset = (long)(cfg.usr.hudsonoff * (sizeof(word) * 200));
+
+    if (filelength(lrfile) < (offset + (sizeof(word) * 200)))
+    {
+        if (chsize(lrfile, (long)offset + ((long)sizeof(word) * 200L)) ==
+            -1)
+            Message("Error resizing lastread file!", -1, 0, YES);
+        else
+        {                       // All's well, no read necessary though..
+            close(lrfile);
+            return 0;
         }
-     }
+    }
 
-  close(lrfile);
+    if (filelength(lrfile) > 0L)
+    {
+        if ((lseek(lrfile, offset, SEEK_SET) != offset) ||
+            (read(lrfile, &HMBlr.lastread, (unsigned)(sizeof(word) * 200))
+             != (int)(sizeof(word) * 200)))
+        {
+            close(lrfile);
+            return -1;
+        }
+    }
 
-  HMBlr.read = time(NULL);
+    close(lrfile);
 
-  return 0;
+    HMBlr.read = time(NULL);
+
+    return 0;
 
 }
 
-int   HMBwritelast(void)
+int HMBwritelast(void)
 {
-  int lrfile;
-  char lrfilename[120];
-  long offset;
+    int lrfile;
+    char lrfilename[120];
+    long offset;
 
 
-  sprintf(lrfilename, "%s\\lastread.bbs", cfg.usr.hudsonpath);
-  if( (lrfile=sopen(lrfilename, O_BINARY | O_WRONLY | O_CREAT, SH_DENYNO, S_IREAD | S_IWRITE)) == -1)
-     return -1;
+    sprintf(lrfilename, "%s\\lastread.bbs", cfg.usr.hudsonpath);
+    if ((lrfile =
+         sopen(lrfilename, O_BINARY | O_WRONLY | O_CREAT, SH_DENYNO,
+               S_IREAD | S_IWRITE)) == -1)
+        return -1;
 
-  offset = (long) (cfg.usr.hudsonoff * (sizeof(word) * 200));
+    offset = (long)(cfg.usr.hudsonoff * (sizeof(word) * 200));
 
-  if(
-     (lseek(lrfile, offset, SEEK_SET) != offset) ||
-     (write(lrfile, &HMBlr.lastread, sizeof(word) * 200) != (sizeof(word) * 200))
-    )
-     {
-     close(lrfile);
-     return -1;
-     }
+    if ((lseek(lrfile, offset, SEEK_SET) != offset) ||
+        (write(lrfile, &HMBlr.lastread, sizeof(word) * 200) !=
+         (sizeof(word) * 200)))
+    {
+        close(lrfile);
+        return -1;
+    }
 
-  close(lrfile);
+    close(lrfile);
 
-  return 0;
+    return 0;
 
 }
 
 // ===============================================================
 
-int ReScanArea(MSG **areahandle, AREA *area, dword lastorhigh, dword highest)
+int ReScanArea(MSG ** areahandle, AREA * area, dword lastorhigh,
+               dword highest)
 {
 
-   UpdateLastread(area, lastorhigh, highest, *areahandle);
+    UpdateLastread(area, lastorhigh, highest, *areahandle);
 
-   if(MsgCloseArea(*areahandle))
-      {
-      Message("Error closing area!", 2, 0, NO);
-      return -1;
-      }
+    if (MsgCloseArea(*areahandle))
+    {
+        Message("Error closing area!", 2, 0, NO);
+        return -1;
+    }
 
-   if(!(*areahandle=MsgOpenArea(area->dir, MSGAREA_CRIFNEC, area->base)))
-      {
-      Message("Error re-opening area!", -1, 0, YES);
-      showerror();
-      return -2;
-      }
+    if (!
+        (*areahandle =
+         MsgOpenArea(area->dir, MSGAREA_CRIFNEC, area->base)))
+    {
+        Message("Error re-opening area!", -1, 0, YES);
+        showerror();
+        return -2;
+    }
 
-   /* Read area statistics */
+    /* Read area statistics */
 
-   ScanArea(area, *areahandle, 0);     /* Do a 'real' MSGAPI scan */
+    ScanArea(area, *areahandle, 0); /* Do a 'real' MSGAPI scan */
 
-   return (area->nomsgs > 0) ? 0 : -1;  /* Ret -1, exit area if no msgs */
+    return (area->nomsgs > 0) ? 0 : -1; /* Ret -1, exit area if no msgs */
 
 }
 
 // ================================================================
-
-

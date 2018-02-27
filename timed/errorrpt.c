@@ -19,16 +19,16 @@ void debug(const char *format, ...)
 #ifdef __NT__
     OutputDebugString(buffer);
 #else
-	fprintf(stderr, "%s\n", buffer);
+    fprintf(stderr, "%s\n", buffer);
 #endif
 }
 
 void showerror(void)
 {
-   if(msgapierr == 0)
-     return;
+    if (msgapierr == 0)
+        return;
 
-   sprintf(msg, "Extended info: %s", errmsgs[msgapierr]);
+    sprintf(msg, "Extended info: %s", errmsgs[msgapierr]);
 
-   Message(msg, -1, 0, YES);
+    Message(msg, -1, 0, YES);
 }

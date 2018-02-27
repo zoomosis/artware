@@ -3,7 +3,7 @@
 #include <scrnutil.h>
 
 
-char           wchars[] = "|/-\\";
+char wchars[] = "|/-\\";
 
 
 void working(int y, int x, int col);
@@ -11,10 +11,10 @@ void working(int y, int x, int col);
 
 void working(int y, int x, int col)
 {
-   static int n=0;
+    static int n = 0;
 
-   printc(y,x,col,wchars[n]);
+    printc(y, x, col, wchars[n]);
 
-   n =  n < 3 ? n+1 : 0;
+    n = n < 3 ? n + 1 : 0;
 
 }

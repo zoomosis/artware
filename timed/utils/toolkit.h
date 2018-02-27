@@ -47,4 +47,4 @@
 #define debug(a)
 #endif
 
-#endif /* TOOLKIT_H */
+#endif                          /* TOOLKIT_H */

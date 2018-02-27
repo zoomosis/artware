@@ -5,11 +5,11 @@
 
 //    msgbasetype   = (Hudson,Msg,PassThrough,Squish,jam);
 
-    #define xHMB  0
-    #define xSDM  1
-    #define xPT   2
-    #define xSQ   3
-    #define xJAM  4
+#define xHMB  0
+#define xSDM  1
+#define xPT   2
+#define xSQ   3
+#define xJAM  4
 
 //    AddressRec    = RECORD
 //                      Zone,
@@ -21,10 +21,10 @@
 
 //    MailTypeDef   = (Echomail, Netmail, Localmail, Newmail);
 
-    #define xECHO  0
-    #define xNET   1
-    #define xLOCAL 2
-    #define xNEW   3
+#define xECHO  0
+#define xNET   1
+#define xLOCAL 2
+#define xNEW   3
 
 // Name           : STRING [40]; { Area Name                    }
 // Descr          : STRING [60]; { Description                  }
@@ -39,17 +39,17 @@
 typedef struct
 {
 
-   char name[41];
-   char desc[61];
-   byte type;
-   byte base;
-   char dir[61];
-   word fill1;
-   word fill2;
-   char fill3[61];
-   NETADDR aka;
-   byte group;
-   char fill4[161];
+    char name[41];
+    char desc[61];
+    byte type;
+    byte base;
+    char dir[61];
+    word fill1;
+    word fill2;
+    char fill3[61];
+    NETADDR aka;
+    byte group;
+    char fill4[161];
 
 } xMailArea;
 

@@ -7,7 +7,7 @@
 #if RELEASE
 #define VERSION "1.31+"
 #else
-#define VERSION "1.31.g1+"
+#define VERSION "1.31.g2+"
 #endif
 
 #ifdef __DOS__

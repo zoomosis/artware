@@ -240,7 +240,7 @@ static int parse(char *str)
     }
 
     if (node.type != TYPE_ZONE && node.type != TYPE_REGION &&
-      node.type != TYPE_HOST)
+        node.type != TYPE_HOST)
     {
         node.addr.zone = prev_node.zone;
         node.addr.net = prev_node.net;
@@ -331,9 +331,9 @@ static int newest(char *dest_path, char *src_pattern)
         /* directory doesn't exist */
 
         sprintf(msg, "FidoNodelist directory '%s' does not exist!", dir);
-        Message(msg, -1, 0, YES);   
+        Message(msg, -1, 0, YES);
 
-    	return EXIT_FAILURE;
+        return EXIT_FAILURE;
     }
 
     ent = readdir(dp);
@@ -343,14 +343,14 @@ static int newest(char *dest_path, char *src_pattern)
         /* directory is empty */
 
         sprintf(msg, "FidoNodelist directory '%s' is empty!", dir);
-        Message(msg, -1, 0, YES);   
+        Message(msg, -1, 0, YES);
 
-    	return EXIT_FAILURE;
+        return EXIT_FAILURE;
     }
 
     *dest_path = '\0';
     memset(&new_st, 0, sizeof new_st);
-    
+
     while (ent != NULL)
     {
         strcpy(pattern, name);
@@ -366,12 +366,14 @@ static int newest(char *dest_path, char *src_pattern)
 
             stat(path, &st);
 
-            /* compare timestamps based on modification time.  ignore directories */
+            /* compare timestamps based on modification time.  ignore
+               directories */
 
-            if ((st.st_mode & S_IFDIR) == 0 && st.st_mtime > new_st.st_mtime)
+            if ((st.st_mode & S_IFDIR) == 0
+                && st.st_mtime > new_st.st_mtime)
             {
-            	strcpy(dest_path, path);
-            	new_st = st;
+                strcpy(dest_path, path);
+                new_st = st;
             }
         }
 
@@ -382,12 +384,13 @@ static int newest(char *dest_path, char *src_pattern)
 
     if (*dest_path == '\0')
     {
-    	/* no match was found */
+        /* no match was found */
 
-        sprintf(msg, "Could not match FidoNodelist pattern '%s'!", pattern);
-        Message(msg, -1, 0, YES);   
+        sprintf(msg, "Could not match FidoNodelist pattern '%s'!",
+                pattern);
+        Message(msg, -1, 0, YES);
 
-    	return EXIT_FAILURE;
+        return EXIT_FAILURE;
     }
 
     return EXIT_SUCCESS;
@@ -406,7 +409,7 @@ ADDRLIST *fido_nodelist_lookup(char *name)
 
     if (newest(buf, cfg.usr.fidonodelist) != EXIT_SUCCESS)
     {
-    	return NULL;
+        return NULL;
     }
 
     fp = fopen(buf, "r");
@@ -416,7 +419,7 @@ ADDRLIST *fido_nodelist_lookup(char *name)
         char msg[250];
 
         sprintf(msg, "Can't open FidoNodelist file '%s'!", buf);
-        Message(msg, -1, 0, YES);   
+        Message(msg, -1, 0, YES);
 
         return NULL;
     }
@@ -432,7 +435,8 @@ ADDRLIST *fido_nodelist_lookup(char *name)
     {
         StripCR(buf);
 
-        if (parse(buf) && stristr(node.name, name) != NULL && i < MAXMATCHES)
+        if (parse(buf) && stristr(node.name, name) != NULL
+            && i < MAXMATCHES)
         {
             /* found a match */
 

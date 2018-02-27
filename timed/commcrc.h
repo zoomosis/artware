@@ -156,4 +156,3 @@
 #define crcLISTSHELL      0xe644fc1fL
 #define crcLISTREADMSG    0x2b60703bL
 #define crcLISTTAG        0x98dc65ddL
-

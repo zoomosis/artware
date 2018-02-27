@@ -21,27 +21,28 @@ typedef int YesNo;
 #pragma pack(__push, 1)
 
 typedef struct
-   {
-   int   x1, y1, x2, y2;         /* Corners */
-   int   ColBorder, ColInside;   /* Color.. */
-   int   borderstyle;
-   char * blockptr;              /* Pointer to where screen is saved */
-   char  fill;                   /* The character to fill the screen */
-   YesNo save;
-   }  BOX;
+{
+    int x1, y1, x2, y2;         /* Corners */
+    int ColBorder, ColInside;   /* Color.. */
+    int borderstyle;
+    char *blockptr;             /* Pointer to where screen is saved */
+    char fill;                  /* The character to fill the screen */
+    YesNo save;
+} BOX;
 
 #pragma pack(__pop)
 
-BOX *initbox(int x1, int y1, int x2, int y2, int border, int inside, int bstyle, YesNo save, char fill);
-void drawbox(BOX *data);
-void delbox(BOX *data);
+BOX *initbox(int x1, int y1, int x2, int y2, int border, int inside,
+             int bstyle, YesNo save, char fill);
+void drawbox(BOX * data);
+void delbox(BOX * data);
 void error(char message[80]);
-void boxwrite(BOX *box, int x, int y, char *line);
+void boxwrite(BOX * box, int x, int y, char *line);
 void savescreen(void);
 void putscreen(void);
 void bios_scroll_up(int count, int sr, int sc, int er, int ec, int attr);
-void restoreblock(int x, int y, int w, int h, char * b);
-void saveblock(int x1, int y1, int x2, int y2, char * b);
-void titlewin(BOX *win, int where, char *s, int hlcol);
+void restoreblock(int x, int y, int w, int h, char *b);
+void saveblock(int x1, int y1, int x2, int y2, char *b);
+void titlewin(BOX * win, int where, char *s, int hlcol);
 
 #endif

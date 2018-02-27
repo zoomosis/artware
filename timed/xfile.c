@@ -43,27 +43,30 @@
 #include "xfile.h"
 
 #if !defined(__ZTC__) && !defined(__TURBOC__)
- static int DOS_OPEN(const char *name, int mode, ...)
- {
-       int hdl;
+static int DOS_OPEN(const char *name, int mode, ...)
+{
+    int hdl;
 
-       if (0 == _dos_open(name, mode, &hdl))
-             return hdl;
-       else  return -1;
- }
+    if (0 == _dos_open(name, mode, &hdl))
+        return hdl;
+    else
+        return -1;
+}
 
- static int READ(int fd, void *buf, size_t len)
- {
-       unsigned count;
+static int READ(int fd, void *buf, size_t len)
+{
+    unsigned count;
 
-       if (0 == _dos_read(fd, buf, len, &count))
-             return count;
-       else  return -1;
- }
+    if (0 == _dos_read(fd, buf, len, &count))
+        return count;
+    else
+        return -1;
+}
 #endif
 
-#ifndef XBUFN               /* set default # of quanta in buffer, allow -D */
- #define XBUFN 8
+#ifndef XBUFN                   /* set default # of quanta in buffer,
+                                   allow -D */
+#define XBUFN 8
 #endif
 
 #define QUANTUM 512
@@ -82,37 +85,37 @@
 
 XFILE *xopen(char const *name)
 {
-      XFILE *f = mem_malloc(sizeof(XFILE) + XBUFSIZE + 1);
-      int n;
-      char *charptr;
+    XFILE *f = mem_malloc(sizeof(XFILE) + XBUFSIZE + 1);
+    int n;
+    char *charptr;
 
-      if (f == 0)
-            goto error0;
-      f->buf = (char *)f + sizeof(XFILE);
+    if (f == 0)
+        goto error0;
+    f->buf = (char *)f + sizeof(XFILE);
 
-      if ((f->fd = DOS_OPEN(name, O_RDONLY | SH_DENYNO)) < 0)
-            goto error1;
+    if ((f->fd = DOS_OPEN(name, O_RDONLY | SH_DENYNO)) < 0)
+        goto error1;
 
-      if ((n = READ(f->fd, f->buf, XBUFSIZE)) < 0)
-            goto error2;
+    if ((n = READ(f->fd, f->buf, XBUFSIZE)) < 0)
+        goto error2;
 
-      f->buf[n] = 0;
-      if(n>0 && f->buf[n-1] == 0x1A)
-        f->buf[n-1] = '\0';
+    f->buf[n] = 0;
+    if (n > 0 && f->buf[n - 1] == 0x1A)
+        f->buf[n - 1] = '\0';
 
-      charptr=f->buf;
-      while( (charptr=strchr(charptr, '\0')) < &f->buf[n] )
-          *charptr = ' ';
+    charptr = f->buf;
+    while ((charptr = strchr(charptr, '\0')) < &f->buf[n])
+        *charptr = ' ';
 
-      f->nextChar = f->buf;
-      return f;
+    f->nextChar = f->buf;
+    return f;
 
-error2:
-      CLOSE(f->fd);
-error1:
-      mem_free(f);
-error0:
-      return 0;
+  error2:
+    CLOSE(f->fd);
+  error1:
+    mem_free(f);
+  error0:
+    return 0;
 }
 
 
@@ -120,10 +123,10 @@ error0:
 **  xclose -- close and deallocate an XFILE
 */
 
-void xclose(XFILE *f)
+void xclose(XFILE * f)
 {
-      CLOSE(f->fd);
-      mem_free(f);
+    CLOSE(f->fd);
+    mem_free(f);
 }
 
 
@@ -133,10 +136,10 @@ void xclose(XFILE *f)
 **  returns a pointer to the line (a NUL-terminated string) or a null pointer
 */
 
-char *xgetline(XFILE *f)
+char *xgetline(XFILE * f)
 {
-      char *s = f->nextChar, *p, *charptr;
-      int n;
+    char *s = f->nextChar, *p, *charptr;
+    int n;
 
 
 /*      for (p = s; *p != 0; ++p)
@@ -151,81 +154,84 @@ char *xgetline(XFILE *f)
             }
       }
 */
-      if( (p = strchr(s, '\n')) != NULL )
-            {
-            if (s < p && p[-1] == '\r')
-                        p[-1] = 0;
-            else  *p = 0;
-            f->nextChar = p + 1;
-            return s;
-            }
+    if ((p = strchr(s, '\n')) != NULL)
+    {
+        if (s < p && p[-1] == '\r')
+            p[-1] = 0;
+        else
+            *p = 0;
+        f->nextChar = p + 1;
+        return s;
+    }
 
-      p=strchr(s, '\0');
+    p = strchr(s, '\0');
 
-      /*
-      **  end of line not found in buffer -- p points to the sentinel NUL
-      */
+    /* 
+     **  end of line not found in buffer -- p points to the sentinel NUL
+     */
 
-      if (p == f->buf)                    /* iff empty, EOF */
-            return 0;
+    if (p == f->buf)            /* iff empty, EOF */
+        return 0;
 
-      /*
-      **  move prefix of line to bottom of buffer
-      */
+    /* 
+     **  move prefix of line to bottom of buffer
+     */
 
-      if (s != f->buf)
-      {
-            for (p = f->buf; (*p = *s) != 0; ++p, ++s)
-                  ;
+    if (s != f->buf)
+    {
+        for (p = f->buf; (*p = *s) != 0; ++p, ++s)
+            ;
 
 //            copylen = strlen(f->buf);
 //            memcpy(f->buf, s, copylen+1);
-            s = f->buf;
+        s = f->buf;
 //            p = f->buf + copylen;
-      }
+    }
 
-      n = XBUFSIZE - (p - f->buf);
+    n = XBUFSIZE - (p - f->buf);
 
-      if (n < QUANTUM)                    /* insufficent room, break line */
-      {
-            f->nextChar = p;
-            return s;
-      }
+    if (n < QUANTUM)            /* insufficent room, break line */
+    {
+        f->nextChar = p;
+        return s;
+    }
 
-      n = (n / QUANTUM) * QUANTUM;        /* quantize: count to read */
-      n = READ(f->fd, p, n);
+    n = (n / QUANTUM) * QUANTUM; /* quantize: count to read */
+    n = READ(f->fd, p, n);
 
-      /*
-      **  read error is sort of ignored here... same return as EOF.
-      **  we'll see if this proves to be sufficent...
-      */
+    /* 
+     **  read error is sort of ignored here... same return as EOF.
+     **  we'll see if this proves to be sufficent...
+     */
 
-      if (n < 0)
-      {
-            f->nextChar = f->buf;
-            f->buf[0] = 0;
-            return 0;
-      }
+    if (n < 0)
+    {
+        f->nextChar = f->buf;
+        f->buf[0] = 0;
+        return 0;
+    }
 
-      p[n] = 0;
+    p[n] = 0;
 
-      if(n>0 && p[n-1] == 0x1A)
-        p[n-1] = '\0';
+    if (n > 0 && p[n - 1] == 0x1A)
+        p[n - 1] = '\0';
 
 
-      charptr=p;
-      while( (charptr=strchr(charptr, '\0')) < &p[n] )
-          *charptr = ' ';
+    charptr = p;
+    while ((charptr = strchr(charptr, '\0')) < &p[n])
+        *charptr = ' ';
 
-      if( (p = strchr(s, '\n')) != NULL )
-          {
-          if (s < p && p[-1] == '\r')
-              p[-1] = 0;
-          else  *p = 0;
-          ++p;
-          }
-      else p = strchr(s, '\0');
+    if ((p = strchr(s, '\n')) != NULL)
+    {
+        if (s < p && p[-1] == '\r')
+            p[-1] = 0;
+        else
+            *p = 0;
+        ++p;
+    }
+    else
+        p = strchr(s, '\0');
 
-      f->nextChar = p;
-      return p == s ? 0 : s;
+    f->nextChar = p;
+    return p == s ? 0 : s;
 }

@@ -10,30 +10,30 @@
 
 #ifdef __OS2__
 
-   #define  INCL_NOPMAPI
+#define  INCL_NOPMAPI
 
 #endif
 
 #ifdef __FLAT__
 
-   #define word      unsigned short
-   #define sword     short
+#define word      unsigned short
+#define sword     short
 
 #else
 
-   #define word      unsigned int
-   #define sword     int
+#define word      unsigned int
+#define sword     int
 
 #endif
 
 
 #ifdef __WATCOMC__
-  #define strncmpi   strnicmp
-  #define fnsplit    _splitpath
-  #define fnmerge    _makepath
-  #define heapcheck  _heapchk
-  #define clrscr()   cls()
-  #define textattr
+#define strncmpi   strnicmp
+#define fnsplit    _splitpath
+#define fnmerge    _makepath
+#define heapcheck  _heapchk
+#define clrscr()   cls()
+#define textattr
 #endif
 
 #define NETMAIL   1
@@ -96,14 +96,14 @@
 
 // ====================================================
 
-typedef struct linelist      /* Used to store "wrapped" lines  */
-   {
-   char            *ls;      /* line start                     */
-   char            status;   /* what kind of line? (see below) */
-   char            len;
-   struct linelist *next;    /* next line                      */
-   struct linelist *prev;
-   } LINE;
+typedef struct linelist         /* Used to store "wrapped" lines */
+{
+    char *ls;                   /* line start */
+    char status;                /* what kind of line? (see below) */
+    char len;
+    struct linelist *next;      /* next line */
+    struct linelist *prev;
+} LINE;
 
 /* defines for status of a line */
 
@@ -120,14 +120,14 @@ typedef struct linelist      /* Used to store "wrapped" lines  */
 typedef struct _rawblock
 {
 
-   char *             txt;
-   unsigned           curlen;
-   unsigned           maxlen;
-   unsigned           curmaxlen;
-   unsigned           delta;
-   char               full;
-   char *             curend;
-   struct _rawblock * next;
+    char *txt;
+    unsigned curlen;
+    unsigned maxlen;
+    unsigned curmaxlen;
+    unsigned delta;
+    char full;
+    char *curend;
+    struct _rawblock *next;
 
 } RAWBLOCK;
 
@@ -135,10 +135,10 @@ typedef struct _rawblock
 typedef struct
 {
 
-   int   active;
-   int   max;
-   int   current;
-   dword *list;
+    int active;
+    int max;
+    int current;
+    dword *list;
 
 } MARKLIST;
 
@@ -148,24 +148,27 @@ typedef struct
 typedef struct
 {
 
-   MIS      mis;           /* Header of msg                            */
-   char     *msgtext;      /* Pointer to raw msgtext                   */
-   LINE     *txt;          /* Pointer to first line of msg             */
-   RAWBLOCK *firstblock;   /* Pointer to list of raw txt blocks        */
-   char     *ctxt;         /* Pointer to control info                  */
-   char     *ctext;        /* Pointer to control info, formatted dupe  */
-   char     id[300];       /* Holds MSGID (if present)                 */
-   NETADDR  rep_addr;      /* FSC35, replyto: kludge, gate's fido addr */
-   char     rep_gate[36];  /* FSC35, name in to: field                 */
-   char     rep_name[300]; /* FSC35, TO: name in msg body              */
-   char     org[80];       /* Organisation of a mail/news message      */
-   UMSGID   uid;           /* Holds squish' UMSGID                     */
-   UMSGID   replynext;     /* Points to next reply in chain (JAM only) */
-   dword    txtsize;       /* Size of msg body                         */
-   dword    ctrlsize;      /* Size of kludges                          */
-   word     status;        /* See status bits below..                  */
+    MIS mis;                    /* Header of msg */
+    char *msgtext;              /* Pointer to raw msgtext */
+    LINE *txt;                  /* Pointer to first line of msg */
+    RAWBLOCK *firstblock;       /* Pointer to list of raw txt blocks */
+    char *ctxt;                 /* Pointer to control info */
+    char *ctext;                /* Pointer to control info, formatted dupe 
+                                 */
+    char id[300];               /* Holds MSGID (if present) */
+    NETADDR rep_addr;           /* FSC35, replyto: kludge, gate's fido
+                                   addr */
+    char rep_gate[36];          /* FSC35, name in to: field */
+    char rep_name[300];         /* FSC35, TO: name in msg body */
+    char org[80];               /* Organisation of a mail/news message */
+    UMSGID uid;                 /* Holds squish' UMSGID */
+    UMSGID replynext;           /* Points to next reply in chain (JAM
+                                   only) */
+    dword txtsize;              /* Size of msg body */
+    dword ctrlsize;             /* Size of kludges */
+    word status;                /* See status bits below..  */
 
-}  MMSG;
+} MMSG;
 
 /* Status bits for MMSG.status */
 
@@ -181,37 +184,37 @@ typedef struct
 typedef struct arearec
 {
 
-   char   *         desc;       /* Description of area                  */
-   char   *         tag;        /* Official area tag                    */
-   char             group;      /* Group of an area                     */
-   char   *         dir;        /* Directory/Base name                  */
-   word             base;       /* MSGTYPE_SDM or MSGTYPE_SQUISH        */
-   word             type;       /* ECHOMAIL, NETMAIL or LOCAL           */
-   long             stdattr;    /* "Standard" attributes of area        */
-   long             lr;         /* Lastread pointer                     */
-   long             nomsgs;     /* Number of msgs in area               */
-   long             highest;    /* Highest messagenumber in area        */
-   long             lowest;     /* Lowest messagenumber in area         */
-   char             scanned;    /* Is the area scanned? 0=No            */
-   char             tagged;     /* Is this area tagged? 0=No            */
-   char             aka;        /* What AKA should be used?             */
-   char             newmail;    /* Any new mail entered in area?        */
-   char             readonly;   /* Is this a readonly area?             */
-   char             csread[9];  /* Charset used to convert to for read  */
-   char             cswrite[9]; /* Charset used to convert to for write */
-   MARKLIST *       mlist;      /* List of marked messages              */
-   MARKLIST *       mayseelist; /* List of messages user may see (pvt)  */
-   struct arearec * next;       /* Pointer to next area                 */
-   struct arearec * prev;       /* Pointer to previous area             */
+    char *desc;                 /* Description of area */
+    char *tag;                  /* Official area tag */
+    char group;                 /* Group of an area */
+    char *dir;                  /* Directory/Base name */
+    word base;                  /* MSGTYPE_SDM or MSGTYPE_SQUISH */
+    word type;                  /* ECHOMAIL, NETMAIL or LOCAL */
+    long stdattr;               /* "Standard" attributes of area */
+    long lr;                    /* Lastread pointer */
+    long nomsgs;                /* Number of msgs in area */
+    long highest;               /* Highest messagenumber in area */
+    long lowest;                /* Lowest messagenumber in area */
+    char scanned;               /* Is the area scanned? 0=No */
+    char tagged;                /* Is this area tagged? 0=No */
+    char aka;                   /* What AKA should be used? */
+    char newmail;               /* Any new mail entered in area? */
+    char readonly;              /* Is this a readonly area? */
+    char csread[9];             /* Charset used to convert to for read */
+    char cswrite[9];            /* Charset used to convert to for write */
+    MARKLIST *mlist;            /* List of marked messages */
+    MARKLIST *mayseelist;       /* List of messages user may see (pvt) */
+    struct arearec *next;       /* Pointer to next area */
+    struct arearec *prev;       /* Pointer to previous area */
 
-}  AREA;
+} AREA;
 
 
 typedef struct
 {
-   char name[40];
-   long hash;              /* Hash value of name, for Squish areas */
-   unsigned long crc;      /* CRC value of name, for JAM areas     */
+    char name[40];
+    long hash;                  /* Hash value of name, for Squish areas */
+    unsigned long crc;          /* CRC value of name, for JAM areas */
 
 } NAME;
 
@@ -219,8 +222,8 @@ typedef struct
 typedef struct _outfilelist
 {
 
-   char                * filename;
-   struct _outfilelist * next;
+    char *filename;
+    struct _outfilelist *next;
 
 } OUTFLIST;
 
@@ -228,45 +231,46 @@ typedef struct _outfilelist
 
 typedef struct
 {
-   NAME     name[tMAXNAMES];   /* Name of the user               */
-   NETADDR  address[tMAXAKAS]; /* Addresses                      */
-   NETADDR  uucpaddress;       /* Address of UUCP gate           */
-   char     uucpname[36];      /* Username to use for gated msgs */
-   char     nodelist[100];     /* Path to V7 nodelist files      */
-   char     fdnodelist[100];   /* Path to FD nodelist files      */
-   char     fidouser[100];     /* Path and name for fidouser.lst */
-   char     fidonodelist[100]; /* Path and name for FidoNet nodelist */
-   char     localfiles[100];   /* Path to copy local attaches to */
-   char     origin[100];       /* Default origin to use          */
-   char     signoff[301];      /* Default signoff (greetings..)  */
-   char     echolog[100];      /* Echotoss.log file              */
-   char     editor[200];       /* Name of the editor to be used  */
-   char     exesign[100];      /* What to execute for signing    */
-   char     execrypt[100];     /*                     crypting   */
-   char     execryptsign[100]; /*                     cryp + sig */
-   char     exespell[100];     /*                     spellcheck */
-   char     internal_edit;     /* 1 == use internal editor       */
-   char     hudsonpath[100];   /* Path to the Hudson msgbase     */
-   char     jamlogpath[100];   /* Path to the Echomail.JAM files */
-   char     netsema[100];      /* Semaphore for new netmail      */
-   dword    status;            /* Some bits (showkludge etc)     */
-   char     delreply;          /* Netmail: del orig after rep. 0=no, 1=yes, 2=ask_confirm */
-   char     zonegate;          /* Do zonegate, values above      */
-   char     echoinfo;          /* Add tear + origin for echomail */
-   char     localinfo;         /*                       local    */
-   dword    frqattr;           /* Standard attributes for freq   */
-   char     alistsort[6];      /* Arealist sorting               */
-   char     lr[20];            /* Name of lastread file          */
-   word     sqoff;             /* Offset in Squish .SQL file     */
-   word     hudsonoff;         /* Offset in Hudson lastread file */
-   char     rephello[301];     /* To start reply with..          */
-   char     hello[301];        /* To start msg with..            */
-   char     followhello[301];  /* To a followup message with...  */
-   char     writename[120];    /* Default name to write to       */
-   char     cfmfile[120];      /* Tempplate to use for CFM msgs  */
-   OUTFLIST *outfiles;         /* List extra defined writenames  */
-   char     printer[20];       /* Printerdevice to write to      */
-   char     lines;             /* Number of rows on the screen   */
+    NAME name[tMAXNAMES];       /* Name of the user */
+    NETADDR address[tMAXAKAS];  /* Addresses */
+    NETADDR uucpaddress;        /* Address of UUCP gate */
+    char uucpname[36];          /* Username to use for gated msgs */
+    char nodelist[100];         /* Path to V7 nodelist files */
+    char fdnodelist[100];       /* Path to FD nodelist files */
+    char fidouser[100];         /* Path and name for fidouser.lst */
+    char fidonodelist[100];     /* Path and name for FidoNet nodelist */
+    char localfiles[100];       /* Path to copy local attaches to */
+    char origin[100];           /* Default origin to use */
+    char signoff[301];          /* Default signoff (greetings..) */
+    char echolog[100];          /* Echotoss.log file */
+    char editor[200];           /* Name of the editor to be used */
+    char exesign[100];          /* What to execute for signing */
+    char execrypt[100];         /* crypting */
+    char execryptsign[100];     /* cryp + sig */
+    char exespell[100];         /* spellcheck */
+    char internal_edit;         /* 1 == use internal editor */
+    char hudsonpath[100];       /* Path to the Hudson msgbase */
+    char jamlogpath[100];       /* Path to the Echomail.JAM files */
+    char netsema[100];          /* Semaphore for new netmail */
+    dword status;               /* Some bits (showkludge etc) */
+    char delreply;              /* Netmail: del orig after rep. 0=no,
+                                   1=yes, 2=ask_confirm */
+    char zonegate;              /* Do zonegate, values above */
+    char echoinfo;              /* Add tear + origin for echomail */
+    char localinfo;             /* local */
+    dword frqattr;              /* Standard attributes for freq */
+    char alistsort[6];          /* Arealist sorting */
+    char lr[20];                /* Name of lastread file */
+    word sqoff;                 /* Offset in Squish .SQL file */
+    word hudsonoff;             /* Offset in Hudson lastread file */
+    char rephello[301];         /* To start reply with..  */
+    char hello[301];            /* To start msg with..  */
+    char followhello[301];      /* To a followup message with...  */
+    char writename[120];        /* Default name to write to */
+    char cfmfile[120];          /* Tempplate to use for CFM msgs */
+    OUTFLIST *outfiles;         /* List extra defined writenames */
+    char printer[20];           /* Printerdevice to write to */
+    char lines;                 /* Number of rows on the screen */
 
 } USER;
 
@@ -308,12 +312,12 @@ typedef struct
 typedef struct _macrolist
 {
 
-   char              macro[20];
-   char              toname[101];
-   NETADDR           toaddress;
-   char              subject[101];
-   char              usenet[101];
-   struct _macrolist *next;
+    char macro[20];
+    char toname[101];
+    NETADDR toaddress;
+    char subject[101];
+    char usenet[101];
+    struct _macrolist *next;
 
 } MACROLIST;
 
@@ -365,9 +369,9 @@ typedef struct _macrolist
 
 typedef struct _akaforce
 {
-   NETADDR            mask;   // -9 in a mask means '*'.
-   int                aka;
-   struct _akaforce * next;
+    NETADDR mask;               // -9 in a mask means '*'.
+    int aka;
+    struct _akaforce *next;
 
 } AKAFORCE;
 
@@ -376,9 +380,9 @@ typedef struct _akaforce
 typedef struct
 {
 
-   word value;
-   char flag[10];
-   char type;
+    word value;
+    char flag[10];
+    char type;
 
 } V7FLAGS;
 
@@ -393,18 +397,18 @@ typedef struct
 typedef struct
 {
 
-   AREA         *first;
-   MACROLIST    *firstmacro;
-   word         col[MAXCOL];
-   AKAFORCE     *akaforce;
-   char         homedir[80];
-   char         mode;
-   char         drivemap[26];
-   USER         usr;           /*  User data  */
-   V7FLAGS      V7flags[MAXV7FLAGS];
-   STRINGLIST   *FirstLevelOne;
+    AREA *first;
+    MACROLIST *firstmacro;
+    word col[MAXCOL];
+    AKAFORCE *akaforce;
+    char homedir[80];
+    char mode;
+    char drivemap[26];
+    USER usr;                   /* User data */
+    V7FLAGS V7flags[MAXV7FLAGS];
+    STRINGLIST *FirstLevelOne;
 
-}  CFG;
+} CFG;
 
 // #defines for 'mode' above..
 
@@ -419,16 +423,17 @@ typedef struct
 typedef struct
 {
 
-   char   hello[301];
-   char   rephello[301];
-   char   followhello[301];
-   char   signoff[301];
-   char   origin[101];
-   char   csread[9];
-   sword  csreadlevel;
-   word   mode;          /* DIRECTLIST or NORMAL_MODE, mode to enter area */
-   word   aka;
-   word   name;
+    char hello[301];
+    char rephello[301];
+    char followhello[301];
+    char signoff[301];
+    char origin[101];
+    char csread[9];
+    sword csreadlevel;
+    word mode;                  /* DIRECTLIST or NORMAL_MODE, mode to
+                                   enter area */
+    word aka;
+    word name;
 
 } CUSTOM;
 
@@ -436,8 +441,8 @@ typedef struct
 /* Defines for the 'mode' parameter area entry */
 
 
-#define DIRECTLIST     0   /* Enter area in L)ist mode */
-#define NORMAL_MODE    1   /* Normal entry of area     */
+#define DIRECTLIST     0        /* Enter area in L)ist mode */
+#define NORMAL_MODE    1        /* Normal entry of area */
 
 
 /* For the results of nodelist searches */
@@ -445,16 +450,16 @@ typedef struct
 typedef struct _addrlist
 {
 
-   NETADDR           address;
-   char              name[40];
-   char              system[45];
-   char              location[30];
-   char              flags[60];
-   char              phone[20];
-   dword             baud;
-   struct _addrlist  *next;
+    NETADDR address;
+    char name[40];
+    char system[45];
+    char location[30];
+    char flags[60];
+    char phone[20];
+    dword baud;
+    struct _addrlist *next;
 
-}  ADDRLIST;
+} ADDRLIST;
 
 
 
@@ -463,7 +468,7 @@ typedef struct _addrlist
 ** Paul Schlyter.
 */
 
- #define dow(y,m,d)  \
+#define dow(y,m,d)  \
         ( ( ( 3*(y) - (7*((y)+((m)+9)/12))/4 + (23*(m))/9 + (d) + 2    \
         + (((y)-((m)<3))/100+1) * 3 / 4 - 15 ) % 7 ) )
 
@@ -474,29 +479,30 @@ typedef struct _addrlist
 typedef struct
 {
 
-   char         fill1[8];
-   word         startblock;
-   char         fill2[2];
-   word         blocklen;  /* 1061 for Userlist, 741 for Node-index */
-   char         fill3[243];
-   char         node_ext[3];
+    char fill1[8];
+    word startblock;
+    char fill2[2];
+    word blocklen;              /* 1061 for Userlist, 741 for Node-index */
+    char fill3[243];
+    char node_ext[3];
 
-}  FDCTL;
+} FDCTL;
 
 
 /* This is (repeated) part of a node in the userlist index */
 
 typedef struct
 {
-   long         offset;          /* Offset in raw nodelist       */
-   word         ptr;             /* Nodenumber for index entries */
-   char         fill[3];         /* No idea                      */
-   char         name[15];        /* Sysop name, Upper case, last name first */
-   sword        zone;            /* Address zone, hi <-> lo      */
-   sword        net;             /*         net                  */
-   sword        node;            /*         node                 */
-   sword        point;           /*         point                */
-   char         status;          /* Host, Hub or down etc        */
+    long offset;                /* Offset in raw nodelist */
+    word ptr;                   /* Nodenumber for index entries */
+    char fill[3];               /* No idea */
+    char name[15];              /* Sysop name, Upper case, last name first 
+                                 */
+    sword zone;                 /* Address zone, hi <-> lo */
+    sword net;                  /* net */
+    sword node;                 /* node */
+    sword point;                /* point */
+    char status;                /* Host, Hub or down etc */
 
 } FDUENTRY;
 
@@ -506,12 +512,12 @@ typedef struct
 typedef struct
 {
 
-   char         count;
-   word         nextlevel;
-   char         fill[2];
-   FDUENTRY     nodedata[32];
+    char count;
+    word nextlevel;
+    char fill[2];
+    FDUENTRY nodedata[32];
 
-}  FDUNODE;
+} FDUNODE;
 
 
 /* This is a (repeated) part of a node in the nodelist index */
@@ -519,16 +525,16 @@ typedef struct
 typedef struct
 {
 
-   unsigned long offset;         /* Offset in raw nodelist       */
-   word          ptr;            /* Nodenumber for index entries */
-   char          fill1[3];       /* No idea                      */
-   sword         zone;           /* Address zone, hi <-> lo      */
-   sword         net;            /*         net                  */
-   sword         node;           /*         node                 */
-   sword         point;          /*         point                */
-   sword         host;           /* Net number of Host (host/0)  */
-   sword         hub;            /* Node number of Hub           */
-   char          fill2[2];       /* Who knows?                   */
+    unsigned long offset;       /* Offset in raw nodelist */
+    word ptr;                   /* Nodenumber for index entries */
+    char fill1[3];              /* No idea */
+    sword zone;                 /* Address zone, hi <-> lo */
+    sword net;                  /* net */
+    sword node;                 /* node */
+    sword point;                /* point */
+    sword host;                 /* Net number of Host (host/0) */
+    sword hub;                  /* Node number of Hub */
+    char fill2[2];              /* Who knows? */
 
 } FDNENTRY;
 
@@ -537,10 +543,10 @@ typedef struct
 
 typedef struct
 {
-   char         count;        /* Number of entries in nodedata[]  */
-   word         nextlevel;    /* First entry too large, goto this */
-   char         fill[2];      /* Who knows?                       */
-   FDNENTRY     nodedata[32]; /* Count Fido-Nodes in this Node    */
+    char count;                 /* Number of entries in nodedata[] */
+    word nextlevel;             /* First entry too large, goto this */
+    char fill[2];               /* Who knows? */
+    FDNENTRY nodedata[32];      /* Count Fido-Nodes in this Node */
 
 } FDNNODE;
 
@@ -548,33 +554,29 @@ typedef struct
 typedef struct
 {
 
-   long                  Erased;             /*Used to signal erased status*/
-   unsigned char         Status;                    /*Zone, host, hub, etc.*/
-   unsigned short int    NodeNo,                          /*Network address*/
-                         NetNo,
-                         Zone,
-                         Point,
-                         RoutNode,            /*Default routing within zone*/
-                         RoutNet,
-                         Cost;                 /*Cost per minute for system*/
-   long                  Capability;                     /*Capability flags*/
-   unsigned char         MaxBaud;                       /*Maximum baud rate*/
-   char                  Name[31];                         /*Name of system*/
-   char                  Telephone[41];              /*Raw telephone number*/
-   char                  Location[41];                 /*Location of system*/
-   char                  User[37];                             /*SysOp name*/
-   char                  SelectTag[4];                        /*Group field*/
+    long Erased;                /* Used to signal erased status */
+    unsigned char Status;       /* Zone, host, hub, etc. */
+    unsigned short int NodeNo,  /* Network address */
+     NetNo, Zone, Point, RoutNode, /* Default routing within zone */
+     RoutNet, Cost;             /* Cost per minute for system */
+    long Capability;            /* Capability flags */
+    unsigned char MaxBaud;      /* Maximum baud rate */
+    char Name[31];              /* Name of system */
+    char Telephone[41];         /* Raw telephone number */
+    char Location[41];          /* Location of system */
+    char User[37];              /* SysOp name */
+    char SelectTag[4];          /* Group field */
 
-}  FDANODE;
+} FDANODE;
 
 
 
 struct my_idx
 {
 
-  dword fill;
-  UMSGID umsgid;
-  dword hash;
+    dword fill;
+    UMSGID umsgid;
+    dword hash;
 
 };
 
@@ -583,12 +585,12 @@ struct my_idx
 typedef struct _msglist
 {
 
-   char              from[21];
-   char              to[21];
-   char              subj[28];
-   int               tagged;
-   dword             n;
-   struct _msglist   *next;
+    char from[21];
+    char to[21];
+    char subj[28];
+    int tagged;
+    dword n;
+    struct _msglist *next;
 
 } MSGLIST;
 
@@ -596,42 +598,45 @@ typedef struct _msglist
 struct _mysqdata
 {
 
-  int sfd;                /* SquishFile handle */
-  int ifd;                /* SquishIndex handle */
+    int sfd;                    /* SquishFile handle */
+    int ifd;                    /* SquishIndex handle */
 
-  char base[80];          /* Base name for SquishFile */
+    char base[80];              /* Base name for SquishFile */
 
-  long begin_frame;       /* Offset of first frame in file */
-  long last_frame;        /* Offset to last frame in file */
-  long free_frame;        /* Offset of first FREE frame in file */
-  long last_free_frame;   /* Offset of LAST free frame in file */
-  long end_frame;         /* Pointer to end of file */
+    long begin_frame;           /* Offset of first frame in file */
+    long last_frame;            /* Offset to last frame in file */
+    long free_frame;            /* Offset of first FREE frame in file */
+    long last_free_frame;       /* Offset of LAST free frame in file */
+    long end_frame;             /* Pointer to end of file */
 
-  long next_frame;
-  long prev_frame;
-  long cur_frame;
+    long next_frame;
+    long prev_frame;
+    long cur_frame;
 
-  dword uid;
-  dword max_msg;
-  dword skip_msg;
+    dword uid;
+    dword max_msg;
+    dword skip_msg;
 /*dword zero_ofs;*/
-  word keep_days;
+    word keep_days;
 
-  byte flag;
-  byte rsvd1;
+    byte flag;
+    byte rsvd1;
 
-  word sz_sqhdr;
-  byte rsvd2;
+    word sz_sqhdr;
+    byte rsvd2;
 
-  word len;              /* Old length of sqb structure                     */
+    word len;                   /* Old length of sqb structure */
 
-  dword idxbuf_size;     /* Size of the allocated buffer                    */
-  dword idxbuf_used;     /* # of bytes being used to hold messages          */
-  dword idxbuf_write;    /* # of bytes we should write to index file        */
-  dword idxbuf_delta;    /* Starting position from which the index has chhg */
+    dword idxbuf_size;          /* Size of the allocated buffer */
+    dword idxbuf_used;          /* # of bytes being used to hold messages */
+    dword idxbuf_write;         /* # of bytes we should write to index
+                                   file */
+    dword idxbuf_delta;         /* Starting position from which the index
+                                   has chhg */
 
-  byte  delta[256];      /* Copy of last-read sqbase, to determine changes   */
-  word msgs_open;
+    byte delta[256];            /* Copy of last-read sqbase, to determine
+                                   changes */
+    word msgs_open;
 
 };
 
@@ -660,46 +665,52 @@ struct _mysqdata
 /*                                                                          */
 /*--------------------------------------------------------------------------*/
 
-struct _ndx {
+struct _ndx
+{
     union
     {
-        struct _CtlBlk {
-            word    CtlBlkSize; /* Blocksize of Index Blocks   */
-            long    CtlRoot;    /* Block number of Root        */
-            long    CtlHiBlk;   /* Block number of last block  */
-            long    CtlLoLeaf;  /* Block number of first leaf  */
-            long    CtlHiLeaf;  /* Block number of last leaf   */
-            long    CtlFree;    /* Head of freelist            */
-            word    CtlLvls;    /* Number of index levels      */
-            word    CtlParity;  /* XOR of above fields         */
+        struct _CtlBlk
+        {
+            word CtlBlkSize;    /* Blocksize of Index Blocks */
+            long CtlRoot;       /* Block number of Root */
+            long CtlHiBlk;      /* Block number of last block */
+            long CtlLoLeaf;     /* Block number of first leaf */
+            long CtlHiLeaf;     /* Block number of last leaf */
+            long CtlFree;       /* Head of freelist */
+            word CtlLvls;       /* Number of index levels */
+            word CtlParity;     /* XOR of above fields */
         } CtlBlk;
 
-        struct _INodeBlk {
-            long    IndxFirst;  /* Pointer to next lower level */
-            long    IndxBLink;  /* Pointer to previous link    */
-            long    IndxFLink;  /* Pointer to next link        */
-            sword   IndxCnt;    /* Count of Items in block     */
-            word    IndxStr;    /* Offset in block of 1st str  */
-            /* If IndxFirst is NOT -1, this is INode:          */
-            struct _IndxRef {
-                word   IndxOfs; /* Offset of string into block */
-                word   IndxLen; /* Length of string            */
-                long   IndxData;/* Record number of string     */
-                long   IndxPtr; /* Block number of lower index */
+        struct _INodeBlk
+        {
+            long IndxFirst;     /* Pointer to next lower level */
+            long IndxBLink;     /* Pointer to previous link */
+            long IndxFLink;     /* Pointer to next link */
+            sword IndxCnt;      /* Count of Items in block */
+            word IndxStr;       /* Offset in block of 1st str */
+            /* If IndxFirst is NOT -1, this is INode: */
+            struct _IndxRef
+            {
+                word IndxOfs;   /* Offset of string into block */
+                word IndxLen;   /* Length of string */
+                long IndxData;  /* Record number of string */
+                long IndxPtr;   /* Block number of lower index */
             } IndxRef[27];
         } INodeBlk;
 
-        struct _LNodeBlk {
-                                /* IndxFirst is -1 in LNodes   */
-            long    IndxFirst;  /* Pointer to next lower level */
-            long    IndxBLink;  /* Pointer to previous link    */
-            long    IndxFLink;  /* Pointer to next link        */
-            sword   IndxCnt;    /* Count of Items in block     */
-            word    IndxStr;    /* Offset in block of 1st str  */
-            struct _LeafRef {
-                word   KeyOfs;  /* Offset of string into block */
-                word   KeyLen;  /* Length of string            */
-                long   KeyVal;  /* Pointer to data block       */
+        struct _LNodeBlk
+        {
+            /* IndxFirst is -1 in LNodes */
+            long IndxFirst;     /* Pointer to next lower level */
+            long IndxBLink;     /* Pointer to previous link */
+            long IndxFLink;     /* Pointer to next link */
+            sword IndxCnt;      /* Count of Items in block */
+            word IndxStr;       /* Offset in block of 1st str */
+            struct _LeafRef
+            {
+                word KeyOfs;    /* Offset of string into block */
+                word KeyLen;    /* Length of string */
+                long KeyVal;    /* Pointer to data block */
             } LeafRef[35];
         } LNodeBlk;
 
@@ -715,49 +726,60 @@ struct _ndx {
 /*                                                                          */
 /*--------------------------------------------------------------------------*/
 
-struct _vers7 {
-        sword  Zone;
-        sword  Net;
-        sword  Node;
-        sword  HubNode;        /* If node is a point, this is point number. */
-        word CallCost;         /* phone company's charge */
-        word MsgFee;           /* Amount charged to user for a message */
-        word NodeFlags;        /* set of flags (see below) */
-        byte ModemType;        /* RESERVED for modem type */
-        byte Phone_len;
-        byte Password_len;
-        byte Bname_len;
-        byte Sname_len;
-        byte Cname_len;
-        byte pack_len;
-        byte BaudRate;         /* baud rate divided by 300 */
+struct _vers7
+{
+    sword Zone;
+    sword Net;
+    sword Node;
+    sword HubNode;              /* If node is a point, this is point
+                                   number. */
+    word CallCost;              /* phone company's charge */
+    word MsgFee;                /* Amount charged to user for a message */
+    word NodeFlags;             /* set of flags (see below) */
+    byte ModemType;             /* RESERVED for modem type */
+    byte Phone_len;
+    byte Password_len;
+    byte Bname_len;
+    byte Sname_len;
+    byte Cname_len;
+    byte pack_len;
+    byte BaudRate;              /* baud rate divided by 300 */
 };
 
 /*------------------------------------------------------------------------*/
 /* Values for the `NodeFlags' field                                       */
 /*------------------------------------------------------------------------*/
-#define B_hub    0x0001  /* node is a net hub     0000 0000 0000 0001 */
-#define B_host   0x0002  /* node is a net host    0000 0000 0000 0010 */
-#define B_region 0x0004  /* node is region coord  0000 0000 0000 0100 */
-#define B_zone   0x0008  /* is a zone gateway     0000 0000 0000 1000 */
-#define B_CM     0x0010  /* runs continuous mail  0000 0000 0001 0000 */
-#define B_res1   0x0020  /* reserved by Opus      0000 0000 0010 0000 */
-#define B_res2   0x0040  /* reserved by Opus      0000 0000 0100 0000 */
-#define B_res3   0x0080  /* reserved by Opus      0000 0000 1000 0000 */
-#define B_res4   0x0100  /* reserved by Opus      0000 0001 0000 0000 */
-#define B_res5   0x0200  /* reserved for non-Opus 0000 0010 0000 0000 */
-#define B_res6   0x0400  /* reserved for non-Opus 0000 0100 0000 0000 */
-#define B_res7   0x0800  /* reserved for non-Opus 0000 1000 0000 0000 */
-#define B_point  0x1000  /* node is a point       0001 0000 0000 0000 */
-#define B_res9   0x2000  /* reserved for non-Opus 0010 0000 0000 0000 */
-#define B_resa   0x4000  /* reserved for non-Opus 0100 0000 0000 0000 */
-#define B_resb   0x8000  /* reserved for non-Opus 1000 0000 0000 0000 */
+#define B_hub    0x0001         /* node is a net hub 0000 0000 0000 0001 */
+#define B_host   0x0002         /* node is a net host 0000 0000 0000 0010 */
+#define B_region 0x0004         /* node is region coord 0000 0000 0000
+                                   0100 */
+#define B_zone   0x0008         /* is a zone gateway 0000 0000 0000 1000 */
+#define B_CM     0x0010         /* runs continuous mail 0000 0000 0001
+                                   0000 */
+#define B_res1   0x0020         /* reserved by Opus 0000 0000 0010 0000 */
+#define B_res2   0x0040         /* reserved by Opus 0000 0000 0100 0000 */
+#define B_res3   0x0080         /* reserved by Opus 0000 0000 1000 0000 */
+#define B_res4   0x0100         /* reserved by Opus 0000 0001 0000 0000 */
+#define B_res5   0x0200         /* reserved for non-Opus 0000 0010 0000
+                                   0000 */
+#define B_res6   0x0400         /* reserved for non-Opus 0000 0100 0000
+                                   0000 */
+#define B_res7   0x0800         /* reserved for non-Opus 0000 1000 0000
+                                   0000 */
+#define B_point  0x1000         /* node is a point 0001 0000 0000 0000 */
+#define B_res9   0x2000         /* reserved for non-Opus 0010 0000 0000
+                                   0000 */
+#define B_resa   0x4000         /* reserved for non-Opus 0100 0000 0000
+                                   0000 */
+#define B_resb   0x8000         /* reserved for non-Opus 1000 0000 0000
+                                   0000 */
 
 
 
-struct _xfile {
-    int   fd;
-    int   bufSize;
+struct _xfile
+{
+    int fd;
+    int bufSize;
     char *buf;
     char *nextChar;
     char *lastChar;
@@ -780,9 +802,9 @@ typedef struct _xfile XFILE;
 typedef struct _flist
 {
 
-   char          name[90];
-   long          size;
-   char          status;
+    char name[90];
+    long size;
+    char status;
 
 } FLIST;
 
@@ -790,9 +812,9 @@ typedef struct _flist
 typedef struct
 {
 
-   FLIST **  liststart;
-   unsigned  curnum;
-   unsigned  max;
+    FLIST **liststart;
+    unsigned curnum;
+    unsigned max;
 
 } FILELIST;
 
@@ -810,9 +832,9 @@ typedef struct
 
 typedef struct _attachlist
 {
-   char name[30];
-   long size;
-   struct _attachlist *next;
+    char name[30];
+    long size;
+    struct _attachlist *next;
 
 } ATTACHLIST;
 
@@ -821,8 +843,8 @@ typedef struct _attachlist
 typedef struct
 {
 
-   int     len;
-   sword * start;
+    int len;
+    sword *start;
 
 } KEYMACRO;
 
@@ -1017,9 +1039,10 @@ typedef struct
 typedef struct
 {
 
-   sword   where;   // One of MENUALL, MENUJAM etc. above
-   char  * desc;    // Description, with ~ for highlighting, in menu
-   sword   macro;   // Macro number.
+    sword where;                // One of MENUALL, MENUJAM etc. above
+    char *desc;                 // Description, with ~ for highlighting,
+                                // in menu
+    sword macro;                // Macro number.
 
 } MENUENTRY;
 
@@ -1034,17 +1057,17 @@ typedef struct
 
 typedef struct
 {
-     
-  sdword id;                   // Must be 0-65536 for official FTSC
-                               // charset modules, normally 0.
-                               // Use a timestamp to mark your own
-                               // derivates.
-  sword  version;              // Version of this module.
-  sword  level;                // charset level.
-  sbyte  filler[8];            // reserved, set to zeros.
-  sbyte  from_set[8];          // Original charset.
-  char   to_set[8];            // Charset this translates to.
-  byte   lookup_table[128][2];
+
+    sdword id;                  // Must be 0-65536 for official FTSC
+    // charset modules, normally 0.
+    // Use a timestamp to mark your own
+    // derivates.
+    sword version;              // Version of this module.
+    sword level;                // charset level.
+    sbyte filler[8];            // reserved, set to zeros.
+    sbyte from_set[8];          // Original charset.
+    char to_set[8];             // Charset this translates to.
+    byte lookup_table[128][2];
 
 } CHARREC;
 
@@ -1057,9 +1080,9 @@ typedef struct
 typedef struct
 {
 
-  char  architecture;         /* Hardware architecture of the machine */
-  char  filler[3];            /* this mapping file was written on.    */
-  char  charset[8];           /* Charset it was intended for.         */
+    char architecture;          /* Hardware architecture of the machine */
+    char filler[3];             /* this mapping file was written on.  */
+    char charset[8];            /* Charset it was intended for.  */
 
 } CHARIDENTIFY;
 
