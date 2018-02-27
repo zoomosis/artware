@@ -1,8 +1,8 @@
 #include "includes.h"
 
-#include "fe_cfg.dat"
-#include "fe_cfg.h"
-#include "fenew.h"
+#include "fe130.h"
+#include "fe141.h"
+#include "fe142.h"
 #include "gestruct.h"
 //#include "im_struc.h"
 #include "fmail120.h"
