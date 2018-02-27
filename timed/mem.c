@@ -1,6 +1,8 @@
 #include "includes.h"
 
+#ifdef __WATCOMC__
 #include <malloc.h>
+#endif
 
 // ==============================================================
 

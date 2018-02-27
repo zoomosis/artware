@@ -725,30 +725,6 @@ void MakeQuote(MMSG * curmsg, AREA * area, word replytype, MIS * newmis,
 
 /* ----------------------------------------------- */
 
-#ifndef  __WATCOMC__
-
-int pascal IsQuote(char *line)
-{
-    asm push ds asm lds si, line /* ds:si points to line */
-     asm mov cx, 7              /* No more than 7 characters */
-     asm cld                    /* We move forward */
-     again:asm lodsb            /* Get a char in al */
-     asm or al, al              /* Is it a 0? End of string? */
-     asm jz nogo                /* Yes, return 0 */
-     asm cmp al, 60             /* Is it a '<' ? */
-     asm je nogo                /* Yes, return 0 */
-     asm cmp al, 62             /* Is it '>' ? */
-     asm loopne again           /* no, Load next char */
-     asm jne nogo               /* 7 chars scanned, return 0 */
-     asm mov ax, 1              /* Lets return 1 */
-     asm jmp getout             /* And get out */
-     nogo:asm xor ax, ax        /* Return 0 */
- getout:asm pop ds}
-
-#endif
-
-/* ----------------------------------------------- */
-
 char *MakeKludge(MMSG * curmsg, MIS * mis, int netmail)
 {
 /*	static char counter=0; */

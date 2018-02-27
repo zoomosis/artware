@@ -1,10 +1,12 @@
 #include <string.h>
-#include <malloc.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <io.h>
 #include <time.h>
+
+#ifdef __WATCOMC__
+#include <io.h>
 #include <share.h>
+#endif
 
 #include "includes.h"
 #include "cbtreex.h"
@@ -190,12 +192,12 @@ int FDinit(int syslookup)
             return -1;
         close(fdidx);
         sprintf(temp, "%s\\userlist.fdx", cfg.usr.fdnodelist);
-        fdidx = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO);
+        fdidx = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD);
     }
     else
     {
         sprintf(temp, "%s\\nodelist.fdx", cfg.usr.fdnodelist);
-        fdidx = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO);
+        fdidx = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD);
     }
 
     if (fdidx == -1)
@@ -1133,7 +1135,7 @@ sword ReadRawNodeList(sword zone, sword net, sword node, sword point,
     {
         sprintf(rawname, "%s\\fdnode.fda", cfg.usr.fdnodelist);
         if ((fdafile =
-             sopen(rawname, O_RDONLY | O_BINARY, SH_DENYNO)) == -1)
+             sopen(rawname, O_RDONLY | O_BINARY, SH_DENYNO, S_IREAD)) == -1)
         {
             sprintf(msg, "Can't open %s!", rawname);
             Message(msg, -1, 0, YES);

@@ -1258,8 +1258,7 @@ char *CompressPath(char *s)
 {
     static char temp[40];
     char temp2[40];
-    char drive[_MAX_DRIVE], dir[_MAX_DIR], fname[_MAX_FNAME],
-        ext[_MAX_EXT];
+    char drive[MAXDRIVE], dir[MAXDIR], fname[MAXFILE], ext[MAXEXT];
     size_t len;
 
 

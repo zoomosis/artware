@@ -1163,7 +1163,7 @@ void ReadAreasBBS()
 {
 
     XFILE *areasfile;
-    char *line, drive[_MAX_DRIVE], dir[_MAX_DIR], temppath[256];
+    char *line, drive[MAXDRIVE], dir[MAXDIR], temppath[256];
     int skip = 0;               /* To skip first line */
     char *p, temp[80];
     unsigned lineno = 0;
@@ -1234,7 +1234,7 @@ void ReadFECFG()
     word revision = 0;
 
 
-    if ((cfgfile = sopen(FEcfg, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
+    if ((cfgfile = sopen(FEcfg, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD)) == -1)
     {
         sprintf(msg, "Can't open %s!", FEcfg);
         Message(msg, -1, 0, YES);
@@ -1975,7 +1975,7 @@ void ReadGEchoCFG(void)
 
     sys = mem_calloc(1, sizeof(SETUP_GE));
 
-    SetupGE = sopen(GEchocfg, O_RDONLY | O_BINARY, SH_DENYNO);
+    SetupGE = sopen(GEchocfg, O_RDONLY | O_BINARY, SH_DENYNO, S_IREAD);
     if (SetupGE == -1)
     {
         Message("Unable to open SETUP.GE", -1, 0, YES);
@@ -2018,7 +2018,7 @@ void ReadGEchoCFG(void)
     mem_free(GEchocfg);
     GEchocfg = mem_strdup(temp);
 
-    AreaFileGE = sopen(GEchocfg, O_RDONLY | O_BINARY, SH_DENYNO);
+    AreaFileGE = sopen(GEchocfg, O_RDONLY | O_BINARY, SH_DENYNO, S_IREAD);
     if (AreaFileGE == -1)
     {
         Message("Unable to open AREAFILE.GE", -1, 0, YES);
@@ -2601,7 +2601,7 @@ void ReadFmailCFG()
     rawEchoTypeOld oldarea;
     rawEchoType area;
     char temp[120];
-    char drive[_MAX_DRIVE], dir[_MAX_DIR];
+    char drive[MAXDRIVE], dir[MAXDIR];
     int counter = 0;
     headerType hdr;
     AREA *thisarea;
@@ -2611,7 +2611,7 @@ void ReadFmailCFG()
     size_t fm12cfgsize = sizeof(FM12configType);
     int isFmail120 = 0;
 
-    if ((cfgfile = sopen(Fmailcfg, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
+    if ((cfgfile = sopen(Fmailcfg, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD)) == -1)
     {
         sprintf(msg, "Can't open %s!", Fmailcfg);
         Message(msg, -1, 0, YES);
@@ -2788,7 +2788,7 @@ void ReadFmailCFG()
     mem_free(Fmailcfg);
     Fmailcfg = mem_strdup(temp);
 
-    if ((cfgfile = sopen(Fmailcfg, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
+    if ((cfgfile = sopen(Fmailcfg, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD)) == -1)
     {
         sprintf(msg, "Can't open %s!", Fmailcfg);
         Message(msg, -1, 0, YES);
@@ -2982,11 +2982,11 @@ void ReadWtrCFG()
     WTRAREA area;
     char temp[100];
     int counter = 0;
-    char drive[_MAX_DRIVE], dir[_MAX_DIR];
+    char drive[MAXDRIVE], dir[MAXDIR];
     WTRAKA akalist[20];
 
     if ((cfgfile =
-         sopen(Wtrgatecfg, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
+         sopen(Wtrgatecfg, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD)) == -1)
     {
         sprintf(msg, "Can't open %s!", Wtrgatecfg);
         Message(msg, -1, 0, YES);
@@ -3019,7 +3019,7 @@ void ReadWtrCFG()
     Wtrgatecfg = mem_strdup(temp);
 
     if ((cfgfile =
-         sopen(Wtrgatecfg, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
+         sopen(Wtrgatecfg, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD)) == -1)
     {
         sprintf(msg, "Can't open %s!", Fmailcfg);
         Message(msg, -1, 0, YES);

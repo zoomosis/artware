@@ -19,6 +19,39 @@ int GetCommandLine(char **progptr, char **parmsptr, AREA * area,
                    MSG * areahandle, MMSG * curmsg);
 
 
+#ifdef __UNIX__
+
+int do_exec(char *exfn, char *epars)
+{
+    char buf[2048], *shell;
+
+    if (exfn == NULL)
+    {
+        shell = getenv("SHELL");
+
+        if (shell == NULL)
+        {
+            shell = "/bin/sh";
+        }
+
+        strcpy(buf, shell);
+    }
+    else
+    {
+        strcpy(buf, exfn);
+    }
+
+    if (epars != NULL)
+    {
+        strcat(buf, " ");
+        strcat(buf, epars);
+    }
+
+    return system(buf);
+}
+
+#endif
+
 int shell_to_DOS(void)
 {
     static char *comspec, prompt[256], oldprompt[256];
@@ -90,6 +123,9 @@ int shell_to_DOS(void)
         didswap = 1;
     }
 
+#ifdef __UNIX__
+    retval = do_exec(NULL, NULL);
+#else
     kbflush();
 
 
@@ -101,6 +137,7 @@ int shell_to_DOS(void)
     ins09();
 #else
     retval = spawnlpe(P_WAIT, comspec, comspec, NULL, environ);
+#endif
 #endif
 
     video_init();

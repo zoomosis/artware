@@ -1,10 +1,12 @@
 #include <string.h>
-#include <malloc.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <io.h>
 #include <time.h>
+
+#ifdef __WATCOMC__
+#include <io.h>
 #include <share.h>
+#endif
 
 #include "includes.h"
 #include "cbtreex.h"

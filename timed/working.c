@@ -1,12 +1,10 @@
 #include <stdlib.h>
-#include <video.h>
-#include <scrnutil.h>
+
+#include "video.h"
+#include "scrnutil.h"
 
 
 char wchars[] = "|/-\\";
-
-
-void working(int y, int x, int col);
 
 
 void working(int y, int x, int col)

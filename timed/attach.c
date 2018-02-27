@@ -5,13 +5,6 @@ int CopyFile(char *filename, char *tofilename, int delete);
 
 int ok = 1;
 
-/* -------------------------------------------------- */
-
-
-#ifdef __WATCOMC__
-#define MAXPATH PATH_MAX
-#endif
-
 int check_attach(MIS * mis, char *list, int copyfiles)
 {
     char *file, filename[MAXPATH], temp[80];
@@ -19,8 +12,8 @@ int check_attach(MIS * mis, char *list, int copyfiles)
     char **thisone;
     struct stat mystat;
     int top = 10, now = 0, i;
-    char fname[_MAX_FNAME];
-    char ext[_MAX_EXT];
+    char fname[MAXFILE];
+    char ext[MAXEXT];
 
     ok = 1;
 
@@ -264,7 +257,7 @@ int CopyFile(char *filename, char *tofilename, int delete)
             return 0;           // So that's all.
     }
 
-    if ((in = sopen(filename, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
+    if ((in = sopen(filename, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD)) == -1)
     {
         sprintf(msg, "Can't open %s for reading. (Errno %d)", filename,
                 errno);
@@ -309,5 +302,3 @@ int CopyFile(char *filename, char *tofilename, int delete)
     return (got == -1) ? -1 : 0;
 
 }
-
-// ======================================================================

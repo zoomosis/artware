@@ -793,7 +793,7 @@ long get_last_squish(AREA * area)
 
     sprintf(temp, "%s.sql", area->dir);
 
-    if ((lrfile = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
+    if ((lrfile = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD)) == -1)
         return 0L;
 
     if (lseek(lrfile, cfg.usr.sqoff * sizeof(long), SEEK_SET) !=
@@ -823,7 +823,7 @@ long get_last_sdm(AREA * area)
 
     sprintf(temp, "%s\\%s", area->dir, cfg.usr.lr);
 
-    if ((lrfile = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
+    if ((lrfile = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD)) == -1)
         return 0L;
 
     if (read(lrfile, &last, sizeof(word)) != sizeof(word))

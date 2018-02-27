@@ -6,7 +6,7 @@
 
 /* ------- the interrupt function registers -------- */
 
-#if !defined(__OS2__) && !defined(__NT__)
+#if !defined(__OS2__) && !defined(__NT__) && !defined(__UNIX__)
 typedef struct
 {
 
@@ -61,7 +61,7 @@ void PrintMessage(MMSG * curmsg, AREA * area, MSG * areahandle,
     }
     else                        // Printer stuff..
     {
-#if !defined(__OS2__) && !defined(__NT__)
+#if !defined(__OS2__) && !defined(__NT__) && !defined(__UNIX__)
         if (strcmpi(cfg.usr.printer, "stdprn") == 0)
             outfile = stdprn;
         else
@@ -115,7 +115,7 @@ void PrintMessage(MMSG * curmsg, AREA * area, MSG * areahandle,
     if (fflush(outfile) != 0)
         Message("Error flushing output file!", -1, 0, YES);
 
-#if !defined(__OS2__) && !defined(__NT__)
+#if !defined(__OS2__) && !defined(__NT__) && !defined(__UNIX__)
     if (!(hardcopy && (strcmpi(cfg.usr.printer, "stdprn") == 0)))
 #endif
         if (fclose(outfile) != 0)
@@ -314,7 +314,7 @@ void do_print(FILE * outfile, AREA * area, MMSG * curmsg, int what)
 
 /* ------ critical error interrupt service routine ------ */
 
-#if !defined(__OS2__) && !defined(__NT__)
+#if !defined(__OS2__) && !defined(__NT__) && !defined(__UNIX__)
 static void interrupt far newcrit(IREGS ir)
 {
 
@@ -327,7 +327,7 @@ static void interrupt far newcrit(IREGS ir)
 
 void inst_newcrit(void)
 {
-#if !defined(__OS2__) && !defined(__NT__)
+#if !defined(__OS2__) && !defined(__NT__) && !defined(__UNIX__)
 #ifdef __WATCOMC__
 
 #define getvect _dos_getvect
@@ -343,7 +343,7 @@ void inst_newcrit(void)
 
 void inst_oldcrit(void)
 {
-#if !defined(__OS2__) && !defined(__NT__)
+#if !defined(__OS2__) && !defined(__NT__) && !defined(__UNIX__)
     setvect(0x24, oldcrit);
 #endif
 }

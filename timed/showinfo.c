@@ -222,34 +222,6 @@ void showinfo(MMSG * curmsg, AREA * area, MSG * areahandle)
                areadata->max_msg, areadata->skip_msg, areadata->keep_days);
     }
 
-#ifndef __WATCOMC__
-    if (key == 126)
-    {
-        FILE *out;
-        struct heapinfo hi;
-        int i;
-
-
-        if ((out = fopen("chain.txt", "w+")) == NULL)
-            return;
-
-        hi.ptr = NULL;
-        fprintf(out, "Pointer       Size   Status\n");
-        fprintf(out, "-------       ----   ------\n\n");
-
-        while (heapwalk(&hi) == _HEAPOK)
-        {
-            fprintf(out, "%p  %7u    ", hi.ptr, hi.size);
-            if (hi.in_use)
-                fprintf(out, "Used.\n");
-            else
-                fprintf(out, "Free. <--\n");
-        }
-
-        fclose(out);
-    }
-#endif
-
     delbox(infobox);
 
 }

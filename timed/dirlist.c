@@ -1,3 +1,585 @@
+#include "compiler.h"
+
+#ifdef __UNIX__
+
+#include "includes.h"
+
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <dirent.h>
+
+/* Add a file to a list of files for display. */
+
+static void add_file(FILELIST * list, FLIST * thisone)
+{
+    FLIST **tmp;
+
+    /* Set up new list if necessary.. */
+
+    if (list->liststart == NULL)
+    {
+        list->liststart = mem_calloc(25, sizeof(void *));
+        list->max = 10;
+        list->curnum = 1;
+    }
+    else
+    {
+        list->curnum++;
+    }
+
+    if (list->curnum > list->max) // List full, so expand?
+    {
+        tmp =  mem_realloc(list->liststart, ((list->max) + 25) * sizeof(void *));
+
+        if (!tmp)
+        {
+            Message("Out of memory!", -1, 0, YES);
+            return;
+        }
+
+        list->max += 25;
+        list->liststart = tmp;
+    }
+
+    list->liststart[list->curnum - 1] = thisone;
+}
+
+/*
+ *  Show list of files, allow selection/tagging, return final list
+ *  with (one or more) tagged files.  Returns NULL if unsuccessful
+ *  or if user pressed ESC.
+ */
+
+char **dirlist(char *filespec, char tagging)
+{
+    DIR *dp;
+    FLIST *cf;
+    FILELIST *list;
+    int ret;
+    char temp[120], drive[MAXDRIVE], dir[MAXDIR], file[MAXFILE], ext[MAXEXT];
+    char *lastbslash;
+    char **filelist;
+    char location[MAXPATH];
+    unsigned i;
+    struct stat fs;
+
+    list = mem_calloc(1, sizeof(FILELIST));
+
+    memset(location, '\0', MAXPATH);
+
+#ifndef __BEOS__
+    if (strncmpi(filespec, "\\\\", 2) != 0)
+    {
+        _fullpath(location, filespec, MAXPATH);
+    }
+#endif
+
+    fnsplit(location, drive, dir, file, ext);
+
+    savescreen();
+
+    while (1)
+    {
+    	int howmany;
+
+        howmany = 0;
+
+        memset(list, '\0', sizeof(FILELIST));
+
+        if (strcmp(file, "*") == 0 && strcmp(ext, ".*") == 0 && strcmp(dir, DIRSEP) == 0)
+        {
+            cf = mem_calloc(1, sizeof(FLIST));
+            sprintf(cf->name, DIRSEP "..");
+            cf->size = 0;
+            cf->status |= UPDIR;
+            add_file(list, cf);
+        }
+
+        sprintf(temp, " þ Reading directory %s", location);
+        printeol(0, 0, cfg.col[Cmsgbar], temp);
+
+        dp = opendir(location);
+
+        if (dp != NULL)
+        {
+            struct dirent *ent;
+
+            ent = readdir(dp);
+
+            while (ent != NULL)
+            {
+                cf = mem_calloc(1, sizeof(FLIST));
+
+                stat(ent->d_name, &fs);
+
+                if (fs.st_mode & S_IFDIR)
+                {
+                    char *p;
+
+                    p = strrchr(ent->d_name, *DIRSEP);
+
+                    if (p == NULL)
+                    {
+                        p = ent->d_name;
+                    }
+
+                    sprintf(cf->name, "%-.89s", p);
+
+                    cf->status |= FDIR;
+                }
+                else
+                {
+                    char *p = strrchr(ent->d_name, *DIRSEP);
+
+                    if (p != NULL)
+                    {
+                        p++;
+                    }
+                    else
+                    {
+                        p = ent->d_name;
+                    }
+
+                    strncpy(cf->name, p, 89);
+                }
+
+                cf->size = fs.st_size;
+
+                add_file(list, cf);
+
+                ent = readdir(dp);
+            }
+
+            closedir(dp);
+        }
+
+        if (list->curnum == 0)
+        {
+            Message("No files found..", -1, 0, YES);
+            putscreen();
+            return NULL;
+        }
+
+        sprintf(temp, " þ Sorting directory %s", location);
+        printeol(0, 0, cfg.col[Cmsgbar], temp);
+
+        qsort(list->liststart, list->curnum, sizeof(void *), comp_flist);
+
+        sprintf(temp, " þ Path: %s", location);
+        printeol(0, 0, cfg.col[Cmsgbar], temp);
+
+        if (tagging)
+        {
+            statusbar("Press Space to tag, Enter to accept.");
+        }
+        else
+        {
+            statusbar("Press <enter> to select.");
+        }
+
+        ret = showfiles(list, tagging);
+
+        switch (ret)
+        {
+        case 0:                /* OK */
+            putscreen();
+            sprintf(temp, "%s%s", drive, dir);
+            filelist = build_filelist(list, temp);
+            free_flist(list);
+            mem_free(list);
+            return filelist;
+
+        case -1:               /* ESC */
+            free_flist(list);
+            mem_free(list);
+            putscreen();
+            return NULL;
+
+        case 1:                /* Change directory */
+            i = 0;
+            while ((i < list->curnum) &&
+                   !((list->liststart[i]->status & FTAGGED) &&
+                     (list->liststart[i]->status & (FDIR | UPDIR))))
+            {
+                i++;
+            }
+
+            if (list->liststart[i]->status & FDIR)
+            {
+                /* Go 'down' in directory */
+
+                sprintf(temp, "%s%s", dir, list->liststart[i]->name + 1);
+                fnmerge(location, drive, temp, file, ext);
+            }
+            else
+            {
+                Strip_Trailing(dir, *DIRSEP);
+
+                if ((lastbslash = strrchr(dir, *DIRSEP)) != NULL)
+                {
+                    *lastbslash = '\0';
+                }
+
+                if (*dir == '\0')
+                {
+                    strcpy(dir, DIRSEP);
+                }
+
+                fnmerge(location, drive, dir, file, ext);
+            }
+
+            fnsplit(location, drive, dir, file, ext);
+
+            free_flist(list);
+            memset(list, 0, sizeof(FILELIST));
+            break;
+        }
+    }
+}
+
+/*
+ *  Show directory listing
+ *  Return values: -1 == ESC, 0 == OK, 1 == DIR change
+ */
+
+int showfiles(FILELIST * list, char tagging)
+{
+    BOX *filebox;
+
+    FLIST *curptr;
+    int maxlines = 25, rows = 0, l = 0;
+    int curline = 0, start = 0, highlighted = 0, key;
+    char temp[81];
+    int i, found;
+    char movedown = 1;
+
+    rows = (int) list->curnum > maxlines - 4 ? maxlines - 4 : (int) list->curnum;
+
+    filebox = initbox(1, 0, rows + 2, 26, cfg.col[Casframe], cfg.col[Castext], SINGLE, YES, ' ');
+
+    drawbox(filebox);
+
+    while (1)                   
+    {
+        /* Exit is w/ return statement that gives command back */
+
+        /* display them.. */
+
+        for (l = start; l < start + rows; l++)
+        {
+            curptr = list->liststart[l];
+
+            if (!(curptr->status & (FDIR | UPDIR)))
+            {
+                sprintf(temp, "  %-12.12s   %5ld K ", curptr->name, curptr->size / 1024);
+            }
+            else
+            {
+                sprintf(temp, "  %-12.12s           ", curptr->name);
+            }
+
+            if (curptr->status & FTAGGED)
+            {
+                temp[0] = 0xfe;
+            }
+
+            if (l == curline)
+            {
+                print(l - start + 2, 1, cfg.col[Cashigh], temp);
+                highlighted = l;
+                MoveXY(2, l - start + 3);
+            }
+            else
+            {
+                print(l - start + 2, 1, cfg.col[Castext], temp);
+            }
+        }
+
+        /* Now check for commands... */
+
+        switch ((key = get_idle_key(1, GLOBALSCOPE)))
+        {
+        case 328:              /* up */
+            movedown = 0;
+
+            if (curline)
+            {
+                curline--;
+
+                if (curline < start)
+                {
+                    start = curline;
+                }
+            }
+            else
+            {
+                curline = list->curnum - 1;
+                start = list->curnum - rows;
+            }
+
+            break;
+
+        case 336:              /* down */
+            movedown = 1;
+
+            if (curline < (int) list->curnum - 1)
+            {
+                curline++;
+
+                if (curline >= start + rows)
+                {
+                    start++;
+                }
+            }
+            else
+            {
+                start = curline = 0;
+            }
+
+            break;
+
+        case 327:              /* home */
+            curline = start = 0;
+            movedown = 1;
+            break;
+
+        case 335:              /* end */
+            curline = list->curnum - 1;
+            start = list->curnum - rows;
+            break;
+
+        case 329:              /* page up */
+            movedown = 0;
+
+            if (start == 0)
+            {
+                curline = 0;
+                break;
+            }
+
+            start = curline - rows;
+
+            if (start < 0)
+            {
+                start = 0;
+            }
+
+            if (curline > start + rows - 1)
+            {
+                curline = start;
+            }
+
+            break;
+
+        case 337:              /* page down */
+            movedown = 1;
+
+            if (start == (int) list->curnum - rows)
+            {
+                curline = list->curnum - 1;
+                break;
+            }
+
+            start = curline + rows;
+
+            if (start > (int) list->curnum - rows)
+            {
+                start = list->curnum - rows;
+            }
+
+            if (curline < start)
+            {
+                curline = start;
+            }
+
+            break;
+
+        case 27:
+            delbox(filebox);
+            return -1;
+
+        case 10:                /* Ctrl+J */
+        case 13:                /* Enter */
+            if (tagging)        /* This does nothing if not in tagging mode. */
+            {
+                delbox(filebox);
+                return 0;
+            }
+
+            /* else we intentionally fall through!! */
+
+        case 32:               /* Space */
+            if (list->liststart[highlighted]->status & (FDIR | UPDIR))
+            {
+                break;
+            }
+
+            if (tagging)
+            {
+                list->liststart[highlighted]->status ^= FTAGGED;
+
+                if (movedown)
+                {
+                    stuffkey(336);
+                }
+                else
+                {
+                    stuffkey(328);
+                }
+            }
+
+            break;
+
+        default:
+            if (key > 30 && key < 127)
+            {
+                found = -1;
+
+                for (i = 0; i < (int) list->curnum; i++)
+                {
+                    if (list->liststart[i]->name[0] == (char)key)
+                    {
+                        found = i;
+                        break;
+                    }
+                }
+
+                if (found != -1) // Not NULL, so no match found..
+                {
+                    curline = found;
+
+                    start = found - (rows / 2);
+
+                    if (start < 0)
+                    {
+                        start = 0;
+                    }
+
+                    if (start > (int) list->curnum - rows)
+                    {
+                        start = list->curnum - rows;
+                    }
+                }
+
+            }
+
+            break;
+        }
+    }
+}
+
+int comp_flist(const void *one, const void *two)
+{
+    char temp[250];
+
+    strcpy(temp, ((FLIST *) (*(FLIST **) one))->name);
+
+    if ((((FLIST *) (*(FLIST **) one))->name[0] == *DIRSEP) &&
+        (((FLIST *) (*(FLIST **) two))->name[0] != *DIRSEP))
+    {
+        return -1;
+    }
+
+    if ((((FLIST *) (*(FLIST **) one))->name[0] != *DIRSEP) &&
+        (((FLIST *) (*(FLIST **) two))->name[0] == *DIRSEP))
+    {
+        return 1;
+    }
+
+    return (strcmp(((FLIST *) (*(FLIST **) one))->name, ((FLIST *) (*(FLIST **) two))->name));
+}
+
+/* Build a list of files that area tagged in the directory listing. */
+
+char **build_filelist(FILELIST * list, char *path)
+{
+    int howmany = 0, top = 10;
+
+    int i = 0;
+
+    char **filelist;
+    char temp[MAXPATH];
+
+    filelist = mem_calloc(top, sizeof(char *));
+
+    while (i < (int) list->curnum)
+    {
+        if (list->liststart[i]->status & FTAGGED)
+        {
+            if (howmany > (top - 2))
+            {
+                top += 10;
+                filelist = mem_realloc(filelist, top * sizeof(char *));
+
+                if (filelist == NULL)
+                {
+                    return NULL;
+                }
+            }
+
+            sprintf(temp, "%s%s", path, list->liststart[i]->name);
+            filelist[howmany++] = mem_strdup(temp);
+            filelist[howmany] = NULL;
+        }
+        i++;
+    }
+
+    filelist = mem_realloc(filelist, (howmany + 1) * sizeof(char *));
+
+    if (filelist == NULL)
+    {
+        return NULL;
+    }
+
+    return filelist;
+
+}
+
+/* List of display files (for dirlist display).. */
+
+void free_flist(FILELIST * filelist)
+{
+    int i;
+
+    if (filelist == NULL)
+    {
+        return;
+    }
+
+    for (i = 0; i < (int) filelist->curnum; i++)
+    {
+        mem_free(filelist->liststart[i]);
+    }
+
+    if (filelist->liststart)
+    {
+        mem_free(filelist->liststart);
+    }
+}
+
+/* mem_free a list of files.... (that were returned by 'dirlist'). */
+
+void free_filelist(char **filelist)
+{
+    int i;
+
+    if (filelist == NULL)
+    {
+        return;
+    }
+
+    for (i = 0; filelist[i] != NULL; i++)
+    {
+        mem_free(filelist[i]);
+    }
+
+    mem_free(filelist);
+}
+
+#else
+
+/* not UNIX */
+
 #include "includes.h"
 
 void add_file(FILELIST * list, FLIST * thisone);
@@ -7,6 +589,7 @@ void add_file(FILELIST * list, FLIST * thisone);
 // with (one or more) tagged files.
 // Returns NULL if unsuccessful or if user pressed ESC
 
+#if 0
 #ifdef __WATCOMC__
 
 #define MAXDRIVE _MAX_DRIVE
@@ -15,6 +598,7 @@ void add_file(FILELIST * list, FLIST * thisone);
 #define MAXEXT   _MAX_EXT
 #define MAXPATH  _MAX_PATH
 
+#endif
 #endif
 
 char **dirlist(char *filespec, char tagging)
@@ -546,3 +1130,5 @@ void free_filelist(char **filelist)
     mem_free(filelist);
 
 }
+
+#endif

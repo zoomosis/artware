@@ -4,17 +4,13 @@
 #include <ctype.h>
 #include <sys/stat.h>
 
-#ifdef UNIX
+#include "includes.h"
+#include "patmat.h"
+
+#ifdef __UNIX__
 #include <sys/types.h>
 #include <dirent.h>
 #endif
-
-#ifdef WIN32
-#include <dirent.h>
-#endif
-
-#include "includes.h"
-#include "patmat.h"
 
 #define MAXMATCHES 100
 

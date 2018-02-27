@@ -1,8 +1,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#ifdef __WATCOMC__
 #include <io.h>
 #include <share.h>
+#endif
 
 #include "includes.h"
 
@@ -27,7 +30,7 @@ int FIDOinit(void)
     stat(cfg.usr.fidouser, &buf); /* get the file size */
 
     if ((fidolist =
-         sopen(cfg.usr.fidouser, O_RDONLY | O_BINARY, SH_DENYNO)) == -1)
+         sopen(cfg.usr.fidouser, O_RDONLY | O_BINARY, SH_DENYNO, S_IREAD)) == -1)
     {
         reclength = -1;         /* Reset all on open failure */
         return 0;

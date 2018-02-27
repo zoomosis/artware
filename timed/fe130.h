@@ -152,8 +152,8 @@ enum ARCmailExt { ARCDigits = 0, ARCHex, ARCAlpha };
 /* Types                                                */
 /********************************************************/
 #if 1
-typedef unsigned char uchar;
-typedef word uint;
+//typedef unsigned char uchar;
+//typedef word uint;
 //typedef unsigned long ulong;
 #endif
 

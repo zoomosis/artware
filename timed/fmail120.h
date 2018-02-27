@@ -45,7 +45,7 @@ typedef struct
     u16 memRequired;
 } FM12archiverInfo;
 
-typedef uchar pathType[48];
+typedef char pathType[48];
 
 typedef struct
 {
@@ -475,7 +475,7 @@ typedef struct
 #define COMMENT_LEN       51
 #define ORGLINE_LEN       59
 
-typedef uchar areaNameType[ECHONAME_LEN];
+typedef char areaNameType[ECHONAME_LEN];
 
 /* See Area File for file header structure !!! */
 

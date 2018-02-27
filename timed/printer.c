@@ -1,18 +1,17 @@
 #include "includes.h"
 
+#ifdef __WATCOMC__
 #ifdef __OS2__
 
 #define INCL_DOSDEVICES         /* Device values */
 #include <os2.h>
 #include <stdio.h>
 #include <fcntl.h>
-
 #else
-
 #include <dos.h>
 #include <string.h>
 #include <i86.h>
-
+#endif
 #endif
 
 int GetPrinterStatus(unsigned int printer_no);
@@ -45,7 +44,7 @@ int PrinterReady(char *printer)
         return 0;
 }
 
-#if !defined(__OS2__) && !defined(__NT__)
+#if !defined(__OS2__) && !defined(__NT__) && !defined(__UNIX__)
 
 int GetPrinterStatus(unsigned int printer_no)
 {
@@ -63,13 +62,16 @@ int GetPrinterStatus(unsigned int printer_no)
 
 }
 
-#elif defined(__NT__)
+#elif defined(__NT__) || defined(__UNIX__)
 
 int GetPrinterStatus(unsigned int printer_no)
 {
     return (0x80 | 0x10);
 }
+
 #else
+
+/* OS/2 */
 
 int GetPrinterStatus(unsigned int printer_no)
 {
@@ -116,4 +118,5 @@ int GetPrinterStatus(unsigned int printer_no)
     return rc ? 0x08 : DataArea; // 0x08 == IOerror
 
 }
+
 #endif

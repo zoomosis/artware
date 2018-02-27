@@ -124,12 +124,11 @@ RAWBLOCK *spawn_editor(int checkchange, char *areatag)
     clrscr();
     MoveXY(1, 3);
 
-#ifdef __FLAT__
+#if defined(__FLAT__) || defined(__UNIX__)
     if ((strcmpi(cfg.usr.editor + strlen(cfg.usr.editor) - 3, "cmd") == 0)
-        || (strcmpi(cfg.usr.editor + strlen(cfg.usr.editor) - 3, "btm") ==
-            0)
-        || (strcmpi(cfg.usr.editor + strlen(cfg.usr.editor) - 3, "bat") ==
-            0))
+        || (strcmpi(cfg.usr.editor + strlen(cfg.usr.editor) - 3, "btm") == 0)
+        || (strcmpi(cfg.usr.editor + strlen(cfg.usr.editor) - 2, "sh") == 0)
+        || (strcmpi(cfg.usr.editor + strlen(cfg.usr.editor) - 3, "bat") == 0))
     {
         sprintf(commandline, "%s %s %s", cfg.usr.editor, msgfile, areatag);
         sprintf(tmpmsg, "þ Executing (batch) %s..", commandline);
@@ -143,8 +142,11 @@ RAWBLOCK *spawn_editor(int checkchange, char *areatag)
                 msgfile);
         print(0, 0, 7, tmpmsg);
         savescreen();
-        editret =
-            spawnlp(P_WAIT, cfg.usr.editor, cfg.usr.editor, msgfile, NULL);
+#ifdef __UNIX__
+        editret = do_exec(cfg.usr.editor, msgfile);
+#else
+        editret = spawnlp(P_WAIT, cfg.usr.editor, cfg.usr.editor, msgfile, NULL);
+#endif
 //       editret = ExecAnySessionType("timEd external editor", cfg.usr.editor, msgfile);
     }
 #else

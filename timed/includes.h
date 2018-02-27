@@ -1,49 +1,36 @@
-#include <malloc.h>
-#include <conio.h>
-#include <ctype.h>
-#include <dos.h>
-#include <io.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <process.h>
-#include <scrnutil.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys\stat.h>
-#include <sys\types.h>
+#include <ctype.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <time.h>
-#include <share.h>
-#include <direct.h>
+
+#include "scrnutil.h"
+#include "video.h"
 
 #ifdef __WATCOMC__
-
+#include <malloc.h>
+#include <conio.h>
+#include <dos.h>
 #include <stddef.h>
-
-#ifndef __OS2__
-//  #include <graph.h>
-//  #define coreleft _memmax
+#include <io.h>
+#include <process.h>
+#include <share.h>
+#include <direct.h>
 #endif
 
-#endif                          // __WATCOMC__
-
-#include <video.h>
+#ifdef __UNIX__
+#include <unistd.h>
+#endif
 
 #include <msgapi.h>
 #include <progprot.h>
 
 #include "tstruct.h"
 #include "tprotos.h"
-
-#ifdef __DEBUGGING__
-
-#define MEM_DEBUG 1
-
-#endif
-
-//#include "mshell.h"
-
-//#include <memchk.h>
 
 #ifndef __FLAT__
 #ifndef __WATCOMC__

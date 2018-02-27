@@ -24,7 +24,7 @@ void show_help(int cat)
 
     sprintf(filename, "%s\\timed.hlp", cfg.homedir);
 
-    if ((helpfile = sopen(filename, O_RDONLY | O_BINARY, SH_DENYNO)) == -1)
+    if ((helpfile = sopen(filename, O_RDONLY | O_BINARY, SH_DENYNO, S_IREAD)) == -1)
     {
         sprintf(msg, "Error opening helpfile (%s)!", filename);
         Message(msg, -1, 0, YES);

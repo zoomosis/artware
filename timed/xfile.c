@@ -111,7 +111,7 @@ XFILE *xopen(char const *name)
     return f;
 
   error2:
-    CLOSE(f->fd);
+    _dos_close(f->fd);
   error1:
     mem_free(f);
   error0:
@@ -125,7 +125,7 @@ XFILE *xopen(char const *name)
 
 void xclose(XFILE * f)
 {
-    CLOSE(f->fd);
+    _dos_close(f->fd);
     mem_free(f);
 }
 

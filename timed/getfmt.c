@@ -594,73 +594,6 @@ LINE *wraptext(char *txt, int llen, int end, int savelast)
     return first;
 }
 
-
-#ifndef __WATCOMC__
-char *pascal near nextline(void)
-{
-
-    asm push ds
-        asm mov dl, ll
-        asm mov bh, 0
-        asm mov bl, pos
-        asm les di, s
-        asm add di, bx
-        asm mov bh, lastsep
-        asm lds si, curptr
-        loop:asm lodsb
-        asm cmp al, 0
-        asm je zero
-        asm cmp al, 32
-        asm je space
-        asm cmp al, 0 Dh
-        asm je hcr
-        asm cmp al, 9
-        asm je tab
-        asm cmp al, 8 Dh
-        asm je loop
-        asm cmp al, 0 Ah
-        asm je loop
-        store:asm stosb
-        asm inc bl
-        asm cmp bl, dl
-        asm ja out
-        asm jmp loop
-        space:asm mov bh, bl
-        asm jmp store
-        tab:asm mov al, 32
-        asm stosb
-        asm stosb
-        asm add bl, 2
-        asm cmp bl, dl
-        asm jbe goon
-        asm mov bl, dl
-        goon:asm mov bh, bl
-        asm jmp store
-        hcr:asm pop ax
-        asm push ax
-        asm push ds
-        asm push si
-        asm mov ds, ax
-        asm mov byte ptr pos, bl
-        asm mov byte ptr lastsep, bl current->status |= HCR;
-    asm pop ax asm pop dx goto final;
-
-  zero:
-//   asm dec si
-
-  out:
-    asm pop ax                  // restore old data segment for pos &
-                                // lastsep
-        asm push ax asm push ds // push segment we have now.. (curptr)
-        asm mov ds, ax asm mov byte ptr pos, bl asm mov byte ptr lastsep, bh asm pop dx // dx:ax 
-                                                                                        // becomes 
-                                                                                        // curptr 
-                                                                                        // (input 
-                                                                                        // ptr)
-  asm mov ax, si final:
-asm pop ds}
-
-#else
 char *pascal near nextline(void)
 {
     register char al;
@@ -737,8 +670,6 @@ char *pascal near nextline(void)
     return curptr;
 
 }
-
-#endif
 
 
 void checklines(LINE * first)

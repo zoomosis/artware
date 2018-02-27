@@ -841,7 +841,7 @@ int fastscan(AREA * curarea, int personal)
     sprintf(idxname, "%s.sqi", curarea->dir);
     sprintf(lastname, "%s.sql", curarea->dir);
 
-    if ((index = sopen(idxname, O_RDONLY | O_BINARY, SH_DENYNO)) == -1)
+    if ((index = sopen(idxname, O_RDONLY | O_BINARY, SH_DENYNO, S_IREAD)) == -1)
     {
         mem_free(idxbuf);
         return 0;
@@ -1148,7 +1148,7 @@ int quickscan(AREA * area)
     area->scanned = 1;
 
     sprintf(jhrname, "%s.jhr", area->dir);
-    if ((jhr = sopen(jhrname, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
+    if ((jhr = sopen(jhrname, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD)) == -1)
     {
         return 1;               /* Cannot open - all set to zero */
     }
@@ -1181,7 +1181,7 @@ int quickscan(AREA * area)
     area->nomsgs = jaminfo.activemsgs;
 
     sprintf(jlrname, "%s.jlr", area->dir);
-    if ((jlr = sopen(jlrname, O_BINARY | O_RDONLY, SH_DENYNO)) == -1)
+    if ((jlr = sopen(jlrname, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD)) == -1)
         return 1;
 
     while (read(jlr, &lread, sizeof(JAMLREAD)) == sizeof(JAMLREAD))

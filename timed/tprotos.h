@@ -97,7 +97,6 @@ void ReleaseMsg(MMSG * thismsg, int allofit);
 void UpdateLastread(AREA * area, long last, dword highest,
                     MSG * areahandle);
 long MsgGetLowMsg(MSG * areahandle);
-void beep(void);
 void showmem(void);
 void ScanArea(AREA * area, MSG * areahandle, int raw);
 dword anchor(int direction, MSG * areahandle);
@@ -107,6 +106,9 @@ void edit_hello_strings(AREA * area);
 void get_custom_info(AREA * area);
 long get_last_squish(AREA * area);
 
+#ifdef __WATCOMC__
+void beep(void);
+#endif
 
 char *MakeKludge(MMSG * curmsg, MIS * mis, int netmail);
 void MakeMessage(MMSG * curmsg, AREA * area, MSG * areahandle, word reply,
@@ -265,8 +267,12 @@ void MarkReplyChain(AREA * area, MSG * areahandle, dword startmsg);
 ATTACHLIST *MakeAttachList(STRINGLIST * slist);
 void FreeAttachList(ATTACHLIST * l);
 
+#if 0
+#ifdef __WATCOMC__
 #pragma aux ins09  "_*" parm caller [] modify [ax bx cx dx es]
 #pragma aux undo09 "_*" parm caller [] modify [ax bx cx dx es]
+#endif
+#endif
 
 extern void ins09(void);
 extern void undo09(void);

@@ -9,23 +9,23 @@
 #define tMAXAKAS  35
 
 #ifdef __OS2__
-
 #define  INCL_NOPMAPI
-
 #endif
 
-#ifdef __FLAT__
+typedef uint16_t word;
+typedef int16_t sword;
 
-#define word      unsigned short
-#define sword     short
-
+#ifdef __UNIX__
+#define DIRSEP "/"
 #else
-
-#define word      unsigned int
-#define sword     int
-
+#define DIRSEP "\\"
 #endif
 
+#ifdef __DOS__
+#define FMASK "*.*"
+#else
+#define FMASK "*"
+#endif
 
 #ifdef __WATCOMC__
 #define strncmpi   strnicmp

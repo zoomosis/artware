@@ -51,7 +51,7 @@ ADDRLIST *fido_lookup(char *name)
     stat(cfg.usr.fidouser, &buf); /* get the file size */
 
     if ((f =
-         sopen(cfg.usr.fidouser, O_RDONLY | O_BINARY, SH_DENYNO)) == -1)
+         sopen(cfg.usr.fidouser, O_RDONLY | O_BINARY, SH_DENYNO, S_IREAD)) == -1)
     {
         reclength = -1;         /* Reset all on open failure */
         return NULL;
