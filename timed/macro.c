@@ -400,9 +400,9 @@ char *GetMenuDescription(char **charptr);
 
 int ReadKeyFile(void)
 {
-    XFILE *keyfile;
+    FILE *keyfile;
     char filename[120];
-    char *temp;
+    char line[2048];
     char *key, *value;
     int scope = GLOBALSCOPE;
     sword keycode, commandcode;
@@ -414,7 +414,7 @@ int ReadKeyFile(void)
     else
         strcpy(filename, "timkeys.cfg");
 
-    if ((keyfile = xopen(filename)) == NULL)
+    if ((keyfile = fopen(filename, "r")) == NULL)
         return -1;
 
     if (strlen(filename) > 25)
@@ -425,12 +425,14 @@ int ReadKeyFile(void)
     }
     vprint(12, 42, 7, "(%s)", filename);
 
-    while ((temp = xgetline(keyfile)) != NULL)
+    while (fgets(line, sizeof line, keyfile) != NULL)
     {
+        StripCR(line);
+
         if (!(lineno++ % 5))
             working(12, 7, 7);
 
-        if ((key = strtok(temp, " \t\r\n")) == NULL)
+        if ((key = strtok(line, " \t\r\n")) == NULL)
             continue;
 
         if (strcmpi(key, "386") == 0 ||
@@ -575,7 +577,7 @@ int ReadKeyFile(void)
         }
     }
 
-    xclose(keyfile);
+    fclose(keyfile);
 
     print(12, 7, 9, "û");
 
