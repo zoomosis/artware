@@ -5,6 +5,14 @@
 
 #define LOCALCHARSET "IBMPC"
 
+#ifndef max
+#define max(a,b) (((a) > (b)) ? (a) : (b))
+#endif
+
+#ifndef min
+#define min(a,b) (((a) < (b)) ? (a) : (b))
+#endif
+
 #define tMAXNAMES 20
 #define tMAXAKAS  35
 
@@ -774,18 +782,6 @@ struct _vers7
 #define B_resb   0x8000         /* reserved for non-Opus 1000 0000 0000
                                    0000 */
 
-
-
-struct _xfile
-{
-    int fd;
-    int bufSize;
-    char *buf;
-    char *nextChar;
-    char *lastChar;
-};
-
-typedef struct _xfile XFILE;
 
 // Valid filename chars. Well, anything is allowed now.. (OS/2 Scandinavians w/ „ etc)
 
