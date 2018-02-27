@@ -9,7 +9,7 @@
 
 */
 
-#include <stdlib.h>
+#include "includes.h"
 
 /* Prototypes... */
 
@@ -52,8 +52,17 @@ void _settextcursor(short type);
 #define _SOLIDCURSOR  1
 #endif
 
+#ifdef __UNIX__
+
+#define maxx getmaxx(stdscr)
+#define maxy getmaxy(stdscr)
+
+#else
+
 extern int maxx;
 extern int maxy;
+
+#endif
 
 #ifdef __DOS__
 /* DOS is memory confined, so let's not waste it, and besides, we probably can't ever get more than 132 columns in DOS anyway */
