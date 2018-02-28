@@ -180,6 +180,7 @@ static int nt_getch(void)
     while (key_hit == 0xFFFFFFFFUL)
     {
         nt_kbhit();
+        Sleep(10);
     }
     iKey = key_hit;
     key_hit = 0xFFFFFFFFUL;
