@@ -40,6 +40,8 @@
 - timEd: Document how to use timEd in Windows 10, using Legacy Mode in the
   shortcut properties.
 
+- timEd: Update https://www.ozzmosis.com/timed/
+
 - timEd: Convert the documentation to Markdown format.
 
 - timEd: Write a TIMCOLOR.EXE replacement.
