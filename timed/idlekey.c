@@ -179,8 +179,8 @@ static int nt_getch(void)
 
     while (key_hit == 0xFFFFFFFFUL)
     {
-        nt_kbhit();
         Sleep(10);
+        nt_kbhit();
     }
     iKey = key_hit;
     key_hit = 0xFFFFFFFFUL;
