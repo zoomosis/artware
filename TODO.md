@@ -45,3 +45,5 @@
 - timEd: Convert the documentation to Markdown format.
 
 - timEd: Write a TIMCOLOR.EXE replacement.
+
+- timEd: OS/2 & Windows clipboard integration, if practical.
