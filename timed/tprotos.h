@@ -259,7 +259,7 @@ void MarkReplyChain(AREA * area, MSGA * areahandle, dword startmsg);
 ATTACHLIST *MakeAttachList(STRINGLIST * slist);
 void FreeAttachList(ATTACHLIST * l);
 
-#if 0
+#if 1
 #ifdef __WATCOMC__
 #pragma aux ins09  "_*" parm caller [] modify [ax bx cx dx es]
 #pragma aux undo09 "_*" parm caller [] modify [ax bx cx dx es]
