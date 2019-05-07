@@ -46,6 +46,17 @@ typedef int16_t sword;
 
 #ifdef __UNIX__
 #define getdisk() 0
+#define setdisk(a)
+#define coreleft() 1000000l
+#define heapcheck() 0
+#define _heapmin()                                                                                                                                            
+#define stackavail() 100000
+
+char *itoa(int i, char *a, int n);
+char *ltoa(long i, char *a, int n);
+
+#define _settextcursor(type)
+
 #endif
 
 #define NETMAIL   1
