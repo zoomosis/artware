@@ -181,8 +181,14 @@ unsigned int mkcolor(unsigned int acolor)
     }
     else
     {
+#if 0
+        /* this causes erroneous underlines in Linux for some reason */
         if (acolor & 0x08)
             attr |= A_DIM | A_BOLD;
+#else
+        if (acolor & 0x08)
+            attr |= A_BOLD;
+#endif
         if (acolor & 0x80)
             attr |= A_BLINK;
         attr |= COLOR_PAIR(((acolor & 0x07) | ((acolor & 0x70) >> 1)));
