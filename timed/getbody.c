@@ -217,7 +217,7 @@ RAWBLOCK *spawn_editor(int checkchange, char *areatag)
 
     if (checkchange)
     {
-#if !defined(__OS2__) && !defined(__NT__)
+#if !defined(__OS2__) && !defined(__NT__) && !defined(__UNIX__)
         if (before.st_atime == after.st_atime)
             return NULL;
 #else
