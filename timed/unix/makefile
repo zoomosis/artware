@@ -2,6 +2,7 @@
 
 TARGET=../timedunx
 CFLAGS=-Wfatal-errors -m32 -fstack-protector-all -W -Wall -g -I../../api -I../utils -funsigned-char
+MSGAPI=../../api/unixapi.a
 SRC_DIR=..
 VPATH=$(SRC_DIR)
 
@@ -19,7 +20,7 @@ OBJS=areatags.o attach.o bmg.o checkcc.o choose.o select.o shel2dos.o \
 	$(CC) $(CFLAGS) -o $*.o -c $<
 
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) ../../api/unixapi.a -lncurses
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) $(MSGAPI) -lncurses
 
 clean:
 	rm -f $(OBJS) $(TARGET)
