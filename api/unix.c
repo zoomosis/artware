@@ -74,9 +74,10 @@ int sopen(const char *filename, int access, int share, int permission)
 
 // Split a path into dir, name, ext. Ignore 'drive' here, by
 // making it '\0' always.
+//
+// return 1 on success, 0 on failure
 
-void fnsplit(const char *path, char *drive, char *dir, char *name,
-             char *ext)
+int fnsplit(const char *path, char *drive, char *dir, char *name, char *ext)
 {
     char temp[512];
     char *charptr;
@@ -91,7 +92,7 @@ void fnsplit(const char *path, char *drive, char *dir, char *name,
         *ext = '\0';
 
     if (!path)
-        return;
+        return 0;
 
     strncpy(temp, path, 511);
     temp[511] = '\0';
@@ -113,7 +114,7 @@ void fnsplit(const char *path, char *drive, char *dir, char *name,
     {
         if (name)
             strncpy(name, temp, MAXFILE);
-        return;
+        return 1;
     }
 
     if (charptr)
@@ -124,6 +125,7 @@ void fnsplit(const char *path, char *drive, char *dir, char *name,
     if (dir)
         strcpy(dir, temp);
 
+    return 1;
 }
 
 // A localtime() lookalike, for compatibility with Watcom
