@@ -1,12 +1,24 @@
 # timEd makefile for 32-bit OS/2 build using Watcom
 
+!ifdef __LINUX__
+
+TARGET=../timedp.exe
+CFLAGS=-zq -bm -sg -wx -bt=os2 -l=os2v2 -k32k -I../../api -I..
+MSGAPI=../../api/os2api.lib
+DEL=rm -f
+
+!else
+
 TARGET=..\timedp.exe
+CFLAGS=-zq -bm -sg -wx -bt=os2 -l=os2v2 -k32k -I..\..\api -I..
+MSGAPI=..\..\api\os2api.lib
+DEL=del
+
+!endif
 
 CC=wcl386
-CFLAGS=-zq -bm -sg -wx -bt=os2 -l=os2v2 -k32k -I..\..\api -I..
 #COPT=-oneatx
 SRC_DIR=..
-MSGAPI=..\..\api\os2api.lib
 
 OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
   select.obj shel2dos.obj showhdr.obj showinfo.obj showmail.obj &
@@ -21,15 +33,15 @@ OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
   nodelist.obj nodebrow.obj private.obj fidonode.obj fidouser.obj patmat.obj
   
 {$(SRC_DIR)}.c.obj:
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fo=$@ -c $<
 
 {$(SRC_DIR)\utils}.c.obj:
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fo=$@ -c $<
 
 $(TARGET): $(OBJS) $(MSGAPI)
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fe=$@ $(OBJS) $(MSGAPI)
 
 .IGNORE
 clean:
-	del *.obj
-	del $(TARGET)
+	$(DEL) *.obj
+	$(DEL) $(TARGET)

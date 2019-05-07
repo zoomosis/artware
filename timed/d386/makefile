@@ -1,13 +1,25 @@
 # timEd makefile for 32-bit DOS build using Watcom
 
+!ifdef __LINUX__
+
+TARGET=../tim386.exe
+CFLAGS=-zq -wx -bt=dos4g -l=dos4g -k32k -I../../api -I..
+MSGAPI=../../api/386api.lib
+DEL=rm
+
+!else
+
 TARGET=..\tim386.exe
+CFLAGS=-zq -wx -bt=dos4g -l=dos4g -k32k -I..\..\api -I..
+MSGAPI=..\..\api\386api.lib
+DEL=del
+
+!endif
 
 CC=wcl386
-CFLAGS=-zq -wx -bt=dos4g -l=dos4g -k32k -I..\..\api -I..
 #COPT=-oneatx
 CDEFS=-D__DOS__=1
 SRC_DIR=..
-MSGAPI=..\..\api\386api.lib
 
 OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
   select.obj shel2dos.obj showhdr.obj showinfo.obj showmail.obj &
@@ -23,15 +35,15 @@ OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
   fidonode.obj fidouser.obj patmat.obj
   
 {$(SRC_DIR)}.c.obj:
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fo=$@ -c $<
 
 {$(SRC_DIR)\utils}.c.obj:
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fo=$@ -c $<
 
 $(TARGET): $(OBJS) $(MSGAPI)
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fe=$@ $(OBJS) $(MSGAPI)
 
 .IGNORE
 clean:
-	del *.obj
-	del $(TARGET)
+	$(DEL) *.obj
+	$(DEL) $(TARGET)

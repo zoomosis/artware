@@ -1,15 +1,27 @@
 # timEd makefile for 16-bit DOS build using Watcom
 
-TARGET=..\timed.exe
+!ifdef __LINUX__
 
-CC=wcl
+TARGET=../timed.exe
+CFLAGS=-zq -zc -ml -wx -bt=dos -l=dos -k8k -I../../api -I.. -I../../exec
+MSGAPI=../../api/dosapi.lib
+DEL=rm
+
+!else
+
+TARGET=..\timed.exe
 CFLAGS=-zq -zc -ml -wx -bt=dos -l=dos -k8k -I..\..\api -I.. -I..\..\exec
-#COPT=-oneatx
-CDEFS=-D__DOS__=1
+MSGAPI=..\..\api\dosapi.lib
 ASM=c:\bc\bin\tasm.exe
 AFLAGS=/zi/t/mx
+DEL=del
+
+!endif
+
+CC=wcl
+#COPT=-oneatx
+CDEFS=-D__DOS__=1
 SRC_DIR=..
-MSGAPI=..\..\api\dosapi.lib
 
 OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
   cleanidx.obj clock.obj config.obj copymsg.obj dirlist.obj edit.obj &
@@ -25,25 +37,29 @@ OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
   v7.obj fd.obj nodelist.obj nodebrow.obj fido.obj private.obj &
   fidonode.obj fidouser.obj patmat.obj
   
-{$(SRC_DIR)}.c.obj:
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-
 {$(SRC_DIR)}.asm.obj:
+!ifdef __LINUX__
+        echo "Error: Building from within Linux is not fully supported; Borland TASM (tasm.exe) is required."
+!else
 	$(ASM) $(AFLAGS) -c $<
+!endif
+
+{$(SRC_DIR)}.c.obj:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fo=$@ -c $<
 
 {$(SRC_DIR)\utils}.c.obj:
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fo=$@ -c $<
 
 {$(SRC_DIR)\..\exec}.c.obj:
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fo=$@ -c $<
 
 {$(SRC_DIR)\..\exec}.asm.obj:
-	$(ASM) $(AFLAGS) -c $<
+	$(ASM) $(AFLAGS) -fo=$@ -c $<
 
 $(TARGET): $(OBJS) $(MSGAPI)
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fe=$@ $(OBJS) $(MSGAPI)
 
 .IGNORE
 clean:
-	del *.obj
-	del $(TARGET)
+	$(DEL) *.obj
+	$(DEL) $(TARGET)

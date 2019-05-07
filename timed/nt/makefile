@@ -1,12 +1,24 @@
 # timEd makefile for 32-bit Windows NT build using Watcom
 
+!ifdef __LINUX__
+
+TARGET=../timednt.exe
+CFLAGS=-zq -bm -sg -wx -bt=nt -l=nt -k32k -I../../api -I..
+MSGAPI=../../api/ntapi.lib
+DEL=rm -f
+
+!else
+
 TARGET=..\timednt.exe
+CFLAGS=-zq -bm -sg -wx -bt=nt -l=nt -k32k -I..\..\api -I..
+MSGAPI=..\..\api\ntapi.lib
+DEL=del
+
+!endif
 
 CC=wcl386
-CFLAGS=-zq -bm -sg -wx -bt=nt -l=nt -k32k -I..\..\api -I..
 #COPT=-oneatx
 SRC_DIR=..
-MSGAPI=..\..\api\ntapi.lib
 
 OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
   select.obj shel2dos.obj showhdr.obj showinfo.obj showmail.obj &
@@ -21,12 +33,12 @@ OBJS=areatags.obj attach.obj bmg.obj checkcc.obj choose.obj &
   nodebrow.obj private.obj fidonode.obj fidouser.obj patmat.obj
 
 {$(SRC_DIR)}.c.obj:
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fo=$@ -c $<
 
 $(TARGET): $(OBJS) $(MSGAPI)
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -fe=$@ $(OBJS) $(MSGAPI)
 
 .IGNORE
 clean:
-	del *.obj
-	del $(TARGET)
+	$(DEL) *.obj
+	$(DEL) $(TARGET)
