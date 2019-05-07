@@ -46,12 +46,12 @@ int V7init(int syslookup)
 
     if (syslookup)
     {
-        sprintf(temp, "%s\\sysop.ndx", cfg.usr.nodelist);
+        sprintf(temp, "%s" DIRSEP "sysop.ndx", cfg.usr.nodelist);
         cbt = cbopen(temp, name_compare);
     }
     else
     {
-        sprintf(temp, "%s\\nodex.ndx", cfg.usr.nodelist);
+        sprintf(temp, "%s" DIRSEP "nodex.ndx", cfg.usr.nodelist);
         cbt = cbopen(temp, addr_compare);
     }
 
@@ -330,7 +330,7 @@ int ReadNodex(long offset, ADDRLIST * current)
     if (nodex == NULL)          /* Open nodex if not already open, and
                                    stay open for more matches */
     {
-        sprintf(temp, "%s\\nodex.dat", cfg.usr.nodelist);
+        sprintf(temp, "%s" DIRSEP "nodex.dat", cfg.usr.nodelist);
 
         if ((nodex = _fsopen(temp, "rb", SH_DENYNO)) == NULL) /* open it */
         {

@@ -81,7 +81,7 @@ void MakeMessage(MMSG * curmsg, AREA * area, MSGA * areahandle, word reply,
         return;
     }
 
-    sprintf(msgfile, "%s\\timed.msg", cfg.homedir);
+    sprintf(msgfile, "%s" DIRSEP "timed.msg", cfg.homedir);
     unlink(msgfile);
 
     if (reply)
@@ -478,7 +478,7 @@ void MakeQuote(MMSG * curmsg, AREA * area, word replytype, MIS * newmis,
 
     if (!cfg.usr.internal_edit)
     {
-        sprintf(msgfile, "%s\\timed.msg", cfg.homedir);
+        sprintf(msgfile, "%s" DIRSEP "timed.msg", cfg.homedir);
         if (!(repfile = fopen(msgfile, "wt")))
         {
             Message("Error opening output file", -1, 0, YES);
@@ -784,7 +784,7 @@ void MakeText(MMSG * curmsg, FILE * parameterfile)
 
     if (!parameterfile && !cfg.usr.internal_edit)
     {
-        sprintf(msgfile, "%s\\timed.msg", cfg.homedir);
+        sprintf(msgfile, "%s" DIRSEP "timed.msg", cfg.homedir);
         if (!(repfile = fopen(msgfile, "wt")))
         {
             Message("Error opening output file!", -1, 0, YES);
@@ -963,7 +963,7 @@ void MakeTemplate(MIS * mis, AREA * area)
 
     if (!cfg.usr.internal_edit)
     {
-        sprintf(msgfile, "%s\\timed.msg", cfg.homedir);
+        sprintf(msgfile, "%s" DIRSEP "timed.msg", cfg.homedir);
         if (!(repfile = fopen(msgfile, "wt")))
         {
             Message("Error opening output file!", -1, 0, YES);
@@ -1941,7 +1941,7 @@ void AskDumpBody(RAWBLOCK * blk)
 {
     char temp[120];
 
-    sprintf(temp, "%s\\msgtxt.tim", cfg.homedir);
+    sprintf(temp, "%s" DIRSEP "msgtxt.tim", cfg.homedir);
     if (confirm
         ("Save message body to MSGTXT.TIM in timEd directory? (Y/n)"))
         WriteRawBody(blk, temp);

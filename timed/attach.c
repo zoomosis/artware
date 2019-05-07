@@ -46,7 +46,7 @@ int check_attach(MIS * mis, char *list, int copyfiles)
         else                    // No explicit wildcard, but may be
                                 // directory name..
         {
-            Strip_Trailing(filename, '\\');
+            Strip_Trailing(filename, *DIRSEP);
             if (stat(filename, &mystat) == -1)
             {
                 Message("Cannot find file!", -1, 0, YES);
@@ -55,7 +55,10 @@ int check_attach(MIS * mis, char *list, int copyfiles)
 
             if (mystat.st_mode & S_IFDIR) // It's a directory!
             {
-                strcat(filename, "\\*.*");
+                char buf[16];
+                strcpy(buf, DIRSEP ".");
+                strcat(filename, buf);
+
                 if ((thisone = dirlist(filename, 1)) == NULL)
                 {
                     if (master)
@@ -132,7 +135,7 @@ int check_attach(MIS * mis, char *list, int copyfiles)
             if (copyfiles && cfg.usr.localfiles[0] != '\0')
             {
                 fnsplit(master[i], NULL, NULL, fname, ext);
-                sprintf(filename, "%s\\%s%s", cfg.usr.localfiles, fname,
+                sprintf(filename, "%s" DIRSEP "%s%s", cfg.usr.localfiles, fname,
                         ext);
 
                 sprintf(temp, " þ Copying %s to %s..", master[i],

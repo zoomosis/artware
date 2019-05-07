@@ -930,8 +930,8 @@ void import_file(void)
 
         if (mystat.st_mode & S_IFDIR) // It's a directory!
         {
-            Strip_Trailing(filename, '\\');
-            strcat(filename, "\\*.*");
+            Strip_Trailing(filename, *DIRSEP);
+            strcat(filename, DIRSEP "*.*");
             if ((result = dirlist(filename, 0)) != NULL)
             {
                 strcpy(filename, result[0]);

@@ -44,7 +44,7 @@ void Message(char *text, int pause, int stop, YesNo save)
         _setcursortype(_NORMALCURSOR);
 #endif
 //      window(1,1,80,25);
-        clrscr();
+        cls();
 
         exit(stop);
     }

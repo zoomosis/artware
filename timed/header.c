@@ -1271,10 +1271,10 @@ char *CompressPath(char *s)
     if (strlen(ext) > 5)
         ext[5] = '\0';
     len = strlen(fname) + strlen(ext) + strlen(drive);
-    Strip_Trailing(dir, '\\');
+    Strip_Trailing(dir, *DIRSEP);
     strncpy(temp2, dir, 24 - len);
     temp2[24 - len] = '\0';
-    sprintf(temp, "%s%s..\\%s%s", drive, temp2, fname, ext);
+    sprintf(temp, "%s%s.." DIRSEP "%s%s", drive, temp2, fname, ext);
 
     return temp;
 

@@ -634,10 +634,10 @@ char **dirlist(char *filespec, char tagging)
         memset(list, '\0', sizeof(FILELIST));
 
         if ((strcmp(file, "*") == 0) && // Add 'updir?'
-            (strcmp(ext, ".*") == 0) && (strcmp(dir, "\\") != 0))
+            (strcmp(ext, ".*") == 0) && (strcmp(dir, DIRSEP) != 0))
         {
             cf = mem_calloc(1, sizeof(FLIST));
-            strcpy(cf->name, "\\..");
+            strcpy(cf->name, DIRSEP "..");
             cf->size = 0;
             cf->status |= UPDIR;
             add_file(list, cf);
@@ -675,9 +675,9 @@ char **dirlist(char *filespec, char tagging)
 #endif
                 {
 #ifndef __WATCOMC__
-                    sprintf(cf->name, "\\%-0.89s", ffblk.ff_name);
+                    sprintf(cf->name, DIRSEP "%-0.89s", ffblk.ff_name);
 #else
-                    sprintf(cf->name, "\\%-0.89s", ffblk.name);
+                    sprintf(cf->name, DIRSEP "%-0.89s", ffblk.name);
 #endif
                     cf->status |= FDIR;
                 }
@@ -761,11 +761,11 @@ char **dirlist(char *filespec, char tagging)
             }
             else
             {
-                Strip_Trailing(dir, '\\');
-                if ((lastbslash = strrchr(dir, '\\')) != NULL)
+                Strip_Trailing(dir, *DIRSEP);
+                if ((lastbslash = strrchr(dir, *DIRSEP)) != NULL)
                     *lastbslash = '\0';
                 if (*dir == '\0')
-                    strcpy(dir, "\\");
+                    strcpy(dir, DIRSEP);
                 fnmerge(location, drive, dir, file, ext);
             }
 
@@ -1004,12 +1004,12 @@ int comp_flist(const void *one, const void *two)
 
     strcpy(temp, ((FLIST *) (*(FLIST **) one))->name);
 
-    if ((((FLIST *) (*(FLIST **) one))->name[0] == '\\') &&
-        (((FLIST *) (*(FLIST **) two))->name[0] != '\\'))
+    if ((((FLIST *) (*(FLIST **) one))->name[0] == *DIRSEP) &&
+        (((FLIST *) (*(FLIST **) two))->name[0] != *DIRSEP))
         return -1;
 
-    if ((((FLIST *) (*(FLIST **) one))->name[0] != '\\') &&
-        (((FLIST *) (*(FLIST **) two))->name[0] == '\\'))
+    if ((((FLIST *) (*(FLIST **) one))->name[0] != *DIRSEP) &&
+        (((FLIST *) (*(FLIST **) two))->name[0] == *DIRSEP))
         return 1;
 
     return (strcmp

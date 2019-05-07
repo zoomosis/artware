@@ -17,22 +17,22 @@ void edit_hello_strings(AREA * area)
 
     if (area->base & MSGTYPE_SQUISH)
     {
-        sprintf(datafile, "%s.SQT", area->dir);
-        sprintf(origfile, "%s.SQO", area->dir);
+        sprintf(datafile, "%s.sqt", area->dir);
+        sprintf(origfile, "%s.sqo", area->dir);
     }
     else if (area->base & MSGTYPE_SDM)
     {
-        sprintf(datafile, "%s\\timed.dat", area->dir);
-        sprintf(origfile, "%s\\origin", area->dir);
+        sprintf(datafile, "%s" DIRSEP "timed.dat", area->dir);
+        sprintf(origfile, "%s" DIRSEP "origin", area->dir);
     }
     else if (area->base & MSGTYPE_JAM) /* JAM */
     {
-        sprintf(datafile, "%s.JTI", area->dir);
-        sprintf(origfile, "%s.JTO", area->dir);
+        sprintf(datafile, "%s.jti", area->dir);
+        sprintf(origfile, "%s.jto", area->dir);
     }
     else
     {
-        sprintf(datafile, "%s\\MSG%d.TIM", cfg.usr.hudsonpath,
+        sprintf(datafile, "%s" DIRSEP "msg%d.tim", cfg.usr.hudsonpath,
                 atoi(area->dir));
     }
 
@@ -222,22 +222,22 @@ void get_custom_info(AREA * area)
 
     if (area->base & MSGTYPE_SQUISH)
     {
-        sprintf(datafile, "%s.SQT", area->dir);
-        sprintf(origfile, "%s.SQO", area->dir);
+        sprintf(datafile, "%s.sqt", area->dir);
+        sprintf(origfile, "%s.sqo", area->dir);
     }
     else if (area->base & MSGTYPE_SDM)
     {
-        sprintf(datafile, "%s\\timed.dat", area->dir);
-        sprintf(origfile, "%s\\origin", area->dir);
+        sprintf(datafile, "%s" DIRSEP "timed.dat", area->dir);
+        sprintf(origfile, "%s" DIRSEP "origin", area->dir);
     }
     else if (area->base & MSGTYPE_JAM) /* JAM */
     {
-        sprintf(datafile, "%s.JTI", area->dir);
-        sprintf(origfile, "%s.JTO", area->dir);
+        sprintf(datafile, "%s.jti", area->dir);
+        sprintf(origfile, "%s.jto", area->dir);
     }
     else                        /* HMB */
     {
-        sprintf(datafile, "%s\\MSG%d.TIM", cfg.usr.hudsonpath,
+        sprintf(datafile, "%s" DIRSEP "msg%d.tim", cfg.usr.hudsonpath,
                 atoi(area->dir));
     }
 

@@ -191,12 +191,12 @@ int FDinit(int syslookup)
                                 // only in node index..
             return -1;
         close(fdidx);
-        sprintf(temp, "%s\\userlist.fdx", cfg.usr.fdnodelist);
+        sprintf(temp, "%s" DIRSEP "userlist.fdx", cfg.usr.fdnodelist);
         fdidx = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD);
     }
     else
     {
-        sprintf(temp, "%s\\nodelist.fdx", cfg.usr.fdnodelist);
+        sprintf(temp, "%s" DIRSEP "nodelist.fdx", cfg.usr.fdnodelist);
         fdidx = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD);
     }
 
@@ -222,7 +222,7 @@ int FDinit(int syslookup)
         curaction = CURACTIONNAME;
     else
     {
-        sprintf(nodelistname, "%s\\nodelist.%-3.3s", cfg.usr.fdnodelist,
+        sprintf(nodelistname, "%s" DIRSEP "nodelist.%-3.3s", cfg.usr.fdnodelist,
                 fdctl.node_ext);
         curaction = CURACTIONNODE;
     }
@@ -1060,7 +1060,7 @@ sword ReadRawNodeList(sword zone, sword net, sword node, sword point,
     {
         if (rawfdnet == NULL)
         {
-            sprintf(rawname, "%s\\fdnet.pvt", cfg.usr.fdnodelist);
+            sprintf(rawname, "%s" DIRSEP "fdnet.pvt", cfg.usr.fdnodelist);
             if ((rawfdnet = _fsopen(rawname, "rt", SH_DENYNO)) == NULL)
             {
                 sprintf(msg, "Can't open %s!", rawname);
@@ -1075,7 +1075,7 @@ sword ReadRawNodeList(sword zone, sword net, sword node, sword point,
     {
         if (rawpoint == NULL)
         {
-            sprintf(rawname, "%s\\fdpoint.pvt", cfg.usr.fdnodelist);
+            sprintf(rawname, "%s" DIRSEP "fdpoint.pvt", cfg.usr.fdnodelist);
             if ((rawpoint = _fsopen(rawname, "rt", SH_DENYNO)) == NULL)
             {
                 sprintf(msg, "Can't open %s!", rawname);
@@ -1133,7 +1133,7 @@ sword ReadRawNodeList(sword zone, sword net, sword node, sword point,
     }
     else                        /* Entry in .FDA file */
     {
-        sprintf(rawname, "%s\\fdnode.fda", cfg.usr.fdnodelist);
+        sprintf(rawname, "%s" DIRSEP "fdnode.fda", cfg.usr.fdnodelist);
         if ((fdafile =
              sopen(rawname, O_RDONLY | O_BINARY, SH_DENYNO, S_IREAD)) == -1)
         {

@@ -2397,11 +2397,11 @@ int OpenFindDatabase(int write)
         shareflags = SH_DENYNO;
     }
 
-    sprintf(temp, "%s\\fdb.idx", cfg.homedir);
+    sprintf(temp, "%s" DIRSEP "fdb.idx", cfg.homedir);
     if ((idx = sopen(temp, access, shareflags, S_IREAD | S_IWRITE)) == -1)
         return -1;
 
-    sprintf(temp, "%s\\fdb.dat", cfg.homedir);
+    sprintf(temp, "%s" DIRSEP "fdb.dat", cfg.homedir);
     if ((dat = sopen(temp, access, shareflags, S_IREAD | S_IWRITE)) == -1)
     {
         close(idx);

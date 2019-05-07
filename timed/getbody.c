@@ -111,7 +111,7 @@ RAWBLOCK *spawn_editor(int checkchange, char *areatag)
     memset(commandline, '\0', sizeof(commandline));
     memset(msgfile, '\0', sizeof(msgfile));
 
-    sprintf(msgfile, "%s\\timed.msg", cfg.homedir);
+    sprintf(msgfile, "%s" DIRSEP "timed.msg", cfg.homedir);
     stat(msgfile, &before);
     strcpy(filename, msgfile);
 
@@ -121,7 +121,7 @@ RAWBLOCK *spawn_editor(int checkchange, char *areatag)
 #else
     _setcursortype(_NORMALCURSOR);
 #endif
-    clrscr();
+    cls();
     MoveXY(1, 3);
 
 #if defined(__FLAT__) || defined(__UNIX__)
@@ -226,7 +226,7 @@ RAWBLOCK *spawn_editor(int checkchange, char *areatag)
 #endif
     }
 
-    sprintf(msgfile, "%s\\timed.msg", cfg.homedir);
+    sprintf(msgfile, "%s" DIRSEP "timed.msg", cfg.homedir);
     if ((infile = fopen(msgfile, "rt")) == NULL)
     {
         Message("Can't open input file!", -1, 0, YES);
@@ -473,9 +473,9 @@ RAWBLOCK *DoReplace(RAWBLOCK * blk, AREA * area, MMSG * curmsg,
     int result;
 
 
-    sprintf(curfile, "%s\\timed.msg", cfg.homedir); // Output file for
+    sprintf(curfile, "%s" DIRSEP "timed.msg", cfg.homedir); // Output file for
                                                     // temp msg
-    sprintf(newfile, "%s\\timed.new", cfg.homedir); // Possible new input
+    sprintf(newfile, "%s" DIRSEP "timed.new", cfg.homedir); // Possible new input
                                                     // file
 
     if (origin)                 // Strip the origin from txt, save for
@@ -540,9 +540,9 @@ RAWBLOCK *DoReplace(RAWBLOCK * blk, AREA * area, MMSG * curmsg,
         mem_free(addorigin);
     }
 
-    sprintf(curfile, "%s\\timed.msg", cfg.homedir); // Output file for
+    sprintf(curfile, "%s" DIRSEP "timed.msg", cfg.homedir); // Output file for
                                                     // temp msg
-    sprintf(newfile, "%s\\timed.new", cfg.homedir); // Possible new input
+    sprintf(newfile, "%s" DIRSEP "timed.new", cfg.homedir); // Possible new input
                                                     // file
     unlink(curfile);
     unlink(newfile);
@@ -755,7 +755,7 @@ int CheckForOutputFile(char *curfile)
     struct stat mystatnew, mystatmsg;
     char temp[120];
 
-    sprintf(temp, "%s\\timed.new", cfg.homedir);
+    sprintf(temp, "%s" DIRSEP "timed.new", cfg.homedir);
     if (stat(temp, &mystatnew) == -1)
         return 0;               // no timEd.new, leave curfile set to
                                 // ..\timed.msg

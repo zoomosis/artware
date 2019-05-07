@@ -22,7 +22,7 @@ void show_help(int cat)
     BOX *helpbox;
     int clockstate = showclock;
 
-    sprintf(filename, "%s\\timed.hlp", cfg.homedir);
+    sprintf(filename, "%s" DIRSEP "timed.hlp", cfg.homedir);
 
     if ((helpfile = sopen(filename, O_RDONLY | O_BINARY, SH_DENYNO, S_IREAD)) == -1)
     {

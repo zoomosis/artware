@@ -49,8 +49,7 @@ int sopen(const char *filename, int access, int share, int permission);
 #define chsize(a, b) 	 ftruncate(a, b)
 #define _fsopen(a, b, c) fopen(a, b)
 
-void fnsplit(const char *path, char *drive, char *dir, char *name,
-             char *ext);
+int fnsplit(const char *path, char *drive, char *dir, char *name, char *ext);
 
 #define _splitpath(a, b, c, d, e)	fnsplit(a, b, c, d, e)
 

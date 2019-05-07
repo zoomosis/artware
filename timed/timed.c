@@ -44,7 +44,9 @@ int main(int argc, char *argv[])
 
     // We need a bit more than the usual stuff.
 
+#ifndef __UNIX__
     _grow_handles(40);
+#endif
 
 #ifdef __OS2__
     atexit(killclock);
@@ -81,11 +83,11 @@ int main(int argc, char *argv[])
 
     video_init();
 
-#if !defined(__OS2__) && !defined(__NT__)
+#if !defined(__OS2__) && !defined(__NT__) && !defined(__UNIX__)
     check_mtask();
 #endif
 
-#ifndef __WATCOMC__
+#if !defined(__WATCOMC__) && !defined(__UNIX__)
     dv_conio();
 #endif
 
@@ -134,7 +136,7 @@ int main(int argc, char *argv[])
 
     if (cfg.homedir[0] == '\0')
         getcwd(cfg.homedir, 80);
-    if (cfg.homedir[strlen(cfg.homedir) - 1] == '\\')
+    if (cfg.homedir[strlen(cfg.homedir) - 1] == *DIRSEP)
         cfg.homedir[strlen(cfg.homedir) - 1] = '\0';
 
     readconfig();
@@ -142,9 +144,11 @@ int main(int argc, char *argv[])
     if (ReadKeyFile() != 0)
         Message("Can't read keyboard definition file!", -1, 254, YES);
 
+#ifndef __UNIX__
     if (cfg.usr.status & LOWLEVELKB) // Only needed for low level
                                      // routines.
         check_enhanced();
+#endif
 
     memset(&minf, '\0', sizeof(struct _minf));
     minf.def_zone = cfg.usr.address[0].zone; /* set default zone to user's 

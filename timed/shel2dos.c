@@ -82,7 +82,7 @@ int shell_to_DOS(void)
     _setcursortype(_NORMALCURSOR);
 #endif
 
-    clrscr();
+    cls();
 
     sprintf(temp,
             "%s  (c) 1992-" PROGYEAR "  Gerard van Essen and others.",

@@ -1214,14 +1214,14 @@ void analyse_toidx(void)
     unsigned int total = 0;
 #define BATCHSIZE 300
 
-    sprintf(temp, "%s\\msgidx.bbs", cfg.usr.hudsonpath);
+    sprintf(temp, "%s" DIRSEP "msgidx.bbs", cfg.usr.hudsonpath);
 
     if ((idx =
          sopen(temp, O_BINARY | O_RDWR | O_CREAT, SH_DENYNO,
                S_IREAD | S_IWRITE)) == -1)
         return;
 
-    sprintf(temp, "%s\\msgtoidx.bbs", cfg.usr.hudsonpath);
+    sprintf(temp, "%s" DIRSEP "msgtoidx.bbs", cfg.usr.hudsonpath);
 
     if ((toidx =
          sopen(temp, O_BINARY | O_RDWR | O_CREAT, SH_DENYNO,
@@ -1306,7 +1306,7 @@ void Analyse_HMB_Index(void)
     register int board;
     AREA *thisarea = cfg.first;
 
-    sprintf(idxname, "%s\\msgidx.bbs", cfg.usr.hudsonpath);
+    sprintf(idxname, "%s" DIRSEP "msgidx.bbs", cfg.usr.hudsonpath);
 
     if (stat(idxname, &mystat) != 0)
     {

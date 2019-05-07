@@ -28,9 +28,9 @@ void add_tosslog(AREA * area, MSGA * areahandle)
         newnumber = MsgMsgnToUid(areahandle, current);
 
         if (area->type == ECHOMAIL || area->type == NEWS)
-            sprintf(temp, "%s\\echomail.jam", cfg.usr.jamlogpath);
+            sprintf(temp, "%s" DIRSEP "echomail.jam", cfg.usr.jamlogpath);
         else
-            sprintf(temp, "%s\\netmail.jam", cfg.usr.jamlogpath);
+            sprintf(temp, "%s" DIRSEP "netmail.jam", cfg.usr.jamlogpath);
 
         if ((tosslog =
              sopen(temp, O_TEXT | O_CREAT | O_WRONLY, SH_DENYWR,
@@ -42,8 +42,7 @@ void add_tosslog(AREA * area, MSGA * areahandle)
         }
 
         lseek(tosslog, 0L, SEEK_END);
-        sprintf(temp, "%s %lu\n", Strip_Trailing(area->dir, '\\'),
-                newnumber);
+        sprintf(temp, "%s %lu\n", Strip_Trailing(area->dir, *DIRSEP), newnumber);
         write(tosslog, temp, strlen(temp));
         close(tosslog);
     }

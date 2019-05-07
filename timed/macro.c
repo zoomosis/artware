@@ -410,7 +410,7 @@ int ReadKeyFile(void)
 
 
     if (cfg.homedir[0] != '\0')
-        sprintf(filename, "%s\\timkeys.cfg", cfg.homedir);
+        sprintf(filename, "%s" DIRSEP "timkeys.cfg", cfg.homedir);
     else
         strcpy(filename, "timkeys.cfg");
 

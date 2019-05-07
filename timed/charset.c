@@ -89,7 +89,7 @@ int LoadCharMap(char *name, sword level, int readmap)
 
 //   Message("DiskRead for CharSet!", -1, 0, YES);
 
-    sprintf(filename, "%s\\%smaps.dat", cfg.homedir,
+    sprintf(filename, "%s" DIRSEP "%smaps.dat", cfg.homedir,
             readmap ? "read" : "writ");
     if ((in = fopen(filename, "rb")) == NULL)
     {
@@ -444,7 +444,7 @@ void PickCharMap(void)
     char **picklist;
 
 
-    sprintf(filename, "%s\\readmaps.dat", cfg.homedir);
+    sprintf(filename, "%s" DIRSEP "readmaps.dat", cfg.homedir);
     if ((in = fopen(filename, "rb")) == NULL)
     {
         sprintf(msg, "Error opening %s!", filename);

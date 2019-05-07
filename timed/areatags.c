@@ -42,7 +42,7 @@ void SaveTags(void)
         while ((tilde = strchr(desc, '~')) != NULL)
             *tilde = '^';
 
-        sprintf(name, "%s\\timed%d.tag", cfg.homedir, choice);
+        sprintf(name, "%s" DIRSEP "timed%d.tag", cfg.homedir, choice);
         if ((out = fopen(name, "w")) == NULL)
             Message("Error opening file!", -1, 0, YES);
         else
@@ -113,7 +113,7 @@ int ReadTagFile(int choice)
     char line[2048];
 
 
-    sprintf(name, "%s\\timed%d.tag", cfg.homedir, (char)choice);
+    sprintf(name, "%s" DIRSEP "timed%d.tag", cfg.homedir, (char)choice);
 
     if ((in = fopen(name, "r")) == NULL)
         return -1;
@@ -151,7 +151,7 @@ char *GetDesc(int no)
 
     strcpy(desc, "Not found.");
 
-    sprintf(name, "%s\\timed%d.tag", cfg.homedir, no);
+    sprintf(name, "%s" DIRSEP "timed%d.tag", cfg.homedir, no);
 
     if ((in = fopen(name, "r")) == NULL)
         return desc;

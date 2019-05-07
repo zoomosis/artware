@@ -327,7 +327,7 @@ void readconfig(void)
         cfg.col[colourtable[i].index] = colourtable[i].stdcol;
     }
 
-    sprintf(cfg.usr.writename, "%s\\timed.prn", cfg.homedir);
+    sprintf(cfg.usr.writename, "%s" DIRSEP "timed.prn", cfg.homedir);
     strcpy(cfg.usr.lr, "lastread");
     strcpy(cfg.usr.printer, "PRN");
     cfg.usr.status |=
@@ -335,7 +335,7 @@ void readconfig(void)
          CONFIRMEDITEXIT | LOWLEVELKB | JUMPYEDIT | CLOCK | JAMGETLAST |
          INTERNETEMPTY);
 
-    strcat(temp, "\\timed.cfg");
+    strcat(temp, DIRSEP "timed.cfg");
 
     print(10, 7, 9, "û");
     print(10, 35, 7, "(timEd.cfg)");
@@ -454,7 +454,7 @@ void analyse(char *line, int number)
         if (crc == pathstringtable[i].crc)
         {
             strncpy(pathstringtable[i].string,
-                    Strip_Trailing(xgstr(strtok(NULL, " \t\n")), '\\'),
+                    Strip_Trailing(xgstr(strtok(NULL, " \t\n")), *DIRSEP),
                     pathstringtable[i].maxlen);
             return;
         }
@@ -747,7 +747,7 @@ void addarea(char *value, word type)
 
     memset(temp, '\0', sizeof(temp));
     strncpy(temp, pathptr, 79);
-    Strip_Trailing(temp, '\\');
+    Strip_Trailing(temp, *DIRSEP);
     current->dir = mem_strdup(temp);
 
     current->type = type;
@@ -922,7 +922,7 @@ void AddEchoArea(char *line, int type)
 
     memset(temp, '\0', sizeof(temp));
     strncpy(temp, pathptr, 79);
-    Strip_Trailing(temp, '\\');
+    Strip_Trailing(temp, *DIRSEP);
     thisarea->dir = AllocRemapPath(temp);
 
     if ((rest_of_line = strtok(NULL, "\n")) != NULL)
@@ -1035,7 +1035,7 @@ void AddAreasArea(char *line)   /* Here we add an area to the list */
 
     memset(temp, '\0', sizeof(temp));
     strncpy(temp, pathptr, 79);
-    Strip_Trailing(temp, '\\');
+    Strip_Trailing(temp, *DIRSEP);
     thisarea->dir = AllocRemapPath(temp);
 
     thisarea->desc = thisarea->tag;
@@ -1603,7 +1603,7 @@ void ana_FE_area(Area * area, SysAddress * aka_array)
 
     if (!(thisarea->base & MSGTYPE_HMB))
     {
-        Strip_Trailing(area->path, '\\');
+        Strip_Trailing(area->path, *DIRSEP);
         thisarea->dir = AllocRemapPath(area->path);
     }
     else
@@ -1692,7 +1692,7 @@ void ana_FE142_area(FENEW_Area * area, FENEW_SysAddress * aka_array)
 
     if (!(thisarea->base & MSGTYPE_HMB))
     {
-        Strip_Trailing(area->path, '\\');
+        Strip_Trailing(area->path, *DIRSEP);
         thisarea->dir = AllocRemapPath(area->path);
     }
     else
@@ -1773,7 +1773,7 @@ void ana_FE141_area(FE141Area * area, SysAddress * aka_array)
 
     if (!(thisarea->base & MSGTYPE_HMB))
     {
-        Strip_Trailing(area->path, '\\');
+        Strip_Trailing(area->path, *DIRSEP);
         thisarea->dir = AllocRemapPath(area->path);
     }
     else
@@ -2361,7 +2361,7 @@ void ana_GECHO_area(AREAFILE_GE * area, GE_ADDRESS * aka_array)
     }
     else
     {
-        Strip_Trailing(area->path, '\\');
+        Strip_Trailing(area->path, *DIRSEP);
         thisarea->dir = AllocRemapPath(area->path);
     }
 
@@ -2531,7 +2531,7 @@ void ana_GECHO_area(AREAFILE_GE * area, GE_ADDRESS * aka_array)
 //
 //    if(!(thisarea->base & MSGTYPE_HMB))  // We need a path.
 //      {
-//      Strip_Trailing(area->msg_path, '\\');
+//      Strip_Trailing(area->msg_path, *DIRSEP);
 //      thisarea->dir = AllocRemapPath(area->msg_path);
 //      }
 //    else   // We need a board.
@@ -3673,7 +3673,7 @@ void ReadSoup2SQCFG(void)
                     thisarea->type = NEWS;
                     thisarea->desc = mem_strdup("Soup2SQ posted articles");
                     thisarea->tag = mem_strdup("Posted_articles");
-                    Strip_Trailing(rest, '\\');
+                    Strip_Trailing(rest, *DIRSEP);
                     thisarea->dir = AllocRemapPath(rest);
                     AddLinkedArea(thisarea);
                 }
@@ -3701,7 +3701,7 @@ void ReadSoup2SQCFG(void)
 
                     thisarea->desc = mem_strdup(tag);
                     thisarea->tag = thisarea->desc;
-                    Strip_Trailing(path, '\\');
+                    Strip_Trailing(path, *DIRSEP);
                     thisarea->dir = AllocRemapPath(path);
                     AddLinkedArea(thisarea);
                 }

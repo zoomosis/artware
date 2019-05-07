@@ -152,8 +152,12 @@ MMSG *GetFmtMsg(long curno, MSGA * areahandle, AREA * area)
 
         // We fiddled with the buffer so much, let's check if the size is
         // still ok..
+#ifdef __UNIX__
+            txtbuf = mem_realloc(txtbuf, READBUFSIZE + 1);
+#else
         if (_msize(txtbuf) < (READBUFSIZE + 1))
             txtbuf = mem_realloc(txtbuf, READBUFSIZE + 1);
+#endif
 
         result =
             MsgReadMsg(msghandle, NULL, nowread, howmuch,

@@ -822,7 +822,7 @@ long get_last_sdm(AREA * area)
     char temp[80];
 
 
-    sprintf(temp, "%s\\%s", area->dir, cfg.usr.lr);
+    sprintf(temp, "%s" DIRSEP "%s", area->dir, cfg.usr.lr);
 
     if ((lrfile = sopen(temp, O_BINARY | O_RDONLY, SH_DENYNO, S_IREAD)) == -1)
         return 0L;
@@ -943,7 +943,7 @@ void put_last_sdm(AREA * area, long last)
     word lastint;
 
 
-    sprintf(temp, "%s\\%s", area->dir, cfg.usr.lr);
+    sprintf(temp, "%s" DIRSEP "%s", area->dir, cfg.usr.lr);
 
     lastint = (word) last;
 
@@ -994,7 +994,7 @@ int HMBreadlast(void)
 
     memset(&HMBlr, '\0', sizeof(HMBlr));
 
-    sprintf(lrfilename, "%s\\lastread.bbs", cfg.usr.hudsonpath);
+    sprintf(lrfilename, "%s" DIRSEP "lastread.bbs", cfg.usr.hudsonpath);
     if ((lrfile =
          sopen(lrfilename, O_CREAT | O_BINARY | O_RDWR, SH_DENYNO,
                S_IREAD | S_IWRITE)) == -1)
@@ -1040,7 +1040,7 @@ int HMBwritelast(void)
     long offset;
 
 
-    sprintf(lrfilename, "%s\\lastread.bbs", cfg.usr.hudsonpath);
+    sprintf(lrfilename, "%s" DIRSEP "lastread.bbs", cfg.usr.hudsonpath);
     if ((lrfile =
          sopen(lrfilename, O_BINARY | O_WRONLY | O_CREAT, SH_DENYNO,
                S_IREAD | S_IWRITE)) == -1)
