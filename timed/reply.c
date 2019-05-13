@@ -763,6 +763,18 @@ char *MakeKludge(MMSG * curmsg, MIS * mis, int netmail)
                 mis->origfido.zone, mis->origfido.net, mis->origfido.node);
         strcat(buffer, temp);
     }
+    
+    if (netmail && mis->origfido.point != 0)
+    {
+        sprintf(temp, "\01FMPT %hu", mis->origfido.point);
+        strcat(buffer, temp);
+    }
+
+    if (netmail && mis->destfido.point != 0)
+    {
+        sprintf(temp, "\01TOPT %hu", mis->destfido.point);
+        strcat(buffer, temp);
+    }
 
     return buffer;
 
