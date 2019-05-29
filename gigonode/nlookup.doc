@@ -1,0 +1,11 @@
+NLOOKUP.DOC
+
+Simple instructions GIGO nodelist index verifier:
+
+     Usage:  NOOKUP [address]
+
+This will assume that NODELIST.GIG is in the current directory, and 
+will verify that the address is in this nodelist index.  It's primary
+purpose is to verify the nodelist compiler's behavior.  
+
+-jfesler@wmeonlin.sacbbx.com

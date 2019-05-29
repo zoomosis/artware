@@ -1,0 +1,33 @@
+COMPILE.DOC
+
+Simple instructions for the GIGO nodelist builder:
+
+     Nodelist Index Builder for GIGO
+     Usage:  COMPILE [path] [nodelistname] [/Append]
+
+     Note that PATH and NODELISTNAME _must_ be specified
+     seperately for this program to work.  It's quick, dirty,
+     and way fast!  /APPEND may be specified if you need to
+     run this for more than one nodelist file.
+
+     Sample:
+            C> COMPILE .\ NODELIST
+            C> COMPILE .\ EGGNET /Append
+
+
+To allow GIGO to use this nodelist, in your GATEWAY.CFG file, add
+"NODELIST C:\NODELIST\".  Be sure to use the appropriate directory name,
+and be sure it has the trailing backslash.
+
+Note that using COMPILE and the nodelist index is optional when using GIGO;
+it's sole purpose is to check unsolicted email from internet to fidonet.  If
+the address can not be verified, the message is sent back to the sender.
+
+If anyone thinks they can make this any faster, or would like
+to use the output of this index, email me.  On my machine, this
+program takes about 4 seconds; on my neighbor's, 20 seconds.  With the
+current nodelist, the index is about 70k.  Source code is included for 
+both the compiler, and the lookup program; have fun.
+
+
+-jfesler@wmeonlin.sacbbx.com
